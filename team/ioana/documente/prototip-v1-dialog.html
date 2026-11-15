@@ -1,0 +1,404 @@
+<!doctype html>
+<html lang="ro">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Prototip v1 · Dialog</title>
+<meta name="description" content="Direcția 1: site-ul te întreabă de ce ai nevoie și își construiește pagina sub ochii tăi. Prototip, conținut fictiv.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Geist:wght@400;500;600&family=Geist+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --paper:#F2EFE7; --paper-2:#E8E3D6; --solid:#FCFBF7;
+  --ink:#15130F; --muted:#575247; --line:#CFC7B5; --line-strong:#8E8778;
+  --accent:#3124DB; --accent-soft:#E4E1FB; --ok:#1E6B3A;
+  --serif:"Instrument Serif", "Iowan Old Style", Georgia, serif;
+  --sans:"Geist", system-ui, -apple-system, sans-serif;
+  --mono:"Geist Mono", ui-monospace, "SF Mono", monospace;
+  --ease:cubic-bezier(.2,.7,.1,1);
+  --gut:clamp(16px, 4vw, 56px);
+}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--paper);color:var(--ink);font:400 17px/1.55 var(--sans);overflow-x:hidden}
+a{color:inherit}
+button{font:inherit;color:inherit}
+:focus-visible{outline:2px solid var(--accent);outline-offset:3px;border-radius:6px}
+
+/* bara de prototip */
+.proto{display:flex;gap:12px;align-items:center;justify-content:space-between;flex-wrap:wrap;
+  padding:8px var(--gut);background:var(--ink);color:#F2EFE7;font:500 12px/1.4 var(--mono);letter-spacing:.02em}
+.proto nav{display:flex;gap:14px;flex-wrap:wrap}
+.proto a{text-decoration:none;opacity:.75}
+.proto a[aria-current]{opacity:1;text-decoration:underline;text-underline-offset:3px}
+
+header.top{display:flex;justify-content:space-between;align-items:center;gap:16px;padding:18px var(--gut)}
+.mark{font:italic 400 30px/1 var(--serif);text-decoration:none;letter-spacing:-.01em}
+.pill{display:inline-flex;align-items:center;gap:10px;max-width:min(62vw,420px);padding:8px 14px 8px 12px;border-radius:999px;
+  border:1px solid var(--line);background:var(--solid);font:500 13px/1.3 var(--mono);cursor:pointer;text-align:left}
+.pill .dot{flex:none;width:8px;height:8px;border-radius:50%;background:var(--ok);box-shadow:0 0 0 0 rgba(30,107,58,.5);animation:ping 2.4s infinite}
+.pill .txt{overflow:hidden;white-space:nowrap;text-overflow:ellipsis;transition:opacity .35s}
+@keyframes ping{0%{box-shadow:0 0 0 0 rgba(30,107,58,.45)}70%{box-shadow:0 0 0 8px rgba(30,107,58,0)}100%{box-shadow:0 0 0 0 rgba(30,107,58,0)}}
+
+.log{position:absolute;right:var(--gut);top:110px;z-index:20;width:min(420px,calc(100vw - 2*var(--gut)));
+  background:var(--solid);border:1px solid var(--line);border-radius:18px;padding:18px 18px 14px;box-shadow:0 24px 60px -20px rgba(21,19,15,.25)}
+.log[hidden]{display:none}
+.log h2{margin:0 0 4px;font:400 26px/1.1 var(--serif)}
+.log p.note{margin:0 0 12px;color:var(--muted);font-size:14px}
+.log ol{list-style:none;margin:0;padding:0;font:400 13px/1.45 var(--mono)}
+.log li{display:grid;grid-template-columns:46px 62px 1fr;gap:8px;padding:7px 0;border-top:1px solid var(--paper-2)}
+.log li span:first-child{color:var(--muted)}
+.log a{display:inline-block;margin-top:10px;font-size:14px}
+
+main{padding:0 var(--gut) 80px;max-width:1360px;margin:0 auto}
+
+/* hero */
+.hero{padding-top:clamp(24px,6vh,72px)}
+.hero h1{margin:0;font:400 clamp(46px,9.2vw,150px)/.92 var(--serif);letter-spacing:-.025em;max-width:14ch}
+.hero h1 em{font-style:italic;color:var(--accent)}
+.lede{margin:22px 0 0;max-width:46ch;font-size:clamp(17px,1.5vw,20px);color:var(--muted)}
+.lede b{color:var(--ink);font-weight:500}
+
+/* întrebarea */
+.ask{margin-top:clamp(36px,7vh,80px)}
+.ask label{display:block;font:italic 400 clamp(22px,2.2vw,30px)/1.1 var(--serif);margin-bottom:12px}
+.field{display:flex;align-items:center;gap:10px;border-bottom:2px solid var(--ink);padding:6px 0 10px}
+.field input{flex:1;min-width:0;border:0;background:transparent;font:400 clamp(24px,3.2vw,44px)/1.15 var(--serif);color:var(--ink);padding:0}
+.field input::placeholder{color:#6E6859}
+.field input:focus{outline:none}
+.field:focus-within{border-color:var(--accent)}
+.go{flex:none;width:52px;height:52px;border-radius:50%;border:0;background:var(--ink);color:var(--paper);cursor:pointer;display:grid;place-items:center;transition:transform .25s var(--ease),background .25s}
+.go:hover{background:var(--accent);transform:translateX(3px)}
+.chips{display:flex;flex-wrap:wrap;gap:10px;margin-top:18px}
+.chip{border:1px solid var(--line-strong);background:transparent;border-radius:999px;padding:10px 16px;font-size:15px;cursor:pointer;transition:background .2s,border-color .2s,color .2s}
+.chip:hover{background:var(--ink);color:var(--paper);border-color:var(--ink)}
+.chip[aria-pressed="true"]{background:var(--accent);border-color:var(--accent);color:#fff}
+.hint{margin:12px 0 0;font:400 13px/1.4 var(--mono);color:var(--muted)}
+
+/* răspunsul */
+#thread{margin-top:40px}
+.you{display:inline-block;margin:0 0 18px;padding:10px 18px;border-radius:20px 20px 6px 20px;background:var(--ink);color:var(--paper);font:400 clamp(20px,2vw,26px)/1.25 var(--serif)}
+.trace{list-style:none;margin:0 0 26px;padding:14px 16px;border:1px solid var(--line);border-radius:14px;background:var(--paper-2);font:400 13px/1.5 var(--mono);max-width:640px}
+.trace li{display:grid;grid-template-columns:62px 1fr auto;gap:10px;align-items:center;opacity:0;transform:translateY(4px);transition:opacity .25s,transform .25s}
+.trace li.on{opacity:1;transform:none}
+.trace .who{font-weight:500}
+.trace .st{color:var(--muted)}
+.trace li.done .st{color:var(--ok)}
+.trace .cap{display:block;grid-column:1/-1;color:var(--muted);margin-bottom:6px;opacity:1;transform:none}
+
+.page{display:grid;grid-template-columns:repeat(12,1fr);gap:14px}
+.blk{position:relative;border-radius:18px;padding:22px;min-height:64px;background:transparent;transition:background .5s var(--ease)}
+.blk > .wf{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;overflow:visible}
+.blk > .wf rect{fill:none;stroke:var(--line-strong);stroke-width:1.25;stroke-dasharray:100;stroke-dashoffset:100;transition:stroke-dashoffset .55s var(--ease),opacity .4s}
+.blk::before{content:attr(data-wire);position:absolute;left:16px;top:12px;font:400 12px/1 var(--mono);color:var(--muted);transition:opacity .3s}
+.blk > .c{opacity:0;transform:translateY(10px);transition:opacity .45s var(--ease),transform .55s var(--ease)}
+.blk.drawn > .wf rect{stroke-dashoffset:0}
+.blk.built{background:var(--solid)}
+.blk.built.bare{background:transparent}
+.blk.built > .wf rect{opacity:0}
+.blk.built::before{opacity:0}
+.blk.built > .c{opacity:1;transform:none}
+.s12{grid-column:span 12}.s8{grid-column:span 8}.s7{grid-column:span 7}.s5{grid-column:span 5}.s4{grid-column:span 4}
+.ans-h{margin:0;font:400 clamp(34px,4.4vw,64px)/1 var(--serif);letter-spacing:-.02em;max-width:18ch}
+.ans-p{margin:12px 0 0;max-width:52ch;color:var(--muted);font-size:18px}
+.cta{display:inline-flex;align-items:center;gap:10px;padding:14px 22px;border-radius:999px;background:var(--accent);color:#fff;text-decoration:none;font-weight:500;border:0;cursor:pointer}
+.cta:hover{background:#2218B0}
+.ghost{display:inline-flex;align-items:center;gap:8px;padding:13px 20px;border-radius:999px;border:1px solid var(--line-strong);text-decoration:none;font-weight:500}
+.row{display:flex;flex-wrap:wrap;gap:10px;align-items:center}
+.slots{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+.slot{border:1px solid var(--line);border-radius:14px;padding:14px;background:var(--paper);text-align:left;cursor:pointer}
+.slot:hover{border-color:var(--accent)}
+.slot b{display:block;font:400 26px/1 var(--serif)}
+.slot span{font-size:14px;color:var(--muted)}
+.list{list-style:none;margin:0;padding:0}
+.list li{display:flex;justify-content:space-between;gap:16px;padding:14px 0;border-top:1px solid var(--paper-2)}
+.list li:first-child{border-top:0}
+.list b{font:400 24px/1.1 var(--serif)}
+.list span{color:var(--muted);font-size:15px;text-align:right}
+.made{margin:18px 0 0;font:400 13px/1.5 var(--mono);color:var(--muted)}
+.made button{border:0;background:none;padding:0;text-decoration:underline;text-underline-offset:3px;cursor:pointer;font:inherit;color:var(--ink)}
+
+/* invenția */
+.atelier{margin-top:clamp(64px,12vh,140px)}
+.eyebrow{font:500 12px/1 var(--mono);letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin:0 0 14px}
+.inv{display:grid;grid-template-columns:1.25fr 1fr;gap:0;border-radius:28px;overflow:hidden;background:var(--solid);border:1px solid var(--line)}
+.inv .txt{padding:clamp(24px,4vw,52px)}
+.inv h3{margin:0;font:400 clamp(34px,4vw,60px)/1 var(--serif);letter-spacing:-.02em}
+.inv .meta{margin:16px 0 26px;font:400 14px/1.5 var(--mono);color:var(--muted)}
+.tag{display:inline-block;padding:3px 9px;border-radius:999px;background:var(--accent-soft);color:var(--accent);font:500 12px/1.4 var(--mono);margin-right:8px}
+.inv .vis{background:var(--ink);display:grid;place-items:center;min-height:300px;position:relative}
+.inv .vis svg{width:min(70%,280px);height:auto}
+.inv .vis .needle{transform-origin:100px 100px;transition:transform .6s var(--ease)}
+.inv .vis small{position:absolute;bottom:14px;left:0;right:0;text-align:center;color:#C9C3B4;font:400 12px/1 var(--mono)}
+
+footer{padding:40px var(--gut);color:var(--muted);font:400 13px/1.5 var(--mono);border-top:1px solid var(--line);max-width:1360px;margin:0 auto}
+
+@media (max-width:820px){
+  .s8,.s7,.s5,.s4{grid-column:span 12}
+  .inv{grid-template-columns:1fr}
+  .inv .vis{min-height:220px}
+  .slots{grid-template-columns:1fr}
+  .log{top:120px}
+}
+
+/* tranziții de pagină (View Transitions, îmbunătățire progresivă) */
+::view-transition-old(root){display:none}
+::view-transition-new(root){animation:none}
+::view-transition-group(*){animation-duration:.55s;animation-timing-function:cubic-bezier(.2,.7,.1,1)}
+
+@media (prefers-reduced-motion:reduce){
+  *,*::before,*::after{animation:none!important;transition-duration:.01ms!important}
+  ::view-transition-group(*),::view-transition-old(*),::view-transition-new(*){animation:none!important}
+}
+@media (max-width:760px){.pv-long{display:none}.proto nav{gap:10px}}
+</style>
+</head>
+<body>
+<div class="proto" role="note">
+  <span>Prototip v1 · conținut fictiv<span class="pv-long"> · Direcția 1 din 3</span></span>
+  <nav aria-label="Direcții">
+    <a href="prototip-v1-dialog.html" aria-current="page">1 Dialog</a>
+    <a href="prototip-v1-spatial.html">2 Spațiu</a>
+    <a href="prototip-v1-viu.html">3 Sistem viu</a>
+  </nav>
+</div>
+
+<header class="top">
+  <a class="mark" href="#">Alex</a>
+  <button class="pill" id="pill" aria-expanded="false" aria-controls="log">
+    <span class="dot" aria-hidden="true"></span>
+    <span class="txt" id="pillTxt">Mike testează Busola v0.3</span>
+  </button>
+</header>
+
+<aside class="log" id="log" hidden aria-label="Jurnalul echipei">
+  <h2>Echipa lucrează</h2>
+  <p class="note">Alex lucrează cu 8 agenți AI. Jurnal simulat pentru prototip.</p>
+  <ol id="logList"></ol>
+  <a href="#">Cum lucrez cu echipa mea de agenți →</a>
+</aside>
+
+<main>
+  <section class="hero" aria-labelledby="h1">
+    <h1 id="h1">Construiesc unelte pentru oameni care <em>vor să crească.</em></h1>
+    <p class="lede"><b>Sunt Alex: coach, fondator și inventator.</b> Fac aplicații, cursuri și tool-uri împreună cu o echipă de agenți AI care lucrează la vedere.</p>
+  </section>
+
+  <section class="ask" aria-label="Alegătorul de intenții">
+    <form id="askForm" autocomplete="off">
+      <label for="q">De ce ai nevoie?</label>
+      <div class="field">
+        <input id="q" name="q" type="text" placeholder="Scrie cu cuvintele tale…" enterkeyhint="go">
+        <button class="go" type="submit" aria-label="Trimite">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M5 12h13M13 6l6 6-6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </button>
+      </div>
+    </form>
+    <div class="chips" id="chips" role="group" aria-label="Sau alege"></div>
+    <p class="hint">Sau alege una. Pagina se construiește pentru tine.</p>
+  </section>
+
+  <section id="thread" aria-live="polite"></section>
+
+  <section class="atelier" aria-labelledby="atH">
+    <p class="eyebrow" id="atH">Din Atelier · invenția lunii</p>
+    <article class="inv">
+      <div class="txt">
+        <h3>Când nu mai știi pe ce să te concentrezi azi.</h3>
+        <p class="meta"><span class="tag">prototip</span>Busola · aplicație · 5 minute · fictiv</p>
+        <div class="row">
+          <a class="cta" href="#">Încearcă Busola</a>
+          <a class="ghost" href="#">Toate invențiile</a>
+        </div>
+      </div>
+      <div class="vis" aria-hidden="true">
+        <svg viewBox="0 0 200 200">
+          <circle cx="100" cy="100" r="86" fill="none" stroke="#5E594D" stroke-width="1"/>
+          <circle cx="100" cy="100" r="64" fill="none" stroke="#3A372F" stroke-width="1"/>
+          <g fill="#C9C3B4" font-family="Geist Mono, monospace" font-size="10" text-anchor="middle">
+            <text x="100" y="24">azi</text><text x="180" y="104">mâine</text><text x="100" y="186">lasă</text><text x="20" y="104">deleagă</text>
+          </g>
+          <g class="needle" id="needle">
+            <path d="M100 38 L108 100 L100 108 L92 100 Z" fill="#8F86FF"/>
+            <path d="M100 162 L108 100 L100 92 L92 100 Z" fill="#5E594D"/>
+          </g>
+          <circle cx="100" cy="100" r="4" fill="#F2EFE7"/>
+        </svg>
+        <small>acul urmărește cursorul</small>
+      </div>
+    </article>
+  </section>
+</main>
+
+<footer>Prototip de direcție vizuală. Textele, invenția „Busola”, orele și jurnalul echipei sunt fictive. În versiunea reală, întrebarea liberă ar fi înțeleasă de un model AI; aici e o potrivire simplă de cuvinte.</footer>
+
+<script>
+(() => {
+  const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const $ = s => document.querySelector(s);
+
+  const INTENTS = {
+    coaching:{label:'Coaching', said:'Vreau o sesiune de coaching.',
+      steps:[['Tudor','înțelege: cauți coaching'],['Radu','alege drumul: rezervare'],['Ioana','așază pagina'],['Mike','deschide calendarul']],
+      h:'Hai să vorbim 30 de minute.', p:'Prima discuție e ca să vedem dacă ne potrivim. Fără pregătire, fără prezentări.', cta:'Alege o oră', mod:'slots'},
+    tools:{label:'Tool-uri și cursuri', said:'Caut un tool sau un curs.',
+      steps:[['Tudor','înțelege: cauți o unealtă'],['Radu','caută în Atelier'],['Ioana','așază pagina'],['Mike','pregătește demo-ul']],
+      h:'Începe cu ce te frământă, nu cu catalogul.', p:'Acestea sunt cele mai noi trei invenții. Fiecare se încearcă în câteva minute.', cta:'Vezi tot Atelierul', mod:'tools'},
+    compania:{label:'Compania mea', said:'Vreau să aflu despre companiile tale.',
+      steps:[['Tudor','înțelege: vrei contextul de business'],['Maria','scrie pe scurt fiecare companie'],['Ioana','așază pagina'],['Mike','leagă site-urile']],
+      h:'Patru companii, un singur fir: oameni care cresc.', p:'Descrierile de mai jos sunt fictive până le confirmă Alex.', cta:'Scrie-mi despre o colaborare', mod:'companies'},
+    speaking:{label:'Speaking', said:'Vreau să te invit să vorbești.',
+      steps:[['Tudor','înțelege: o invitație'],['Victor','alege subiectele potrivite'],['Ioana','așază pagina'],['Mike','pregătește formularul']],
+      h:'Trei subiecte despre care vorbesc cu drag.', p:'Fiecare vine cu un exercițiu pe care sala îl face pe loc.', cta:'Invită-l pe Alex', mod:'topics'},
+    carte:{label:'Carte', said:'Ce e cu cartea?',
+      steps:[['Tudor','înțelege: te interesează cartea'],['Victor','verifică stadiul'],['Ioana','așază pagina'],['Mike','pregătește lista de așteptare']],
+      h:'Cartea e în lucru.', p:'Subiectul îl anunț în curând. Vrei primul capitol când e gata?', cta:'Anunță-mă', mod:'book'},
+    despre:{label:'Despre mine', said:'Cine ești, de fapt?',
+      steps:[['Tudor','înțelege: vrei să-l cunoști pe Alex'],['Maria','alege povestea scurtă'],['Ioana','așază pagina'],['Mike','adaugă pagina echipei']],
+      h:'Coach, fondator, inventator.', p:'Construiesc lucruri ca să-i ajut pe oameni să crească. Și îmi deschid atelierul, ca să vezi cum lucrez.', cta:'Povestea completă', mod:'about'}
+  };
+  const KEYS = [
+    ['coaching',/coach|sesiun|rezerv|vorbim|discut|mentor|clarit/],
+    ['tools',/tool|unealt|aplica|app|curs|instrument|atelier|invent/],
+    ['compania',/compan|firm|business|bemore|wise|lift|innersis|echipa mea|organiza/],
+    ['speaking',/speak|confer|eveniment|prezent|scena|keynote|invit|podcast/],
+    ['carte',/carte|cart|book|scri/],
+    ['despre',/despre|cine|povest|tu |alex/]
+  ];
+  const norm = s => s.toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g,'') + ' ';
+
+  // chips
+  const chips = $('#chips');
+  Object.entries(INTENTS).forEach(([k,v]) => {
+    const b = document.createElement('button');
+    b.type='button'; b.className='chip'; b.textContent=v.label; b.dataset.k=k; b.setAttribute('aria-pressed','false');
+    b.addEventListener('click', () => run(k, b));
+    chips.appendChild(b);
+  });
+  $('#askForm').addEventListener('submit', e => {
+    e.preventDefault();
+    const raw = $('#q').value.trim(); if(!raw) { $('#q').focus(); return; }
+    const n = norm(raw); const hit = KEYS.find(([,re]) => re.test(n));
+    run(hit ? hit[0] : null, null, raw);
+  });
+
+  let token = 0;
+  const wait = ms => new Promise(r => setTimeout(r, reduce ? 0 : ms));
+
+  function vt(fn){
+    if (document.startViewTransition && !reduce) { const t = document.startViewTransition(fn); t.finished.catch(()=>{}); return t.updateCallbackDone.then(() => wait(250)).catch(()=>{}); }
+    fn(); return Promise.resolve();
+  }
+
+  async function run(k, chip, raw){
+    const my = ++token;
+    chips.querySelectorAll('.chip').forEach(c => c.setAttribute('aria-pressed', String(c === chip)));
+    const thread = $('#thread');
+    const said = raw || (k ? INTENTS[k].said : '');
+    if (chip) chip.style.viewTransitionName = 'said';
+
+    await vt(() => {
+      if (chip) chip.style.viewTransitionName = '';
+      document.body.classList.add('asked');
+      thread.innerHTML = '';
+      const you = document.createElement('p'); you.className='you'; you.textContent = said; you.style.viewTransitionName='said';
+      thread.appendChild(you);
+    });
+    const you = thread.querySelector('.you'); if (you) you.style.viewTransitionName='';
+    if (my !== token) return;
+    if (!reduce) thread.scrollIntoView({behavior:'smooth', block:'start'});
+
+    if (!k){ renderUnknown(thread); return; }
+    const I = INTENTS[k];
+
+    // traseul agenților
+    const tr = document.createElement('ol'); tr.className='trace'; tr.setAttribute('aria-label','Agenții construiesc pagina');
+    tr.innerHTML = '<li class="cap on">agenți AI · simulare</li>' + I.steps.map(([w,t]) => `<li><span class="who">${w}</span><span>${t}</span><span class="st">…</span></li>`).join('');
+    thread.appendChild(tr);
+    const items = [...tr.querySelectorAll('li:not(.cap)')];
+    for (const li of items){
+      await wait(40); if (my!==token) return;
+      li.classList.add('on'); await wait(210); if (my!==token) return;
+      li.classList.add('done'); li.querySelector('.st').textContent='gata';
+    }
+
+    // pagina, întâi ca schiță, apoi construită
+    const page = document.createElement('div'); page.className='page';
+    page.innerHTML = blocks(k, I);
+    thread.appendChild(page);
+    const made = document.createElement('p'); made.className='made';
+    made.innerHTML = `Pagină construită pentru tine de ${I.steps.map(s=>s[0]).slice(1).join(', ')} · agenți AI · <button type="button" id="again">altă întrebare</button>`;
+    made.style.opacity = 0;
+    thread.appendChild(made);
+    made.querySelector('#again').addEventListener('click', () => { $('#q').value=''; $('#q').focus(); $('.ask').scrollIntoView({behavior: reduce?'auto':'smooth', block:'center'}); });
+
+    const bl = [...page.querySelectorAll('.blk')];
+    bl.forEach(b => b.insertAdjacentHTML('afterbegin','<svg class="wf" aria-hidden="true"><rect x="0" y="0" width="100%" height="100%" rx="18" pathLength="100"/></svg>'));
+    if (reduce){ bl.forEach(b => b.classList.add('drawn','built')); made.style.opacity=1; return; }
+    await wait(40);
+    for (const b of bl){ if(my!==token) return; b.classList.add('drawn'); await wait(110); }
+    await wait(420);
+    for (const b of bl){ if(my!==token) return; b.classList.add('built'); await wait(150); }
+    made.style.transition='opacity .4s'; made.style.opacity=1;
+  }
+
+  function renderUnknown(thread){
+    const d = document.createElement('div'); d.className='page';
+    d.innerHTML = `<div class="blk s12 built bare"><div class="c"><h2 class="ans-h" style="font-size:clamp(28px,3vw,44px)">Nu sunt sigur că am înțeles.</h2><p class="ans-p">Cel mai aproape de ce ai scris:</p><div class="row" style="margin-top:14px"><button class="chip" data-go="coaching">Coaching</button><button class="chip" data-go="tools">Tool-uri și cursuri</button><button class="chip" data-go="despre">Despre mine</button></div></div></div>`;
+    thread.appendChild(d);
+    d.querySelectorAll('[data-go]').forEach(b => b.addEventListener('click', () => run(b.dataset.go, chips.querySelector(`[data-k="${b.dataset.go}"]`))));
+  }
+
+  function blocks(k, I){
+    const head = `<div class="blk s7 bare" data-wire="‹titlu›"><div class="c"><h2 class="ans-h">${I.h}</h2><p class="ans-p">${I.p}</p></div></div>`;
+    const act = `<div class="blk s5" data-wire="‹acțiune›" style="display:flex;align-items:flex-end"><div class="c" style="width:100%"><p class="eyebrow">Pasul următor</p><a class="cta" href="#">${I.cta} →</a></div></div>`;
+    let mod = '';
+    if (I.mod==='slots') mod = `<div class="blk s12" data-wire="‹calendar›"><div class="c"><p class="eyebrow">Ore libere săptămâna asta · fictiv</p><div class="slots">
+      <button class="slot" type="button"><b>Marți 10:00</b><span>30 min · online</span></button>
+      <button class="slot" type="button"><b>Joi 17:30</b><span>30 min · online</span></button>
+      <button class="slot" type="button"><b>Vineri 09:00</b><span>30 min · online</span></button></div></div></div>`;
+    if (I.mod==='tools') mod = ['Busola|Când nu mai știi pe ce să te concentrezi azi.|aplicație · 5 min','Oglinda echipei|Când echipa ta nu mai vorbește deschis.|diagnostic · 10 min','Ritm|Când vrei un obicei care chiar rămâne.|curs · 7 zile']
+      .map((x,i) => { const [n,t,m]=x.split('|'); return `<div class="blk s4" data-wire="‹invenție ${i+1}›"><div class="c"><p class="eyebrow">${n} · fictiv</p><b style="display:block;font:400 26px/1.1 var(--serif)">${t}</b><p class="made" style="margin-top:10px">${m}</p></div></div>`; }).join('');
+    if (I.mod==='companies') mod = `<div class="blk s12" data-wire="‹listă›"><div class="c"><ul class="list">
+      <li><b>BEMORE</b><span>învățare pentru oameni și echipe · descriere fictivă</span></li>
+      <li><b>Wise Teams</b><span>diagnostic și creștere pentru echipe · descriere fictivă</span></li>
+      <li><b>LIFT</b><span>de confirmat cu Alex</span></li>
+      <li><b>Innersis</b><span>de confirmat cu Alex</span></li></ul></div></div>`;
+    if (I.mod==='topics') mod = ['Echipe care își spun adevărul|45 min · exercițiu în sală','Cum conduc o echipă de agenți AI|30 min · demo live','Unelte mici, schimbări mari|45 min · workshop']
+      .map((x,i)=>{const [t,m]=x.split('|'); return `<div class="blk s4" data-wire="‹subiect ${i+1}›"><div class="c"><b style="display:block;font:400 26px/1.1 var(--serif)">${t}</b><p class="made" style="margin-top:10px">${m} · fictiv</p></div></div>`;}).join('');
+    if (I.mod==='book') mod = `<div class="blk s12" data-wire="‹stadiu›"><div class="c"><p class="eyebrow">Stadiu · fictiv</p><div style="height:10px;border-radius:99px;background:var(--paper-2);overflow:hidden"><div style="width:22%;height:100%;background:var(--accent)"></div></div><p class="made">Structura: gata · Capitolul 1: în scriere · Lansare: de stabilit</p></div></div>`;
+    if (I.mod==='about') mod = `<div class="blk s8" data-wire="‹poveste›"><div class="c"><p style="margin:0;font:400 clamp(22px,2.2vw,30px)/1.3 var(--serif)">„Am început ca coach. Am continuat ca fondator. Acum construiesc unelte, ca oamenii să poată face singuri o parte din drum.”</p><p class="made">citat fictiv</p></div></div>
+      <div class="blk s4" data-wire="‹echipa›"><div class="c"><p class="eyebrow">Atelierul deschis</p><p style="margin:0 0 12px">Lucrez cu 8 agenți AI. Poți vedea rolurile, procesele și deciziile lor.</p><a class="ghost" href="#">Vezi echipa →</a></div></div>`;
+    return head + act + mod;
+  }
+
+  // indiciul echipei: pastila + jurnalul
+  const LOG = [
+    ['09:12','Mike','testează Busola v0.3'],['09:40','Ioana','desenează trei direcții noi'],['10:05','Radu','leagă Atelierul de pagina de coaching'],
+    ['10:31','Maria','rescrie textul de pe pagina Despre'],['11:02','Sofia','pregătește postarea despre Busola'],['11:20','Tudor','strânge deciziile săptămânii pentru Alex']
+  ];
+  $('#logList').innerHTML = LOG.slice().reverse().map(([t,w,x]) => `<li><span>${t}</span><b>${w}</b><span>${x}</span></li>`).join('');
+  let li = 0; const pt = $('#pillTxt');
+  if (!reduce) setInterval(() => {
+    li = (li+1) % LOG.length; pt.style.opacity = 0;
+    setTimeout(() => { pt.textContent = `${LOG[li][1]} ${LOG[li][2]}`; pt.style.opacity = 1; }, 350);
+  }, 5000);
+  const pill = $('#pill'), log = $('#log');
+  pill.addEventListener('click', e => { e.stopPropagation(); const open = log.hidden; log.hidden = !open; pill.setAttribute('aria-expanded', String(open)); });
+  document.addEventListener('click', e => { if (!log.hidden && !log.contains(e.target)) { log.hidden = true; pill.setAttribute('aria-expanded','false'); } });
+  document.addEventListener('keydown', e => { if (e.key==='Escape' && !log.hidden){ log.hidden = true; pill.setAttribute('aria-expanded','false'); pill.focus(); } });
+
+  // acul busolei urmărește cursorul (doar dacă e permisă mișcarea)
+  const needle = $('#needle'), vis = document.querySelector('.inv .vis');
+  if (!reduce && matchMedia('(pointer:fine)').matches){
+    addEventListener('pointermove', e => {
+      const r = vis.getBoundingClientRect(); const cx = r.left + r.width/2, cy = r.top + r.height/2;
+      const a = Math.atan2(e.clientY - cy, e.clientX - cx) * 180 / Math.PI + 90;
+      needle.style.transform = `rotate(${a}deg)`;
+    }, {passive:true});
+  } else { document.querySelector('.inv .vis small').textContent = 'busola arată spre azi'; }
+})();
+</script>
+</body>
+</html>

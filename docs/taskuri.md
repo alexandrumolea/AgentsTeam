@@ -19,8 +19,9 @@
 
 | ID | Data | De la | Pentru | Task | De ce | Nivel | Status | Rezultat |
 |---|---|---|---|---|---|---|---|---|
-| T-001 | 2026-11-15 | Tudor | Ioana | 3 prototipuri vii, orientate spre viitor, după feedbackul „prea banale” | D-016 respinsă de Alex | 1 | în lucru | – |
+| T-001 | 2026-11-15 | Tudor | Ioana | 3 prototipuri vii, orientate spre viitor, după feedbackul „prea banale” | D-016 respinsă de Alex | 1 | gata | [directii-v1.md](../team/ioana/documente/directii-v1.md) |
 | T-002 | 2026-11-15 | Mike | Mike | Verificare în generator care avertizează la secțiuni, tabele sau ID-uri schimbate (I-008) | Pagina echipei nu are voie să piardă informații fără să observe nimeni | 1 | de făcut | – |
 | T-003 | 2026-11-15 | Mike | Mike | Verifică dacă Netlify și Cloudflare Pages permit uz comercial pe planul gratuit și dacă Cal.com Free permite embed | Rămăsese neverificat în stack-tehnic-v0 | 1 | de făcut | – |
 | T-004 | 2026-11-15 | Tudor | Maria | Propune formatul paginii „Acum” (I-005) | Idee nouă, fără document | 1 | de făcut | – |
 | T-005 | 2026-11-15 | Tudor | Victor | Schița strategiei cărții: întrebările de pus lui Alex și scenarii de subiect, marcate ca ipoteze (I-003) | Cartea nu are încă niciun document | 1 | de făcut | – |
+| T-006 | 2026-11-15 | Ioana | Maria | După alegerea lui Alex (D-023), actualizează secțiunea de estetică din `vocea-alex`, care spune încă „Liquid Glass, calm” | Contradicție între profilul lui Alex și noua direcție | 1 | blocat | așteaptă D-023 |

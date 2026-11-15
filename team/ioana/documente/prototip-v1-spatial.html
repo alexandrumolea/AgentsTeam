@@ -1,0 +1,492 @@
+<!doctype html>
+<html lang="ro">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Prototip v1 · Spațiu</title>
+<meta name="description" content="Direcția 2: invențiile sunt obiecte în spațiu. Cea mai nouă se desface sub ochii tăi, strat cu strat. Prototip, conținut fictiv.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@300;400;500&family=Onest:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --space:#070910; --space-2:#0E1220; --text:#F3F1EC; --muted:#AEB3C4; --line:rgba(255,255,255,.14);
+  --mint:#7CF5C8; --coral:#FF8A65; --panel:rgba(16,19,30,.94);
+  --display:"Unbounded", "Avenir Next", system-ui, sans-serif;
+  --sans:"Onest", system-ui, -apple-system, sans-serif;
+  --mono:"JetBrains Mono", ui-monospace, monospace;
+  --ease:cubic-bezier(.2,.7,.1,1);
+  --gut:clamp(16px,3vw,40px);
+}
+*{box-sizing:border-box}
+html,body{height:100%}
+body{margin:0;background:radial-gradient(120% 90% at 70% 40%, #121833 0%, var(--space) 60%);color:var(--text);font:400 16px/1.5 var(--sans);overflow:hidden;-webkit-text-size-adjust:100%}
+button{font:inherit;color:inherit}
+a{color:inherit}
+:focus-visible{outline:2px solid var(--mint);outline-offset:3px;border-radius:8px}
+canvas#gl{position:fixed;inset:0;width:100%;height:100%;display:block;touch-action:none;cursor:grab;opacity:0;transition:opacity 1.2s ease}
+canvas#gl.ready{opacity:1}
+canvas#gl.dragging{cursor:grabbing}
+
+.proto{position:fixed;top:0;left:0;right:0;z-index:40;display:flex;gap:12px;align-items:center;justify-content:space-between;flex-wrap:wrap;
+  padding:7px var(--gut);background:#000;color:#E9E7E1;font:500 12px/1.4 var(--mono)}
+.proto nav{display:flex;gap:14px;flex-wrap:wrap}
+.proto a{text-decoration:none;opacity:.7}
+.proto a[aria-current]{opacity:1;text-decoration:underline;text-underline-offset:3px}
+
+.ui{position:fixed;inset:0;pointer-events:none;z-index:10}
+.ui > *{pointer-events:auto}
+.hero{position:absolute;left:var(--gut);top:64px;max-width:min(560px,44vw);padding:8px 0 24px;transition:opacity .5s var(--ease),transform .6s var(--ease)}
+.hero::before{content:"";position:absolute;inset:-40px -60px -20px -40px;z-index:-1;background:radial-gradient(closest-side, rgba(7,9,16,.85), rgba(7,9,16,0));pointer-events:none}
+.mark{display:inline-block;font:500 13px/1 var(--mono);letter-spacing:.12em;text-transform:uppercase;color:var(--mint);margin-bottom:18px}
+.hero h1{margin:0;font:300 clamp(28px,3.6vw,54px)/1.08 var(--display);letter-spacing:-.02em}
+.hero h1 b{font-weight:500}
+.hero p{margin:16px 0 0;max-width:44ch;color:var(--muted);font-size:17px}
+.hero p b{color:var(--text);font-weight:500}
+body.open .hero{opacity:0;transform:translateY(-12px);pointer-events:none}
+
+.tag{position:absolute;left:0;top:0;pointer-events:none;font:500 12px/1 var(--mono);padding:6px 9px;border-radius:999px;background:rgba(7,9,16,.82);border:1px solid var(--line);white-space:nowrap;transition:opacity .3s;will-change:transform}
+.tag.on{border-color:var(--mint);color:var(--mint)}
+.agent-tag{position:absolute;left:0;top:0;pointer-events:none;font:500 11px/1 var(--mono);color:var(--mint);padding:4px 7px;border-radius:6px;background:rgba(7,9,16,.85);opacity:0;transition:opacity .4s}
+
+.feature{position:absolute;left:var(--gut);bottom:128px;width:min(360px,40vw);padding:18px 20px;border-radius:22px;background:var(--panel);border:1px solid var(--line);
+  backdrop-filter:blur(18px) saturate(1.3);-webkit-backdrop-filter:blur(18px) saturate(1.3);transition:opacity .4s,transform .5s var(--ease)}
+.eyebrow{margin:0 0 8px;font:500 11px/1.3 var(--mono);letter-spacing:.1em;text-transform:uppercase;color:var(--muted)}
+.feature h2{margin:0;font:400 22px/1.2 var(--display);letter-spacing:-.01em}
+.feature p{margin:8px 0 14px;color:var(--muted);font-size:15px}
+.btn{display:inline-flex;align-items:center;gap:8px;padding:11px 18px;border-radius:999px;border:0;background:var(--mint);color:#06110C;font-weight:600;cursor:pointer;text-decoration:none}
+.btn:hover{filter:brightness(1.08)}
+.btn.ghost{background:transparent;color:var(--text);border:1px solid var(--line)}
+.pill{display:inline-block;padding:2px 8px;border-radius:999px;border:1px solid rgba(124,245,200,.5);color:var(--mint);font:500 11px/1.5 var(--mono);margin-right:6px}
+body.open .feature{opacity:0;transform:translateY(12px);pointer-events:none}
+
+.closebar{position:absolute;left:var(--gut);top:64px;display:flex;gap:14px;align-items:center;flex-wrap:wrap;opacity:0;pointer-events:none;transition:opacity .4s .2s}
+.closebar h2{margin:0;font:400 clamp(20px,2.2vw,30px)/1.15 var(--display)}
+body.open .closebar{opacity:1;pointer-events:auto}
+
+.parts{position:absolute;inset:0;list-style:none;margin:0;padding:0;pointer-events:none}
+.parts li{position:absolute;left:0;top:0;width:max-content;max-width:min(300px,calc(100vw - var(--x,0px) - 20px));padding:10px 12px 10px 14px;border-radius:12px;background:rgba(10,12,20,.92);
+  border:1px solid var(--line);opacity:0;transition:opacity .4s var(--ease);font-size:14px;line-height:1.35}
+.parts li::before{content:"";position:absolute;right:100%;top:50%;width:var(--lead,36px);height:1px;background:rgba(124,245,200,.6)}
+.parts li::after{content:"";position:absolute;right:calc(100% + var(--lead,36px) - 3px);top:calc(50% - 3px);width:6px;height:6px;border-radius:50%;background:var(--mint)}
+.parts li b{display:block;font:500 11px/1.3 var(--mono);letter-spacing:.08em;text-transform:uppercase;color:var(--mint);margin-bottom:3px}
+body.open .parts li{opacity:1}
+body.open .parts li:nth-child(2){transition-delay:.08s}body.open .parts li:nth-child(3){transition-delay:.16s}
+body.open .parts li:nth-child(4){transition-delay:.24s}body.open .parts li:nth-child(5){transition-delay:.32s}
+
+.ticker{position:absolute;right:var(--gut);top:64px;display:flex;gap:10px;align-items:center;max-width:min(380px,40vw);padding:8px 14px;border-radius:999px;background:rgba(7,9,16,.82);border:1px solid var(--line);font:400 12px/1.35 var(--mono)}
+.ticker .dot{flex:none;width:7px;height:7px;border-radius:50%;background:var(--mint);box-shadow:0 0 12px var(--mint)}
+.ticker span{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.ticker small{color:var(--muted)}
+
+.dock{position:absolute;left:50%;bottom:max(18px,env(safe-area-inset-bottom));transform:translateX(-50%);display:flex;flex-direction:column;align-items:center;gap:10px;max-width:calc(100vw - 2*var(--gut))}
+.dock > p{margin:0;font:400 15px/1 var(--display);color:var(--text)}
+.dock .row{display:flex;gap:6px;padding:6px;border-radius:999px;background:rgba(16,19,30,.9);border:1px solid var(--line);
+  backdrop-filter:blur(20px) saturate(1.4);-webkit-backdrop-filter:blur(20px) saturate(1.4);overflow-x:auto;max-width:100%;scrollbar-width:none}
+.dock .row::-webkit-scrollbar{display:none}
+.dock button{flex:none;border:0;background:transparent;border-radius:999px;padding:10px 15px;font-size:14px;font-weight:500;cursor:pointer;white-space:nowrap;transition:background .2s,color .2s}
+.dock button:hover{background:rgba(255,255,255,.08)}
+.dock button[aria-pressed="true"]{background:var(--text);color:#0A0C14}
+
+.panel{position:absolute;right:var(--gut);top:110px;bottom:130px;width:min(400px,calc(100vw - 2*var(--gut)));overflow:auto;padding:24px;border-radius:26px;background:var(--panel);border:1px solid var(--line);
+  backdrop-filter:blur(24px) saturate(1.3);-webkit-backdrop-filter:blur(24px) saturate(1.3);transform:translateX(24px);opacity:0;pointer-events:none;transition:opacity .35s var(--ease),transform .45s var(--ease)}
+.panel.show{opacity:1;transform:none;pointer-events:auto}
+.panel h2{margin:0 0 10px;font:400 clamp(24px,2.4vw,32px)/1.1 var(--display);letter-spacing:-.01em}
+.panel p{margin:0 0 16px;color:var(--muted)}
+.panel ul{list-style:none;margin:0 0 20px;padding:0}
+.panel li{padding:11px 0;border-top:1px solid var(--line);display:flex;justify-content:space-between;gap:12px}
+.panel li span{color:var(--muted);font-size:14px;text-align:right}
+.panel .x{position:absolute;right:14px;top:14px;width:36px;height:36px;border-radius:50%;border:1px solid var(--line);background:transparent;cursor:pointer}
+
+.fallback{display:none}
+body.nogl .fallback{display:block;position:fixed;inset:0;background:radial-gradient(60% 50% at 70% 45%, rgba(124,245,200,.18), transparent 70%),radial-gradient(40% 40% at 60% 60%, rgba(255,138,101,.12), transparent 70%)}
+body.nogl .parts li{position:static;opacity:1;margin:0 0 8px}
+body.nogl .parts{position:absolute;inset:auto var(--gut) 130px auto;top:120px;width:min(360px,44vw);overflow:auto;display:none}
+body.nogl.open .parts{display:block;pointer-events:auto}
+body.nogl .parts li::before,body.nogl .parts li::after{display:none}
+
+@media (max-width:760px){
+  .hero{top:66px;max-width:none;right:var(--gut)}
+  .hero h1{font-size:clamp(24px,7vw,32px)}
+  .hero p{font-size:15px;margin-top:10px}
+  .mark{margin-bottom:10px}
+  .ticker{top:auto;bottom:178px;left:var(--gut);right:auto;max-width:calc(100vw - 2*var(--gut))}
+  .feature{left:var(--gut);right:var(--gut);bottom:112px;width:auto;padding:12px 14px;display:grid;grid-template-columns:1fr auto;gap:2px 12px;align-items:center;border-radius:18px}
+  .feature .eyebrow{grid-column:1;margin:0}
+  .feature h2{grid-column:1;font-size:16px}
+  .feature p:not(.eyebrow){display:none}
+  .feature .btn{grid-column:2;grid-row:1/3;padding:10px 14px;font-size:14px}
+  .dock > p{font-size:13px}
+  .dock{width:calc(100vw - 2*var(--gut))}
+  .panel{top:auto;bottom:112px;right:var(--gut);left:var(--gut);width:auto;max-height:calc(100dvh - 200px);border-radius:22px;transform:translateY(20px);padding:20px}
+  body.sheet .feature,body.sheet .ticker{opacity:0;pointer-events:none}
+  .closebar{top:66px}
+  body.open .ticker{opacity:0;pointer-events:none}
+  body.open .parts{inset:auto var(--gut) 112px var(--gut);display:grid;gap:6px;pointer-events:auto}
+  .parts li{position:static;transform:none!important;max-width:none;width:auto;padding:8px 12px}
+  .parts li::before,.parts li::after{display:none}
+  .parts li b{display:inline;margin-right:8px}
+  .parts li{font-size:13px;max-width:min(230px,calc(100vw - var(--x,0px) - 12px))}
+  body.nogl .parts{left:var(--gut);right:var(--gut);width:auto;top:110px;bottom:170px}
+}
+@media (prefers-reduced-motion:reduce){
+  *,*::before,*::after{transition-duration:.01ms!important;transition-delay:0s!important;animation:none!important}
+}
+@media (max-width:760px){.pv-long{display:none}.proto nav{gap:10px}}
+</style>
+<script type="importmap">
+{"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js","three/addons/":"https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/"}}
+</script>
+</head>
+<body>
+<div class="proto" role="note">
+  <span>Prototip v1 · conținut fictiv<span class="pv-long"> · Direcția 2 din 3</span></span>
+  <nav aria-label="Direcții">
+    <a href="prototip-v1-dialog.html">1 Dialog</a>
+    <a href="prototip-v1-spatial.html" aria-current="page">2 Spațiu</a>
+    <a href="prototip-v1-viu.html">3 Sistem viu</a>
+  </nav>
+</div>
+<div class="fallback" aria-hidden="true"></div>
+<canvas id="gl" aria-hidden="true"></canvas>
+
+<div class="ui">
+  <section class="hero" aria-labelledby="h1">
+    <span class="mark">Alex · Atelier</span>
+    <h1 id="h1">Construiesc unelte pentru oameni care <b>vor să crească.</b></h1>
+    <p><b>Sunt Alex: coach, fondator și inventator.</b> Fiecare obiect de aici e un drum. Trage de spațiu sau alege mai jos.</p>
+  </section>
+
+  <div id="tags" aria-hidden="true"></div>
+  <div class="agent-tag" id="agentTag" aria-hidden="true"></div>
+
+  <div class="ticker" role="status" aria-live="off"><span class="dot" aria-hidden="true"></span><span id="tick">Mike testează Busola v0.3</span><small>agenți AI · simulat</small></div>
+
+  <aside class="feature" aria-labelledby="fH">
+    <p class="eyebrow"><span class="pill">nou</span>Din Atelier · fictiv</p>
+    <h2 id="fH">Busola</h2>
+    <p>Când nu mai știi pe ce să te concentrezi azi. 5 minute, pe telefon.</p>
+    <button class="btn" id="explode" type="button" aria-expanded="false" aria-controls="parts">Desfă invenția</button>
+  </aside>
+
+  <div class="closebar">
+    <h2>Busola, strat cu strat</h2>
+    <a class="btn" href="#">Încearcă (5 min)</a>
+    <button class="btn ghost" id="collapse" type="button">Strânge</button>
+  </div>
+
+  <ol class="parts" id="parts" aria-label="Busola, strat cu strat">
+    <li><b>Întrebarea</b>„Pe ce să mă concentrez azi?”</li>
+    <li><b>Acul</b>Îți arată un singur lucru, nu o listă.</li>
+    <li><b>Inelul</b>Patru direcții: azi, mâine, deleagă, lasă.</li>
+    <li><b>Sticla</b>5 minute. Merge pe telefon.</li>
+    <li><b>Baza</b>Logica: Radu. Forma: Ioana. Codul: Mike. Toți agenți AI.</li>
+  </ol>
+
+  <nav class="dock" aria-label="De ce ai nevoie?">
+    <p>De ce ai nevoie?</p>
+    <div class="row" id="dock"></div>
+  </nav>
+
+  <aside class="panel" id="panel" aria-live="polite" aria-labelledby="pH">
+    <button class="x" id="px" type="button" aria-label="Închide">✕</button>
+    <p class="eyebrow" id="pE"></p>
+    <h2 id="pH"></h2>
+    <p id="pP"></p>
+    <ul id="pL"></ul>
+    <a class="btn" id="pC" href="#"></a>
+  </aside>
+</div>
+
+<script type="module">
+const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+const coarse = matchMedia('(pointer: coarse)').matches;
+const $ = s => document.querySelector(s);
+
+const INTENTS = [
+  {k:'coaching', label:'Coaching', h:'Hai să vorbim 30 de minute.', p:'Prima discuție e ca să vedem dacă ne potrivim. Fără pregătire.', list:[['Marți 10:00','online'],['Joi 17:30','online'],['Vineri 09:00','online']], cta:'Alege o oră', eb:'Ore libere · fictiv'},
+  {k:'tools', label:'Tool-uri și cursuri', h:'Începe cu ce te frământă.', p:'Cele mai noi trei invenții din Atelier. Fiecare se încearcă în câteva minute.', list:[['Busola','aplicație · 5 min'],['Oglinda echipei','diagnostic · 10 min'],['Ritm','curs · 7 zile']], cta:'Tot Atelierul', eb:'Atelier · fictiv'},
+  {k:'compania', label:'Compania mea', h:'Patru companii, un singur fir.', p:'Oameni și echipe care cresc. Descrierile sunt de confirmat.', list:[['BEMORE','învățare'],['Wise Teams','echipe'],['LIFT','de confirmat'],['Innersis','de confirmat']], cta:'Scrie-mi despre o colaborare', eb:'Business · fictiv'},
+  {k:'speaking', label:'Speaking', h:'Trei subiecte, fiecare cu un exercițiu.', p:'Sala nu doar ascultă. Face ceva pe loc.', list:[['Echipe care își spun adevărul','45 min'],['Cum conduc o echipă de agenți AI','30 min'],['Unelte mici, schimbări mari','45 min']], cta:'Invită-l pe Alex', eb:'Speaking · fictiv'},
+  {k:'carte', label:'Carte', h:'Cartea e în lucru.', p:'Vrei primul capitol când e gata?', list:[['Structura','gata'],['Capitolul 1','în scriere'],['Lansare','de stabilit']], cta:'Anunță-mă', eb:'Stadiu · fictiv'},
+  {k:'despre', label:'Despre mine', h:'Coach, fondator, inventator.', p:'Construiesc unelte ca oamenii să poată face singuri o parte din drum. Și îmi deschid atelierul.', list:[['Echipa de agenți','8 roluri'],['Procesele','la vedere'],['Deciziile','jurnal public']], cta:'Povestea completă', eb:'Despre · fictiv'}
+];
+const AGENTS = [['Tudor','strânge deciziile săptămânii'],['Radu','leagă Atelierul de coaching'],['Ioana','desenează trei direcții noi'],['Mike','testează Busola v0.3'],
+  ['Maria','rescrie pagina Despre'],['Sofia','pregătește postarea despre Busola'],['Victor','caută o conferință potrivită'],['Elena','notează lecțiile lunii']];
+
+/* ---------- UI (funcționează și fără WebGL) ---------- */
+let selected = -1;
+const dock = $('#dock');
+INTENTS.forEach((it, i) => {
+  const b = document.createElement('button'); b.type='button'; b.textContent = it.label; b.setAttribute('aria-pressed','false');
+  b.addEventListener('click', () => select(i)); dock.appendChild(b);
+});
+const panel = $('#panel');
+function select(i){
+  if (document.body.classList.contains('open')) setOpen(false);
+  selected = i;
+  [...dock.children].forEach((b,j) => b.setAttribute('aria-pressed', String(j===i)));
+  dock.children[i].scrollIntoView({ inline:'center', block:'nearest', behavior: reduce ? 'auto' : 'smooth' });
+  const it = INTENTS[i];
+  $('#pE').textContent = it.eb; $('#pH').textContent = it.h; $('#pP').textContent = it.p; $('#pC').textContent = it.cta + ' →';
+  $('#pL').innerHTML = it.list.map(([a,b]) => `<li><b>${a}</b><span>${b}</span></li>`).join('');
+  panel.classList.add('show'); document.body.classList.add('sheet');
+  if (window.__focusRing) window.__focusRing(i);
+}
+function closePanel(){ panel.classList.remove('show'); document.body.classList.remove('sheet'); selected = -1; [...dock.children].forEach(b => b.setAttribute('aria-pressed','false')); }
+$('#px').addEventListener('click', closePanel);
+addEventListener('keydown', e => { if (e.key === 'Escape'){ closePanel(); setOpen(false); } });
+
+let open = false;
+function setOpen(v){
+  open = v; document.body.classList.toggle('open', v);
+  $('#explode').setAttribute('aria-expanded', String(v));
+  if (v) { closePanel(); $('#collapse').focus({preventScroll:true}); }
+}
+$('#explode').addEventListener('click', () => setOpen(true));
+$('#collapse').addEventListener('click', () => { setOpen(false); $('#explode').focus({preventScroll:true}); });
+
+let ai = 3; const tick = $('#tick');
+function nextAgent(){ ai = (ai + 1 + Math.floor(Math.random()*3)) % AGENTS.length; tick.textContent = `${AGENTS[ai][0]} ${AGENTS[ai][1]}`; if (window.__pulse) window.__pulse(ai); }
+if (!reduce) setInterval(nextAgent, 4200);
+
+/* ---------- Scena 3D ---------- */
+let THREE, RoomEnvironment;
+try {
+  THREE = await import('three');
+  ({ RoomEnvironment } = await import('three/addons/environments/RoomEnvironment.js'));
+  start();
+} catch (err) {
+  console.warn('Scena 3D nu a pornit, rămâne varianta fără WebGL.', err);
+  document.body.classList.add('nogl');
+}
+
+function start(){
+  const canvas = $('#gl');
+  const renderer = new THREE.WebGLRenderer({ canvas, antialias: !coarse, powerPreference: 'high-performance' });
+  renderer.setPixelRatio(Math.min(devicePixelRatio, coarse ? 1.5 : 2));
+  renderer.toneMapping = THREE.ACESFilmicToneMapping;
+  renderer.toneMappingExposure = 1.05;
+  renderer.outputColorSpace = THREE.SRGBColorSpace;
+
+  const BG = new THREE.Color('#070910');
+  const scene = new THREE.Scene();
+  scene.background = BG;
+  scene.fog = new THREE.Fog(BG, 9, 22);
+  const pmrem = new THREE.PMREMGenerator(renderer);
+  scene.environment = pmrem.fromScene(new RoomEnvironment(renderer), 0.04).texture;
+
+  const camera = new THREE.PerspectiveCamera(35, 1, 0.1, 60);
+  const world = new THREE.Group(); scene.add(world);
+
+  scene.add(new THREE.HemisphereLight('#9fb4ff', '#120c08', 0.5));
+  const key = new THREE.DirectionalLight('#ffffff', 1.6); key.position.set(3, 5, 4); scene.add(key);
+  const glow = new THREE.PointLight('#7CF5C8', 6, 8, 2); glow.position.set(0, 0.6, 0.8); world.add(glow);
+
+  // podeaua-planșă: o grilă de atelier, refractată prin sticlă
+  const gc = document.createElement('canvas'); gc.width = gc.height = 256;
+  const g = gc.getContext('2d'); g.fillStyle = '#0a0d17'; g.fillRect(0,0,256,256);
+  g.strokeStyle = '#1f3b44'; g.lineWidth = 2; g.strokeRect(0,0,256,256);
+  g.strokeStyle = '#141f2e'; g.lineWidth = 1; for (let i=64;i<256;i+=64){ g.beginPath(); g.moveTo(i,0); g.lineTo(i,256); g.moveTo(0,i); g.lineTo(256,i); g.stroke(); }
+  const gridTex = new THREE.CanvasTexture(gc); gridTex.wrapS = gridTex.wrapT = THREE.RepeatWrapping; gridTex.repeat.set(24,24); gridTex.colorSpace = THREE.SRGBColorSpace;
+  gridTex.anisotropy = renderer.capabilities.getMaxAnisotropy();
+  const floor = new THREE.Mesh(new THREE.PlaneGeometry(60,60), new THREE.MeshBasicMaterial({ map: gridTex }));
+  floor.rotation.x = -Math.PI/2; floor.position.y = -1.5; world.add(floor);
+
+  const glass = (tint='#ffffff', rough=0.08) => coarse
+    ? new THREE.MeshPhysicalMaterial({ color: new THREE.Color(tint).multiplyScalar(0.35), metalness: 0.1, roughness: 0.08, clearcoat: 1, iridescence: 0.5, transparent: true, opacity: 0.6, envMapIntensity: 1.8 })
+    : new THREE.MeshPhysicalMaterial({ color: '#ffffff', transmission: 1, thickness: 0.6, roughness: rough, ior: 1.45, iridescence: 0.55, iridescenceIOR: 1.3,
+        attenuationColor: new THREE.Color(tint), attenuationDistance: 2.5, envMapIntensity: 1.2, specularIntensity: 1 });
+
+  /* --- invenția: Busola, din 5 straturi --- */
+  const inv = new THREE.Group(); inv.position.y = 0.15; inv.scale.setScalar(0.88); world.add(inv);
+  const L = [];
+  const base = new THREE.Mesh(new THREE.CylinderGeometry(1.32, 1.4, 0.14, 72), new THREE.MeshStandardMaterial({ color:'#161a28', metalness:0.85, roughness:0.32 }));
+  const disc = new THREE.Mesh(new THREE.CylinderGeometry(1.26, 1.26, 0.16, 72), glass('#bfefff', 0.06));
+  const ring = new THREE.Group();
+  ring.add(new THREE.Mesh(new THREE.TorusGeometry(1.0, 0.024, 12, 120), new THREE.MeshStandardMaterial({ color:'#7CF5C8', emissive:'#2fd69c', emissiveIntensity:1.4, roughness:.3 })));
+  ring.children[0].rotation.x = Math.PI/2;
+  for (let i=0;i<4;i++){ const t = new THREE.Mesh(new THREE.BoxGeometry(0.05,0.05,0.2), new THREE.MeshStandardMaterial({ color:'#e8fff6', emissive:'#7CF5C8', emissiveIntensity:.8 }));
+    const a = i*Math.PI/2; t.position.set(Math.sin(a)*1.0, 0, Math.cos(a)*1.0); t.rotation.y = a; ring.add(t); }
+  const needle = new THREE.Group();
+  const nN = new THREE.Mesh(new THREE.ConeGeometry(0.09, 0.82, 4), new THREE.MeshStandardMaterial({ color:'#FF8A65', emissive:'#c2401c', emissiveIntensity:.7, metalness:.3, roughness:.35 }));
+  nN.rotation.x = -Math.PI/2; nN.position.z = -0.41;
+  const nS = new THREE.Mesh(new THREE.ConeGeometry(0.09, 0.82, 4), new THREE.MeshStandardMaterial({ color:'#c9cfdf', metalness:.8, roughness:.3 }));
+  nS.rotation.x = Math.PI/2; nS.position.z = 0.41;
+  const pin = new THREE.Mesh(new THREE.SphereGeometry(0.07, 24, 12), new THREE.MeshStandardMaterial({ color:'#ffffff', metalness:1, roughness:.15 }));
+  needle.add(nN, nS, pin);
+  const dome = new THREE.Mesh(new THREE.SphereGeometry(1.24, 64, 24, 0, Math.PI*2, 0, Math.PI/2), glass('#d8ccff', 0.04));
+  dome.scale.y = 0.32;
+  // ordine de jos în sus; parts din HTML sunt de sus în jos
+  [[base,0,-1.75],[disc,0.13,-0.85],[ring,0.24,0.0],[needle,0.29,0.85],[dome,0.3,1.7]].forEach(([m,y0,y1]) => { inv.add(m); L.push({ m, y0: y0-0.15, y1 }); });
+
+  /* --- intențiile: obiecte pe orbită --- */
+  const R = 3.5;
+  const orbit = new THREE.Group(); world.add(orbit);
+  const shapes = [
+    () => new THREE.TorusGeometry(0.34, 0.12, 24, 64),
+    () => new THREE.IcosahedronGeometry(0.46, 0),
+    () => new THREE.BoxGeometry(0.62, 0.62, 0.62, 1, 1, 1),
+    () => new THREE.CapsuleGeometry(0.22, 0.5, 8, 24),
+    () => new THREE.BoxGeometry(0.78, 0.14, 0.58),
+    () => new THREE.SphereGeometry(0.4, 48, 24)
+  ];
+  const tints = ['#ffd2c2','#c9fff0','#d8d2ff','#fff3c2','#c9e4ff','#ffffff'];
+  const items = INTENTS.map((it, i) => {
+    const m = new THREE.Mesh(shapes[i](), glass(tints[i], 0.18));
+    const holder = new THREE.Group(); holder.add(m); orbit.add(holder);
+    const core = new THREE.Mesh(new THREE.SphereGeometry(0.07, 16, 8), new THREE.MeshBasicMaterial({ color: tints[i] }));
+    holder.add(core);
+    m.userData.i = i;
+    const tag = document.createElement('div'); tag.className = 'tag'; tag.textContent = it.label; $('#tags').appendChild(tag);
+    return { holder, m, tag, a: i * Math.PI * 2 / INTENTS.length, s: 1, spin: 0.2 + Math.random()*0.3 };
+  });
+
+  /* --- agenții: lumini mici pe orbite înclinate --- */
+  const sc = document.createElement('canvas'); sc.width = sc.height = 64;
+  const sg = sc.getContext('2d'); const rg = sg.createRadialGradient(32,32,0,32,32,32);
+  rg.addColorStop(0,'rgba(124,245,200,1)'); rg.addColorStop(.25,'rgba(124,245,200,.45)'); rg.addColorStop(1,'rgba(124,245,200,0)');
+  sg.fillStyle = rg; sg.fillRect(0,0,64,64);
+  const haloTex = new THREE.CanvasTexture(sc);
+  const agents = AGENTS.map((a, i) => {
+    const sp = new THREE.Sprite(new THREE.SpriteMaterial({ map: haloTex, depthWrite:false, blending: THREE.AdditiveBlending, transparent:true }));
+    sp.scale.setScalar(0.32); world.add(sp);
+    return { sp, r: 4.6 + (i%3)*0.35, inc: -0.5 + (i/AGENTS.length), ph: i * 0.78, sp0: 0.09 + (i%4)*0.03, pulse: 0 };
+  });
+  let activeAgent = 3;
+  window.__pulse = i => { activeAgent = i; agents[i].pulse = 1; };
+
+  /* --- interacțiune --- */
+  let ringA = 0, ringT = 0, vel = 0, dragging = false, moved = 0, lastX = 0;
+  const px = { x: 0, y: 0 }, pxT = { x: 0, y: 0 };
+  const ray = new THREE.Raycaster(), ndc = new THREE.Vector2();
+  window.__focusRing = i => {
+    const target = -items[i].a; const d = Math.atan2(Math.sin(target - ringT), Math.cos(target - ringT));
+    ringT += d; vel = 0;
+  };
+  canvas.addEventListener('pointerdown', e => { dragging = true; moved = 0; lastX = e.clientX; canvas.setPointerCapture(e.pointerId); canvas.classList.add('dragging'); });
+  canvas.addEventListener('pointermove', e => {
+    pxT.x = (e.clientX / innerWidth - 0.5); pxT.y = (e.clientY / innerHeight - 0.5);
+    if (!dragging) return;
+    const dx = e.clientX - lastX; lastX = e.clientX; moved += Math.abs(dx);
+    if (!open){ ringT += dx * 0.006; vel = dx * 0.006; }
+  });
+  canvas.addEventListener('pointerup', e => {
+    dragging = false; canvas.classList.remove('dragging');
+    if (moved < 6){
+      ndc.set(e.clientX / innerWidth * 2 - 1, -(e.clientY / innerHeight) * 2 + 1);
+      ray.setFromCamera(ndc, camera);
+      const hit = ray.intersectObjects([...items.map(o => o.m), ...inv.children], true)[0];
+      if (hit){
+        let o = hit.object; while (o && o.userData.i === undefined && o.parent && o !== inv) o = o.parent;
+        if (o && o.userData.i !== undefined) select(o.userData.i);
+        else if (!open) setOpen(true);
+      }
+    }
+  });
+
+  /* --- dimensiuni --- */
+  const comp = { x: 0, y: 0, z: 10 };
+  function resize(){
+    const w = innerWidth, h = innerHeight;
+    renderer.setSize(w, h, false); camera.aspect = w / h;
+    camera.fov = w < 760 ? 46 : 35; camera.updateProjectionMatrix();
+  }
+  addEventListener('resize', resize); resize();
+
+  /* --- buclă --- */
+  const v = new THREE.Vector3();
+  const heroEl = document.querySelector('.hero'), featEl = document.querySelector('.feature');
+  const tags = $('#tags'), partEls = [...document.querySelectorAll('#parts li')], agentTag = $('#agentTag');
+  let explode = 0, last = performance.now(), t = 0, running = true;
+  document.addEventListener('visibilitychange', () => { running = !document.hidden; if (running){ last = performance.now(); requestAnimationFrame(loop); } });
+  const damp = (a, b, k, dt) => a + (b - a) * (1 - Math.exp(-k * dt));
+  function toScreen(obj, off){
+    v.copy(off); obj.localToWorld(v); v.project(camera);
+    return { x: (v.x * 0.5 + 0.5) * innerWidth, y: (-v.y * 0.5 + 0.5) * innerHeight, z: v.z };
+  }
+  const offRight = new THREE.Vector3(1.38, 0, 0), zero = new THREE.Vector3();
+
+  function loop(now){
+    if (!running) return;
+    const dt = Math.min(0.2, (now - last) / 1000); last = now; t += dt;
+    const narrow = innerWidth < 760;
+    const K = reduce ? 60 : 4.5;
+
+    // compoziție: desktop obiectul în dreapta; mobil sub titlu; desfăcut, mai aproape
+    const tx = open ? (narrow ? 0 : 0.9) : (narrow ? 0 : (selected >= 0 ? 0.2 : 1.9));
+    const ty = open ? (narrow ? 1.9 : -0.05) : (narrow ? -0.75 : -0.1);
+    const tz = open ? (narrow ? 15 : 8.6) : (narrow ? 13.5 : 10.5);
+    comp.x = damp(comp.x, tx, K, dt); comp.y = damp(comp.y, ty, K, dt); comp.z = damp(comp.z, tz, K, dt);
+    world.position.set(comp.x, comp.y, 0);
+    if (!reduce && !coarse){ px.x = damp(px.x, pxT.x, 3, dt); px.y = damp(px.y, pxT.y, 3, dt); }
+    camera.position.set(px.x * 0.9, 1.4 - px.y * 0.6, comp.z);
+    camera.lookAt(world.position.x * 0.35, world.position.y * 0.5, 0);
+
+    // orbita intențiilor
+    if (!dragging){
+      if (Math.abs(vel) > 0.0001){ ringT += vel; vel *= 0.92; }
+      else if (!reduce && selected < 0 && !open) ringT += dt * 0.07;
+    }
+    ringA = damp(ringA, ringT, reduce ? 60 : 5, dt);
+    explode = damp(explode, open ? 1 : 0, reduce ? 60 : 3.2, dt);
+
+    items.forEach((o, i) => {
+      const a = o.a + ringA;
+      const rr = R * (1 + 0.45 * explode);
+      o.holder.position.set(Math.sin(a) * rr, -0.25 + Math.sin(t*0.6 + i) * (reduce ? 0 : 0.06), Math.cos(a) * rr);
+      const target = open ? (narrow ? 0.001 : 0.55) : (i === selected ? 1.3 : 1);
+      o.s = damp(o.s, target, 6, dt); o.holder.scale.setScalar(o.s);
+      if (!reduce) { o.m.rotation.y += dt * o.spin; o.m.rotation.x += dt * o.spin * 0.4; }
+      const p = toScreen(o.holder, zero);
+      const front = Math.cos(a);
+      const op = open ? 0 : (front > 0.15 ? 1 : 0);
+      o.tag.style.opacity = op;
+      o.tag.classList.toggle('on', i === selected);
+      o.tag.style.transform = `translate(${(p.x - o.tag.offsetWidth/2).toFixed(1)}px, ${(p.y + 34 + (narrow?-6:0)).toFixed(1)}px)`;
+    });
+
+    // busola: înclinată spre tine; desfăcută, straturile se separă
+    inv.rotation.x = 0.95 + (0.32 - 0.95) * explode;
+    inv.rotation.y = (reduce ? 0 : Math.sin(t*0.25) * 0.12) * (1 - explode) + (open ? 0 : 0);
+    L.forEach(l => { l.m.position.y = l.y0 + (l.y1 - l.y0) * explode; });
+    needle.rotation.y = (reduce ? 0 : Math.sin(t * 0.9) * 0.35 * (1 - explode) + Math.sin(t*0.5) * 0.08) + explode * 1.15;
+    ring.rotation.y = explode * 0.4;
+
+    // etichetele straturilor (de sus în jos: cupola, acul, inelul, sticla, baza)
+    if (explode > 0.02 && !narrow){
+      const order = [L[4], L[3], L[2], L[1], L[0]];
+      const lead = narrow ? 18 : 36;
+      order.forEach((l, i) => {
+        const p = toScreen(l.m, offRight);
+        const el = partEls[i];
+        el.style.setProperty('--lead', lead + 'px');
+        el.style.setProperty('--x', (p.x + lead) + 'px');
+        el.style.transform = `translate(${(p.x + lead).toFixed(1)}px, ${(p.y - el.offsetHeight/2).toFixed(1)}px)`;
+      });
+    }
+
+    // agenții
+    agents.forEach((a, i) => {
+      const ang = a.ph + (reduce ? 0 : t * a.sp0);
+      const x = Math.sin(ang) * a.r, z = Math.cos(ang) * a.r;
+      a.sp.position.set(x, 0.3 + z * Math.sin(a.inc) * 0.35 + Math.sin(ang*2)*0.2, z * Math.cos(a.inc));
+      a.pulse = Math.max(0, a.pulse - dt * 0.5);
+      a.sp.scale.setScalar(0.3 + a.pulse * 0.55 + (i === activeAgent ? 0.12 : 0));
+    });
+    const aa = agents[activeAgent], ap = toScreen(aa.sp, zero);
+    agentTag.textContent = AGENTS[activeAgent][0];
+    const hr = heroEl.getBoundingClientRect(), fr = featEl.getBoundingClientRect();
+    const overUI = (ap.x < hr.right + 20 && ap.y < hr.bottom + 10) || (ap.x < fr.right + 20 && ap.y > fr.top - 30);
+    agentTag.style.opacity = (open || ap.z > 1 || overUI) ? 0 : 0.95;
+    agentTag.style.transform = `translate(${(ap.x + 12).toFixed(1)}px, ${(ap.y - 22).toFixed(1)}px)`;
+
+    renderer.render(scene, camera);
+    if (!canvas.classList.contains('ready')) canvas.classList.add('ready');
+    requestAnimationFrame(loop);
+  }
+  requestAnimationFrame(loop);
+}
+</script>
+</body>
+</html>
