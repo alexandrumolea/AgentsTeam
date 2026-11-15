@@ -37,6 +37,8 @@ Păstrează sub 150 de rânduri. Comprimă când crește. Fapte, nu povești.
 
 - 2026-11-15: MODEL DE LUCRU (D-029): fiecare flux devine, pe parcurs, proces automat din GitHub. Alex doar revizuiește (PR pentru nivelurile 2–3). Agenți noi unde un proces trebuie să meargă cap-coadă. Șablon: docs/procese/automatizare.md.
 
+- 2026-11-15: Alex se descrie ca „curious mind”. Notat în vocea-alex. Folosirea publică o decide Maria (T-016).
+
 ## Stare proiect
 - Etapa curentă: 1. Onboarding Alex (vezi docs/charter.md). Așteaptă alegeri de la Alex: direcția vizuală A/B, numele Atelier, taxonomia nevoilor.
 - Repo pe GitHub, public: https://github.com/alexandrumolea/AgentsTeam. gh CLI e în ~/.local/bin, logat ca alexandrumolea, iar git folosește credențialele gh. Push după fiecare commit; hook-ul pre-push verifică datele private. Commit-urile folosesc adresa noreply GitHub.

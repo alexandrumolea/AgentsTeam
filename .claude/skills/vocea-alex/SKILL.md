@@ -17,6 +17,7 @@ description: Profilul, personalitatea și vocea publică a lui Alex. Folosește-
 - 2026-11-15: Reguli de folosire (propunere Maria, D-027, de confirmat): citatul intact în cel mult două locuri (intrarea în atelier și pagina Despre). „Poduri” nu apare niciodată fără „monștri”. Monștrii sunt ai necunoscutului, nu ai oamenilor; misiunea nu se folosește pe subiecte politice. Detalii: `team/maria/documente/misiunea-v0.md`.
 
 ## Cine e Alex (pe scurt)
+- 2026-11-15: **Alex e un „curious mind”** (cuvintele lui). Curiozitatea e o trăsătură de bază: explică invențiile, atelierul deschis și dorința de a vedea din alte perspective. Ideea lui: poate site-ul se adresează explicit „curious minds”. Decizia îi aparține Mariei (T-016).
 - Coach și fondator. Implicat în **BEMORE** (inclusiv BEMORE Learning Studio), **Wise Teams**, **LIFT** și **Innersis**. Rolul exact în fiecare: de confirmat.
 - Construiește tool-uri și aplicații pentru optimizare și dezvoltare personală continuă (ex.: instrumente de diagnostic pentru echipe). Lista: de confirmat.
 - Vrea să scrie o carte. Subiectul: de confirmat.
