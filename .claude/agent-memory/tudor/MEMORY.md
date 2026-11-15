@@ -43,6 +43,8 @@ Păstrează sub 150 de rânduri. Comprimă când crește. Fapte, nu povești.
 
 - 2026-11-15: Cartea rămâne în backlog, cu prioritate după site (D-035 corectată). Alex vrea să fie întrebat de ea. PRIORITATEA NR. 1 (D-036): site-ul v1 pe GitHub Pages. Ordinea logică e în docs/prioritati.md, nu vechimea.
 
+- 2026-11-15: Site-ul = centralizator (D-037). Dacă devine comercial, îl mutăm de pe GitHub Pages. Adresa NU va fi sub /AgentsTeam/ (D-038): domeniu propriu sau alexandrumolea.github.io.
+
 ## Stare proiect
 - Etapa curentă: 1. Onboarding Alex (vezi docs/charter.md). Așteaptă alegeri de la Alex: direcția vizuală A/B, numele Atelier, taxonomia nevoilor.
 - Repo pe GitHub, public: https://github.com/alexandrumolea/AgentsTeam. gh CLI e în ~/.local/bin, logat ca alexandrumolea, iar git folosește credențialele gh. Push după fiecare commit; hook-ul pre-push verifică datele private. Commit-urile folosesc adresa noreply GitHub.
