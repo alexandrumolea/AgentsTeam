@@ -10,9 +10,13 @@ Păstrează sub 150 de rânduri. Comprimă când crește. Fapte, nu povești.
 
 ## Preferințe confirmate
 - (încă niciuna; adaugă după feedbackul lui Alex)
+- Cerință Alex (2026-11-15): site-ul trebuie să și inspire și să-i expună pe oameni la invențiile lui. Descoperirea vine în plus, nu ca ocol.
+
+## Proiecte
+- [Descoperire v1](project_descoperire_v1.md) — 4 mecanisme, `content/lansari/`, taxonomie 8 nevoi (ipoteze), ce e amânat
 
 ## Ce a mers / ce nu
-- (gol la 2026-11-15)
+- 2026-11-15: v1 scris fără lista reală a invențiilor. Taxonomia și exemplele sunt ipoteze până răspunde Alex la întrebările 20–21.
 
 ## Deschis
 - Vezi `docs/intrebari-pentru-alex.md`.

@@ -32,3 +32,8 @@
 17. Accepți numele propuse: **Ioana** (designer), **Radu** (arhitect), **Victor** (impresar), **Elena** (coach extern)? Sau alte nume?
 18. Cum vrei rapoartele: în chat, ca document, pe email (draft), în Trello?
 19. Vrei să creăm acum repo-ul privat pe GitHub? (vezi README)
+
+## Inspirație și invenții (adăugat 2026-11-15)
+20. **Lista invențiilor tale:** cursuri, aplicații, tool-uri, experimente. Pentru fiecare: nume, ce face, pentru cine, status (disponibil, în curând, idee), link.
+21. **Ce lansezi în următoarele 3 luni?** Asta umple banda „Nou” de la început.
+22. **Ce te inspiră pe tine** și ce vrei să simtă oamenii după ce trec pe la tine? Răspunde în cuvintele tale, fără să cauți formularea perfectă.

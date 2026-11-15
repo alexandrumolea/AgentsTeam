@@ -9,10 +9,13 @@ Păstrează sub 150 de rânduri. Comprimă când crește. Fapte, nu povești.
 - Detalii de profil și voce: skill-ul `vocea-alex`.
 
 ## Preferințe confirmate
-- (încă niciuna; adaugă după feedbackul lui Alex)
+- [Reguli de conținut](feedback_reguli_continut.md) — fără fapte inventate, exemple fictive marcate, surse verificate
 
 ## Ce a mers / ce nu
-- (gol la 2026-11-15)
+- 2026-11-15: research scurt cu surse citite a fost suficient; sursele vendor le marchez ca atare.
+
+## Proiecte
+- [Inspirație și invenții](project_inspiratie.md) — obiectivul 2; propunere v0: „Atelier”, constructorul cu unealta, 3 piloni
 
 ## Deschis
 - Vezi `docs/intrebari-pentru-alex.md`.

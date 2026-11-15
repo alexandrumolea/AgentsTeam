@@ -35,8 +35,18 @@ description: Profilul, personalitatea și vocea publică a lui Alex. Folosește-
 - Site personal: Liquid Glass în stil Apple, calm, premium, multă respirație.
 - Business-urile au identități proprii (vezi skill-urile `innersis-ive` și `bemore-ls-ive`). Site-ul personal le prezintă, nu le copiază.
 
+## Intenția de a inspira (de confirmat)
+> Ipoteză propusă de Maria pe 2026-11-15. Detalii: `docs/branding/inspiratie-v0.md`. Nu o trata ca fapt până nu confirmă Alex.
+- Alex inspiră ca **constructorul care îți pune unealta în mână**: intri prin întrebarea potrivită, pleci cu ceva ce poți încerca azi.
+- Inspirație = o posibilitate nouă + un pas concret. Fără pasul concret, e motivațional gol.
+- Testul oricărui text: „Și ce fac cu asta azi?”
+- Problema vizitatorului întâi, numele invenției după. „Tu” mai des decât „eu”.
+- De evitat în textele de inspirație: „revoluționar”, „unic”, „game-changer”, „transformă-ți viața”, urgență falsă, dovezi sociale inventate.
+- Nume de lucru propuse: vitrina „Atelier”, banda „Nou în atelier” (de confirmat).
+
 ## Exemple de texte aprobate de Alex
 (Adaugă aici fragmente reale aprobate. Sunt cea mai bună sursă pentru vocea lui.)
 
 ## Istoric
 - 2026-11-15: schelet creat la kickoff.
+- 2026-11-15: adăugată secțiunea „Intenția de a inspira” (de confirmat), din cerința lui Alex despre inspirație și descoperire.
