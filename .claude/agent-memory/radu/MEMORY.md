@@ -13,11 +13,17 @@ Păstrează sub 150 de rânduri. Comprimă când crește. Fapte, nu povești.
 ## Preferințe confirmate
 - (încă niciuna; adaugă după feedbackul lui Alex)
 - Cerință Alex (2026-11-15): site-ul trebuie să și inspire și să-i expună pe oameni la invențiile lui. Descoperirea vine în plus, nu ca ocol.
+- 2026-11-15: Alex a aprobat direcția Spațiu (D-023) și vrea „acces în atelierul meu de inovație, work & living”. Site-ul = oglinda business-ului (D-024).
+- 2026-11-15: lui Alex i-a plăcut fluxul de taskuri dintre agenți din prototipul Sistem viu. Vrea muncă reală la vedere, nu simulată.
+- 2026-11-15: misiunea lui Alex (D-026): „Necunoscutul creează monștri. Educația creează poduri.” Orice cameră/business răspunde la „cum construiește un pod?”.
 
 ## Proiecte
 - [Descoperire v1](project_descoperire_v1.md) — 4 mecanisme, `content/lansari/`, taxonomie 8 nevoi (ipoteze), ce e amânat
+- [Arhitectura v2](project_arhitectura_v2.md) — 2026-11-15: atelierul, 2 familii, Live din taskuri, Învață, Ce m-a crescut, misiunea (D-028)
 
 ## Ce a mers / ce nu
+- 2026-11-15: cerințele lui Alex vin în rafale în aceeași sesiune. Scrie scheletul devreme, apoi integrează; verifică ID-urile libere chiar înainte de scriere (Maria a luat D-025, D-027).
+- 2026-11-15: împărțirea cu Maria merge: ea numele și textele, eu structura și adresele. Preiau formatele ei (Knowledge, povești) ca schelet, nu le dublez.
 - 2026-11-15: v1 scris fără lista reală a invențiilor. Taxonomia și exemplele sunt ipoteze până răspunde Alex la întrebările 20–21.
 
 ## Deschis

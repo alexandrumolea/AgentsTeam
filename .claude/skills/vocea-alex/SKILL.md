@@ -14,6 +14,7 @@ description: Profilul, personalitatea și vocea publică a lui Alex. Folosește-
 - 2026-11-15: E sursa din care pornește tot: coaching, business-uri, invenții, Învață, poveștile. Orice text public trebuie să poată fi legat de ea.
 - 2026-11-15: Cuvintele lui se citează exact. Formulările scurte pentru site le propune Maria (taskul T-010), iar Alex le aprobă.
 - 2026-11-15: Imagini-cheie din cuvintele lui: **poduri** (educația), **monștri** (necunoscutul), **perspective** (ce nu putem vedea), **gap-uri** între oameni.
+- 2026-11-15: Reguli de folosire (propunere Maria, D-027, de confirmat): citatul intact în cel mult două locuri (intrarea în atelier și pagina Despre). „Poduri” nu apare niciodată fără „monștri”. Monștrii sunt ai necunoscutului, nu ai oamenilor; misiunea nu se folosește pe subiecte politice. Detalii: `team/maria/documente/misiunea-v0.md`.
 
 ## Cine e Alex (pe scurt)
 - Coach și fondator. Implicat în **BEMORE** (inclusiv BEMORE Learning Studio), **Wise Teams**, **LIFT** și **Innersis**. Rolul exact în fiecare: de confirmat.
@@ -73,7 +74,7 @@ description: Profilul, personalitatea și vocea publică a lui Alex. Folosește-
   > Sunt Alex: coach, fondator și inventator.
   > Fiecare obiect de aici e un drum. Trage de spațiu sau alege mai jos. *(propoziția din direcția Spațiu)*
 
-  De ce merge: verb la persoana întâi, o promisiune concretă („unelte”), cititorul ca subiect („oameni care vor să crească”), trei roluri fără adjective, o instrucțiune clară. Completare propusă de Maria, **neaprobată**: „Intră în atelierul meu: ce inventez, cum lucrez, ce trăiesc.”
+  De ce merge: verb la persoana întâi, o promisiune concretă („unelte”), cititorul ca subiect („oameni care vor să crească”), trei roluri fără adjective, o instrucțiune clară. Completare propusă de Maria, **neaprobată**: „Intră în atelierul meu: ce inventez, cum lucrez, ce trăiesc.” 2026-11-15: completarea e retrasă; în locul ei, Maria propune ca a treia propoziție misiunea lui Alex, „Necunoscutul creează monștri. Educația creează poduri.” (D-027, de confirmat).
 - 2026-11-15: **Metafora atelierului, în cuvintele lui Alex:** „Mi-a plăcut și ideea că oamenii ar avea acces în atelierul meu de inovație, work & living.” Tot site-ul e atelierul lui: inovație (Invenții), muncă (Live), viață (poveștile).
 
 ## Istoric
@@ -82,3 +83,4 @@ description: Profilul, personalitatea și vocea publică a lui Alex. Folosește-
 - 2026-11-15: T-006: secțiunea de estetică actualizată cu direcția Spațiu (D-023) și regula „inovație și viitor, nu banal”. Vechea descriere păstrată ca istoric.
 - 2026-11-15: adăugată secțiunea „Knowledge, Live și poveștile” (de confirmat), din ideile I-010, I-011, I-012.
 - 2026-11-15: adăugate primele exemple aprobate de Alex: introducerea din prototipuri și metafora „atelierul meu de inovație, work & living”.
+- 2026-11-15: T-010: reguli de folosire a misiunii (de confirmat); completarea hero retrasă în favoarea misiunii.

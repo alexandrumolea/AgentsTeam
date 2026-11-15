@@ -20,7 +20,7 @@ Păstrează sub 150 de rânduri. Comprimă când crește. Fapte, nu povești.
 
 ## Proiecte
 - [Inspirație și invenții](project_inspiratie.md) — obiectivul 2; constructorul cu unealta, 3 piloni; Atelier = tot site-ul
-- 2026-11-15: [Knowledge, Live, povești](project_knowledge_live_povesti.md) — Invenții/Live/Ce m-a crescut/Învață, D-025, I-010–I-012
+- 2026-11-15: [Knowledge, Live, povești](project_knowledge_live_povesti.md) — Invenții/Live/Ce m-a crescut/Învață, D-025, I-010–I-012; misiunea D-026/D-027
 
 ## Deschis
 - Vezi `docs/intrebari-pentru-alex.md`.

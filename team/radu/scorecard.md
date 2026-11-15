@@ -7,6 +7,7 @@ Utilitate: 1 = inutil, 3 = ok, 5 = exact ce trebuia. Feedback Alex: completat de
 |---|---|---|---|---|---|
 | 2026-11-15 | Onboarding în echipă | Profil, memorie și reguli create | – | – | – |
 | 2026-11-15 | Arhitectura v1 (descoperire, model lansări, taxonomie nevoi) | `team/radu/documente/arhitectura-v1.md` livrat, de aprobat de Alex | 4 | – | Aș fi avut nevoie de lista invențiilor înainte: taxonomia și exemplul ar fi fost reale, nu ipoteze |
+| 2026-11-15 | Arhitectura v2 (atelierul: categorii, oglinda business-ului, Knowledge, Live, Povești, misiunea; T-008) | `team/radu/documente/arhitectura-v2.md` + D-028, de confirmat de Alex; I-010–I-012 actualizate; T-011, T-012 | 4 | – | Patru adăugiri au venit în timpul lucrului; aș fi scris întâi un schelet de o pagină și aș fi așteptat 10 minute numele Mariei, ca să nu rescriu secțiunea 1 de două ori |
 
 ## Review-uri lunare
 | Lună | Verdict (păstrăm / ajustăm / renunțăm) | Note |

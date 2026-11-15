@@ -136,6 +136,8 @@ O singură completare posibilă, de confirmat (o propoziție între a doua și a
 > *Intră în atelierul meu: ce inventez, cum lucrez, ce trăiesc.*
 
 Dacă Alex vrea introducerea exact cum e, completarea se poate folosi ca subtitlu pentru Live sau pentru pagina Despre.
+
+> **2026-11-15, actualizare:** completarea de mai sus e retrasă. În locul ei propun misiunea lui Alex, „Necunoscutul creează monștri. Educația creează poduri.” Vezi `misiunea-v0.md`, D-027.
 Placeholder-ele `[ ]` le completează conținutul real. Nu inventăm cifre, oameni sau rezultate.
 
 ### Live

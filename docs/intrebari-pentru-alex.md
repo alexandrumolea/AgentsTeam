@@ -43,3 +43,6 @@
 24. Unde pierzi cel mai mult timp acum în conducerea lor?
 25. Ce vrei să știi în fiecare luni dimineață, dintr-o privire?
 26. Ce nu delegi niciodată unei echipe de agenți?
+
+## Arhitectura v2 (adăugat 2026-11-15, pentru Radu)
+27. Cele 11 întrebări de la finalul `team/radu/documente/arhitectura-v2.md` (decizia D-028). Cele mai importante: cele 7 obiecte în două familii (drumuri directe și camerele atelierului), ce arată Live din fluxul de taskuri și cine sunt primii colaboratori umani care ar apărea (doar rolurile, nu numele).
