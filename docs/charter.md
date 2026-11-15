@@ -2,6 +2,11 @@
 
 > Owner: Tudor. Aprobat de Alex: **în așteptare**.
 
+## Misiunea lui Alex (2026-11-15)
+> „Educația cu scopul de a face bine. Îi face bine fiecărei persoane. Face bine și între oameni. Umple gap-urile dintre ei. Am descoperit că ceea ce ne depărtează este că nu putem vedea lucrurile din perspective pe care nu le înțelegem. Necunoscutul creează monștri. Educația creează poduri.”
+
+Echipa există ca să servească misiunea asta. Business-ul o duce la oameni, iar site-ul o face vizibilă.
+
 ## De ce
 > **2026-11-15, Alex:** „Scopul nu este doar site-ul. Scopul este conducerea business-ului în ansamblu. Site-ul doar trebuie să reflecte foarte clar și constant ce facem.”
 

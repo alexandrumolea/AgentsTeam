@@ -12,12 +12,15 @@ Păstrează sub 150 de rânduri. Comprimă când crește. Fapte, nu povești.
 
 ## Preferințe confirmate
 - [Reguli de conținut](feedback_reguli_continut.md) — fără fapte inventate, exemple fictive marcate, surse verificate
+- 2026-11-15: [Inovație și viitor](feedback_inovatie_viitor.md) — „calm, premium” = banal; Spațiu aprobat; hero-ul din prototip aprobat
 
 ## Ce a mers / ce nu
 - 2026-11-15: research scurt cu surse citite a fost suficient; sursele vendor le marchez ca atare.
+- 2026-11-15: Tudor trimite semnale noi de la Alex în timpul sarcinii; le integrez în același document, nu fac versiuni noi.
 
 ## Proiecte
-- [Inspirație și invenții](project_inspiratie.md) — obiectivul 2; propunere v0: „Atelier”, constructorul cu unealta, 3 piloni
+- [Inspirație și invenții](project_inspiratie.md) — obiectivul 2; constructorul cu unealta, 3 piloni; Atelier = tot site-ul
+- 2026-11-15: [Knowledge, Live, povești](project_knowledge_live_povesti.md) — Invenții/Live/Ce m-a crescut/Învață, D-025, I-010–I-012
 
 ## Deschis
 - Vezi `docs/intrebari-pentru-alex.md`.

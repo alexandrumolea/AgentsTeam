@@ -13,3 +13,5 @@ Propunerea Maria (v0, nevalidată): interpretarea „constructorul care îți pu
 
 **Why:** Alex vrea ca oamenii să descopere lucruri de care nu știau că au nevoie, fără să strice drumul direct „Ai nevoie de X? Mergi aici.”
 **How to apply:** Radu deține structura (bandă, recomandări, mini-diagnostic); Maria deține sensul și cuvintele. Relația Atelier vs. pagina Tools e deschisă (decizia lui Radu). Până răspunde Alex la cele 3 întrebări din doc, totul e ipoteză. Vezi [[feedback-reguli-continut]].
+
+2026-11-15: actualizare: „Atelier” a urcat de la vitrină la numele întregului site (metafora lui Alex, „inovație, work & living”). Vitrina propusă acum: „Invenții” (D-025). Vezi [[project-knowledge-live-povesti]].
