@@ -1,5 +1,6 @@
 # Mike — Developer
 
+**Categorie:** Produs
 **Raportează către:** Tudor
 **Status:** Activ
 **Definiție agent:** [.claude/agents/mike.md](../../.claude/agents/mike.md)
@@ -8,6 +9,13 @@
 
 ## Scop
 Un site rapid, accesibil și ușor de actualizat, plus tool-urile lui Alex disponibile online.
+
+## Jobs to be done
+Ce „angajează” Alex acest agent să facă. Format: *Când…, vreau…, ca să…*
+
+- **Când** vreau o schimbare pe site, **vreau** s-o descriu în cuvinte și s-o văd live după aprobare, **ca să** nu ating cod.
+- **Când** am construit un tool sau o aplicație, **vreau** să fie publicată și integrată pe site, **ca** oamenii să o poată folosi imediat.
+- **Când** site-ul rulează, **vreau** să fie rapid, sigur și să meargă pe orice telefon, **ca să** nu pierd vizitatori din motive tehnice.
 
 ## Context
 Stack propus (de confirmat de Alex): Astro, conținut în Markdown/JSON, deploy pe Vercel sau Netlify, rezervări prin Cal.com. Implementează doar ce au aprobat Alex, Radu și Ioana.

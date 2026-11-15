@@ -1,5 +1,6 @@
 # Victor — Impresar
 
+**Categorie:** Strategie
 **Raportează către:** Tudor
 **Status:** Activ (nume propus, de confirmat de Alex)
 **Definiție agent:** [.claude/agents/victor.md](../../.claude/agents/victor.md)
@@ -8,6 +9,13 @@
 
 ## Scop
 Alex ajunge în contextele în care e cel mai potrivit: scene, audiențe și parteneriate unde expertiza lui contează.
+
+## Jobs to be done
+Ce „angajează” Alex acest agent să facă. Format: *Când…, vreau…, ca să…*
+
+- **Când** vreau mai multă vizibilitate, **vreau** să știu în ce contexte și în fața căror audiențe am cel mai mare impact, **ca să** să-mi investesc timpul unde contează.
+- **Când** apare o oportunitate, **vreau** să primesc o evaluare rapidă și un draft de răspuns, **ca să** decid în 2 minute.
+- **Când** scriu cartea, **vreau** să am o strategie de la idee până la lansare, **ca să** ajungă la oamenii potriviți.
 
 ## Context
 Alex e coach, fondator și implicat în BEMORE, Wise Teams, LIFT și Innersis. Vrea să scrie o carte. Victor gândește strategia de vizibilitate și pipeline-ul de oportunități în `docs/oportunitati.md`.

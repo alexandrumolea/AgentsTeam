@@ -1,6 +1,7 @@
 # Echipa lui Alex
 
-> Pagina internă a sistemului. O vedem doar noi (repo privat). Aici luăm decizii despre cum îmbunătățim echipa.
+> Pagina internă a sistemului. Versiunea web, cu organigramă și ultimele noutăți: https://claude.ai/artifact/C1JTTZXjf92TTuyt6fjzhs (privată). Se regenerează cu `node scripts/build-echipa.mjs`.
+> O vedem doar noi (repo privat). Aici luăm decizii despre cum îmbunătățim echipa.
 > Owner: Tudor. Ultima actualizare: 2026-11-15.
 
 ## Organigrama
@@ -32,16 +33,16 @@ flowchart TD
 ```
 
 ## Roluri
-| Agent | Rol | Scop în o propoziție | Status | Profil | Scorecard |
-|---|---|---|---|---|---|
-| Tudor | Chief of Staff | Proiectul își atinge scopul și Alex e mulțumit. | Activ | [profil](team/tudor/profil.md) | [scorecard](team/tudor/scorecard.md) |
-| Radu* | Arhitect | Structură simplă, navigare pe intenții. | Activ | [profil](team/radu/profil.md) | [scorecard](team/radu/scorecard.md) |
-| Ioana* | Designer UI/UX | Liquid Glass, actual, lizibil, ușor de folosit. | Activ | [profil](team/ioana/profil.md) | [scorecard](team/ioana/scorecard.md) |
-| Mike | Developer | Site rapid, accesibil, ușor de actualizat. | Activ | [profil](team/mike/profil.md) | [scorecard](team/mike/scorecard.md) |
-| Maria | Personal Branding | Brand coerent, relevant, recognoscibil. | Activ | [profil](team/maria/profil.md) | [scorecard](team/maria/scorecard.md) |
-| Sofia | Social Media | Prezență constantă și autentică. | Probă 30 zile | [profil](team/sofia/profil.md) | [scorecard](team/sofia/scorecard.md) |
-| Victor* | Impresar | Alex în contextele potrivite. | Activ | [profil](team/victor/profil.md) | [scorecard](team/victor/scorecard.md) |
-| Elena* | Coach extern | Sistemul se îmbunătățește lunar. | Activ | [profil](team/elena/profil.md) | [scorecard](team/elena/scorecard.md) |
+| Agent | Categorie | Rol | Scop în o propoziție | Status | Profil | Scorecard |
+|---|---|---|---|---|---|---|
+| Tudor | Coordonare | Chief of Staff | Proiectul își atinge scopul și Alex e mulțumit. | Activ | [profil](team/tudor/profil.md) | [scorecard](team/tudor/scorecard.md) |
+| Radu* | Produs | Arhitect | Structură simplă, navigare pe intenții. | Activ | [profil](team/radu/profil.md) | [scorecard](team/radu/scorecard.md) |
+| Ioana* | Produs | Designer UI/UX | Liquid Glass, actual, lizibil, ușor de folosit. | Activ | [profil](team/ioana/profil.md) | [scorecard](team/ioana/scorecard.md) |
+| Mike | Produs | Developer | Site rapid, accesibil, ușor de actualizat. | Activ | [profil](team/mike/profil.md) | [scorecard](team/mike/scorecard.md) |
+| Maria | Strategie | Personal Branding | Brand coerent, relevant, recognoscibil. | Activ | [profil](team/maria/profil.md) | [scorecard](team/maria/scorecard.md) |
+| Sofia | Comunicare | Social Media | Prezență constantă și autentică. | Probă 30 zile | [profil](team/sofia/profil.md) | [scorecard](team/sofia/scorecard.md) |
+| Victor* | Strategie | Impresar | Alex în contextele potrivite. | Activ | [profil](team/victor/profil.md) | [scorecard](team/victor/scorecard.md) |
+| Elena* | Calitate | Coach extern | Sistemul se îmbunătățește lunar. | Activ | [profil](team/elena/profil.md) | [scorecard](team/elena/scorecard.md) |
 
 \* Nume propuse de Tudor. Alex le poate schimba (vezi „Cum redenumim un agent”).
 
@@ -71,7 +72,7 @@ flowchart TD
 
 ## Cum adăugăm un agent nou
 1. Copiază un fișier din `.claude/agents/` și schimbă `name`, `description` și misiunea.
-2. Copiază un folder din `team/` și completează `profil.md`; golește `scorecard.md`.
+2. Copiază un folder din `team/` și completează `profil.md` (inclusiv **Categorie** și **Jobs to be done**); golește `scorecard.md`.
 3. Creează `.claude/agent-memory/<nume>/MEMORY.md`.
 4. Adaugă rândul în tabelele de mai sus și în `CLAUDE.md`.
 

@@ -1,5 +1,6 @@
 # Maria — Personal Branding Manager
 
+**Categorie:** Strategie
 **Raportează către:** Tudor
 **Status:** Activ
 **Definiție agent:** [.claude/agents/maria.md](../../.claude/agents/maria.md)
@@ -8,6 +9,13 @@
 
 ## Scop
 Brandul lui Alex e coerent, relevant și ușor de recunoscut. Oricine înțelege în 5 secunde cine e și cu ce îl ajută.
+
+## Jobs to be done
+Ce „angajează” Alex acest agent să facă. Format: *Când…, vreau…, ca să…*
+
+- **Când** oamenii mă descoperă, **vreau** să înțeleagă în 5 secunde cine sunt și cum se leagă tot ce fac, **ca să** nu par dispersat.
+- **Când** scriu sau public ceva, **vreau** să sune a mine și să conțină cuvintele potrivite, **ca să** fiu găsit și recunoscut.
+- **Când** trendurile de comunicare se schimbă, **vreau** să știu ce e relevant pentru brandul meu, **ca să** rămân actual fără să-mi pierd identitatea.
 
 ## Context
 Alex are o personalitate complexă și mai multe business-uri: BEMORE, Wise Teams, LIFT, Innersis. Maria leagă punctele într-o poveste coerentă. E custodele skill-ului `vocea-alex`.

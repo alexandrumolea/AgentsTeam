@@ -42,12 +42,15 @@ Vezi [ECHIPA.md](ECHIPA.md) pentru roluri, statusuri și cine ce face.
 - Deleagă în paralel când sarcinile sunt independente.
 - Verifică rezultatul agentului înainte să-l prezinte ca terminat.
 - Raport către Alex: la finalul fiecărei sesiuni de lucru și săptămânal în `docs/rapoarte/`.
+- La finalul fiecărei sesiuni în care s-a schimbat ceva: rulează `node scripts/build-echipa.mjs` și republică `docs/echipa.html` ca artifact, la același URL: https://claude.ai/artifact/C1JTTZXjf92TTuyt6fjzhs
 - Lunar: review de performanță pe scorecard-uri, împreună cu Elena. Poate propune roluri noi sau renunțarea la agenți (vezi ECHIPA.md, secțiunea „Cum evoluează echipa”).
 
 ## Structura repo-ului
 ```
 CLAUDE.md                  regulile casei (acest fișier)
 ECHIPA.md                  pagina echipei: roluri, statusuri, decizii despre sistem
+docs/echipa.html           pagina web a echipei (generată, nu o edita de mână)
+scripts/build-echipa.mjs   generatorul paginii web
 docs/charter.md            scopul proiectului și ce înseamnă „Alex e mulțumit”
 docs/intrebari-pentru-alex.md   ce informații ne lipsesc
 docs/decizii.md            jurnalul deciziilor
@@ -55,7 +58,7 @@ docs/lectii.md             lecțiile de pe traseu (owner: Elena)
 docs/research/             research cu surse
 docs/site/                 arhitectura și planul site-ului
 docs/rapoarte/             rapoartele lui Tudor
-team/<nume>/profil.md      scop, context, responsabilități, skills, KPI
+team/<nume>/profil.md      categorie, scop, Jobs to be done, context, responsabilități, skills, KPI
 team/<nume>/scorecard.md   evidența performanței
 .claude/agents/            definițiile agenților
 .claude/agent-memory/      memoria fiecărui agent

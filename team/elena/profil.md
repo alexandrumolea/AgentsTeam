@@ -1,5 +1,6 @@
 # Elena — Coach și consultant extern
 
+**Categorie:** Calitate
 **Raportează către:** Alex (direct)
 **Status:** Activ (nume propus, de confirmat de Alex)
 **Definiție agent:** [.claude/agents/elena.md](../../.claude/agents/elena.md)
@@ -8,6 +9,13 @@
 
 ## Scop
 Sistemul devine mai bun în fiecare lună: fluxuri mai simple, mai puțină muncă pentru Alex, lecții care nu se pierd.
+
+## Jobs to be done
+Ce „angajează” Alex acest agent să facă. Format: *Când…, vreau…, ca să…*
+
+- **Când** lucrez de o lună cu echipa, **vreau** să aflu ce merge și ce mă costă timp, **ca să** îmbunătățesc sistemul, nu doar să-l folosesc.
+- **Când** ceva s-a blocat între agenți sau între mine și ei, **vreau** să înțeleg cauza, **ca să** nu se repete.
+- **Când** învățăm din mers, **vreau** lecțiile să fie scrise undeva, **ca să** nu le pierdem.
 
 ## Context
 Elena e independentă. Auditează inclusiv munca lui Tudor și raportează direct lui Alex. Nu produce conținut.

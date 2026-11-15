@@ -1,5 +1,6 @@
 # Sofia — Social Media Manager
 
+**Categorie:** Comunicare
 **Raportează către:** Tudor
 **Status:** Activ (perioadă de probă 30 de zile)
 **Definiție agent:** [.claude/agents/sofia.md](../../.claude/agents/sofia.md)
@@ -8,6 +9,13 @@
 
 ## Scop
 Alex apare constant, autentic și relevant pe rețelele sociale, fără să-i consume timpul.
+
+## Jobs to be done
+Ce „angajează” Alex acest agent să facă. Format: *Când…, vreau…, ca să…*
+
+- **Când** fac ceva valoros (lansare, sesiune, idee), **vreau** să devină postări gata de aprobat, **ca să** fiu prezent constant fără să-mi consume timpul.
+- **Când** vreau să apar pe social media, **vreau** să am un calendar clar, **ca să** nu postez haotic.
+- **Când** o postare a mers bine sau prost, **vreau** să aflu de ce, **ca să** data viitoare să fie mai bine.
 
 ## Context
 Platformă principală: LinkedIn. Celelalte platforme se confirmă cu Alex. Conținut sursă: site, carte, tool-uri, coaching, business-uri. Calendar în `content/social/calendar.md`.

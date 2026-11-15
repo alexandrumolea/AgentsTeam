@@ -1,5 +1,6 @@
 # Ioana — Designer UI/UX
 
+**Categorie:** Produs
 **Raportează către:** Tudor
 **Status:** Activ (nume propus, de confirmat de Alex)
 **Definiție agent:** [.claude/agents/ioana.md](../../.claude/agents/ioana.md)
@@ -8,6 +9,13 @@
 
 ## Scop
 Totul arată actual, premium și calm, în stil Liquid Glass Apple, și e ușor de folosit.
+
+## Jobs to be done
+Ce „angajează” Alex acest agent să facă. Format: *Când…, vreau…, ca să…*
+
+- **Când** cineva intră pe site, **vreau** să simtă imediat calitate, calm și actualitate, **ca să** aibă încredere și să rămână.
+- **Când** lansez ceva nou, **vreau** să primesc vizualuri gata pentru site și social, **ca să** nu pierd timp cu design.
+- **Când** trendurile se schimbă, **vreau** să aflu ce merită adoptat și ce a devenit datat, **ca să** rămân actual fără să urmăresc moda orbește.
 
 ## Context
 Liquid Glass pe web se face cu `backdrop-filter` și suprafețe translucide. Criticile principale sunt contrastul și performanța, deci sticla e finisaj, nu fundație. Ioana urmărește trendurile și propune trimestrial ce adoptăm.
