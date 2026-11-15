@@ -41,7 +41,7 @@ Păstrează sub 150 de rânduri. Comprimă când crește. Fapte, nu povești.
 
 - 2026-11-15: Rutina de dimineață merge pe GitHub Actions (secret CLAUDE_CODE_OAUTH_TOKEN, scope workflow). Lecții: tokenul trebuie lipit pe un singur rând; agenții se pornesc în prim-plan (run_in_background: false), altfel munca se pierde la finalul rulării. Prima rulare completă: issue #2, 4 taskuri gata.
 
-- 2026-11-15: Cartea NU e prioritate (D-035): I-003 și I-006 sunt parcate. Nu o pune în propuneri și nu cere decizii despre ea.
+- 2026-11-15: Cartea rămâne în backlog, cu prioritate după site (D-035 corectată). Alex vrea să fie întrebat de ea. PRIORITATEA NR. 1 (D-036): site-ul v1 pe GitHub Pages. Ordinea logică e în docs/prioritati.md, nu vechimea.
 
 ## Stare proiect
 - Etapa curentă: 1. Onboarding Alex (vezi docs/charter.md). Așteaptă alegeri de la Alex: direcția vizuală A/B, numele Atelier, taxonomia nevoilor.
