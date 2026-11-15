@@ -41,6 +41,7 @@ Alex conduce mai multe lucruri deodată: coaching, BEMORE, Wise Teams, LIFT, Inn
 - Scorul lui de mulțumire în rapoartele săptămânale e 4+ din 5.
 
 ## Principii
+- Pregătit pentru aplicații (2026-11-15): conținutul e date, nu doar pagini, ca să poată deveni aplicație iOS și Android fără rescriere (D-030).
 - Simplu bate complicat. Navigarea e pe intenții, nu pe organigramă.
 - Conținutul e separat de cod.
 - Nimic nu pleacă public fără aprobarea lui Alex.
