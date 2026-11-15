@@ -153,7 +153,7 @@ footer{color:var(--muted);font-size:13px}
       <div class="stat"><b>8</b>agenți</div>
       <div class="stat"><b>8</b>idei active</div>
       <div class="stat"><b>2</b>rapoarte</div>
-      <a class="stat" href="#decizii"><b>17</b>decizii de luat</a>
+      <a class="stat" href="#decizii"><b>16</b>decizii de luat</a>
       <div class="stat"><b>22</b>întrebări pentru tine</div>
     </div>
   </header>
@@ -184,7 +184,7 @@ footer{color:var(--muted);font-size:13px}
   <span class="dot"></span><span class="nm">Ioana</span><span class="rl">Designer UI/UX</span>
   <span class="meta">activ 2026-11-15</span></a><a class="node " href="#mike" data-slug="mike" style="--c:#3b6fd6">
   <span class="dot"></span><span class="nm">Mike</span><span class="rl">Developer</span>
-  <span class="meta">modificat local</span></a></div><div class="grp"><div class="grp-h">Comunicare</div><a class="node " href="#sofia" data-slug="sofia" style="--c:#d4508a">
+  <span class="meta">activ 2026-11-15</span></a></div><div class="grp"><div class="grp-h">Comunicare</div><a class="node " href="#sofia" data-slug="sofia" style="--c:#d4508a">
   <span class="dot"></span><span class="nm">Sofia</span><span class="rl">Social Media Manager</span>
   <span class="meta">activ 2026-11-15</span></a></div>
   </div>
@@ -195,8 +195,8 @@ footer{color:var(--muted);font-size:13px}
     <div class="dec-top">
       <div class="label" id="dec-h">Decizii de luat · aprobi, respingi sau lași o notiță</div>
       <div class="filters" role="group" aria-label="Filtru decizii">
-        <button type="button" class="flt on" data-f="toate">Toate <b>17</b></button>
-        <button type="button" class="flt" data-f="fara">Fără răspuns <b id="cnt-fara">17</b></button>
+        <button type="button" class="flt on" data-f="toate">Toate <b>16</b></button>
+        <button type="button" class="flt" data-f="fara">Fără răspuns <b id="cnt-fara">16</b></button>
         <button type="button" class="flt" data-f="raspuns">Răspunse <b id="cnt-raspuns">0</b></button>
       </div>
     </div>
@@ -296,22 +296,6 @@ footer{color:var(--muted);font-size:13px}
         </div>
         <label class="nl" for="note-D-021">Notițele tale</label>
         <textarea id="note-D-021" rows="2" placeholder="Opțional: ce schimbăm, ce nu-ți place, întrebări pentru echipă"></textarea>
-        <div class="row"><button type="button" class="save">Salvează notița</button><span class="msg" aria-live="polite"></span></div>
-      </div>
-    </article><article class="dec" id="dec-D-022" data-id="D-022" style="--c:#1f8a83">
-      <header><code>D-022</code><span class="chip warn">de luat</span><span class="by">propune <a href="#tudor" class="who">Tudor</a></span></header>
-      <h3>Commit-urile folosesc adresa anonimă de la GitHub în loc de Gmail, înainte de primul push</h3>
-      <p class="why">Repo-ul e public, iar adresa din commit-uri devine vizibilă</p>
-      <a class="doclink" href="https://github.com/alexandrumolea/AgentsTeam/blob/main/docs/procese/ce-iese-public.md" target="_blank" rel="noopener">Deschide documentul pe GitHub ↗</a>
-      <div class="verdict" hidden></div>
-      <div class="actions" hidden>
-        <div class="btns">
-          <button type="button" class="vb ok" data-v="aprobat">Aprob</button>
-          <button type="button" class="vb no" data-v="respins">Resping</button>
-          <button type="button" class="vb talk" data-v="discutam">Discutăm</button>
-        </div>
-        <label class="nl" for="note-D-022">Notițele tale</label>
-        <textarea id="note-D-022" rows="2" placeholder="Opțional: ce schimbăm, ce nu-ți place, întrebări pentru echipă"></textarea>
         <div class="row"><button type="button" class="save">Salvează notița</button><span class="msg" aria-live="polite"></span></div>
       </div>
     </article><article class="dec" id="dec-D-001" data-id="D-001" style="--c:#1f8a83">
@@ -489,9 +473,9 @@ footer{color:var(--muted);font-size:13px}
     <div class="label" id="news-h">Ce e nou</div>
     <div class="news">
       <section class="card "><h3>Ultimele rapoarte</h3><ul class="log"><li><time>2026-11-15</time><div><strong>Kickoff</strong><span>Echipa de 8 agenți e creată, cu memorie, context, scop, skills și scorecard pentru fiecare. Arhitectura v0 a site-ului e propusă. Urmează onboarding-ul tău.</span></div></li><li><time>2026-11-15</time><div><strong>Inspirație și descoperire</strong><span>Avem o propunere coerentă pe trei straturi: structură (Radu), ton și nume (Maria), design (Ioana), plus un mock pe care îl poți deschide. Nimic nu e construit sau publicat. Totul așteaptă alegerile tale.</span></div></li></ul></section>
-      <section class="card "><h3>Decizii luate</h3><ul class="log"><li><time>D-014</time><div><span>Fiecare agent își ține documentele în <code>team/&lt;nume&gt;/documente/</code>, iar rapoartele lui Tudor în <code>team/tudor/rapoarte/</code></span><span class="chip ok">activ</span></div></li><li><time>D-013</time><div><span>Structură în stil Mochary: arii de responsabilitate cu DRI și backup (<code>docs/aor.md</code>), procese scrise (<code>docs/procese/</code>), lista de idei cu DRI (<code>docs/idei.md</code>)</span><span class="chip ok">activ</span></div></li><li><time>D-012</time><div><span>Repo-ul AgentsTeam rămâne <strong>public</strong>. Totul e la vedere, cu excepțiile din <code>docs/procese/ce-iese-public.md</code></span><span class="chip ok">activ</span></div></li><li><time>D-003</time><div><span>Emailuri, evenimente și <code>git push</code> cer mereu confirmare</span><span class="chip ok">activ</span></div></li><li><time>D-002</time><div><span>Memoria agenților în <code>.claude/agent-memory/</code> (în git)</span><span class="chip ok">activ</span></div></li></ul></section>
+      <section class="card "><h3>Decizii luate</h3><ul class="log"><li><time>D-022</time><div><span>Commit-urile folosesc adresa anonimă de la GitHub în loc de Gmail, înainte de primul push</span><span class="chip ok">aprobată de Alex (2026-11-15)</span></div></li><li><time>D-014</time><div><span>Fiecare agent își ține documentele în <code>team/&lt;nume&gt;/documente/</code>, iar rapoartele lui Tudor în <code>team/tudor/rapoarte/</code></span><span class="chip ok">activ</span></div></li><li><time>D-013</time><div><span>Structură în stil Mochary: arii de responsabilitate cu DRI și backup (<code>docs/aor.md</code>), procese scrise (<code>docs/procese/</code>), lista de idei cu DRI (<code>docs/idei.md</code>)</span><span class="chip ok">activ</span></div></li><li><time>D-012</time><div><span>Repo-ul AgentsTeam rămâne <strong>public</strong>. Totul e la vedere, cu excepțiile din <code>docs/procese/ce-iese-public.md</code></span><span class="chip ok">activ</span></div></li><li><time>D-003</time><div><span>Emailuri, evenimente și <code>git push</code> cer mereu confirmare</span><span class="chip ok">activ</span></div></li><li><time>D-002</time><div><span>Memoria agenților în <code>.claude/agent-memory/</code> (în git)</span><span class="chip ok">activ</span></div></li></ul></section>
       <section class="card "><h3>Propuneri pentru echipă</h3><ul class="log"><li><time>2026-11-15</time><div><span>Rol viitor: <strong>Editor de carte</strong> (structură, ritm de scriere, redactare)</span><em>în așteptare</em></div></li><li><time>2026-11-15</time><div><span>Rol viitor: <strong>Product manager pentru tool-uri</strong> (dacă tool-urile devin multe)</span><em>în așteptare</em></div></li></ul></section>
-      <section class="card "><h3>Ultimele schimbări în repo</h3><ul class="log"><li><time>2026-11-15</time><div><span>Decizii cu ID și panou de aprobare în pagina echipei; procesul de decizii</span></div></li><li><time>2026-11-15</time><div><span>Regenerează pagina echipei</span></div></li><li><time>2026-11-15</time><div><span>Structură Mochary: arii de responsabilitate, lista de idei, procese, documente pe agenți</span></div></li><li><time>2026-11-15</time><div><span>Jobs to be done și categorie pentru fiecare agent, pagina web a echipei</span></div></li><li><time>2026-11-15</time><div><span>Inspirație și descoperire: arhitectura v1, ton, concept vizual și mock</span></div></li><li><time>2026-11-15</time><div><span>Notează instalarea GitHub CLI fără Homebrew</span></div></li><li><time>2026-11-15</time><div><span>Kickoff: echipa de agenți, research, charter și arhitectura v0</span></div></li></ul></section>
+      <section class="card "><h3>Ultimele schimbări în repo</h3><ul class="log"><li><time>2026-11-15</time><div><span>Mike: documentul de stack tehnic; D-005 trece pe Netlify; idee I-008</span></div></li><li><time>2026-11-15</time><div><span>Decizii cu ID și panou de aprobare în pagina echipei; procesul de decizii</span></div></li><li><time>2026-11-15</time><div><span>Regenerează pagina echipei</span></div></li><li><time>2026-11-15</time><div><span>Structură Mochary: arii de responsabilitate, lista de idei, procese, documente pe agenți</span></div></li><li><time>2026-11-15</time><div><span>Jobs to be done și categorie pentru fiecare agent, pagina web a echipei</span></div></li><li><time>2026-11-15</time><div><span>Inspirație și descoperire: arhitectura v1, ton, concept vizual și mock</span></div></li><li><time>2026-11-15</time><div><span>Notează instalarea GitHub CLI fără Homebrew</span></div></li><li><time>2026-11-15</time><div><span>Kickoff: echipa de agenți, research, charter și arhitectura v0</span></div></li></ul></section>
     </div>
   </section>
 
@@ -738,7 +722,7 @@ footer{color:var(--muted);font-size:13px}
 <ul><li>Vezi <code>docs/intrebari-pentru-alex.md</code>.</li></ul></div><p class="small">Alte fișiere de memorie: <code>generator-echipa.md</code>, <code>project_stack-hosting.md</code></p></section>
     <section class="card "><h3>Arii de responsabilitate (DRI)</h3><ul class="log"><li><time>DRI</time><div><strong>Cod, build, deploy</strong><span>la cerere · Lighthouse 90+, zero buguri după „gata”</span></div></li><li><time>backup</time><div><span>Arhitectura site-ului și modelul de conținut</span></div></li></ul></section>
     <section class="card "><h3>Idei pe care le deține</h3><ul class="log"><li><time>I-008</time><div><strong>Verificarea generatorului paginii echipei: avertizează când un titlu de secțiune, un tabel sau un ID de decizie se schimbă și ar strica pagina</strong><span class="chip info">nouă</span></div></li></ul></section>
-    <section class="card wide"><h3>Documentele lui Mike</h3><ul class="log docs"><li><time>nou</time><div><strong>Stack tehnic — v0 (propunere)</strong><code>team/mike/documente/stack-tehnic-v0.md</code></div></li></ul></section>
+    <section class="card wide"><h3>Documentele lui Mike</h3><ul class="log docs"><li><time>2026-11-15</time><div><strong>Stack tehnic — v0 (propunere)</strong><code>team/mike/documente/stack-tehnic-v0.md</code></div></li></ul></section>
     <section class="card "><h3>Fișiere</h3><ul class="files"><li><code>team/mike/profil.md</code></li><li><code>team/mike/scorecard.md</code></li><li><code>.claude/agent-memory/mike/</code></li><li><code>.claude/agents/mike.md</code></li></ul></section>
   </div>
 </article>
