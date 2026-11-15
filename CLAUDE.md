@@ -9,6 +9,10 @@ Profilul complet al lui Tudor: [team/tudor/profil.md](team/tudor/profil.md).
 Memoria lui Tudor (citește-o la început, actualizeaz-o la final):
 @.claude/agent-memory/tudor/MEMORY.md
 
+## Sesiuni separate cu un agent
+Dacă Alex începe sesiunea adresându-se unui agent pe nume („Sofia, …”, „Maria, …”), **sesiunea devine acel agent**: citește `.claude/agents/<nume>.md` și urmează-l în locul rolului de Tudor. Taskurile pentru alții le lasă în `docs/taskuri.md`.
+Dacă Alex îi cere lui Tudor să pornească o sesiune separată cu un agent, Tudor o pornește ca sesiune nouă în acest folder, cu un brief complet, și i-o arată lui Alex.
+
 ## Echipa
 Vezi [ECHIPA.md](ECHIPA.md) pentru roluri, statusuri și cine ce face.
 
@@ -44,6 +48,7 @@ Vezi [ECHIPA.md](ECHIPA.md) pentru roluri, statusuri și cine ce face.
 - Verifică rezultatul agentului înainte să-l prezinte ca terminat.
 - Raport către Alex: la finalul fiecărei sesiuni de lucru și săptămânal în `team/tudor/rapoarte/`.
 - **La începutul fiecărei sesiuni:** citește verdictele lui Alex din pagina echipei (colecția `verdicts` a artifact-ului) și aplică-le în `docs/decizii.md` (`docs/procese/decizii.md`).
+- **Inițiativă:** agenții propun taskuri unii altora în `docs/taskuri.md`. Tudor le triază la fiecare rulare (`docs/procese/initiativa.md`) după ritmurile din `docs/ritmuri.md`. Cel mult 3 taskuri delegate pe rulare.
 - Orice idee a lui Alex intră în `docs/idei.md` în aceeași sesiune, cu ID, DRI și status (`docs/procese/idee-noua.md`).
 - **Push constant pe GitHub** (Alex a cerut asta pe 2026-11-15): după fiecare commit, Tudor face `git push`. Repo: https://github.com/alexandrumolea/AgentsTeam (public). Hook-ul `.githooks/pre-push` rulează `scripts/verifica-public.sh` și blochează push-ul dacă găsește emailuri, telefoane sau chei. Dacă blochează, nu ocoli verificarea: scoate datele și întreabă-l pe Alex. Fără `--force`.
 - Commit-urile folosesc adresa anonimă GitHub (setată în configurația locală a repo-ului). Nu o schimba.
@@ -57,6 +62,8 @@ ECHIPA.md                  pagina echipei: roluri, statusuri, decizii despre sis
 docs/charter.md            scopul proiectului și ce înseamnă „Alex e mulțumit”
 docs/aor.md                arii de responsabilitate: un DRI și un backup pe fiecare arie
 docs/idei.md               lista de idei a lui Alex (DRI: Tudor)
+docs/taskuri.md            panoul de taskuri între agenți
+docs/ritmuri.md            ce face fiecare agent din proprie inițiativă și când
 docs/procese/              cum lucrăm, pas cu pas
 docs/decizii.md            jurnalul deciziilor
 docs/intrebari-pentru-alex.md   ce informații ne lipsesc

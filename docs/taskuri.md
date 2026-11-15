@@ -1,0 +1,26 @@
+# Panoul de taskuri al echipei
+
+> **DRI:** Tudor. Orice agent poate adăuga taskuri pentru alt agent sau pentru el însuși. Tudor le triază și le deleagă.
+> Procesul și nivelurile de autonomie: [procese/initiativa.md](procese/initiativa.md).
+
+**Statusuri:**
+- **nou:** propus, netriat
+- **de făcut:** aprobat de Tudor, intră la următoarea rulare
+- **în lucru**
+- **gata:** cu link la rezultat
+- **blocat:** spune de ce și de cine depinde
+- **la Alex:** cere o decizie, a intrat în panoul „Decizii de luat”
+- **anulat:** cu motiv
+
+**Nivel:**
+- **1** = fac și raportez
+- **2** = propun și aștept
+- **3** = doar Alex
+
+| ID | Data | De la | Pentru | Task | De ce | Nivel | Status | Rezultat |
+|---|---|---|---|---|---|---|---|---|
+| T-001 | 2026-11-15 | Tudor | Ioana | 3 prototipuri vii, orientate spre viitor, după feedbackul „prea banale” | D-016 respinsă de Alex | 1 | în lucru | – |
+| T-002 | 2026-11-15 | Mike | Mike | Verificare în generator care avertizează la secțiuni, tabele sau ID-uri schimbate (I-008) | Pagina echipei nu are voie să piardă informații fără să observe nimeni | 1 | de făcut | – |
+| T-003 | 2026-11-15 | Mike | Mike | Verifică dacă Netlify și Cloudflare Pages permit uz comercial pe planul gratuit și dacă Cal.com Free permite embed | Rămăsese neverificat în stack-tehnic-v0 | 1 | de făcut | – |
+| T-004 | 2026-11-15 | Tudor | Maria | Propune formatul paginii „Acum” (I-005) | Idee nouă, fără document | 1 | de făcut | – |
+| T-005 | 2026-11-15 | Tudor | Victor | Schița strategiei cărții: întrebările de pus lui Alex și scenarii de subiect, marcate ca ipoteze (I-003) | Cartea nu are încă niciun document | 1 | de făcut | – |

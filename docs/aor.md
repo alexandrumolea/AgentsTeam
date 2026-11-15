@@ -6,6 +6,7 @@
 | Arie | DRI | Backup | Documente | Ritm | Cum știm că merge |
 |---|---|---|---|---|---|
 | Coordonare și raportare către Alex | Tudor | Elena | `team/tudor/rapoarte/` | săptămânal | scor de mulțumire 4+ |
+| Panoul de taskuri și ritmurile echipei | Tudor | Elena | `docs/taskuri.md`, `docs/ritmuri.md` | zilnic | nimic blocat peste o săptămână fără motiv |
 | Lista de idei | Tudor | Radu | `docs/idei.md` | la fiecare idee, triere săptămânală | nicio idee fără DRI sau status |
 | Decizii | Tudor | Elena | `docs/decizii.md` | la fiecare decizie | fiecare decizie are motiv și status |
 | Componența echipei | Tudor (propune), Alex (decide) | Elena | `ECHIPA.md`, `team/*/scorecard.md` | lunar | niciun agent nefolosit o lună întreagă |

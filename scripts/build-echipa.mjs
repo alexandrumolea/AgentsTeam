@@ -101,6 +101,9 @@ const isPending = (st) => /de luat|de confirmat|de discutat/i.test(st);
 const pending = decisionsAll.filter((r) => isPending(r[5])).sort((a, b) => (/de luat/.test(b[5]) - /de luat/.test(a[5])) || a[0].localeCompare(b[0]));
 const decisions = decisionsAll.filter((r) => !isPending(r[5])).reverse();
 const aor = tableRows(rd("docs/aor.md"));
+const tasks = tableRows(rd("docs/taskuri.md")).filter((r) => /^T-\d+/.test(r[0]));
+const openTasks = tasks.filter((r) => !/gata|anulat/i.test(r[7]));
+const taskCls = (st) => (/blocat|la alex/i.test(st) ? "warn" : /gata/i.test(st) ? "ok" : "info");
 const ideas = tableRows(rd("docs/idei.md")).filter((r) => /^I-\d+/.test(r[0]));
 const activeIdeas = ideas.filter((r) => !/respins|live/i.test(r[4])).length;
 const plain = (t) => t.replace(/\*\*/g, "");
@@ -163,6 +166,7 @@ const agentPanel = (a) => `
     ${card("Ce NU face", md(a.sec["Ce NU face"] || ""))}
     ${card("Ultimele sarcini (scorecard)", a.scRows.length ? `<ul class="log">${a.scRows.slice(-5).reverse().map((r) => `<li><time>${esc(r[0])}</time><div><strong>${inline(r[1])}</strong><span>${inline(r[2])}${r[3] && r[3] !== "–" ? ` · utilitate ${esc(r[3])}/5` : ""}</span>${r[5] && r[5] !== "–" ? `<em>${inline(r[5])}</em>` : ""}</div></li>`).join("")}</ul>` : "<p>Nicio sarcină încă.</p>", "wide")}
     ${card("Memorie", `<div class="mem">${md(a.memory.replace(/^# .+\n/, ""))}</div>${a.memFiles.length > 1 ? `<p class="small">Alte fișiere de memorie: ${a.memFiles.filter((f) => f !== "MEMORY.md").map((f) => `<code>${esc(f)}</code>`).join(", ")}</p>` : ""}`, "wide")}
+    ${card("Taskurile lui " + a.name, (() => { const mine = tasks.filter((r) => r[3].includes(a.name) && !/anulat/i.test(r[7])); return mine.length ? `<ul class="log">${mine.map((r) => `<li><time>${esc(r[0])}</time><div><strong>${inline(r[4])}</strong><span>de la ${esc(r[2])} · nivel ${esc(r[6])}</span>${chip(r[7], taskCls(r[7]))}</div></li>`).join("")}</ul>` : "<p>Niciun task.</p>"; })(), "wide")}
     ${card("Arii de responsabilitate (DRI)", (() => { const mine = aor.filter((r) => r[1].includes(a.name)); const backup = aor.filter((r) => r[2].includes(a.name)); return mine.length || backup.length ? `<ul class="log">${mine.map((r) => `<li><time>DRI</time><div><strong>${inline(r[0])}</strong><span>${inline(r[4])} · ${inline(r[5])}</span></div></li>`).join("")}${backup.map((r) => `<li><time>backup</time><div><span>${inline(r[0])}</span></div></li>`).join("")}</ul>` : "<p>Nicio arie încă.</p>"; })())}
     ${card("Idei pe care le deține", (() => { const mine = ideas.filter((r) => r[3].includes(a.name)); return mine.length ? `<ul class="log">${mine.map((r) => `<li><time>${esc(r[0])}</time><div><strong>${inline(plain(r[1]).split(".")[0])}</strong>${chip(r[4], /parcat|respins/.test(r[4]) ? "warn" : /live|aprobat/.test(r[4]) ? "ok" : "info")}</div></li>`).join("")}</ul>` : "<p>Nicio idee încă.</p>"; })())}
     ${card("Documentele lui " + a.name, a.docs.length ? `<ul class="log docs">${a.docs.map((d) => `<li><time>${esc(d.date)}</time><div><strong>${inline(d.title)}</strong><code>${esc(d.rel)}</code></div></li>`).join("")}</ul>` : "<p>Niciun document încă.</p>", "wide")}
@@ -323,6 +327,7 @@ footer{color:var(--muted);font-size:13px}
     </div>
     <div class="stats">
       <div class="stat"><b>${agents.length}</b>agenți</div>
+      <div class="stat"><b>${openTasks.length}</b>taskuri deschise</div>
       <div class="stat"><b>${activeIdeas}</b>idei active</div>
       <div class="stat"><b>${reports.length}</b>rapoarte</div>
       <a class="stat" href="#decizii"><b>${pendingDecisions}</b>decizii de luat</a>
@@ -371,6 +376,13 @@ footer{color:var(--muted);font-size:13px}
     <div class="card"><div class="tablewrap"><table><thead><tr><th>ID</th><th>Idee</th><th>DRI</th><th>Status</th><th>Următorul pas</th></tr></thead><tbody>
     ${ideas.map((r) => { const ag = agents.find((x) => r[3].includes(x.name)); return `<tr><td><code>${esc(r[0])}</code></td><td>${inline(r[1])}</td><td>${ag ? `<a href="#${ag.slug}" class="who" style="--c:${ag.color}">${esc(r[3])}</a>` : inline(r[3])}</td><td>${chip(r[4], /parcat|respins/.test(r[4]) ? "warn" : /live|aprobat/.test(r[4]) ? "ok" : "info")}</td><td>${inline(r[5])}</td></tr>`; }).join("")}
     </tbody></table></div></div>
+  </section>
+
+  <section aria-labelledby="tasks-h">
+    <div class="label" id="tasks-h">Taskuri între agenți · ${openTasks.length} deschise</div>
+    <div class="card"><div class="tablewrap"><table><thead><tr><th>ID</th><th>De la</th><th>Pentru</th><th>Task</th><th>Nivel</th><th>Status</th></tr></thead><tbody>
+    ${openTasks.map((r) => { const ag = agents.find((x) => r[3].includes(x.name)); const from = agents.find((x) => r[2].includes(x.name)); return `<tr><td><code>${esc(r[0])}</code></td><td>${from ? `<a href="#${from.slug}" class="who" style="--c:${from.color}">${esc(r[2])}</a>` : inline(r[2])}</td><td>${ag ? `<a href="#${ag.slug}" class="who" style="--c:${ag.color}">${esc(r[3])}</a>` : inline(r[3])}</td><td>${inline(r[4])}<br><span class="small">${inline(r[5])}</span></td><td>${esc(r[6])}</td><td>${chip(r[7], taskCls(r[7]))}</td></tr>`; }).join("") || `<tr><td colspan="6">Niciun task deschis.</td></tr>`}
+    </tbody></table></div><p class="small">Nivel 1 = fac și raportez · 2 = propun și aștept · 3 = doar Alex. Ritmurile fiecărui agent: <code>docs/ritmuri.md</code>.</p></div>
   </section>
 
   <section aria-labelledby="news-h">
