@@ -20,3 +20,4 @@ Păstrează sub 150 de rânduri. Comprimă când crește. Fapte, nu povești.
 
 ## Deschis
 - Vezi `docs/intrebari-pentru-alex.md`.
+- 2026-11-15: Alex: „Cartea nu este o prioritate.” (D-035) Strategia cărții e parcată. Nu propun taskuri pentru carte până nu o cere el.
