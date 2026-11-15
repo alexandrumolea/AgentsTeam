@@ -4,6 +4,8 @@ description: Obiectivul 2 din charter (site care inspiră și expune invențiile
 metadata:
   type: project
 ---
+Adăugat: 2026-11-15
+
 
 Alex a cerut pe 2026-11-15 ca site-ul să inspire și să-i expună pe oameni la invențiile lui (cursuri, aplicații, alte lansări). A devenit obiectivul 2 din `docs/charter.md`.
 

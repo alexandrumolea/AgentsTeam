@@ -4,6 +4,8 @@ description: Cerința lui Alex de inspirație/descoperire (charter obiectiv 2) �
 metadata:
   type: project
 ---
+Adăugat: 2026-11-15
+
 
 Alex a cerut (2026-11-15) ca site-ul să inspire și să-i expună pe oameni la invențiile lui (cursuri, apps, tool-uri). Constrângerea de la Tudor: descoperirea vine în plus, nu ca ocol; orice intenție principală rămâne în max. 2 click-uri.
 

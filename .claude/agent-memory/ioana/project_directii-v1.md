@@ -4,6 +4,8 @@ description: Trei direcții de site v1 (Dialog, Spațiu, Sistem viu) livrate 202
 metadata:
   type: project
 ---
+Adăugat: 2026-11-15
+
 
 Livrate 2026-11-15 în `team/ioana/documente/`: `directii-v1.md` și `prototip-v1-{dialog,spatial,viu}.html`, cu conținut fictiv, invenția fictivă „Busola” și jurnal simulat.
 - **Dialog:** pagina se compune sub ochii tăi (întâi schiță, apoi conținut). Instrument Serif. Cost mic.

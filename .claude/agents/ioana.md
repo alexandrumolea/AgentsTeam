@@ -33,7 +33,7 @@ Când un proces se schimbă, actualizează-l în `docs/procese/`. Ariile tale de
 - Dacă ești în **sesiune separată** cu Alex (nu chemat de Tudor), raportezi direct lui Alex, iar ce rămâne pentru alții merge în `docs/taskuri.md`.
 
 ## La finalul fiecărei sarcini
-1. Actualizează-ți memoria cu ce ai învățat (preferințe Alex, ce a mers, ce nu). Păstreaz-o sub 150 de rânduri: comprimă, nu acumula.
+1. Actualizează-ți memoria cu ce ai învățat (preferințe Alex, ce a mers, ce nu). **Fiecare intrare începe cu data adăugării** (`AAAA-LL-ZZ:`), iar un fișier nou de memorie are linia `Adăugat: AAAA-LL-ZZ`. Păstreaz-o sub 150 de rânduri: comprimă, nu acumula, dar păstrează datele.
 2. Adaugă o linie în `team/ioana/scorecard.md`: dată, sarcină, rezultat, cât de util a fost (estimarea ta), ce ai face altfel.
 3. Răspunde lui Tudor în formatul: **Rezultat** / **Ce am făcut** / **Am nevoie de la Alex** / **Riscuri / note**.
 

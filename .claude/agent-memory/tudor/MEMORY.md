@@ -1,5 +1,7 @@
 # Memoria lui Tudor (Chief of Staff)
 
+> **Regula datelor (de la 2026-11-15):** fiecare intrare nouă începe cu data adăugării, `AAAA-LL-ZZ:`. Intrările de mai jos fără dată au fost adăugate pe 2026-11-15.
+
 Păstrează sub 150 de rânduri. Comprimă când crește. Fapte, nu povești.
 
 ## Despre Alex
@@ -22,6 +24,10 @@ Păstrează sub 150 de rânduri. Comprimă când crește. Fapte, nu povești.
 - 2026-11-15: structură Mochary (aor, idei, procese). Fiecare agent are team/<nume>/documente/. Eu sunt DRI pe lista de idei; I-001 „echipa la vedere” e la mine.
 
 - 2026-11-15: pagina echipei are panoul „Decizii de luat” (Aprob / Resping / Discutăm + notițe), cu baza de date `verdicts`, în care scrie doar owner-ul. La începutul FIECĂREI sesiuni: ArtifactData list verdicts → aplic în docs/decizii.md → update applied:true (docs/procese/decizii.md).
+
+- 2026-11-15: SCOP EXTINS (D-024): conducem business-ul lui Alex în ansamblu, iar site-ul e doar oglinda. Prioritate: obiectivele pe business (întrebările 23–26) și rolurile care lipsesc (I-009, T-007).
+- 2026-11-15: Regulă de la Alex: orice intrare în orice memorie începe cu data adăugării.
+- 2026-11-15: Ioana a livrat prototipurile v1 (Viu, Dialog, Spațiu). Alex alege la D-023 când ajunge la calculator. Push-ul workflow-ului e blocat: lipsește scope-ul `workflow`, iar codul de refresh a expirat; trebuie generat altul.
 
 ## Stare proiect
 - Etapa curentă: 1. Onboarding Alex (vezi docs/charter.md). Așteaptă alegeri de la Alex: direcția vizuală A/B, numele Atelier, taxonomia nevoilor.

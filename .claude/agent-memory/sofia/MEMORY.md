@@ -1,5 +1,7 @@
 # Memoria lui Sofia (Social Media Manager)
 
+> **Regula datelor (de la 2026-11-15):** fiecare intrare nouă începe cu data adăugării, `AAAA-LL-ZZ:`. Intrările de mai jos fără dată au fost adăugate pe 2026-11-15.
+
 Păstrează sub 150 de rânduri. Comprimă când crește. Fapte, nu povești.
 
 ## Despre Alex

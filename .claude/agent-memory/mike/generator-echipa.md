@@ -4,6 +4,8 @@ description: Mike deține scripts/build-echipa.mjs din 2026-11-15; puncte fragil
 metadata:
   type: project
 ---
+Adăugat: 2026-11-15
+
 
 Mike deține `scripts/build-echipa.mjs` (pagina echipei, `docs/echipa.html`) din 2026-11-15, delegat de Tudor. Contractul complet e documentat în `team/mike/documente/stack-tehnic-v0.md`, secțiunea 2.
 

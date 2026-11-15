@@ -4,6 +4,8 @@ description: Alex a respins direcțiile „calm, premium” (2026-11-15) ca „p
 metadata:
   type: feedback
 ---
+Adăugat: 2026-11-15
+
 
 Alex vrea ca site-ul să transmită **inovație și viitor** („ca venit din 2028”), nu „sigur și calm”. Pe 2026-11-15, despre direcțiile A/B din `mock-descoperire.html`, a spus: „prea banale. Nu-mi transmite inovație. Nu-mi transmite viitor.”
 

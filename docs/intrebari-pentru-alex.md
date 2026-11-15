@@ -37,3 +37,9 @@
 20. **Lista invențiilor tale:** cursuri, aplicații, tool-uri, experimente. Pentru fiecare: nume, ce face, pentru cine, status (disponibil, în curând, idee), link.
 21. **Ce lansezi în următoarele 3 luni?** Asta umple banda „Nou” de la început.
 22. **Ce te inspiră pe tine** și ce vrei să simtă oamenii după ce trec pe la tine? Răspunde în cuvintele tale, fără să cauți formularea perfectă.
+
+## Conducerea business-ului (adăugat 2026-11-15)
+23. Pentru fiecare business (BEMORE, Wise Teams, LIFT, Innersis, coaching): **obiectivul principal pe următoarele 12 luni**, într-o propoziție.
+24. Unde pierzi cel mai mult timp acum în conducerea lor?
+25. Ce vrei să știi în fiecare luni dimineață, dintr-o privire?
+26. Ce nu delegi niciodată unei echipe de agenți?

@@ -4,6 +4,8 @@ description: Reguli de conținut cerute explicit de Tudor/Alex pentru livrabilel
 metadata:
   type: feedback
 ---
+Adăugat: 2026-11-15
+
 
 Nu inventa realizări, cifre, testimoniale sau produse. Exemplele se marchează *(fictiv)*. Nu cita surse necitite; sursele de produs/vendor se marchează ca atare. Rolul lui Alex în fiecare business rămâne ipoteză până confirmă el.
 

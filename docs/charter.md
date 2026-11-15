@@ -1,12 +1,15 @@
-# Charter — site-ul și ecosistemul lui Alex
+# Charter — conducerea business-ului lui Alex
 
 > Owner: Tudor. Aprobat de Alex: **în așteptare**.
 
 ## De ce
-Alex face multe lucruri valoroase: coaching, business-uri, tool-uri, în curând o carte. Oamenii trebuie să găsească repede ce au nevoie de la el, iar Alex nu trebuie să piardă timp ca să țină totul la zi.
+> **2026-11-15, Alex:** „Scopul nu este doar site-ul. Scopul este conducerea business-ului în ansamblu. Site-ul doar trebuie să reflecte foarte clar și constant ce facem.”
+
+Alex conduce mai multe lucruri deodată: coaching, BEMORE, Wise Teams, LIFT, Innersis, tool-uri și cursuri, iar în curând o carte. Echipa de agenți îl ajută să conducă business-ul în ansamblu: prioritățile, deciziile, lansările, vizibilitatea și ritmul. **Site-ul e oglinda:** arată clar și mereu la zi ce facem.
 
 ## Ce construim
-1. **Un site personal** ușor de navigat, care vorbește pe limba vizitatorului: „Ai nevoie de X? Mergi aici.”
+0. **Conducerea business-ului.** Obiective clare pe fiecare business, priorități săptămânale, decizii scrise, lansări urmărite și un raport care îi arată lui Alex unde e totul. Tudor e DRI.
+1. **Un site personal**, oglinda a ce facem, ușor de navigat, care vorbește pe limba vizitatorului: „Ai nevoie de X? Mergi aici.”
    - Pagină de prezentare (cine e Alex)
    - Rezervare de sesiuni de coaching
    - Tool-uri și aplicații pentru dezvoltare personală
@@ -22,7 +25,9 @@ Alex face multe lucruri valoroase: coaching, business-uri, tool-uri, în curând
 4. **O echipă de agenți** care ține totul viu și se îmbunătățește singură.
 
 ## Ce înseamnă „Alex e mulțumit”
+- Știe în orice moment unde e fiecare business și ce decizie așteaptă după el.
 - Găsește orice pe site în mai puțin de 10 secunde și se recunoaște în ce citește.
+- Site-ul nu rămâne niciodată în urma realității: ce se lansează sau se schimbă în business apare pe site în aceeași săptămână.
 - O actualizare de conținut îi ia sub 5 minute (o spune lui Tudor sau editează un fișier).
 - Vizitatorii descoperă și încearcă și alte lucruri decât cele pentru care au venit.
 - O lansare nouă (curs, aplicație) apare pe site în aceeași zi, dintr-un singur fișier.
@@ -40,6 +45,7 @@ Alex face multe lucruri valoroase: coaching, business-uri, tool-uri, în curând
 ## Etape
 | Etapă | Ce iese | Status |
 |---|---|---|
+| 0b. Scop extins (2026-11-15) | Conducerea business-ului, cu site-ul ca oglindă. Urmează: obiectivele pe business și rolurile care lipsesc | **în lucru** |
 | 0. Kickoff | Echipă, reguli, research inițial, arhitectură v0 | **gata (2026-11-15)** |
 | 1. Onboarding Alex | Răspunsuri la întrebări, vocea lui Alex, materiale | în așteptare |
 | 2. Fundație | Poziționare (Maria), arhitectură aprobată (Radu), direcție vizuală (Ioana) | |

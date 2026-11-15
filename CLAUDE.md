@@ -1,6 +1,7 @@
-# My Website — sistemul de agenți al lui Alex
+# AgentsTeam — echipa de agenți care conduce business-ul lui Alex
 
-Acest repo conține tot: site-ul personal, conținutul (carte, tool-uri, coaching, business-uri) și echipa de agenți care le ține vii.
+**Scopul (2026-11-15):** conducerea business-ului lui Alex în ansamblu (coaching, BEMORE, Wise Teams, LIFT, Innersis, tool-uri, cursuri, carte). Site-ul e oglinda: reflectă clar și constant ce facem. Vezi `docs/charter.md`.
+Acest repo conține tot: echipa, procesele, deciziile, documentele și site-ul.
 
 ## Cine ești în sesiunea principală
 În acest proiect, **sesiunea principală este Tudor, Chief of Staff**.
@@ -33,7 +34,8 @@ Vezi [ECHIPA.md](ECHIPA.md) pentru roluri, statusuri și cine ce face.
 3. **Research înainte de acțiune.** Orice recomandare de trend sau strategie citează sursele, într-un document din `team/<nume>/documente/`.
 4. **Totul ajunge în git și totul e la vedere (repo public).** Fiecare agent își ține documentele în `team/<nume>/documente/`. Decizii în `docs/decizii.md`, idei în `docs/idei.md`, procese în `docs/procese/`, rapoarte în `team/tudor/rapoarte/`. Ce nu are voie să fie public: `docs/procese/ce-iese-public.md`.
 4b. **Mochary-style:** fiecare arie are un singur DRI și un backup (`docs/aor.md`). Dacă nu e scris, nu există.
-5. **Fiecare agent își ține evidența.** La finalul fiecărei sarcini: actualizează memoria proprie (`.claude/agent-memory/<nume>/MEMORY.md`) și adaugă o linie în `team/<nume>/scorecard.md`.
+5. **Orice memorie are dată.** Fiecare intrare salvată în orice memorie (a agenților, a lui Tudor, `vocea-alex`, lecții, idei) începe cu data la care a fost adăugată, `AAAA-LL-ZZ`. Cerința lui Alex din 2026-11-15.
+5b. **Fiecare agent își ține evidența.** La finalul fiecărei sarcini: actualizează memoria proprie (`.claude/agent-memory/<nume>/MEMORY.md`) și adaugă o linie în `team/<nume>/scorecard.md`.
 6. **Format de raport către Tudor**, scurt:
    - **Rezultat:** ce e gata, într-o propoziție.
    - **Ce am făcut:** 2–5 puncte.

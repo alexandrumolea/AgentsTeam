@@ -4,6 +4,8 @@ description: Fapte verificate despre găzduire/booking pentru D-005 (Vercel Hobb
 metadata:
   type: project
 ---
+Adăugat: 2026-11-15
+
 
 Propunerea de stack e în `team/mike/documente/stack-tehnic-v0.md` (2026-11-15): Astro + Markdown/YAML + Netlify Free (plan B Cloudflare Pages) + Cal.com Free. D-005 e încă „de confirmat de Alex”.
 

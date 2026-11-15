@@ -4,6 +4,8 @@ description: Conceptul de descoperire v0 (card de invenție, bandă Nou, vitrin�
 metadata:
   type: project
 ---
+Adăugat: 2026-11-15
+
 
 Livrat 2026-11-15: `team/ioana/documente/descoperire-v0.md` + `mock-descoperire.html`.
 **Ce rămâne valabil:** mecanismele UX: descoperirea stă după drumul direct, nevoia e titlul cardului, „Nou” calculat din `data_lansare`, recomandări cu motiv vizibil, diagnostic fără email.

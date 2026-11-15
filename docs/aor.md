@@ -5,6 +5,8 @@
 
 | Arie | DRI | Backup | Documente | Ritm | Cum știm că merge |
 |---|---|---|---|---|---|
+| Obiective și priorități de business (toate business-urile) | Tudor (propune), Alex (decide) | Elena | `docs/obiective.md` (de creat după răspunsurile lui Alex) | săptămânal | Alex știe oricând unde e fiecare business |
+| Site-ul ca oglindă a business-ului | Radu | Maria | site + `content/` | săptămânal | ce se schimbă în business apare pe site în aceeași săptămână |
 | Coordonare și raportare către Alex | Tudor | Elena | `team/tudor/rapoarte/` | săptămânal | scor de mulțumire 4+ |
 | Panoul de taskuri și ritmurile echipei | Tudor | Elena | `docs/taskuri.md`, `docs/ritmuri.md` | zilnic | nimic blocat peste o săptămână fără motiv |
 | Lista de idei | Tudor | Radu | `docs/idei.md` | la fiecare idee, triere săptămânală | nicio idee fără DRI sau status |
