@@ -22,3 +22,4 @@
 | I-005 | **Pagina „Acum”**: la ce lucrez în perioada asta | Arată că sunt activ chiar și fără lansări | Maria | nouă | Maria propune formatul | [research-branding-2026-11.md](../team/maria/documente/research-branding-2026-11.md) |
 | I-006 | **Rol nou: Editor de carte** | Cartea cere structură și ritm de scriere | Tudor | nouă | Decidem când pornește cartea | [ECHIPA.md](../ECHIPA.md) |
 | I-007 | **Rol nou: Product manager pentru tool-uri** | Lansările și întreținerea aplicațiilor | Tudor | nouă | Decidem când avem peste 5 tool-uri | [ECHIPA.md](../ECHIPA.md) |
+| I-008 | **Verificarea generatorului paginii echipei**: avertizează când un titlu de secțiune, un tabel sau un ID de decizie se schimbă și ar strica pagina | Pagina echipei e locul de unde conduci. Nu are voie să piardă informații fără să observe nimeni | Mike | nouă | Mike propune verificarea | [stack-tehnic-v0.md](../team/mike/documente/stack-tehnic-v0.md) |

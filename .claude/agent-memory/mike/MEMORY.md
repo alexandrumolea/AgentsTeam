@@ -12,7 +12,11 @@ Păstrează sub 150 de rânduri. Comprimă când crește. Fapte, nu povești.
 - (încă niciuna; adaugă după feedbackul lui Alex)
 
 ## Ce a mers / ce nu
-- (gol la 2026-11-15)
+- 2026-11-15: verificarea prețurilor pe surse oficiale a schimbat recomandarea (Vercel Hobby e necomercial). Merită făcută mereu.
+
+## Fișiere de memorie
+- [Stack și găzduire](project_stack-hosting.md) — fapte verificate pentru D-005, Netlify/Cloudflare/Vercel/Cal.com
+- [Generatorul paginii echipei](generator-echipa.md) — Mike îl deține; puncte fragile tăcute
 
 ## Deschis
 - Vezi `docs/intrebari-pentru-alex.md`.
