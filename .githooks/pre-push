@@ -1,0 +1,7 @@
+#!/bin/sh
+# Blochează push-ul dacă găsește date private (vezi docs/procese/ce-iese-public.md).
+while read local_ref local_sha remote_ref remote_sha; do
+  [ "$local_sha" = "0000000000000000000000000000000000000000" ] && continue
+  sh "$(git rev-parse --show-toplevel)/scripts/verifica-public.sh" "$local_sha" || exit 1
+done
+exit 0

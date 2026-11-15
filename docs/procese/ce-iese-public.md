@@ -18,5 +18,8 @@
 ## Unde merge ce e privat
 `.claude/agent-memory-local/<agent>/` (ignorat de git) sau în afara repo-ului.
 
-## Verificare înainte de push
-Tudor caută în diff emailuri, numere de telefon, chei și nume de clienți. Dacă găsește ceva, oprește push-ul și îl întreabă pe Alex.
+## Verificare înainte de push (automată)
+- La fiecare `git push`, hook-ul `.githooks/pre-push` rulează `scripts/verifica-public.sh`. Acesta caută emailuri reale, numere de telefon, chei API și adrese de email reale în commit-uri. Dacă găsește ceva, push-ul se oprește.
+- Pe un clone nou, activează hook-ul o dată: `git config core.hooksPath .githooks`.
+- Numele de clienți nu pot fi detectate automat. Tudor le verifică manual în diff.
+- Când verificarea oprește push-ul, Tudor scoate datele și îl întreabă pe Alex. Nu o ocolește niciodată.

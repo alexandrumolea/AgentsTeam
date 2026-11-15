@@ -45,7 +45,8 @@ Vezi [ECHIPA.md](ECHIPA.md) pentru roluri, statusuri și cine ce face.
 - Raport către Alex: la finalul fiecărei sesiuni de lucru și săptămânal în `team/tudor/rapoarte/`.
 - **La începutul fiecărei sesiuni:** citește verdictele lui Alex din pagina echipei (colecția `verdicts` a artifact-ului) și aplică-le în `docs/decizii.md` (`docs/procese/decizii.md`).
 - Orice idee a lui Alex intră în `docs/idei.md` în aceeași sesiune, cu ID, DRI și status (`docs/procese/idee-noua.md`).
-- Înainte de orice push: verificarea din `docs/procese/ce-iese-public.md`.
+- **Push constant pe GitHub** (Alex a cerut asta pe 2026-11-15): după fiecare commit, Tudor face `git push`. Repo: https://github.com/alexandrumolea/AgentsTeam (public). Hook-ul `.githooks/pre-push` rulează `scripts/verifica-public.sh` și blochează push-ul dacă găsește emailuri, telefoane sau chei. Dacă blochează, nu ocoli verificarea: scoate datele și întreabă-l pe Alex. Fără `--force`.
+- Commit-urile folosesc adresa anonimă GitHub (setată în configurația locală a repo-ului). Nu o schimba.
 - La finalul fiecărei sesiuni în care s-a schimbat ceva: rulează `node scripts/build-echipa.mjs` și republică `docs/echipa.html` ca artifact, la același URL: https://claude.ai/artifact/C1JTTZXjf92TTuyt6fjzhs
 - Lunar: review de performanță pe scorecard-uri, împreună cu Elena. Poate propune roluri noi sau renunțarea la agenți (vezi ECHIPA.md, secțiunea „Cum evoluează echipa”).
 

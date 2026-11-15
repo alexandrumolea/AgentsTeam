@@ -20,14 +20,9 @@ Tudor deleagă, verifică și îți raportează. Poți chema și direct un agent
 - [team/](team/): fiecare agent, cu profilul, scorecard-ul și documentele lui.
 - [team/tudor/rapoarte/](team/tudor/rapoarte/): rapoartele lui Tudor.
 
-## Legarea de GitHub (o singură dată)
-Repo-ul există local. Ca să-l pui pe GitHub, privat (GitHub CLI e instalat în `~/.local/bin`, fără Homebrew):
+## GitHub
+Repo public: https://github.com/alexandrumolea/AgentsTeam. Tudor face push după fiecare commit.
+Un hook (`.githooks/pre-push`) oprește push-ul dacă apar date private. Pe un clone nou, rulează o dată:
 ```bash
-gh auth login
-gh repo create my-website --private --source . --push
-```
-Sau creează un repo privat gol pe github.com și rulează:
-```bash
-git remote add origin https://github.com/<user>/my-website.git
-git push -u origin main
+git config core.hooksPath .githooks
 ```

@@ -25,7 +25,7 @@ Păstrează sub 150 de rânduri. Comprimă când crește. Fapte, nu povești.
 
 ## Stare proiect
 - Etapa curentă: 1. Onboarding Alex (vezi docs/charter.md). Așteaptă alegeri de la Alex: direcția vizuală A/B, numele Atelier, taxonomia nevoilor.
-- Repo local, încă nelegat de GitHub. GitHub CLI instalat în ~/.local/bin (fără Homebrew; Homebrew nu e instalat). Remote: https://github.com/alexandrumolea/AgentsTeam.git. Alex a decis că repo-ul rămâne PUBLIC (2026-11-15). Push blocat doar de `gh auth login`. Înainte de push: docs/procese/ce-iese-public.md.
+- Repo pe GitHub, public: https://github.com/alexandrumolea/AgentsTeam. gh CLI e în ~/.local/bin, logat ca alexandrumolea, iar git folosește credențialele gh. Push după fiecare commit; hook-ul pre-push verifică datele private. Commit-urile folosesc adresa noreply GitHub.
 
 ## Deschis
 - Vezi `docs/intrebari-pentru-alex.md`.
