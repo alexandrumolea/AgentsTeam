@@ -1,4 +1,4 @@
-# Cele 8 categorii ale atelierului (arhitectura v2, 1.8; numele din D-025, de confirmat de Alex).
+# Cele 8 categorii ale atelierului (arhitectura v2, 1.8). Nume: D-025, cu schimbările lui Alex din 2026-11-15 (D-040): Innovations, Latest Workshops, Knowledge Base.
 # Citit de scenă, de bara de jos, de varianta fără 3D și de meniul paginilor.
 # `cheie` nu se schimbă niciodată. Etichetele și frazele le schimbă Maria, aici, fără cod.
 # `stare`: deschis (are conținut real) sau in-pregatire (apare cu textul `in_pregatire` din site.yml).
@@ -34,9 +34,9 @@ categorii:
     pod: ""
 
   - cheie: speaking
-    eticheta: "Speaking"
-    fraza: "Vreau să te invit să vorbești."
-    url: speaking
+    eticheta: "Latest Workshops"
+    fraza: "Vreau să văd ultimele workshopuri."
+    url: workshops
     familie: direct
     dimensiune: munca
     ordine: 3
@@ -45,9 +45,9 @@ categorii:
     pod: ""
 
   - cheie: inventii
-    eticheta: "Invenții"
+    eticheta: "Innovations"
     fraza: "Tool-uri, aplicații și cursuri de încercat."
-    url: inventii
+    url: innovations
     familie: atelier
     dimensiune: inovatie
     ordine: 1
@@ -79,9 +79,9 @@ categorii:
     pod: ""
 
   - cheie: knowledge
-    eticheta: "Învață"
+    eticheta: "Knowledge Base"
     fraza: "Ce am învățat construind, nu ce am citit."
-    url: invata
+    url: knowledge-base
     familie: atelier
     dimensiune: distilat
     ordine: 4

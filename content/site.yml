@@ -25,10 +25,9 @@ intro:
   titlu: "Construiesc unelte pentru oameni care"
   titlu_accent: "vor să crească."
   cine: "Sunt Alex: coach, fondator și inventator."
-  # Inscripția misiunii, cuvintele lui Alex (D-026). Citatul intact apare doar aici și în Despre.
+  # Inscripția misiunii, cuvintele lui Alex (misiunea v2, 2026-11-15, D-039). Citatul intact apare doar aici și în Despre.
   inscriptie:
-    - "Necunoscutul creează monștri."
-    - "Educația creează poduri."
+    - "Învățarea ca sursă a binelui."
   cum: "Fiecare obiect de aici e un drum. Trage de spațiu sau alege mai jos."
 
 # Textul pentru camerele și drumurile care încă nu au conținut real.
@@ -39,8 +38,8 @@ in_pregatire: "În pregătire. Atelierul e deschis, camera asta se construiește
 in_centru:
   eticheta: "Din atelier · în lucru"
   titlu: "Site-ul pe care îl vezi"
-  text: "Prima invenție din atelier. Desfă-l și vezi cum funcționează pe dinăuntru."
-  buton: "Desfă invenția"
+  text: "Prima inovație din atelier. Desfă-l și vezi cum funcționează pe dinăuntru."
+  buton: "Desfă inovația"
   link_text: "Vezi codul"
   straturi:
     - nume: "Scena"

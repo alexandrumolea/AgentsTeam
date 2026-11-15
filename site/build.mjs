@@ -402,7 +402,7 @@ function indexHtml(importmap){
     <p class="eyebrow"><span class="pill">${esc((centru.eticheta || '').split('·').pop().trim() || 'nou')}</span><span class="pv-long">${esc((centru.eticheta || '').split('·')[0].trim())}</span></p>
     <h2 id="fH">${esc(centru.titlu)}</h2>
     <p>${esc(centru.text || '')}</p>
-    <button class="btn" id="explode" type="button" aria-expanded="false" aria-controls="parts">${esc(centru.buton || 'Desfă invenția')}</button>
+    <button class="btn" id="explode" type="button" aria-expanded="false" aria-controls="parts">${esc(centru.buton || 'Desfă inovația')}</button>
   </aside>
   <div class="closebar">
     <h2>${esc(centru.titlu)}, strat cu strat</h2>
@@ -497,7 +497,7 @@ function teamPage(){
 }
 
 const redirect = to => `<!doctype html><html lang="ro"><head><meta charset="utf-8"><title>Mutat</title><meta name="robots" content="noindex"><meta http-equiv="refresh" content="0; url=${esc(to)}"><link rel="canonical" href="${esc(to)}"></head><body><p><a href="${esc(to)}">Pagina s-a mutat aici.</a></p></body></html>\n`;
-const REDIRECTS = { tools: 'inventii', creatii: 'inventii', atelier: 'inventii', carte: 'invata', jurnal: 'invata', knowledge: 'invata', acum: 'live', now: 'live', povesti: 'ce-m-a-crescut', misiune: 'despre' };
+const REDIRECTS = { tools: 'innovations', creatii: 'innovations', atelier: 'innovations', inventii: 'innovations', speaking: 'workshops', invata: 'knowledge-base', carte: 'knowledge-base', jurnal: 'knowledge-base', knowledge: 'knowledge-base', acum: 'live', now: 'live', povesti: 'ce-m-a-crescut', misiune: 'despre' };
 
 /* ---------- scriere ---------- */
 rmSync(OUT, { recursive: true, force: true });

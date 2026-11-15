@@ -2,7 +2,10 @@
 
 > Owner: Tudor. Aprobat de Alex: **în așteptare**.
 
-## Misiunea lui Alex (2026-11-15)
+## Misiunea lui Alex (v2, 2026-11-15)
+> „Învățarea ca sursă a binelui. Îmi place să aduc la suprafață lucruri invizibile pentru a umple goluri sau a micșora distanța dintre oameni, în așa fel încât să reușim să facem mai multe lucruri împreună, să ne facem mai puțin rău reciproc și să ne provocăm mai puțin stres.”
+
+### Versiunea 1 (istoric)
 > „Educația cu scopul de a face bine. Îi face bine fiecărei persoane. Face bine și între oameni. Umple gap-urile dintre ei. Am descoperit că ceea ce ne depărtează este că nu putem vedea lucrurile din perspective pe care nu le înțelegem. Necunoscutul creează monștri. Educația creează poduri.”
 
 Echipa există ca să servească misiunea asta. Business-ul o duce la oameni, iar site-ul o face vizibilă.

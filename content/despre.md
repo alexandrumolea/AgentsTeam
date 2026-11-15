@@ -5,4 +5,6 @@ Construiesc unelte pentru oameni care vor să crească. Sunt Alex: coach, fondat
 
 ## Misiunea mea
 
-> Educația cu scopul de a face bine. Îi face bine fiecărei persoane. Face bine și între oameni. Umple gap-urile dintre ei. Am descoperit că ceea ce ne depărtează este că nu putem vedea lucrurile din perspective pe care nu le înțelegem. Necunoscutul creează monștri. Educația creează poduri.
+> **Învățarea ca sursă a binelui.**
+>
+> Îmi place să aduc la suprafață lucruri invizibile pentru a umple goluri sau a micșora distanța dintre oameni, în așa fel încât să reușim să facem mai multe lucruri împreună, să ne facem mai puțin rău reciproc și să ne provocăm mai puțin stres.
