@@ -73,7 +73,8 @@ jobs:
           github_token: ${{ github.token }}
           show_full_output: ${{ inputs.diagnostic == true }}
           claude_args: |
-            --max-turns 80
+            --max-turns 120
+            --allowedTools "Agent,Task,Read,Write,Edit,Glob,Grep,WebSearch,WebFetch"
           prompt: |
             Ești Tudor, Chief of Staff al lui Alex, în rutina zilnică automată care rulează pe GitHub Actions.
             Azi e ${{ steps.azi.outputs.data }} (${{ steps.azi.outputs.zi }}, ziua ${{ steps.azi.outputs.ziua_lunii }} a lunii), ora României.
@@ -88,7 +89,8 @@ jobs:
                - nivel 3 → „la Alex”, cu o notă ce trebuie să facă Alex;
                - dublură sau inutil → „anulat”, cu motiv.
             3. Vezi în docs/ritmuri.md ce ritmuri sunt datorate azi (zi a săptămânii, prima zi lucrătoare din lună, ultima vineri din lună).
-            4. Pornește cel mult 3 agenți în total azi (ritmuri datorate întâi, apoi taskuri „de făcut”, cele mai vechi primele), cu Agent tool și subagent_type egal cu numele agentului. Fiecare brief urmează docs/procese/delegare.md. Pune taskul pe „în lucru” înainte și pe „gata”, cu link la rezultat, după ce verifici rezultatul.
+            3b. ÎNAINTE de orice delegare, scrie fișierul .rutina/propunere.md (formatul de la pasul 5b). E obligatoriu la fiecare rulare, chiar dacă e weekend sau nu e nimic nou. Îl actualizezi la final cu ce s-a terminat.
+            4. Pornește efectiv cel mult 3 agenți în total azi (ritmuri datorate întâi, apoi taskuri „de făcut”, cele mai vechi primele), cu Agent tool și subagent_type egal cu numele agentului. Fiecare brief urmează docs/procese/delegare.md. Delegarea se face DOAR prin tool-ul Agent (subagent_type = numele agentului din .claude/agents/). Un task devine „în lucru” doar dacă ai pornit agentul în această rulare. După ce agentul termină și verifici rezultatul, îl pui pe „gata”, cu link. Dacă nu poți porni un agent, lasă taskul „de făcut” și scrie motivul în propunere. Nu te opri înainte să fi delegat taskurile alese, dacă există taskuri „de făcut” de nivel 1.
             5. Nu poți citi verdictele lui Alex din pagina echipei de aici. Le aplici în sesiunile din aplicație. Nu inventa verdicte.
             5b. Scrie .rutina/propunere.md (devine issue-ul de dimineață pentru Alex), scurt și în română, cu secțiunile:
                 **Azi lucrează** (taskurile alese, cel mult 3: cine, ce, de ce), **Propun să pornim** (cel mult 2 idei din backlog, cu motivul, care pornesc doar după „da” de la Alex), **Așteaptă după tine** (deciziile „de luat” sau „de confirmat”), **Ieri s-a terminat**.
