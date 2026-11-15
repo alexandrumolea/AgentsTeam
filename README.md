@@ -17,9 +17,8 @@ Tudor deleagă, verifică și îți raportează. Poți chema și direct un agent
 - [docs/rapoarte/](docs/rapoarte/): rapoartele lui Tudor și retrospectivele Elenei.
 
 ## Legarea de GitHub (o singură dată)
-Repo-ul există local. Ca să-l pui pe GitHub, privat:
+Repo-ul există local. Ca să-l pui pe GitHub, privat (GitHub CLI e instalat în `~/.local/bin`, fără Homebrew):
 ```bash
-brew install gh
 gh auth login
 gh repo create my-website --private --source . --push
 ```

@@ -16,7 +16,7 @@ Păstrează sub 150 de rânduri. Comprimă când crește. Fapte, nu povești.
 
 ## Stare proiect
 - Etapa curentă: 1. Onboarding Alex (vezi docs/charter.md).
-- Repo local, încă nelegat de GitHub (gh CLI nu e instalat pe Mac-ul lui Alex).
+- Repo local, încă nelegat de GitHub. GitHub CLI instalat în ~/.local/bin (fără Homebrew; Homebrew nu e instalat). Aștept ca Alex să ruleze `gh auth login`.
 
 ## Deschis
 - Vezi `docs/intrebari-pentru-alex.md`.
