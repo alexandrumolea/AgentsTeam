@@ -26,7 +26,7 @@ GoDaddy → My Products → domeniul → **DNS** → Manage DNS. Șterge înregi
 GitHub → Settings (contul tău) → Pages → **Add a domain** → `alexandrumolea.com`. GitHub îți dă o înregistrare **TXT** (`_github-pages-challenge-alexandrumolea`). Adaug-o în GoDaddy, apoi apasă Verify. Asta împiedică pe altcineva să-ți folosească domeniul pe GitHub.
 
 ## 4. Tudor: legarea în GitHub Pages
-- Setează domeniul personalizat pe Pages și câmpul `domeniu` în `content/site.yml` (din el se generează fișierul `CNAME`).
+- Setează domeniul personalizat din setările Pages (Settings → Pages → Custom domain, sau prin API). Când site-ul se publică prin GitHub Actions, GitHub **ignoră fișierul CNAME**: contează doar setarea. Completează și câmpul `domeniu` în `content/site.yml`, pentru linkurile și metadatele site-ului.
 - Activează HTTPS după ce GitHub emite certificatul (de la câteva minute la câteva ore).
 - Verifică `https://alexandrumolea.com` și `https://www.alexandrumolea.com`.
 

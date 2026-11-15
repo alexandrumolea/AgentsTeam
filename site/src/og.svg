@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="768" height="768" viewBox="0 -285 1200 1200">
+<defs><radialGradient id="bg" cx="70%" cy="45%" r="80%"><stop offset="0" stop-color="#121833"/><stop offset=".6" stop-color="#070910"/></radialGradient>
+<radialGradient id="g" cx="50%" cy="50%" r="50%"><stop offset="0" stop-color="#7CF5C8" stop-opacity=".25"/><stop offset="1" stop-color="#7CF5C8" stop-opacity="0"/></radialGradient></defs>
+<rect width="1200" height="630" fill="url(#bg)"/>
+<g transform="translate(910 330)"><circle r="230" fill="url(#g)"/>
+<ellipse rx="260" ry="100" fill="none" stroke="#7CF5C8" stroke-opacity=".25" stroke-width="2"/><ellipse rx="200" ry="72" fill="none" stroke="#7CF5C8" stroke-opacity=".2" stroke-width="2"/>
+<circle r="92" fill="#BFEFFF" fill-opacity=".06" stroke="#BFEFFF" stroke-opacity=".5" stroke-width="2"/><circle r="66" fill="none" stroke="#7CF5C8" stroke-width="3"/>
+<path d="M0 -44 L30 0 L0 44 L-30 0 Z" fill="#7CF5C8" fill-opacity=".45" stroke="#7CF5C8" stroke-width="2"/>
+<g fill="#7CF5C8"><circle cx="-255" cy="10" r="7"/><circle cx="-210" cy="80" r="5"/><circle cx="230" cy="-80" r="7"/><circle cx="255" cy="30" r="5"/><circle cx="110" cy="100" r="5"/><circle cx="-120" cy="-95" r="5"/></g></g>
+<text x="80" y="120" font-family="Menlo, monospace" font-size="24" letter-spacing="3" fill="#7CF5C8">ALEX · ATELIER</text>
+<text x="80" y="230" font-family="Avenir Next, Helvetica Neue, sans-serif" font-weight="300" font-size="58" fill="#F3F1EC">Construiesc unelte</text>
+<text x="80" y="300" font-family="Avenir Next, Helvetica Neue, sans-serif" font-weight="300" font-size="58" fill="#F3F1EC">pentru oameni care</text>
+<text x="80" y="370" font-family="Avenir Next, Helvetica Neue, sans-serif" font-weight="600" font-size="58" fill="#F3F1EC">vor să crească.</text>
+<text x="80" y="470" font-family="Georgia, serif" font-style="italic" font-size="32" fill="#AEB3C4">Necunoscutul creează monștri.</text>
+<text x="80" y="515" font-family="Georgia, serif" font-style="italic" font-size="32" fill="#AEB3C4">Educația creează poduri.</text>
+</svg>

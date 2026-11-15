@@ -206,7 +206,7 @@ function start(THREE, RoomEnvironment){
   core.children[1].rotation.x = Math.PI / 2;
   const dome = new THREE.Mesh(new THREE.SphereGeometry(1.24, seg(64), seg(24), 0, Math.PI * 2, 0, Math.PI / 2), glass('#d8ccff', 0.04, 0.28));
   dome.scale.y = 0.32;
-  [[base, 0, -1.75], [disc, 0.13, -0.85], [ring, 0.24, 0.0], [core, 0.36, 0.85], [dome, 0.3, 1.7]].forEach(([m, y0, y1]) => { inv.add(m); L.push({ m, y0: y0 - 0.15, y1 }); });
+  [[base, 0, -2.1], [disc, 0.13, -1.05], [ring, 0.24, 0.0], [core, 0.36, 1.05], [dome, 0.3, 2.1]].forEach(([m, y0, y1]) => { inv.add(m); L.push({ m, y0: y0 - 0.15, y1 }); });
 
   /* --- cele 7 obiecte pe orbită --- */
   const R = 3.7;
@@ -257,7 +257,7 @@ function start(THREE, RoomEnvironment){
   const ringIds = NODES.filter(n => n.slug !== 'alex' && n.slug !== hub).map(n => n.slug);
   const NET = { alex: new V3(0, 0.25, 0) };
   if (hub !== 'alex') NET[hub] = new V3(0, 1.25, 0.3);
-  ringIds.forEach((id, i) => { const deg = 160 - i * (370 / Math.max(1, ringIds.length)) + (i > ringIds.length / 2 ? 0 : 0); const a = deg * Math.PI / 180, r = 2.2;
+  ringIds.forEach((id, i) => { const deg = 160 - i * (360 / Math.max(1, ringIds.length)); const a = deg * Math.PI / 180, r = 2.2;
     NET[id] = new V3(Math.cos(a) * r, 0.25 + Math.sin(a) * r * 0.72, Math.sin(i * 1.7) * 0.35); });
   const nodeTagsEl = $('#nodeTags');
   const team = NODES.map((n, i) => {
@@ -455,7 +455,8 @@ function start(THREE, RoomEnvironment){
     if (D.centru && explode > 0.02 && !narrow){
       [L[4], L[3], L[2], L[1], L[0]].forEach((l, i) => {
         const el = partEls[i]; if (!el) return;
-        const p = toScreen(l.m, offRight);
+        offRight.set(1.38, l.m.position.y, 0); // în spațiul invenției, ca eticheta să nu se rotească odată cu stratul
+        const p = toScreen(inv, offRight);
         el.style.setProperty('--x', (p.x + 36) + 'px');
         el.style.transform = `translate(${(p.x + 36).toFixed(1)}px,${(p.y - el.offsetHeight / 2).toFixed(1)}px)`;
       });

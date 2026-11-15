@@ -1,0 +1,104 @@
+# Site-ul v1: build din content/, docs/taskuri.md și istoricul git, apoi publicare pe GitHub Pages.
+# Documentația: team/mike/documente/site-v1.md
+# Adresa (domeniu propriu sau github.io) și calea de bază vin din setările Pages (actions/configure-pages),
+# deci același workflow merge la rădăcina unui domeniu și sub /<repo>/.
+name: Site
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+    inputs:
+      previzualizare:
+        description: "Publică acum, chiar fără domeniu (doar pentru test)"
+        type: boolean
+        default: false
+  # Rutina zilnică urcă cu GITHUB_TOKEN, iar un push făcut așa nu pornește alte workflow-uri.
+  # De aceea Live se reconstruiește și după fiecare rulare a rutinei.
+  workflow_run:
+    workflows: ["Rutina zilnică a lui Tudor"]
+    types: [completed]
+  # O dată pe zi, și în weekend: rândurile cu oameni apar după 24 de ore, iar luminițele agenților se sting.
+  schedule:
+    - cron: "15 5 * * *"
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+# O singură publicare odată; nu oprim una începută.
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  # D-038: publicarea automată pornește când domeniul e completat în content/site.yml sau când
+  # `publica_pe_link_github: true` (linkul GitHub, temporar). Altfel, doar pornirea manuală cu „previzualizare”.
+  poarta:
+    runs-on: ubuntu-latest
+    outputs:
+      publica: ${{ steps.d.outputs.publica }}
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+          sparse-checkout: content/site.yml
+      - id: d
+        run: |
+          DOM=$(grep -E '^domeniu:' content/site.yml | sed -E 's/^domeniu:[[:space:]]*"?([^"]*)"?.*/\1/')
+          GH=$(grep -cE '^publica_pe_link_github:[[:space:]]*true' content/site.yml || true)
+          if [ -n "$DOM" ] || [ "$GH" = "1" ] || { [ "${{ github.event_name }}" = "workflow_dispatch" ] && [ "${{ inputs.previzualizare }}" = "true" ]; }; then
+            echo "publica=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "publica=false" >> "$GITHUB_OUTPUT"
+            echo "::notice::Site-ul nu se publică încă: domeniul nu e setat în content/site.yml (D-038)."
+          fi
+
+  build:
+    needs: poarta
+    if: needs.poarta.outputs.publica == 'true'
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          fetch-depth: 0 # Live are nevoie de tot istoricul (orele vin din commit-uri)
+          persist-credentials: false
+
+      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+        with:
+          node-version: 24
+          cache: npm
+          cache-dependency-path: site/package-lock.json
+
+      - name: Setările Pages
+        id: pages
+        uses: actions/configure-pages@45bfe0192ca1faeb007ade9deae92b16b8254a0d # v6.0.0
+
+      - name: Dependențe (versiuni fixe, din package-lock.json)
+        working-directory: site
+        run: npm ci --no-audit --no-fund
+
+      - name: Build
+        working-directory: site
+        env:
+          SITE_BASE: ${{ steps.pages.outputs.base_path }}/
+          SITE_URL: ${{ steps.pages.outputs.base_url }}/
+        run: node build.mjs
+
+      - uses: actions/upload-pages-artifact@fc324d3547104276b827a68afc52ff2a11cc49c9 # v5.0.0
+        with:
+          path: site/dist
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Publică pe GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@368f82528645a54fb793d4d04e342629a3f51346 # v5.0.1

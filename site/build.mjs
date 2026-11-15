@@ -85,7 +85,7 @@ if (rezervare && !/^https:\/\//.test(rezervare)) fail('content/site.yml: „reze
 const centru = site.in_centru && site.in_centru.titlu ? site.in_centru : null;
 if (centru && (centru.straturi || []).length !== 5) fail('content/site.yml: in_centru.straturi are nevoie de exact 5 straturi (obiectul 3D actual are 5).');
 
-/* ---------- echipa (I-001): din team/*/profil.md ---------- */
+// ---------- echipa (I-001): din team/<agent>/profil.md ----------
 const ORDER = ['tudor', 'radu', 'ioana', 'mike', 'maria', 'sofia', 'victor', 'elena'];
 const AGENTS = readdirSync(join(ROOT, 'team'), { withFileTypes: true }).filter(d => d.isDirectory() && existsSync(join(ROOT, 'team', d.name, 'profil.md'))).map(d => {
   const txt = read(`team/${d.name}/profil.md`);
@@ -258,8 +258,8 @@ const pcls = s => isAgent(s) ? '' : s === 'alex' ? 'alex' : 'om';
 const whoHtml = s => `<b class="${pcls(s)}">${esc(pname(s))}</b>`;
 const ext = href => /^https?:/.test(href) ? ' rel="noopener"' : '';
 
-function feedRow(e, i){
-  const when = `${esc(fDay(e._t))}${e.ora_reala ? `<br>${esc(fTime(e._t))}` : ''}`;
+function feedRow(e, timeOnly = false){
+  const when = timeOnly ? (e.ora_reala ? esc(fTime(e._t)) : '') : `${esc(fDay(e._t))}${e.ora_reala ? `<br>${esc(fTime(e._t))}` : ''}`;
   const text = e.rezultat ? `<a href="${esc(e.rezultat)}"${ext(e.rezultat)}>${esc(e.titlu)}</a>` : esc(e.titlu);
   return `<li data-ev="${esc(e.id)}"><span class="id">${when}</span><span class="who">${whoHtml(e.de_la)} <i>→</i> ${whoHtml(e.pentru)}</span><span class="st ${STATUS.find(s => s[0] === e.stadiu_cheie)?.[2] || ''}">${esc(e.stadiu)}</span><span class="task">${text}</span></li>`;
 }
@@ -345,7 +345,7 @@ ${footer()}
 }
 
 /* ---------- conținutul panourilor (același pentru scenă și pentru pagini) ---------- */
-const liveFeedHtml = n => taskEvents.length ? `<div class="cols" aria-hidden="true"><span>Data</span><span>Cine → cui</span><span>Stadiu</span></div><ol class="feed" id="feed" aria-label="Jurnalul atelierului, cele mai noi primele">${taskEvents.slice(0, n).map(feedRow).join('')}</ol>` : '<p class="lead">Liniște în atelier acum.</p>';
+const liveFeedHtml = n => taskEvents.length ? `<div class="cols" aria-hidden="true"><span>Data</span><span>Cine → cui</span><span>Stadiu</span></div><ol class="feed" id="feed" aria-label="Jurnalul atelierului, cele mai noi primele">${taskEvents.slice(0, n).map(e => feedRow(e)).join('')}</ol>` : '<p class="lead">Liniște în atelier acum.</p>';
 const legend = '<p class="legend"><span class="a">agent AI · în timp real</span><span class="h">om · după 24 h, cu ziua</span></p>';
 
 function panelBody(c){
@@ -359,7 +359,7 @@ function panelBody(c){
   <p class="actions"><a class="btn" href="${pageUrl(c)}">${esc(c.buton || 'Tot jurnalul')} →</a><a class="btn ghost" href="${u('live/echipa/')}">Echipa</a></p>`;
   if (c.cheie === 'despre') return `<p class="eyebrow">Despre</p><h2 id="pH">${esc(c.eticheta)}</h2>
   <p class="lead">${esc(site.intro?.cine || '')}</p>
-  <h3>Unde lucrez</h3>${businessList()}
+  <h3>${esc(C.companie ? C.companie.eticheta : 'Business')}</h3>${businessList()}
   <h3>Atelierul, la vedere</h3>
   <ul class="list"><li><a href="${u('live/echipa/')}">Echipa mea de agenți AI</a><span>roluri și procese</span></li><li><a href="${pageUrl(C.live)}">Live</a><span>ce construim acum</span></li><li><a href="${esc(GH)}" rel="noopener">GitHub</a><span>contact și cod</span></li></ul>
   <a class="btn" href="${pageUrl(c)}">${esc(c.buton || 'Pagina Despre')} →</a>`;
@@ -370,7 +370,7 @@ function panelBody(c){
   <p class="actions"><a class="btn ink" href="${pageUrl(C.live)}" data-go="live">Vezi ce se lucrează acum →</a></p></div>`;
   return `<p class="eyebrow">${esc(c.eticheta)} · ${fam}</p><h2 id="pH">${esc(c.eticheta)}</h2>
   <p class="lead">${esc(c.fraza)}</p>${podHtml(c)}${stateHtml(c)}${extra}
-  <p class="actions"><a class="btn" href="${pageUrl(C.live)}" data-go="live">Vezi ce se lucrează acum →</a><a class="btn ghost" href="${pageUrl(c)}">Pagina</a></p>`;
+  <p class="actions"><a class="btn" href="${pageUrl(C.live)}" data-go="live">Vezi ce se lucrează acum →</a><a class="btn ghost" href="${pageUrl(c)}">Deschide pagina</a></p>`;
 }
 
 /* ---------- pagina principală: scena ---------- */
@@ -467,13 +467,13 @@ function categoryPage(c){
     inner = `<p class="lead">${esc(L.nota || '')}</p>${podHtml(c)}${legend}
 <section aria-labelledby="banc"><h2 id="banc">Pe banc acum</h2><ul class="bench">${benchHtml()}</ul></section>
 <section aria-labelledby="jurnal"><h2 id="jurnal">Jurnalul atelierului</h2>
-${events.length ? [...days].map(([, list]) => `<h3 class="day">${esc(fLongDay(list[0]._t))}</h3><ol class="feed log">${list.map(e => e.tip === 'task' ? feedRow(e) :
+${events.length ? [...days].map(([, list]) => `<h3 class="day">${esc(fLongDay(list[0]._t))}</h3><ol class="feed log">${list.map(e => e.tip === 'task' ? feedRow(e, true) :
   `<li class="commit"><span class="id">${e.ora_reala ? esc(fTime(e._t)) : ''}</span><span class="who"><i>salvat în repo</i></span><span class="st"></span><span class="task">${e.link ? `<a href="${esc(e.link)}" rel="noopener">${esc(e.titlu)}</a>` : esc(e.titlu)}</span></li>`).join('')}</ol>`).join('') : '<p>Liniște în atelier acum.</p>'}
 </section>
 <p class="actions"><a class="btn" href="${u('live/echipa/')}">Echipa de agenți →</a><a class="btn ghost" href="${u('api/live.json')}">Datele, ca JSON</a></p>`;
   } else if (c.cheie === 'despre'){
     inner = `<div class="prose">${despreHtml}</div>
-<h2>Unde lucrez</h2>${businessList()}
+<h2>${esc(C.companie ? C.companie.eticheta : 'Business')}</h2>${businessList()}
 <h2>Atelierul, la vedere</h2>
 <p>Lucrez cu o echipă de agenți AI, iar munca noastră e publică. <a href="${u('live/echipa/')}">Vezi echipa și procesele</a> sau <a href="${pageUrl(C.live)}">ce construim acum</a>.</p>
 <h2>Contact</h2><p>Mă găsești pe <a href="${esc(GH)}" rel="noopener">GitHub</a>.</p>`;
@@ -526,7 +526,7 @@ const importmap = JSON.stringify({ imports: { three: u('assets/three/three.modul
 write('index.html', indexHtml(importmap));
 for (const c of CATS) write(`${c.url}/index.html`, categoryPage(c));
 write('live/echipa/index.html', teamPage());
-for (const [from, to] of Object.entries(REDIRECTS)) if (!C[from] && !CATS.some(c => c.url === from)) write(`${from}/index.html`, redirect(u(to + '/')));
+for (const [from, to] of Object.entries(REDIRECTS)) if (!CATS.some(c => c.url === from)) write(`${from}/index.html`, redirect(u(to + '/')));
 write('404.html', page({ title: 'Pagina nu există', path: '404.html', bodyHtml: `<h1>Drumul ăsta nu duce nicăieri.</h1><p class="kicker">Pagina nu există sau s-a mutat.</p><p class="actions"><a class="btn" href="${u()}">Înapoi în atelier →</a></p>` }));
 write('.nojekyll', '');
 if (domeniu) write('CNAME', domeniu + '\n');

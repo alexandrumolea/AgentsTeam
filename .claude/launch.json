@@ -4,8 +4,23 @@
     {
       "name": "documente-ioana",
       "runtimeExecutable": "python3",
-      "runtimeArgs": ["-m", "http.server", "8765", "--directory", "team/ioana/documente"],
+      "runtimeArgs": [
+        "-m",
+        "http.server",
+        "8765",
+        "--directory",
+        "team/ioana/documente"
+      ],
       "port": 8765
+    },
+    {
+      "name": "site",
+      "runtimeExecutable": "node",
+      "runtimeArgs": [
+        "site/serve.mjs",
+        "4321"
+      ],
+      "port": 4321
     }
   ]
 }
