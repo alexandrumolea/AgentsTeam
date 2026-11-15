@@ -1,0 +1,13 @@
+{
+  "permissions": {
+    "ask": [
+      "mcp__6eefe56c-255f-42c2-b3f8-9f9720ad8d5c__send_message",
+      "mcp__6eefe56c-255f-42c2-b3f8-9f9720ad8d5c__reply",
+      "mcp__6eefe56c-255f-42c2-b3f8-9f9720ad8d5c__forward",
+      "mcp__316dfdba-18be-4eed-911b-524cf18d729c__create_event",
+      "mcp__316dfdba-18be-4eed-911b-524cf18d729c__update_event",
+      "mcp__316dfdba-18be-4eed-911b-524cf18d729c__delete_event",
+      "Bash(git push:*)"
+    ]
+  }
+}
