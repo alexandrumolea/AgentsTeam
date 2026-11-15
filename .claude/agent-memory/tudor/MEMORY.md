@@ -29,6 +29,8 @@ Păstrează sub 150 de rânduri. Comprimă când crește. Fapte, nu povești.
 - 2026-11-15: Regulă de la Alex: orice intrare în orice memorie începe cu data adăugării.
 - 2026-11-15: Ioana a livrat prototipurile v1 (Viu, Dialog, Spațiu). Alex alege la D-023 când ajunge la calculator. Push-ul workflow-ului e blocat: lipsește scope-ul `workflow`, iar codul de refresh a expirat; trebuie generat altul.
 
+- 2026-11-15: Alex a ales direcția Spațiu (D-023). I-au plăcut și feed-ul live cu taskurile dintre agenți (din prototipul Sistem viu) și ideea de Povești trimestriale (I-012, DRI Maria). Radu, Maria și Ioana lucrează la v2 cu aceste cerințe.
+
 ## Stare proiect
 - Etapa curentă: 1. Onboarding Alex (vezi docs/charter.md). Așteaptă alegeri de la Alex: direcția vizuală A/B, numele Atelier, taxonomia nevoilor.
 - Repo pe GitHub, public: https://github.com/alexandrumolea/AgentsTeam. gh CLI e în ~/.local/bin, logat ca alexandrumolea, iar git folosește credențialele gh. Push după fiecare commit; hook-ul pre-push verifică datele private. Commit-urile folosesc adresa noreply GitHub.

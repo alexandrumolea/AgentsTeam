@@ -12,6 +12,7 @@
 | Victor | joi | Actualizează pipeline-ul de oportunități și propune cel mult 2 oportunități noi | 1 (contactarea e 3) |
 | Maria | prima zi lucrătoare din lună | Research de trenduri de brand și comunicare | 1 |
 | Ioana | prima zi lucrătoare din lună | Research de trenduri de design: ce adoptăm, ce a devenit datat | 1 |
+| Maria | prima săptămână din ian, apr, iul, oct | Îi propune lui Alex interviul de 30 de minute pentru povestea trimestrială (I-012), apoi scrie draftul doar din cuvintele lui | 1 (publicarea e 3) |
 | Elena | ultima vineri din lună | Retrospectiva lunară, direct către Alex | 1 |
 | Tudor + Elena | după retro | Review-ul echipei (`docs/procese/review-echipa.md`) | 2 |
 | Mike, Radu | la cerere | Lucrează din taskuri. Nu au ritm propriu | – |
