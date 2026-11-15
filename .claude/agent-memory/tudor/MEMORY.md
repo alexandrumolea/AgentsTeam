@@ -45,6 +45,8 @@ Păstrează sub 150 de rânduri. Comprimă când crește. Fapte, nu povești.
 
 - 2026-11-15: Site-ul = centralizator (D-037). Dacă devine comercial, îl mutăm de pe GitHub Pages. Adresa NU va fi sub /AgentsTeam/ (D-038): domeniu propriu sau alexandrumolea.github.io.
 
+- 2026-11-15: SITE-UL V1 E LIVE: https://alexandrumolea.github.io/AgentsTeam/ (workflow site.yml, poarta: domeniu sau publica_pe_link_github). Urmează domeniul alexandrumolea.com (docs/domeniu.md): setezi custom domain în Settings → Pages, pentru că CNAME-ul e ignorat la publicarea prin Actions.
+
 ## Stare proiect
 - Etapa curentă: 1. Onboarding Alex (vezi docs/charter.md). Așteaptă alegeri de la Alex: direcția vizuală A/B, numele Atelier, taxonomia nevoilor.
 - Repo pe GitHub, public: https://github.com/alexandrumolea/AgentsTeam. gh CLI e în ~/.local/bin, logat ca alexandrumolea, iar git folosește credențialele gh. Push după fiecare commit; hook-ul pre-push verifică datele private. Commit-urile folosesc adresa noreply GitHub.
