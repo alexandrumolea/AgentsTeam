@@ -1,0 +1,91 @@
+# Rutina zilnică a lui Tudor: rulează pe serverele GitHub, fără ca aplicația Claude să fie deschisă.
+# Ce face: triază docs/taskuri.md, pornește agenții după docs/ritmuri.md (cel mult 3 pe zi),
+# apoi salvează și face push, după verificarea de date private.
+# Pornire manuală: tab-ul Actions → „Rutina zilnică a lui Tudor” → Run workflow.
+name: Rutina zilnică a lui Tudor
+
+on:
+  schedule:
+    # Cron în UTC: 07:00 UTC = 09:00 în România iarna (10:00 vara). Luni–vineri.
+    - cron: "0 7 * * 1-5"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  id-token: write
+
+concurrency:
+  group: rutina-zilnica
+  cancel-in-progress: false
+
+jobs:
+  tudor:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Verifică cheia de acces Claude
+        id: cheie
+        env:
+          T: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}
+        run: |
+          if [ -z "$T" ]; then
+            echo "lipsa=1" >> "$GITHUB_OUTPUT"
+            echo "::warning::Lipsește secretul CLAUDE_CODE_OAUTH_TOKEN. Rutina nu rulează până nu e adăugat (vezi README)."
+          fi
+
+      - name: Data de azi (ora României)
+        id: azi
+        run: |
+          echo "data=$(TZ=Europe/Bucharest date +%Y-%m-%d)" >> "$GITHUB_OUTPUT"
+          echo "zi=$(TZ=Europe/Bucharest date +%A)" >> "$GITHUB_OUTPUT"
+          echo "ziua_lunii=$(TZ=Europe/Bucharest date +%d)" >> "$GITHUB_OUTPUT"
+
+      - name: Tudor lucrează
+        if: steps.cheie.outputs.lipsa != '1'
+        uses: anthropics/claude-code-action@v1
+        with:
+          claude_code_oauth_token: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}
+          github_token: ${{ github.token }}
+          claude_args: |
+            --max-turns 80
+          prompt: |
+            Ești Tudor, Chief of Staff al lui Alex, în rutina zilnică automată care rulează pe GitHub Actions.
+            Azi e ${{ steps.azi.outputs.data }} (${{ steps.azi.outputs.zi }}, ziua ${{ steps.azi.outputs.ziua_lunii }} a lunii), ora României.
+            Alex nu e de față. Lucrezi doar la nivelul 1 de autonomie.
+
+            1. Citește CLAUDE.md, docs/procese/initiativa.md, docs/ritmuri.md, docs/taskuri.md, docs/idei.md și memoria ta din .claude/agent-memory/tudor/MEMORY.md.
+            2. Triază taskurile cu status „nou” din docs/taskuri.md:
+               - nivel 1 → „de făcut”;
+               - nivel 2 → adaugă o decizie nouă (ID D-NNN următor) în docs/decizii.md cu status „de confirmat de Alex”, iar taskul trece pe „la Alex”;
+               - nivel 3 → „la Alex”, cu o notă ce trebuie să facă Alex;
+               - dublură sau inutil → „anulat”, cu motiv.
+            3. Vezi în docs/ritmuri.md ce ritmuri sunt datorate azi (zi a săptămânii, prima zi lucrătoare din lună, ultima vineri din lună).
+            4. Pornește cel mult 3 agenți în total azi (ritmuri datorate întâi, apoi taskuri „de făcut”, cele mai vechi primele), cu Agent tool și subagent_type egal cu numele agentului. Fiecare brief urmează docs/procese/delegare.md. Pune taskul pe „în lucru” înainte și pe „gata”, cu link la rezultat, după ce verifici rezultatul.
+            5. Nu poți citi verdictele lui Alex din pagina echipei de aici. Le aplici în sesiunile din aplicație. Nu inventa verdicte.
+            6. Dacă s-a întâmplat ceva, scrie un raport scurt în team/tudor/rapoarte/${{ steps.azi.outputs.data }}-zilnic.md (Rezultat / Ce s-a făcut / Am nevoie de la Alex / Riscuri). Lunea fă raportul săptămânal după docs/procese/raport-saptamanal.md. Dacă nu ai nimic de făcut, oprește-te fără raport.
+            7. Actualizează-ți memoria (o linie) și scorecard-ul.
+
+            Reguli care nu se negociază:
+            - Nimic public: fără emailuri, postări sau contactarea oamenilor, fără să publici site-ul.
+            - Repo-ul e public. Respectă docs/procese/ce-iese-public.md: fără date de contact, clienți, prețuri negociate sau chei.
+            - Nu face commit și nu face push. Pasul următor al workflow-ului salvează, verifică și urcă singur.
+            - Nu modifica .github/, .claude/settings.json sau scripts/.
+
+      - name: Salvează, verifică și urcă
+        if: steps.cheie.outputs.lipsa != '1'
+        run: |
+          node scripts/build-echipa.mjs
+          git config user.name "Tudor (rutina zilnică)"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -A
+          if git diff --cached --quiet; then
+            echo "Nimic nou azi."
+            exit 0
+          fi
+          git commit -m "Rutina zilnică Tudor: ${{ steps.azi.outputs.data }}"
+          sh scripts/verifica-public.sh HEAD
+          git push
