@@ -26,8 +26,9 @@ Vezi [ECHIPA.md](ECHIPA.md) pentru roluri, statusuri și cine ce face.
 ## Reguli comune pentru toți agenții
 1. **Vorbim pe limba lui Alex.** Română implicit, direct, cald, fără jargon inutil. Vocea publică a lui Alex e în skill-ul `vocea-alex`.
 2. **Nimic nu pleacă în lume fără aprobarea lui Alex.** Postări, emailuri, mesaje, publicări, invitații: doar draft-uri. Alex aprobă explicit în chat.
-3. **Research înainte de acțiune.** Orice recomandare de trend sau strategie citează sursele în `docs/research/`.
-4. **Totul ajunge în git.** Decizii în `docs/decizii.md`, lecții în `docs/lectii.md`, rapoarte în `docs/rapoarte/`.
+3. **Research înainte de acțiune.** Orice recomandare de trend sau strategie citează sursele, într-un document din `team/<nume>/documente/`.
+4. **Totul ajunge în git și totul e la vedere (repo public).** Fiecare agent își ține documentele în `team/<nume>/documente/`. Decizii în `docs/decizii.md`, idei în `docs/idei.md`, procese în `docs/procese/`, rapoarte în `team/tudor/rapoarte/`. Ce nu are voie să fie public: `docs/procese/ce-iese-public.md`.
+4b. **Mochary-style:** fiecare arie are un singur DRI și un backup (`docs/aor.md`). Dacă nu e scris, nu există.
 5. **Fiecare agent își ține evidența.** La finalul fiecărei sarcini: actualizează memoria proprie (`.claude/agent-memory/<nume>/MEMORY.md`) și adaugă o linie în `team/<nume>/scorecard.md`.
 6. **Format de raport către Tudor**, scurt:
    - **Rezultat:** ce e gata, într-o propoziție.
@@ -41,7 +42,9 @@ Vezi [ECHIPA.md](ECHIPA.md) pentru roluri, statusuri și cine ce face.
 - Pornește fiecare cerere nouă cu: ce vrea Alex, de ce, cum arată „gata”.
 - Deleagă în paralel când sarcinile sunt independente.
 - Verifică rezultatul agentului înainte să-l prezinte ca terminat.
-- Raport către Alex: la finalul fiecărei sesiuni de lucru și săptămânal în `docs/rapoarte/`.
+- Raport către Alex: la finalul fiecărei sesiuni de lucru și săptămânal în `team/tudor/rapoarte/`.
+- Orice idee a lui Alex intră în `docs/idei.md` în aceeași sesiune, cu ID, DRI și status (`docs/procese/idee-noua.md`).
+- Înainte de orice push: verificarea din `docs/procese/ce-iese-public.md`.
 - La finalul fiecărei sesiuni în care s-a schimbat ceva: rulează `node scripts/build-echipa.mjs` și republică `docs/echipa.html` ca artifact, la același URL: https://claude.ai/artifact/C1JTTZXjf92TTuyt6fjzhs
 - Lunar: review de performanță pe scorecard-uri, împreună cu Elena. Poate propune roluri noi sau renunțarea la agenți (vezi ECHIPA.md, secțiunea „Cum evoluează echipa”).
 
@@ -49,18 +52,20 @@ Vezi [ECHIPA.md](ECHIPA.md) pentru roluri, statusuri și cine ce face.
 ```
 CLAUDE.md                  regulile casei (acest fișier)
 ECHIPA.md                  pagina echipei: roluri, statusuri, decizii despre sistem
+docs/charter.md            scopul proiectului și ce înseamnă „Alex e mulțumit”
+docs/aor.md                arii de responsabilitate: un DRI și un backup pe fiecare arie
+docs/idei.md               lista de idei a lui Alex (DRI: Tudor)
+docs/procese/              cum lucrăm, pas cu pas
+docs/decizii.md            jurnalul deciziilor
+docs/intrebari-pentru-alex.md   ce informații ne lipsesc
 docs/echipa.html           pagina web a echipei (generată, nu o edita de mână)
 scripts/build-echipa.mjs   generatorul paginii web
-docs/charter.md            scopul proiectului și ce înseamnă „Alex e mulțumit”
-docs/intrebari-pentru-alex.md   ce informații ne lipsesc
-docs/decizii.md            jurnalul deciziilor
-docs/lectii.md             lecțiile de pe traseu (owner: Elena)
-docs/research/             research cu surse
-docs/site/                 arhitectura și planul site-ului
-docs/rapoarte/             rapoartele lui Tudor
 team/<nume>/profil.md      categorie, scop, Jobs to be done, context, responsabilități, skills, KPI
 team/<nume>/scorecard.md   evidența performanței
+team/<nume>/documente/     documentele agentului (research, propuneri, idei pe care le deține)
+team/tudor/rapoarte/       rapoartele lui Tudor
 .claude/agents/            definițiile agenților
-.claude/agent-memory/      memoria fiecărui agent
+.claude/agent-memory/      memoria fiecărui agent (publică)
+.claude/agent-memory-local/  note private (ignorate de git)
 .claude/skills/vocea-alex/ profilul și vocea lui Alex (folosit de toți)
 ```

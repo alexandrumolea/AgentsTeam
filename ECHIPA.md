@@ -46,6 +46,12 @@ flowchart TD
 
 \* Nume propuse de Tudor. Alex le poate schimba (vezi „Cum redenumim un agent”).
 
+## Unde găsești ce
+- **Cine răspunde de ce:** [docs/aor.md](docs/aor.md)
+- **Lista de idei:** [docs/idei.md](docs/idei.md)
+- **Procesele:** [docs/procese/](docs/procese/)
+- **Documentele fiecărui agent:** `team/<nume>/documente/`
+
 ## Fluxurile principale
 | Flux | Cine | Ritm |
 |---|---|---|
@@ -62,7 +68,7 @@ flowchart TD
 2. **Lunar, Tudor și Elena fac review-ul**: pentru fiecare agent, verdictul e *păstrăm*, *ajustăm* sau *renunțăm*.
 3. **Semnale că un rol nu merge:** e chemat de mai puțin de 2 ori pe lună, Alex rescrie majoritatea rezultatelor, sau munca lui se suprapune cu a altui agent.
 4. **Tudor propune, Alex decide.** Propunerile intră în tabelul de mai jos. Nimic nu se schimbă fără „da” de la Alex.
-5. **Când renunțăm la un agent**, mutăm fișierul în `.claude/agents/_arhiva/`, păstrăm profilul și memoria pentru istoric și notăm lecția în `docs/lectii.md`.
+5. **Când renunțăm la un agent**, mutăm fișierul în `.claude/agents/_arhiva/`, păstrăm profilul și memoria pentru istoric și notăm lecția în `team/elena/documente/lectii.md`.
 
 ### Propuneri deschise
 | Dată | Propunere | De ce | Propus de | Decizia lui Alex |
@@ -72,9 +78,10 @@ flowchart TD
 
 ## Cum adăugăm un agent nou
 1. Copiază un fișier din `.claude/agents/` și schimbă `name`, `description` și misiunea.
-2. Copiază un folder din `team/` și completează `profil.md` (inclusiv **Categorie** și **Jobs to be done**); golește `scorecard.md`.
-3. Creează `.claude/agent-memory/<nume>/MEMORY.md`.
-4. Adaugă rândul în tabelele de mai sus și în `CLAUDE.md`.
+2. Copiază un folder din `team/` și completează `profil.md` (inclusiv **Categorie** și **Jobs to be done**). Golește `scorecard.md` și `documente/`.
+3. Dă-i cel puțin o arie în `docs/aor.md`.
+4. Creează `.claude/agent-memory/<nume>/MEMORY.md`.
+5. Adaugă rândul în tabelele de mai sus și în `CLAUDE.md`.
 
 ## Cum redenumim un agent
 Spune-i lui Tudor „redenumește-l pe Radu în X”. El schimbă numele în `.claude/agents/`, `team/`, `.claude/agent-memory/`, `CLAUDE.md` și această pagină.

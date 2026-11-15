@@ -62,8 +62,25 @@ const agents = fs.readdirSync(path.join(ROOT, "team")).filter((n) => fs.existsSy
   const memFiles = fs.existsSync(path.join(ROOT, memDir)) ? fs.readdirSync(path.join(ROOT, memDir)).filter((f) => f.endsWith(".md")) : [];
   const last = git(`log -1 --format=%cs -- team/${slug} ${memDir} .claude/agents/${slug}.md`);
   const dirty = git(`status --porcelain -- team/${slug} ${memDir} .claude/agents/${slug}.md`);
+  const docsOf = (dir) => {
+    const abs = path.join(ROOT, dir);
+    if (!fs.existsSync(abs)) return [];
+    const out = [];
+    const walk = (d) => fs.readdirSync(d, { withFileTypes: true }).forEach((e) => {
+      const full = path.join(d, e.name);
+      if (e.isDirectory()) return walk(full);
+      if (!/\.(md|html)$/.test(e.name)) return;
+      const rel = path.relative(ROOT, full);
+      const txt = rd(rel);
+      const t = (txt.match(/^# (.+)$/m) || txt.match(/<title>([^<]+)<\/title>/) || [, e.name])[1];
+      out.push({ rel, title: t.trim(), date: git(`log -1 --format=%cs -- "${rel}"`) || "nou" });
+    });
+    walk(abs);
+    return out.sort((a, b) => (b.date > a.date ? 1 : b.date < a.date ? -1 : 0));
+  };
+  const docs = [...docsOf(`team/${slug}/documente`), ...docsOf(`team/${slug}/rapoarte`)];
   return {
-    slug, name: name.trim(), role: (role || "").trim(), color: COLORS[color] || COLORS.teal,
+    docs, slug, name: name.trim(), role: (role || "").trim(), color: COLORS[color] || COLORS.teal,
     category: field(prof, "Categorie") || "Altele", reportsTo: field(prof, "Raportează către"), status: field(prof, "Status"),
     sec: sections(prof), scRows, memory: rd(`${memDir}/MEMORY.md`), memFiles, last: last || "—", dirty: !!dirty,
   };
@@ -74,11 +91,15 @@ agents.sort((a, b) => rank(a.slug) - rank(b.slug));
 const GROUP_ORDER = ["Strategie", "Produs", "Comunicare"];
 
 // --- Noutăți ---
-const reports = fs.readdirSync(path.join(ROOT, "docs/rapoarte")).filter((f) => f.endsWith(".md")).sort().reverse().map((f) => {
-  const s = rd(`docs/rapoarte/${f}`);
+const reports = fs.readdirSync(path.join(ROOT, "team/tudor/rapoarte")).filter((f) => f.endsWith(".md")).sort().reverse().map((f) => {
+  const s = rd(`team/tudor/rapoarte/${f}`);
   return { file: f, date: (f.match(/\d{4}-\d{2}-\d{2}/) || [""])[0], title: (s.match(/^# (.+)$/m) || [, f])[1], result: field(s, "Rezultat") };
 });
 const decisions = tableRows(rd("docs/decizii.md")).reverse();
+const aor = tableRows(rd("docs/aor.md"));
+const ideas = tableRows(rd("docs/idei.md")).filter((r) => /^I-\d+/.test(r[0]));
+const activeIdeas = ideas.filter((r) => !/respins|live/i.test(r[4])).length;
+const plain = (t) => t.replace(/\*\*/g, "");
 const proposals = tableRows((rd("ECHIPA.md").split("### Propuneri deschise")[1] || "").split("\n## ")[0]);
 const questions = (rd("docs/intrebari-pentru-alex.md").match(/^\d+\. /gm) || []).length;
 const commits = git("log -8 --format=%cs%x09%s").split("\n").filter(Boolean).map((l) => l.split("\t"));
@@ -131,6 +152,9 @@ const agentPanel = (a) => `
     ${card("Ce NU face", md(a.sec["Ce NU face"] || ""))}
     ${card("Ultimele sarcini (scorecard)", a.scRows.length ? `<ul class="log">${a.scRows.slice(-5).reverse().map((r) => `<li><time>${esc(r[0])}</time><div><strong>${inline(r[1])}</strong><span>${inline(r[2])}${r[3] && r[3] !== "–" ? ` · utilitate ${esc(r[3])}/5` : ""}</span>${r[5] && r[5] !== "–" ? `<em>${inline(r[5])}</em>` : ""}</div></li>`).join("")}</ul>` : "<p>Nicio sarcină încă.</p>", "wide")}
     ${card("Memorie", `<div class="mem">${md(a.memory.replace(/^# .+\n/, ""))}</div>${a.memFiles.length > 1 ? `<p class="small">Alte fișiere de memorie: ${a.memFiles.filter((f) => f !== "MEMORY.md").map((f) => `<code>${esc(f)}</code>`).join(", ")}</p>` : ""}`, "wide")}
+    ${card("Arii de responsabilitate (DRI)", (() => { const mine = aor.filter((r) => r[1].includes(a.name)); const backup = aor.filter((r) => r[2].includes(a.name)); return mine.length || backup.length ? `<ul class="log">${mine.map((r) => `<li><time>DRI</time><div><strong>${inline(r[0])}</strong><span>${inline(r[4])} · ${inline(r[5])}</span></div></li>`).join("")}${backup.map((r) => `<li><time>backup</time><div><span>${inline(r[0])}</span></div></li>`).join("")}</ul>` : "<p>Nicio arie încă.</p>"; })())}
+    ${card("Idei pe care le deține", (() => { const mine = ideas.filter((r) => r[3].includes(a.name)); return mine.length ? `<ul class="log">${mine.map((r) => `<li><time>${esc(r[0])}</time><div><strong>${inline(plain(r[1]).split(".")[0])}</strong>${chip(r[4], /parcat|respins/.test(r[4]) ? "warn" : /live|aprobat/.test(r[4]) ? "ok" : "info")}</div></li>`).join("")}</ul>` : "<p>Nicio idee încă.</p>"; })())}
+    ${card("Documentele lui " + a.name, a.docs.length ? `<ul class="log docs">${a.docs.map((d) => `<li><time>${esc(d.date)}</time><div><strong>${inline(d.title)}</strong><code>${esc(d.rel)}</code></div></li>`).join("")}</ul>` : "<p>Niciun document încă.</p>", "wide")}
     ${card("Fișiere", `<ul class="files"><li><code>team/${a.slug}/profil.md</code></li><li><code>team/${a.slug}/scorecard.md</code></li><li><code>.claude/agent-memory/${a.slug}/</code></li><li><code>${a.slug === "tudor" ? "CLAUDE.md" : `.claude/agents/${a.slug}.md`}</code></li></ul>`)}
   </div>
 </article>`;
@@ -224,6 +248,9 @@ h1{font-size:clamp(26px,4vw,36px);letter-spacing:-.01em}
 .mem blockquote{margin:0 0 8px;color:var(--muted);font-size:13px}
 .small{font-size:13px;color:var(--muted);margin-top:10px}
 code,.path{font:12.5px var(--mono);background:color-mix(in srgb,var(--fg) 7%,transparent);padding:1px 5px;border-radius:6px;overflow-wrap:anywhere}
+.docs code{justify-self:start}
+.who{font-weight:600;color:var(--c);text-decoration:none;white-space:nowrap}
+.who:hover{text-decoration:underline}
 .files{list-style:none;padding:0!important;display:grid;gap:6px}
 .tablewrap{overflow-x:auto}
 table{border-collapse:collapse;font-size:13.5px;width:100%}
@@ -243,6 +270,7 @@ footer{color:var(--muted);font-size:13px}
     </div>
     <div class="stats">
       <div class="stat"><b>${agents.length}</b>agenți</div>
+      <div class="stat"><b>${activeIdeas}</b>idei active</div>
       <div class="stat"><b>${reports.length}</b>rapoarte</div>
       <div class="stat"><b>${pendingDecisions}</b>decizii de confirmat</div>
       <div class="stat"><b>${questions}</b>întrebări pentru tine</div>
@@ -252,6 +280,13 @@ footer{color:var(--muted);font-size:13px}
   <section aria-labelledby="org-h">
     <div class="label" id="org-h">Organigrama · alege un agent</div>
     ${orgChart}
+  </section>
+
+  <section aria-labelledby="ideas-h">
+    <div class="label" id="ideas-h">Lista de idei · fiecare are un responsabil</div>
+    <div class="card"><div class="tablewrap"><table><thead><tr><th>ID</th><th>Idee</th><th>DRI</th><th>Status</th><th>Următorul pas</th></tr></thead><tbody>
+    ${ideas.map((r) => { const ag = agents.find((x) => r[3].includes(x.name)); return `<tr><td><code>${esc(r[0])}</code></td><td>${inline(r[1])}</td><td>${ag ? `<a href="#${ag.slug}" class="who" style="--c:${ag.color}">${esc(r[3])}</a>` : inline(r[3])}</td><td>${chip(r[4], /parcat|respins/.test(r[4]) ? "warn" : /live|aprobat/.test(r[4]) ? "ok" : "info")}</td><td>${inline(r[5])}</td></tr>`; }).join("")}
+    </tbody></table></div></div>
   </section>
 
   <section aria-labelledby="news-h">
@@ -269,7 +304,7 @@ footer{color:var(--muted);font-size:13px}
     ${agents.map(agentPanel).join("\n")}
   </section>
 
-  <footer>Pagina se regenerează din repo cu <code>node scripts/build-echipa.mjs</code>. Sursa de adevăr rămân fișierele din <code>team/</code>, <code>.claude/</code> și <code>docs/</code>.</footer>
+  <footer>Repo public: https://github.com/alexandrumolea/AgentsTeam. Pagina se regenerează din repo cu <code>node scripts/build-echipa.mjs</code>. Sursa de adevăr rămân fișierele din <code>team/</code>, <code>.claude/</code> și <code>docs/</code>.</footer>
 </div>
 
 <script>

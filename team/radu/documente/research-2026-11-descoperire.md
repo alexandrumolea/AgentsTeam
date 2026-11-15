@@ -1,6 +1,6 @@
 # Research: descoperire și recomandări pe site
 
-> Autor: Radu. Dată: 2026-11-15. Folosit în `docs/site/arhitectura-v1.md`.
+> Autor: Radu. Dată: 2026-11-15. Folosit în `team/radu/documente/arhitectura-v1.md`.
 > Sursele sunt amestecate: câteva de cercetare UX (NN/g), multe de la vânzători de tool-uri. Cifrele de la vânzători sunt ipoteze, nu dovezi.
 
 ## 1. Recomandări „S-ar putea să-ți placă”

@@ -2,7 +2,7 @@
 
 > Autor: Radu. Dată: 2026-11-15. Status: **de aprobat de Alex**.
 > Pornește de la `arhitectura-v0.md` (rămâne neschimbată, pentru istoric) și adaugă obiectivul 2 din charter: site-ul inspiră și ajută la descoperire.
-> Research: `docs/research/2026-11-descoperire.md`.
+> Research: `team/radu/documente/research-2026-11-descoperire.md`.
 
 ## Principiul, actualizat
 v0: vizitatorul vine cu o nevoie. Prima întrebare a site-ului e **„De ce ai nevoie?”**

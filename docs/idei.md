@@ -1,0 +1,24 @@
+# Lista de idei a lui Alex
+
+> **DRI:** Tudor. **Backup:** Radu.
+> Spune-i lui Tudor orice idee, în orice formă. El o notează aici în aceeași sesiune, propune un DRI și o urmărește.
+> Procesul complet: [procese/idee-noua.md](procese/idee-noua.md).
+
+**Statusuri:**
+- **nouă:** notată, încă neanalizată
+- **în analiză:** DRI-ul scrie documentul ideii
+- **aprobată:** Alex a spus da
+- **în lucru:** se construiește
+- **live:** e pe site sau în uz
+- **parcată:** bună, dar nu acum (are o condiție de reluare)
+- **respinsă:** cu motiv
+
+| ID | Idee | De ce contează | DRI | Status | Următorul pas | Document |
+|---|---|---|---|---|---|---|
+| I-001 | **Echipa mea de agenți, la vedere.** Lumea vede cum m-am organizat. | Arată concret „inventatorul care își deschide atelierul”. Diferențiază brandul. E o invenție în sine. | Tudor | în analiză | Alex confirmă ce intră public (vezi documentul) | [idee-I-001-echipa-la-vedere.md](../team/tudor/documente/idee-I-001-echipa-la-vedere.md) |
+| I-002 | **Atelier:** vitrina cu invențiile mele (cursuri, apps, tool-uri) | Oamenii descoperă lucruri de care nu știau că au nevoie | Radu | în analiză | Alex alege direcția vizuală și dă lista invențiilor | [arhitectura-v1.md](../team/radu/documente/arhitectura-v1.md) |
+| I-003 | **Cartea** | Platformă de autor, credibilitate, ajunge la oameni pe care nu-i întâlnesc | Victor | nouă | Alex: subiectul într-o propoziție | – |
+| I-004 | **Mini-diagnostic de 3 întrebări** care recomandă ce se potrivește | Descoperire ghidată | Radu | parcată | Reluăm la cel puțin 8 lansări active | [descoperire-v0.md](../team/ioana/documente/descoperire-v0.md) |
+| I-005 | **Pagina „Acum”**: la ce lucrez în perioada asta | Arată că sunt activ chiar și fără lansări | Maria | nouă | Maria propune formatul | [research-branding-2026-11.md](../team/maria/documente/research-branding-2026-11.md) |
+| I-006 | **Rol nou: Editor de carte** | Cartea cere structură și ritm de scriere | Tudor | nouă | Decidem când pornește cartea | [ECHIPA.md](../ECHIPA.md) |
+| I-007 | **Rol nou: Product manager pentru tool-uri** | Lansările și întreținerea aplicațiilor | Tudor | nouă | Decidem când avem peste 5 tool-uri | [ECHIPA.md](../ECHIPA.md) |

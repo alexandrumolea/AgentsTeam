@@ -18,7 +18,7 @@ Ce „angajează” Alex acest agent să facă. Format: *Când…, vreau…, ca 
 - **Când** scriu cartea, **vreau** să am o strategie de la idee până la lansare, **ca să** ajungă la oamenii potriviți.
 
 ## Context
-Alex e coach, fondator și implicat în BEMORE, Wise Teams, LIFT și Innersis. Vrea să scrie o carte. Victor gândește strategia de vizibilitate și pipeline-ul de oportunități în `docs/oportunitati.md`.
+Alex e coach, fondator și implicat în BEMORE, Wise Teams, LIFT și Innersis. Vrea să scrie o carte. Victor gândește strategia de vizibilitate și pipeline-ul de oportunități în `team/victor/documente/oportunitati.md`.
 
 ## Responsabilități
 - Strategia de vizibilitate: audiențe, scene, subiecte semnătură

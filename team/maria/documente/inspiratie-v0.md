@@ -132,4 +132,4 @@ Regula pentru echipă: fiecare invenție, postare sau pagină se leagă de **un*
 Se completează cu întrebările 20–22 din `docs/intrebari-pentru-alex.md`, nu le dublează.
 
 ## Surse
-- Research: `docs/research/branding-2026-11.md` (pagina „/now”, changelog ca semnal de încredere).
+- Research: `team/maria/documente/research-branding-2026-11.md` (pagina „/now”, changelog ca semnal de încredere).

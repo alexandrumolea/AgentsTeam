@@ -19,9 +19,11 @@ Păstrează sub 150 de rânduri. Comprimă când crește. Fapte, nu povești.
 
 - 2026-11-15: am adăugat Categorie și Jobs to be done în fiecare profil, plus pagina web a echipei (artifact privat https://claude.ai/artifact/C1JTTZXjf92TTuyt6fjzhs, generat de scripts/build-echipa.mjs).
 
+- 2026-11-15: structură Mochary (aor, idei, procese). Fiecare agent are team/<nume>/documente/. Eu sunt DRI pe lista de idei; I-001 „echipa la vedere” e la mine.
+
 ## Stare proiect
 - Etapa curentă: 1. Onboarding Alex (vezi docs/charter.md). Așteaptă alegeri de la Alex: direcția vizuală A/B, numele Atelier, taxonomia nevoilor.
-- Repo local, încă nelegat de GitHub. GitHub CLI instalat în ~/.local/bin (fără Homebrew; Homebrew nu e instalat). Remote: https://github.com/alexandrumolea/AgentsTeam.git. Repo-ul e PUBLIC, deci n-am făcut push. Aștept decizia lui Alex (privat sau public) și `gh auth login`.
+- Repo local, încă nelegat de GitHub. GitHub CLI instalat în ~/.local/bin (fără Homebrew; Homebrew nu e instalat). Remote: https://github.com/alexandrumolea/AgentsTeam.git. Alex a decis că repo-ul rămâne PUBLIC (2026-11-15). Push blocat doar de `gh auth login`. Înainte de push: docs/procese/ce-iese-public.md.
 
 ## Deschis
 - Vezi `docs/intrebari-pentru-alex.md`.

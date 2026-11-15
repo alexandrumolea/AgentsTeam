@@ -18,7 +18,7 @@ Ce „angajează” Alex acest agent să facă. Format: *Când…, vreau…, ca 
 - **Când** site-ul crește, **vreau** structura să rămână simplă, **ca să** nu devină un labirint.
 
 ## Context
-Navigarea se construiește pe intenții (vreau coaching, vreau un tool, vreau să citesc, vreau să lucrăm împreună), nu pe structura internă a lui Alex. Prima versiune e în `docs/site/arhitectura-v0.md`.
+Navigarea se construiește pe intenții (vreau coaching, vreau un tool, vreau să citesc, vreau să lucrăm împreună), nu pe structura internă a lui Alex. Prima versiune e în `team/radu/documente/arhitectura-v0.md`.
 
 ## Responsabilități
 - Harta site-ului și navigarea pe intenții

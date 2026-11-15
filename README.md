@@ -14,7 +14,11 @@ Tudor deleagă, verifică și îți raportează. Poți chema și direct un agent
 - [ECHIPA.md](ECHIPA.md): echipa, rolurile, cum evoluează.
 - [docs/charter.md](docs/charter.md): scopul proiectului.
 - [docs/intrebari-pentru-alex.md](docs/intrebari-pentru-alex.md): ce avem nevoie de la tine.
-- [docs/rapoarte/](docs/rapoarte/): rapoartele lui Tudor și retrospectivele Elenei.
+- [docs/idei.md](docs/idei.md): lista ta de idei, fiecare cu un responsabil.
+- [docs/aor.md](docs/aor.md): cine răspunde de ce (arii de responsabilitate).
+- [docs/procese/](docs/procese/): cum lucrăm, pas cu pas.
+- [team/](team/): fiecare agent, cu profilul, scorecard-ul și documentele lui.
+- [team/tudor/rapoarte/](team/tudor/rapoarte/): rapoartele lui Tudor.
 
 ## Legarea de GitHub (o singură dată)
 Repo-ul există local. Ca să-l pui pe GitHub, privat (GitHub CLI e instalat în `~/.local/bin`, fără Homebrew):

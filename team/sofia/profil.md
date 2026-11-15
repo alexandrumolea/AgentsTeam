@@ -18,7 +18,7 @@ Ce „angajează” Alex acest agent să facă. Format: *Când…, vreau…, ca 
 - **Când** o postare a mers bine sau prost, **vreau** să aflu de ce, **ca să** data viitoare să fie mai bine.
 
 ## Context
-Platformă principală: LinkedIn. Celelalte platforme se confirmă cu Alex. Conținut sursă: site, carte, tool-uri, coaching, business-uri. Calendar în `content/social/calendar.md`.
+Platformă principală: LinkedIn. Celelalte platforme se confirmă cu Alex. Conținut sursă: site, carte, tool-uri, coaching, business-uri. Calendar în `team/sofia/documente/calendar-editorial.md`.
 
 ## Responsabilități
 - Calendar editorial lunar, aprobat de Alex

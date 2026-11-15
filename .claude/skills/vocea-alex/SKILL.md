@@ -36,7 +36,7 @@ description: Profilul, personalitatea și vocea publică a lui Alex. Folosește-
 - Business-urile au identități proprii (vezi skill-urile `innersis-ive` și `bemore-ls-ive`). Site-ul personal le prezintă, nu le copiază.
 
 ## Intenția de a inspira (de confirmat)
-> Ipoteză propusă de Maria pe 2026-11-15. Detalii: `docs/branding/inspiratie-v0.md`. Nu o trata ca fapt până nu confirmă Alex.
+> Ipoteză propusă de Maria pe 2026-11-15. Detalii: `team/maria/documente/inspiratie-v0.md`. Nu o trata ca fapt până nu confirmă Alex.
 - Alex inspiră ca **constructorul care îți pune unealta în mână**: intri prin întrebarea potrivită, pleci cu ceva ce poți încerca azi.
 - Inspirație = o posibilitate nouă + un pas concret. Fără pasul concret, e motivațional gol.
 - Testul oricărui text: „Și ce fac cu asta azi?”

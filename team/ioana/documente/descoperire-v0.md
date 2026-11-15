@@ -4,7 +4,7 @@
 > Răspunde la obiectivul 2 din `docs/charter.md`. Se potrivește cu oricare mecanism ales de Radu: bandă „Nou”, recomandări, vitrină, mini-diagnostic.
 > Numele secțiunilor („Nou de la Alex”, „Vitrina” etc.) sunt provizorii. Maria le stabilește.
 > Toate produsele din exemple sunt **fictive**.
-> Mock: `docs/design/mock-descoperire.html` (static, un fișier, conținut fictiv, are un comutator între cele 2 direcții).
+> Mock: `team/ioana/documente/mock-descoperire.html` (static, un fișier, conținut fictiv, are un comutator între cele 2 direcții).
 
 ## Regula de bază
 Drumul direct rămâne la 2 click-uri. Descoperirea stă **după** răspunsul la nevoia vizitatorului, niciodată înainte sau peste el.
