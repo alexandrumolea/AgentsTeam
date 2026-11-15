@@ -95,7 +95,11 @@ const reports = fs.readdirSync(path.join(ROOT, "team/tudor/rapoarte")).filter((f
   const s = rd(`team/tudor/rapoarte/${f}`);
   return { file: f, date: (f.match(/\d{4}-\d{2}-\d{2}/) || [""])[0], title: (s.match(/^# (.+)$/m) || [, f])[1], result: field(s, "Rezultat") };
 });
-const decisions = tableRows(rd("docs/decizii.md")).reverse();
+const GH = "https://github.com/alexandrumolea/AgentsTeam/blob/main/";
+const decisionsAll = tableRows(rd("docs/decizii.md")).filter((r) => /^D-\d+/.test(r[0]));
+const isPending = (st) => /de luat|de confirmat|de discutat/i.test(st);
+const pending = decisionsAll.filter((r) => isPending(r[5])).sort((a, b) => (/de luat/.test(b[5]) - /de luat/.test(a[5])) || a[0].localeCompare(b[0]));
+const decisions = decisionsAll.filter((r) => !isPending(r[5])).reverse();
 const aor = tableRows(rd("docs/aor.md"));
 const ideas = tableRows(rd("docs/idei.md")).filter((r) => /^I-\d+/.test(r[0]));
 const activeIdeas = ideas.filter((r) => !/respins|live/i.test(r[4])).length;
@@ -105,7 +109,7 @@ const questions = (rd("docs/intrebari-pentru-alex.md").match(/^\d+\. /gm) || [])
 const commits = git("log -8 --format=%cs%x09%s").split("\n").filter(Boolean).map((l) => l.split("\t"));
 const head = git("log -1 --format=%cs");
 const now = new Date().toISOString().slice(0, 10);
-const pendingDecisions = decisions.filter((r) => /confirmat|propunere/i.test(r[r.length - 1] || "")).length;
+const pendingDecisions = pending.length;
 
 // --- HTML ---
 const chip = (txt, cls = "") => `<span class="chip ${cls}">${inline(txt)}</span>`;
@@ -141,6 +145,13 @@ const agentPanel = (a) => `
     <div class="agent-t"><h2>${esc(a.name)}</h2><p>${esc(a.role)}</p></div>
     <div class="chips">${chip(a.category, "cat")}${chip(a.status, statusCls(a.status))}${chip("Raportează: " + a.reportsTo)}</div>
   </header>
+  <ul class="comp" aria-label="Ce are ${esc(a.name)}">${[
+    ["Categorie", !!a.category], ["Scop", !!a.sec["Scop"]], ["Jobs to be done", !!a.sec["Jobs to be done"]], ["Context", !!a.sec["Context"]],
+    ["Responsabilități", !!a.sec["Responsabilități"]], ["Soft skills", !!a.sec["Soft skills"]], ["Claude skills", !!a.sec["Claude skills și unelte"]],
+    ["KPI", !!a.sec["Cum măsurăm dacă e util (KPI)"]], ["Ce NU face", !!a.sec["Ce NU face"]], ["Memorie", !!a.memory],
+    ["Scorecard", a.scRows.length > 0], ["Documente", a.docs.length > 0], ["Arii (DRI)", aor.some((r) => r[1].includes(a.name))],
+    ["Instrucțiuni agent", a.slug === "tudor" ? true : !!rd(`.claude/agents/${a.slug}.md`)], ["Istoric rol", !!a.sec["Istoric rol"]],
+  ].map(([n, ok]) => `<li class="${ok ? "on" : "off"}">${ok ? "✓" : "–"} ${esc(n)}</li>`).join("")}</ul>
   <div class="grid">
     ${card("Scop", md(a.sec["Scop"] || ""), "wide")}
     ${card("Jobs to be done", md((a.sec["Jobs to be done"] || "").split("\n").filter((l) => /^- /.test(l)).join("\n")), "wide jtbd")}
@@ -251,6 +262,48 @@ code,.path{font:12.5px var(--mono);background:color-mix(in srgb,var(--fg) 7%,tra
 .docs code{justify-self:start}
 .who{font-weight:600;color:var(--c);text-decoration:none;white-space:nowrap}
 .who:hover{text-decoration:underline}
+.stat{text-decoration:none}
+a.stat:hover{border-color:var(--accent)}
+.comp{list-style:none;padding:0;margin:0;display:flex;flex-wrap:wrap;gap:6px}
+.comp li{font-size:12px;padding:3px 9px;border-radius:999px;border:1px solid var(--line)}
+.comp li.on{color:var(--ok);border-color:color-mix(in srgb,var(--ok) 35%,transparent)}
+.comp li.off{color:var(--warn);border-color:color-mix(in srgb,var(--warn) 45%,transparent)}
+.dec-top{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:center;gap:8px}
+.dec-top .label{margin:0}
+.filters{display:flex;flex-wrap:wrap;gap:6px}
+.flt{font:500 13px var(--body);color:var(--muted);background:transparent;border:1px solid var(--line);border-radius:999px;padding:5px 12px;cursor:pointer}
+.flt b{font-variant-numeric:tabular-nums;color:var(--fg);margin-left:4px}
+.flt.on{background:var(--fg);color:var(--bg);border-color:var(--fg)}
+.flt.on b{color:var(--bg)}
+.flt:focus-visible,.vb:focus-visible,.save:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.dec-status{margin:8px 0 12px;font-size:13px;color:var(--muted)}
+.decs{display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:14px}
+.dec{display:grid;gap:8px;align-content:start;min-width:0;background:var(--glass-solid);border:1px solid var(--line);border-left:4px solid var(--c);border-radius:16px;padding:16px 18px;box-shadow:var(--shadow)}
+.dec header{display:flex;flex-wrap:wrap;gap:8px;align-items:center;font-size:12.5px;color:var(--muted)}
+.dec .by{margin-left:auto}
+.dec h3{font:600 15px/1.4 var(--body)}
+.dec .why{margin:0;color:var(--muted);font-size:13.5px}
+.doclink{font-size:13px;justify-self:start}
+.dec.done{opacity:.92}
+.verdict{font-size:13.5px;padding:8px 10px;border-radius:10px;background:color-mix(in srgb,var(--fg) 5%,transparent)}
+.verdict.aprobat{background:color-mix(in srgb,var(--ok) 13%,transparent);color:var(--ok)}
+.verdict.respins{background:color-mix(in srgb,var(--warn) 14%,transparent);color:var(--warn)}
+.verdict.discutam{background:color-mix(in srgb,var(--info) 13%,transparent);color:var(--info)}
+.verdict q{display:block;color:var(--fg);margin-top:4px;quotes:none;white-space:pre-wrap}
+.actions{display:grid;gap:8px}
+.btns{display:flex;flex-wrap:wrap;gap:6px}
+.vb,.save{font:600 13px var(--body);border-radius:10px;padding:7px 14px;cursor:pointer;border:1px solid var(--line);background:transparent;color:var(--fg)}
+.vb.ok{border-color:color-mix(in srgb,var(--ok) 50%,transparent);color:var(--ok)}
+.vb.no{border-color:color-mix(in srgb,var(--warn) 55%,transparent);color:var(--warn)}
+.vb.talk{border-color:color-mix(in srgb,var(--info) 50%,transparent);color:var(--info)}
+.vb.sel.ok{background:var(--ok);color:var(--bg)}
+.vb.sel.no{background:var(--warn);color:var(--bg)}
+.vb.sel.talk{background:var(--info);color:var(--bg)}
+.vb:disabled,.save:disabled{opacity:.55;cursor:default}
+.nl{font-size:12px;color:var(--muted)}
+.dec textarea{font:14px/1.45 var(--body);color:var(--fg);background:var(--bg);border:1px solid var(--line);border-radius:10px;padding:8px 10px;resize:vertical;width:100%}
+.dec .row{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.dec .msg{font-size:12.5px;color:var(--muted)}
 .files{list-style:none;padding:0!important;display:grid;gap:6px}
 .tablewrap{overflow-x:auto}
 table{border-collapse:collapse;font-size:13.5px;width:100%}
@@ -272,7 +325,7 @@ footer{color:var(--muted);font-size:13px}
       <div class="stat"><b>${agents.length}</b>agenți</div>
       <div class="stat"><b>${activeIdeas}</b>idei active</div>
       <div class="stat"><b>${reports.length}</b>rapoarte</div>
-      <div class="stat"><b>${pendingDecisions}</b>decizii de confirmat</div>
+      <a class="stat" href="#decizii"><b>${pendingDecisions}</b>decizii de luat</a>
       <div class="stat"><b>${questions}</b>întrebări pentru tine</div>
     </div>
   </header>
@@ -280,6 +333,37 @@ footer{color:var(--muted);font-size:13px}
   <section aria-labelledby="org-h">
     <div class="label" id="org-h">Organigrama · alege un agent</div>
     ${orgChart}
+  </section>
+
+  <section aria-labelledby="dec-h" id="decizii">
+    <div class="dec-top">
+      <div class="label" id="dec-h">Decizii de luat · aprobi, respingi sau lași o notiță</div>
+      <div class="filters" role="group" aria-label="Filtru decizii">
+        <button type="button" class="flt on" data-f="toate">Toate <b>${pending.length}</b></button>
+        <button type="button" class="flt" data-f="fara">Fără răspuns <b id="cnt-fara">${pending.length}</b></button>
+        <button type="button" class="flt" data-f="raspuns">Răspunse <b id="cnt-raspuns">0</b></button>
+      </div>
+    </div>
+    <p class="dec-status" id="dec-status">Se încarcă răspunsurile tale…</p>
+    <div class="decs">
+    ${pending.map((r) => { const ag = agents.find((x) => r[4].includes(x.name)); return `<article class="dec" id="dec-${r[0]}" data-id="${r[0]}" style="--c:${ag ? ag.color : "var(--accent)"}">
+      <header><code>${esc(r[0])}</code>${chip(r[5], /de luat/.test(r[5]) ? "warn" : "info")}<span class="by">propune ${ag ? `<a href="#${ag.slug}" class="who">${esc(r[4])}</a>` : inline(r[4])}</span></header>
+      <h3>${inline(r[2])}</h3>
+      <p class="why">${inline(r[3])}</p>
+      ${r[6] ? `<a class="doclink" href="${GH}${encodeURI(r[6])}" target="_blank" rel="noopener">Deschide documentul pe GitHub ↗</a>` : ""}
+      <div class="verdict" hidden></div>
+      <div class="actions" hidden>
+        <div class="btns">
+          <button type="button" class="vb ok" data-v="aprobat">Aprob</button>
+          <button type="button" class="vb no" data-v="respins">Resping</button>
+          <button type="button" class="vb talk" data-v="discutam">Discutăm</button>
+        </div>
+        <label class="nl" for="note-${r[0]}">Notițele tale</label>
+        <textarea id="note-${r[0]}" rows="2" placeholder="Opțional: ce schimbăm, ce nu-ți place, întrebări pentru echipă"></textarea>
+        <div class="row"><button type="button" class="save">Salvează notița</button><span class="msg" aria-live="polite"></span></div>
+      </div>
+    </article>`; }).join("")}
+    </div>
   </section>
 
   <section aria-labelledby="ideas-h">
@@ -293,7 +377,7 @@ footer{color:var(--muted);font-size:13px}
     <div class="label" id="news-h">Ce e nou</div>
     <div class="news">
       ${card("Ultimele rapoarte", `<ul class="log">${reports.slice(0, 5).map((r) => `<li><time>${esc(r.date)}</time><div><strong>${inline(r.title.replace(/^Raport Tudor — /, ""))}</strong><span>${inline(r.result)}</span></div></li>`).join("")}</ul>`)}
-      ${card("Decizii recente", `<ul class="log">${decisions.slice(0, 6).map((r) => `<li><time>${esc(r[0])}</time><div><span>${inline(r[1])}</span>${chip(r[r.length - 1], /activ/i.test(r[r.length - 1]) ? "ok" : "info")}</div></li>`).join("")}</ul>`)}
+      ${card("Decizii luate", decisions.length ? `<ul class="log">${decisions.slice(0, 6).map((r) => `<li><time>${esc(r[0])}</time><div><span>${inline(r[2])}</span>${chip(r[5], /respins/i.test(r[5]) ? "warn" : "ok")}</div></li>`).join("")}</ul>` : "<p>Nicio decizie încă.</p>")}
       ${card("Propuneri pentru echipă", proposals.length ? `<ul class="log">${proposals.map((r) => `<li><time>${esc(r[0])}</time><div><span>${inline(r[1])}</span><em>${inline(r[4] || "")}</em></div></li>`).join("")}</ul>` : "<p>Nicio propunere deschisă.</p>")}
       ${card("Ultimele schimbări în repo", `<ul class="log">${commits.map(([d, s]) => `<li><time>${esc(d)}</time><div><span>${inline(s)}</span></div></li>`).join("")}</ul>`)}
     </div>
@@ -322,6 +406,76 @@ footer{color:var(--muted);font-size:13px}
   });
   window.addEventListener("hashchange",function(){show(fromHash())});
   show(fromHash());
+})();
+
+// --- Decizii: verdicte și notițe în baza de date a paginii ---
+(function(){
+  var cards=[].slice.call(document.querySelectorAll(".dec"));
+  var statusEl=document.getElementById("dec-status");
+  var verdicts={}; var filter="toate"; var busy={};
+  var LABEL={aprobat:"Ai aprobat",respins:"Ai respins",discutam:"Vrei să discutăm"};
+  function fmt(iso){try{return new Date(iso).toLocaleString("ro-RO",{day:"numeric",month:"short",hour:"2-digit",minute:"2-digit"})}catch(e){return ""}}
+  function render(){
+    var nAns=0;
+    cards.forEach(function(c){
+      var id=c.dataset.id, v=verdicts[id], box=c.querySelector(".verdict");
+      var answered=!!(v&&v.verdict); if(answered)nAns++;
+      c.classList.toggle("done",answered);
+      if(v&&(v.verdict||v.note)){
+        box.hidden=false; box.className="verdict "+(v.verdict||"");
+        box.textContent=(v.verdict?LABEL[v.verdict]:"Notiță salvată")+(v.updatedAt?" · "+fmt(v.updatedAt):"")+(v.applied?" · trecut în repo de Tudor":(v.verdict?" · Tudor îl trece în repo la următoarea sesiune":""));
+        if(v.note){var q=document.createElement("q");q.textContent=v.note;box.appendChild(q)}
+      } else { box.hidden=true; }
+      c.querySelectorAll(".vb").forEach(function(b){b.classList.toggle("sel",!!v&&v.verdict===b.dataset.v)});
+      var ta=c.querySelector("textarea");
+      if(ta&&document.activeElement!==ta&&!ta.dataset.dirty)ta.value=(v&&v.note)||"";
+      var show=filter==="toate"||(filter==="fara"&&!answered)||(filter==="raspuns"&&answered);
+      c.hidden=!show;
+    });
+    document.getElementById("cnt-fara").textContent=cards.length-nAns;
+    document.getElementById("cnt-raspuns").textContent=nAns;
+  }
+  document.querySelectorAll(".flt").forEach(function(b){b.addEventListener("click",function(){
+    filter=b.dataset.f; document.querySelectorAll(".flt").forEach(function(x){x.classList.toggle("on",x===b)}); render();
+  })});
+  render();
+  if(!window.claude||!window.claude.use){statusEl.textContent="Deschide pagina în Claude ca să aprobi deciziile și să lași notițe.";return}
+  Promise.all([window.claude.use("db"),window.claude.use("user")]).then(function(res){
+    var db=res[0], user=res[1];
+    if(!db){statusEl.textContent="Răspunsurile nu se pot încărca aici. Deschide pagina în Claude, autentificat.";return}
+    var timer=setTimeout(function(){statusEl.textContent="Răspunsurile nu au putut fi încărcate încă. Pagina încearcă în continuare."},10000);
+    db.collection("verdicts").onSnapshot(function(snap){
+      verdicts={}; snap.docs.forEach(function(d){verdicts[d.id]=d.data()});
+      if(!snap.metadata.fromCache){clearTimeout(timer)}
+      render();
+    },function(){clearTimeout(timer);statusEl.textContent="Răspunsurile nu mai pot fi citite în această sesiune. Reîncarcă pagina mai târziu."});
+    (user?user.isOwner():Promise.resolve(null)).then(function(owner){
+      if(owner===false){statusEl.textContent="Doar Alex poate aproba deciziile. Le vezi aici, cu răspunsurile lui.";return}
+      statusEl.textContent="Alegerile și notițele tale se salvează pe loc. Tudor le citește și le trece în repo.";
+      cards.forEach(function(c){
+        var id=c.dataset.id, act=c.querySelector(".actions"), msg=c.querySelector(".msg"), ta=c.querySelector("textarea");
+        act.hidden=false;
+        ta.addEventListener("input",function(){ta.dataset.dirty="1"});
+        function save(patch){
+          if(busy[id])return; busy[id]=true;
+          var cur=verdicts[id]||{};
+          var body={verdict:cur.verdict||null,note:cur.note||"",updatedAt:new Date().toISOString(),applied:false};
+          Object.keys(patch).forEach(function(k){body[k]=patch[k]});
+          c.querySelectorAll("button").forEach(function(b){b.disabled=true}); msg.textContent="Se salvează…";
+          db.collection("verdicts").doc(id).set(body).then(function(){
+            delete ta.dataset.dirty; msg.textContent="Salvat.";
+          }).catch(function(e){
+            msg.textContent=(e&&e.code==="invalid_argument")?"Nu ai drept de scriere aici.":(e&&e.code==="quota_exceeded")?"Baza de date e plină. Spune-i lui Tudor.":"Nu s-a salvat. Încearcă din nou.";
+          }).then(function(){busy[id]=false;c.querySelectorAll("button").forEach(function(b){b.disabled=false})});
+        }
+        c.querySelectorAll(".vb").forEach(function(b){b.addEventListener("click",function(){
+          var cur=verdicts[id]||{}; var v=cur.verdict===b.dataset.v?null:b.dataset.v;
+          save({verdict:v,note:ta.value.trim()});
+        })});
+        c.querySelector(".save").addEventListener("click",function(){save({note:ta.value.trim()})});
+      });
+    });
+  });
 })();
 </script>
 `;

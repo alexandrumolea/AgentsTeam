@@ -90,6 +90,48 @@ code,.path{font:12.5px var(--mono);background:color-mix(in srgb,var(--fg) 7%,tra
 .docs code{justify-self:start}
 .who{font-weight:600;color:var(--c);text-decoration:none;white-space:nowrap}
 .who:hover{text-decoration:underline}
+.stat{text-decoration:none}
+a.stat:hover{border-color:var(--accent)}
+.comp{list-style:none;padding:0;margin:0;display:flex;flex-wrap:wrap;gap:6px}
+.comp li{font-size:12px;padding:3px 9px;border-radius:999px;border:1px solid var(--line)}
+.comp li.on{color:var(--ok);border-color:color-mix(in srgb,var(--ok) 35%,transparent)}
+.comp li.off{color:var(--warn);border-color:color-mix(in srgb,var(--warn) 45%,transparent)}
+.dec-top{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:center;gap:8px}
+.dec-top .label{margin:0}
+.filters{display:flex;flex-wrap:wrap;gap:6px}
+.flt{font:500 13px var(--body);color:var(--muted);background:transparent;border:1px solid var(--line);border-radius:999px;padding:5px 12px;cursor:pointer}
+.flt b{font-variant-numeric:tabular-nums;color:var(--fg);margin-left:4px}
+.flt.on{background:var(--fg);color:var(--bg);border-color:var(--fg)}
+.flt.on b{color:var(--bg)}
+.flt:focus-visible,.vb:focus-visible,.save:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.dec-status{margin:8px 0 12px;font-size:13px;color:var(--muted)}
+.decs{display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:14px}
+.dec{display:grid;gap:8px;align-content:start;min-width:0;background:var(--glass-solid);border:1px solid var(--line);border-left:4px solid var(--c);border-radius:16px;padding:16px 18px;box-shadow:var(--shadow)}
+.dec header{display:flex;flex-wrap:wrap;gap:8px;align-items:center;font-size:12.5px;color:var(--muted)}
+.dec .by{margin-left:auto}
+.dec h3{font:600 15px/1.4 var(--body)}
+.dec .why{margin:0;color:var(--muted);font-size:13.5px}
+.doclink{font-size:13px;justify-self:start}
+.dec.done{opacity:.92}
+.verdict{font-size:13.5px;padding:8px 10px;border-radius:10px;background:color-mix(in srgb,var(--fg) 5%,transparent)}
+.verdict.aprobat{background:color-mix(in srgb,var(--ok) 13%,transparent);color:var(--ok)}
+.verdict.respins{background:color-mix(in srgb,var(--warn) 14%,transparent);color:var(--warn)}
+.verdict.discutam{background:color-mix(in srgb,var(--info) 13%,transparent);color:var(--info)}
+.verdict q{display:block;color:var(--fg);margin-top:4px;quotes:none;white-space:pre-wrap}
+.actions{display:grid;gap:8px}
+.btns{display:flex;flex-wrap:wrap;gap:6px}
+.vb,.save{font:600 13px var(--body);border-radius:10px;padding:7px 14px;cursor:pointer;border:1px solid var(--line);background:transparent;color:var(--fg)}
+.vb.ok{border-color:color-mix(in srgb,var(--ok) 50%,transparent);color:var(--ok)}
+.vb.no{border-color:color-mix(in srgb,var(--warn) 55%,transparent);color:var(--warn)}
+.vb.talk{border-color:color-mix(in srgb,var(--info) 50%,transparent);color:var(--info)}
+.vb.sel.ok{background:var(--ok);color:var(--bg)}
+.vb.sel.no{background:var(--warn);color:var(--bg)}
+.vb.sel.talk{background:var(--info);color:var(--bg)}
+.vb:disabled,.save:disabled{opacity:.55;cursor:default}
+.nl{font-size:12px;color:var(--muted)}
+.dec textarea{font:14px/1.45 var(--body);color:var(--fg);background:var(--bg);border:1px solid var(--line);border-radius:10px;padding:8px 10px;resize:vertical;width:100%}
+.dec .row{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.dec .msg{font-size:12.5px;color:var(--muted)}
 .files{list-style:none;padding:0!important;display:grid;gap:6px}
 .tablewrap{overflow-x:auto}
 table{border-collapse:collapse;font-size:13.5px;width:100%}
@@ -111,7 +153,7 @@ footer{color:var(--muted);font-size:13px}
       <div class="stat"><b>8</b>agenți</div>
       <div class="stat"><b>7</b>idei active</div>
       <div class="stat"><b>2</b>rapoarte</div>
-      <div class="stat"><b>10</b>decizii de confirmat</div>
+      <a class="stat" href="#decizii"><b>17</b>decizii de luat</a>
       <div class="stat"><b>22</b>întrebări pentru tine</div>
     </div>
   </header>
@@ -149,6 +191,293 @@ footer{color:var(--muted);font-size:13px}
 </div>
   </section>
 
+  <section aria-labelledby="dec-h" id="decizii">
+    <div class="dec-top">
+      <div class="label" id="dec-h">Decizii de luat · aprobi, respingi sau lași o notiță</div>
+      <div class="filters" role="group" aria-label="Filtru decizii">
+        <button type="button" class="flt on" data-f="toate">Toate <b>17</b></button>
+        <button type="button" class="flt" data-f="fara">Fără răspuns <b id="cnt-fara">17</b></button>
+        <button type="button" class="flt" data-f="raspuns">Răspunse <b id="cnt-raspuns">0</b></button>
+      </div>
+    </div>
+    <p class="dec-status" id="dec-status">Se încarcă răspunsurile tale…</p>
+    <div class="decs">
+    <article class="dec" id="dec-D-016" data-id="D-016" style="--c:#1d9bb0">
+      <header><code>D-016</code><span class="chip warn">de luat</span><span class="by">propune <a href="#ioana" class="who">Ioana</a></span></header>
+      <h3>Direcția vizuală pentru site: <strong>A. Galerie calmă</strong> (recomandarea Ioanei, cu statusurile din B) sau <strong>B. Laborator viu</strong></h3>
+      <p class="why">Stabilește cum arată descoperirea și Atelierul</p>
+      <a class="doclink" href="https://github.com/alexandrumolea/AgentsTeam/blob/main/team/ioana/documente/mock-descoperire.html" target="_blank" rel="noopener">Deschide documentul pe GitHub ↗</a>
+      <div class="verdict" hidden></div>
+      <div class="actions" hidden>
+        <div class="btns">
+          <button type="button" class="vb ok" data-v="aprobat">Aprob</button>
+          <button type="button" class="vb no" data-v="respins">Resping</button>
+          <button type="button" class="vb talk" data-v="discutam">Discutăm</button>
+        </div>
+        <label class="nl" for="note-D-016">Notițele tale</label>
+        <textarea id="note-D-016" rows="2" placeholder="Opțional: ce schimbăm, ce nu-ți place, întrebări pentru echipă"></textarea>
+        <div class="row"><button type="button" class="save">Salvează notița</button><span class="msg" aria-live="polite"></span></div>
+      </div>
+    </article><article class="dec" id="dec-D-017" data-id="D-017" style="--c:#8a5cd0">
+      <header><code>D-017</code><span class="chip warn">de luat</span><span class="by">propune <a href="#maria" class="who">Maria</a></span></header>
+      <h3>Numele vitrinei de invenții: <strong>Atelier</strong>, cu banda <strong>Nou în atelier</strong></h3>
+      <p class="why">Numele trăiește în pagină. În meniu rămâne „Tools și cursuri”</p>
+      <a class="doclink" href="https://github.com/alexandrumolea/AgentsTeam/blob/main/team/maria/documente/inspiratie-v0.md" target="_blank" rel="noopener">Deschide documentul pe GitHub ↗</a>
+      <div class="verdict" hidden></div>
+      <div class="actions" hidden>
+        <div class="btns">
+          <button type="button" class="vb ok" data-v="aprobat">Aprob</button>
+          <button type="button" class="vb no" data-v="respins">Resping</button>
+          <button type="button" class="vb talk" data-v="discutam">Discutăm</button>
+        </div>
+        <label class="nl" for="note-D-017">Notițele tale</label>
+        <textarea id="note-D-017" rows="2" placeholder="Opțional: ce schimbăm, ce nu-ți place, întrebări pentru echipă"></textarea>
+        <div class="row"><button type="button" class="save">Salvează notița</button><span class="msg" aria-live="polite"></span></div>
+      </div>
+    </article><article class="dec" id="dec-D-018" data-id="D-018" style="--c:#2f9a62">
+      <header><code>D-018</code><span class="chip warn">de luat</span><span class="by">propune <a href="#radu" class="who">Radu</a></span></header>
+      <h3>Cele 8 nevoi după care se filtrează tot: claritate, focus, obiceiuri, carieră, comunicare, leadership, echipă, dezvoltarea oamenilor</h3>
+      <p class="why">Pe ele se bazează recomandările și Atelierul. Scrie în notițe ce lipsește sau ce redenumim</p>
+      <a class="doclink" href="https://github.com/alexandrumolea/AgentsTeam/blob/main/team/radu/documente/arhitectura-v1.md" target="_blank" rel="noopener">Deschide documentul pe GitHub ↗</a>
+      <div class="verdict" hidden></div>
+      <div class="actions" hidden>
+        <div class="btns">
+          <button type="button" class="vb ok" data-v="aprobat">Aprob</button>
+          <button type="button" class="vb no" data-v="respins">Resping</button>
+          <button type="button" class="vb talk" data-v="discutam">Discutăm</button>
+        </div>
+        <label class="nl" for="note-D-018">Notițele tale</label>
+        <textarea id="note-D-018" rows="2" placeholder="Opțional: ce schimbăm, ce nu-ți place, întrebări pentru echipă"></textarea>
+        <div class="row"><button type="button" class="save">Salvează notița</button><span class="msg" aria-live="polite"></span></div>
+      </div>
+    </article><article class="dec" id="dec-D-019" data-id="D-019" style="--c:#1f8a83">
+      <header><code>D-019</code><span class="chip warn">de luat</span><span class="by">propune <a href="#tudor" class="who">Tudor</a></span></header>
+      <h3>Numele agenților propuși: <strong>Ioana</strong> (designer), <strong>Radu</strong> (arhitect), <strong>Victor</strong> (impresar), <strong>Elena</strong> (coach extern)</h3>
+      <p class="why">Ai dat nume doar lui Tudor, Sofia, Mike și Maria. Scrie în notițe alte nume, dacă vrei</p>
+      <a class="doclink" href="https://github.com/alexandrumolea/AgentsTeam/blob/main/ECHIPA.md" target="_blank" rel="noopener">Deschide documentul pe GitHub ↗</a>
+      <div class="verdict" hidden></div>
+      <div class="actions" hidden>
+        <div class="btns">
+          <button type="button" class="vb ok" data-v="aprobat">Aprob</button>
+          <button type="button" class="vb no" data-v="respins">Resping</button>
+          <button type="button" class="vb talk" data-v="discutam">Discutăm</button>
+        </div>
+        <label class="nl" for="note-D-019">Notițele tale</label>
+        <textarea id="note-D-019" rows="2" placeholder="Opțional: ce schimbăm, ce nu-ți place, întrebări pentru echipă"></textarea>
+        <div class="row"><button type="button" class="save">Salvează notița</button><span class="msg" aria-live="polite"></span></div>
+      </div>
+    </article><article class="dec" id="dec-D-020" data-id="D-020" style="--c:#8a5cd0">
+      <header><code>D-020</code><span class="chip warn">de luat</span><span class="by">propune <a href="#maria" class="who">Maria</a></span></header>
+      <h3>Interpretarea inspirației: <strong>constructorul care îți pune unealta în mână</strong> (o posibilitate nouă + un pas concret)</h3>
+      <p class="why">E fundația tonului pentru tot site-ul</p>
+      <a class="doclink" href="https://github.com/alexandrumolea/AgentsTeam/blob/main/team/maria/documente/inspiratie-v0.md" target="_blank" rel="noopener">Deschide documentul pe GitHub ↗</a>
+      <div class="verdict" hidden></div>
+      <div class="actions" hidden>
+        <div class="btns">
+          <button type="button" class="vb ok" data-v="aprobat">Aprob</button>
+          <button type="button" class="vb no" data-v="respins">Resping</button>
+          <button type="button" class="vb talk" data-v="discutam">Discutăm</button>
+        </div>
+        <label class="nl" for="note-D-020">Notițele tale</label>
+        <textarea id="note-D-020" rows="2" placeholder="Opțional: ce schimbăm, ce nu-ți place, întrebări pentru echipă"></textarea>
+        <div class="row"><button type="button" class="save">Salvează notița</button><span class="msg" aria-live="polite"></span></div>
+      </div>
+    </article><article class="dec" id="dec-D-021" data-id="D-021" style="--c:#1f8a83">
+      <header><code>D-021</code><span class="chip warn">de luat</span><span class="by">propune <a href="#tudor" class="who">Tudor</a></span></header>
+      <h3>I-001: pagina publică despre echipă arată <strong>organigrama, procesele și lecțiile</strong>, dar nu memoria și scorecard-urile</h3>
+      <p class="why">Cât de mult deschidem din sistem. Scrie în notițe dacă vrei totul la vedere</p>
+      <a class="doclink" href="https://github.com/alexandrumolea/AgentsTeam/blob/main/team/tudor/documente/idee-I-001-echipa-la-vedere.md" target="_blank" rel="noopener">Deschide documentul pe GitHub ↗</a>
+      <div class="verdict" hidden></div>
+      <div class="actions" hidden>
+        <div class="btns">
+          <button type="button" class="vb ok" data-v="aprobat">Aprob</button>
+          <button type="button" class="vb no" data-v="respins">Resping</button>
+          <button type="button" class="vb talk" data-v="discutam">Discutăm</button>
+        </div>
+        <label class="nl" for="note-D-021">Notițele tale</label>
+        <textarea id="note-D-021" rows="2" placeholder="Opțional: ce schimbăm, ce nu-ți place, întrebări pentru echipă"></textarea>
+        <div class="row"><button type="button" class="save">Salvează notița</button><span class="msg" aria-live="polite"></span></div>
+      </div>
+    </article><article class="dec" id="dec-D-022" data-id="D-022" style="--c:#1f8a83">
+      <header><code>D-022</code><span class="chip warn">de luat</span><span class="by">propune <a href="#tudor" class="who">Tudor</a></span></header>
+      <h3>Commit-urile folosesc adresa anonimă de la GitHub în loc de Gmail, înainte de primul push</h3>
+      <p class="why">Repo-ul e public, iar adresa din commit-uri devine vizibilă</p>
+      <a class="doclink" href="https://github.com/alexandrumolea/AgentsTeam/blob/main/docs/procese/ce-iese-public.md" target="_blank" rel="noopener">Deschide documentul pe GitHub ↗</a>
+      <div class="verdict" hidden></div>
+      <div class="actions" hidden>
+        <div class="btns">
+          <button type="button" class="vb ok" data-v="aprobat">Aprob</button>
+          <button type="button" class="vb no" data-v="respins">Resping</button>
+          <button type="button" class="vb talk" data-v="discutam">Discutăm</button>
+        </div>
+        <label class="nl" for="note-D-022">Notițele tale</label>
+        <textarea id="note-D-022" rows="2" placeholder="Opțional: ce schimbăm, ce nu-ți place, întrebări pentru echipă"></textarea>
+        <div class="row"><button type="button" class="save">Salvează notița</button><span class="msg" aria-live="polite"></span></div>
+      </div>
+    </article><article class="dec" id="dec-D-001" data-id="D-001" style="--c:#1f8a83">
+      <header><code>D-001</code><span class="chip info">de confirmat de Alex</span><span class="by">propune <a href="#tudor" class="who">Tudor (propunere)</a></span></header>
+      <h3>Tudor = sesiunea principală, ceilalți = subagenți</h3>
+      <p class="why">Subagenții nu pot delega mai departe; coordonatorul trebuie să fie sesiunea principală</p>
+      <a class="doclink" href="https://github.com/alexandrumolea/AgentsTeam/blob/main/CLAUDE.md" target="_blank" rel="noopener">Deschide documentul pe GitHub ↗</a>
+      <div class="verdict" hidden></div>
+      <div class="actions" hidden>
+        <div class="btns">
+          <button type="button" class="vb ok" data-v="aprobat">Aprob</button>
+          <button type="button" class="vb no" data-v="respins">Resping</button>
+          <button type="button" class="vb talk" data-v="discutam">Discutăm</button>
+        </div>
+        <label class="nl" for="note-D-001">Notițele tale</label>
+        <textarea id="note-D-001" rows="2" placeholder="Opțional: ce schimbăm, ce nu-ți place, întrebări pentru echipă"></textarea>
+        <div class="row"><button type="button" class="save">Salvează notița</button><span class="msg" aria-live="polite"></span></div>
+      </div>
+    </article><article class="dec" id="dec-D-004" data-id="D-004" style="--c:#1f8a83">
+      <header><code>D-004</code><span class="chip info">de confirmat de Alex</span><span class="by">propune <a href="#tudor" class="who">Ioana / Tudor</a></span></header>
+      <h3>Liquid Glass doar pe navigare și carduri, nu pe text lung</h3>
+      <p class="why">Contrast și performanță (vezi research kickoff)</p>
+      <a class="doclink" href="https://github.com/alexandrumolea/AgentsTeam/blob/main/team/tudor/documente/research-2026-11-kickoff-skills.md" target="_blank" rel="noopener">Deschide documentul pe GitHub ↗</a>
+      <div class="verdict" hidden></div>
+      <div class="actions" hidden>
+        <div class="btns">
+          <button type="button" class="vb ok" data-v="aprobat">Aprob</button>
+          <button type="button" class="vb no" data-v="respins">Resping</button>
+          <button type="button" class="vb talk" data-v="discutam">Discutăm</button>
+        </div>
+        <label class="nl" for="note-D-004">Notițele tale</label>
+        <textarea id="note-D-004" rows="2" placeholder="Opțional: ce schimbăm, ce nu-ți place, întrebări pentru echipă"></textarea>
+        <div class="row"><button type="button" class="save">Salvează notița</button><span class="msg" aria-live="polite"></span></div>
+      </div>
+    </article><article class="dec" id="dec-D-005" data-id="D-005" style="--c:#2f9a62">
+      <header><code>D-005</code><span class="chip info">de confirmat de Alex</span><span class="by">propune <a href="#radu" class="who">Radu / Mike</a></span></header>
+      <h3>Stack propus: Astro + Markdown + Vercel/Netlify + Cal.com</h3>
+      <p class="why">Rapid, ieftin, ușor de actualizat</p>
+      <a class="doclink" href="https://github.com/alexandrumolea/AgentsTeam/blob/main/team/radu/documente/arhitectura-v1.md" target="_blank" rel="noopener">Deschide documentul pe GitHub ↗</a>
+      <div class="verdict" hidden></div>
+      <div class="actions" hidden>
+        <div class="btns">
+          <button type="button" class="vb ok" data-v="aprobat">Aprob</button>
+          <button type="button" class="vb no" data-v="respins">Resping</button>
+          <button type="button" class="vb talk" data-v="discutam">Discutăm</button>
+        </div>
+        <label class="nl" for="note-D-005">Notițele tale</label>
+        <textarea id="note-D-005" rows="2" placeholder="Opțional: ce schimbăm, ce nu-ți place, întrebări pentru echipă"></textarea>
+        <div class="row"><button type="button" class="save">Salvează notița</button><span class="msg" aria-live="polite"></span></div>
+      </div>
+    </article><article class="dec" id="dec-D-006" data-id="D-006" style="--c:#2f9a62">
+      <header><code>D-006</code><span class="chip info">de confirmat de Alex</span><span class="by">propune <a href="#radu" class="who">Radu</a></span></header>
+      <h3>Arhitectura v1: strat de descoperire cu 4 mecanisme (banda „Nou” sub cardurile de intenție, recomandări din etichete de nevoie după CTA, vitrina <code>/creatii</code> cu filtru pe nevoie, abonare la lansări). Un fișier per invenție în <code>content/lansari/</code> (înlocuiește <code>content/tools/</code>). Taxonomie de 8 nevoi în <code>content/nevoi.yml</code>. Diagnosticul de 3 întrebări și ideea săptămânii amânate</h3>
+      <p class="why">Obiectivul 2 din charter fără să lungească niciun drum de intenție; zero întreținere manuală pe bandă, vitrină și recomandări (vezi <code>team/radu/documente/arhitectura-v1.md</code>)</p>
+      <a class="doclink" href="https://github.com/alexandrumolea/AgentsTeam/blob/main/team/radu/documente/arhitectura-v1.md" target="_blank" rel="noopener">Deschide documentul pe GitHub ↗</a>
+      <div class="verdict" hidden></div>
+      <div class="actions" hidden>
+        <div class="btns">
+          <button type="button" class="vb ok" data-v="aprobat">Aprob</button>
+          <button type="button" class="vb no" data-v="respins">Resping</button>
+          <button type="button" class="vb talk" data-v="discutam">Discutăm</button>
+        </div>
+        <label class="nl" for="note-D-006">Notițele tale</label>
+        <textarea id="note-D-006" rows="2" placeholder="Opțional: ce schimbăm, ce nu-ți place, întrebări pentru echipă"></textarea>
+        <div class="row"><button type="button" class="save">Salvează notița</button><span class="msg" aria-live="polite"></span></div>
+      </div>
+    </article><article class="dec" id="dec-D-007" data-id="D-007" style="--c:#1f8a83">
+      <header><code>D-007</code><span class="chip info">de confirmat de Alex</span><span class="by">propune <a href="#tudor" class="who">Tudor (Maria + Radu)</a></span></header>
+      <h3><strong>Reconciliere Tudor, nume:</strong> în meniu rămâne eticheta clară „Tools și cursuri” (Radu). Pagina se numește „Atelier” cu subtitlul Mariei, adresa devine <code>/atelier</code> (în loc de <code>/creatii</code>), iar banda se numește „Nou în atelier”</h3>
+      <p class="why">Meniul vorbește pe limba vizitatorului, iar numele de brand trăiește în pagină. Așa evităm confuzia cu BEMORE Learning Studio</p>
+      <a class="doclink" href="https://github.com/alexandrumolea/AgentsTeam/blob/main/team/maria/documente/inspiratie-v0.md" target="_blank" rel="noopener">Deschide documentul pe GitHub ↗</a>
+      <div class="verdict" hidden></div>
+      <div class="actions" hidden>
+        <div class="btns">
+          <button type="button" class="vb ok" data-v="aprobat">Aprob</button>
+          <button type="button" class="vb no" data-v="respins">Resping</button>
+          <button type="button" class="vb talk" data-v="discutam">Discutăm</button>
+        </div>
+        <label class="nl" for="note-D-007">Notițele tale</label>
+        <textarea id="note-D-007" rows="2" placeholder="Opțional: ce schimbăm, ce nu-ți place, întrebări pentru echipă"></textarea>
+        <div class="row"><button type="button" class="save">Salvează notița</button><span class="msg" aria-live="polite"></span></div>
+      </div>
+    </article><article class="dec" id="dec-D-008" data-id="D-008" style="--c:#1f8a83">
+      <header><code>D-008</code><span class="chip info">de confirmat de Alex</span><span class="by">propune <a href="#tudor" class="who">Tudor</a></span></header>
+      <h3><strong>Reconciliere Tudor, câmpuri:</strong> lista lui Radu e cea oficială. Câmpurile Ioanei se mapează: <code>nume</code>→<code>titlu</code>, <code>nevoie</code>→<code>nevoi</code>, <code>alt</code>→<code>imagine_alt</code>, <code>cta_text</code>→<code>buton</code>, <code>nota_alex</code>→<code>de_ce</code>. Se adaugă opțional <code>efort</code> (ex.: „5 minute”, „4 săptămâni”), cerut de cardul Ioanei</h3>
+      <p class="why">Un singur model de conținut, ca Mike să nu primească două specificații</p>
+      <a class="doclink" href="https://github.com/alexandrumolea/AgentsTeam/blob/main/team/radu/documente/arhitectura-v1.md" target="_blank" rel="noopener">Deschide documentul pe GitHub ↗</a>
+      <div class="verdict" hidden></div>
+      <div class="actions" hidden>
+        <div class="btns">
+          <button type="button" class="vb ok" data-v="aprobat">Aprob</button>
+          <button type="button" class="vb no" data-v="respins">Resping</button>
+          <button type="button" class="vb talk" data-v="discutam">Discutăm</button>
+        </div>
+        <label class="nl" for="note-D-008">Notițele tale</label>
+        <textarea id="note-D-008" rows="2" placeholder="Opțional: ce schimbăm, ce nu-ți place, întrebări pentru echipă"></textarea>
+        <div class="row"><button type="button" class="save">Salvează notița</button><span class="msg" aria-live="polite"></span></div>
+      </div>
+    </article><article class="dec" id="dec-D-009" data-id="D-009" style="--c:#1f8a83">
+      <header><code>D-009</code><span class="chip info">de confirmat de Alex</span><span class="by">propune <a href="#tudor" class="who">Tudor</a></span></header>
+      <h3><strong>Reconciliere Tudor, cât timp e ceva „nou”:</strong> o singură setare, <code>zile_nou</code>. Pornește la 90 de zile (Radu), cât lansările sunt rare, și scade la 30 (Ioana) când Alex lansează lunar</h3>
+      <p class="why">Radu și Ioana propuseseră valori diferite. Valoarea corectă depinde de ritmul lansărilor</p>
+      <a class="doclink" href="https://github.com/alexandrumolea/AgentsTeam/blob/main/team/radu/documente/arhitectura-v1.md" target="_blank" rel="noopener">Deschide documentul pe GitHub ↗</a>
+      <div class="verdict" hidden></div>
+      <div class="actions" hidden>
+        <div class="btns">
+          <button type="button" class="vb ok" data-v="aprobat">Aprob</button>
+          <button type="button" class="vb no" data-v="respins">Resping</button>
+          <button type="button" class="vb talk" data-v="discutam">Discutăm</button>
+        </div>
+        <label class="nl" for="note-D-009">Notițele tale</label>
+        <textarea id="note-D-009" rows="2" placeholder="Opțional: ce schimbăm, ce nu-ți place, întrebări pentru echipă"></textarea>
+        <div class="row"><button type="button" class="save">Salvează notița</button><span class="msg" aria-live="polite"></span></div>
+      </div>
+    </article><article class="dec" id="dec-D-010" data-id="D-010" style="--c:#1f8a83">
+      <header><code>D-010</code><span class="chip info">de confirmat de Alex</span><span class="by">propune <a href="#tudor" class="who">Tudor</a></span></header>
+      <h3><strong>Reconciliere Tudor, diagnostic:</strong> în v1 intră doar rândul „Ce te frământă acum?”, adică filtrul cu zero întrebări. Designul Ioanei pentru diagnosticul de 3 întrebări e păstrat pentru când avem cel puțin 8 lansări</h3>
+      <p class="why">Fără destule invenții, un quiz e un ocol (Radu)</p>
+      <a class="doclink" href="https://github.com/alexandrumolea/AgentsTeam/blob/main/team/ioana/documente/descoperire-v0.md" target="_blank" rel="noopener">Deschide documentul pe GitHub ↗</a>
+      <div class="verdict" hidden></div>
+      <div class="actions" hidden>
+        <div class="btns">
+          <button type="button" class="vb ok" data-v="aprobat">Aprob</button>
+          <button type="button" class="vb no" data-v="respins">Resping</button>
+          <button type="button" class="vb talk" data-v="discutam">Discutăm</button>
+        </div>
+        <label class="nl" for="note-D-010">Notițele tale</label>
+        <textarea id="note-D-010" rows="2" placeholder="Opțional: ce schimbăm, ce nu-ți place, întrebări pentru echipă"></textarea>
+        <div class="row"><button type="button" class="save">Salvează notița</button><span class="msg" aria-live="polite"></span></div>
+      </div>
+    </article><article class="dec" id="dec-D-011" data-id="D-011" style="--c:#1d9bb0">
+      <header><code>D-011</code><span class="chip info">de confirmat de Alex</span><span class="by">propune <a href="#ioana" class="who">Ioana</a></span></header>
+      <h3>Sticla implicită trebuie să treacă singură contrastul AA, fără să se bazeze pe fallback, pentru că Safari nu suportă <code>prefers-reduced-transparency</code></h3>
+      <p class="why">Verificat pe caniuse de Ioana</p>
+      <a class="doclink" href="https://github.com/alexandrumolea/AgentsTeam/blob/main/team/ioana/documente/descoperire-v0.md" target="_blank" rel="noopener">Deschide documentul pe GitHub ↗</a>
+      <div class="verdict" hidden></div>
+      <div class="actions" hidden>
+        <div class="btns">
+          <button type="button" class="vb ok" data-v="aprobat">Aprob</button>
+          <button type="button" class="vb no" data-v="respins">Resping</button>
+          <button type="button" class="vb talk" data-v="discutam">Discutăm</button>
+        </div>
+        <label class="nl" for="note-D-011">Notițele tale</label>
+        <textarea id="note-D-011" rows="2" placeholder="Opțional: ce schimbăm, ce nu-ți place, întrebări pentru echipă"></textarea>
+        <div class="row"><button type="button" class="save">Salvează notița</button><span class="msg" aria-live="polite"></span></div>
+      </div>
+    </article><article class="dec" id="dec-D-015" data-id="D-015" style="--c:#1f8a83">
+      <header><code>D-015</code><span class="chip info">de confirmat de Alex</span><span class="by">propune <a href="#tudor" class="who">Tudor</a></span></header>
+      <h3>Lista de idei e deținută de Tudor (DRI), cu Radu ca backup</h3>
+      <p class="why">Alex trebuie să-și spună ideea o singură dată, unui singur om. Tudor o redirecționează către DRI-ul potrivit</p>
+      <a class="doclink" href="https://github.com/alexandrumolea/AgentsTeam/blob/main/docs/idei.md" target="_blank" rel="noopener">Deschide documentul pe GitHub ↗</a>
+      <div class="verdict" hidden></div>
+      <div class="actions" hidden>
+        <div class="btns">
+          <button type="button" class="vb ok" data-v="aprobat">Aprob</button>
+          <button type="button" class="vb no" data-v="respins">Resping</button>
+          <button type="button" class="vb talk" data-v="discutam">Discutăm</button>
+        </div>
+        <label class="nl" for="note-D-015">Notițele tale</label>
+        <textarea id="note-D-015" rows="2" placeholder="Opțional: ce schimbăm, ce nu-ți place, întrebări pentru echipă"></textarea>
+        <div class="row"><button type="button" class="save">Salvează notița</button><span class="msg" aria-live="polite"></span></div>
+      </div>
+    </article>
+    </div>
+  </section>
+
   <section aria-labelledby="ideas-h">
     <div class="label" id="ideas-h">Lista de idei · fiecare are un responsabil</div>
     <div class="card"><div class="tablewrap"><table><thead><tr><th>ID</th><th>Idee</th><th>DRI</th><th>Status</th><th>Următorul pas</th></tr></thead><tbody>
@@ -160,9 +489,9 @@ footer{color:var(--muted);font-size:13px}
     <div class="label" id="news-h">Ce e nou</div>
     <div class="news">
       <section class="card "><h3>Ultimele rapoarte</h3><ul class="log"><li><time>2026-11-15</time><div><strong>Kickoff</strong><span>Echipa de 8 agenți e creată, cu memorie, context, scop, skills și scorecard pentru fiecare. Arhitectura v0 a site-ului e propusă. Urmează onboarding-ul tău.</span></div></li><li><time>2026-11-15</time><div><strong>Inspirație și descoperire</strong><span>Avem o propunere coerentă pe trei straturi: structură (Radu), ton și nume (Maria), design (Ioana), plus un mock pe care îl poți deschide. Nimic nu e construit sau publicat. Totul așteaptă alegerile tale.</span></div></li></ul></section>
-      <section class="card "><h3>Decizii recente</h3><ul class="log"><li><time>2026-11-15</time><div><span>Lista de idei e deținută de Tudor (DRI), cu Radu ca backup</span><span class="chip info">de confirmat de Alex</span></div></li><li><time>2026-11-15</time><div><span>Fiecare agent își ține documentele în <code>team/&lt;nume&gt;/documente/</code>, iar rapoartele lui Tudor în <code>team/tudor/rapoarte/</code></span><span class="chip ok">activ</span></div></li><li><time>2026-11-15</time><div><span>Structură în stil Mochary: arii de responsabilitate cu DRI și backup (<code>docs/aor.md</code>), procese scrise (<code>docs/procese/</code>), lista de idei cu DRI (<code>docs/idei.md</code>)</span><span class="chip ok">activ</span></div></li><li><time>2026-11-15</time><div><span>Repo-ul AgentsTeam rămâne <strong>public</strong>. Totul e la vedere, cu excepțiile din <code>docs/procese/ce-iese-public.md</code></span><span class="chip ok">activ</span></div></li><li><time>2026-11-15</time><div><span>Sticla implicită trebuie să treacă singură contrastul AA, fără să se bazeze pe fallback, pentru că Safari nu suportă <code>prefers-reduced-transparency</code></span><span class="chip info">propunere</span></div></li><li><time>2026-11-15</time><div><span><strong>Reconciliere Tudor, diagnostic:</strong> în v1 intră doar rândul „Ce te frământă acum?”, adică filtrul cu zero întrebări. Designul Ioanei pentru diagnosticul de 3 întrebări e păstrat pentru când avem cel puțin 8 lansări</span><span class="chip info">propunere</span></div></li></ul></section>
+      <section class="card "><h3>Decizii luate</h3><ul class="log"><li><time>D-014</time><div><span>Fiecare agent își ține documentele în <code>team/&lt;nume&gt;/documente/</code>, iar rapoartele lui Tudor în <code>team/tudor/rapoarte/</code></span><span class="chip ok">activ</span></div></li><li><time>D-013</time><div><span>Structură în stil Mochary: arii de responsabilitate cu DRI și backup (<code>docs/aor.md</code>), procese scrise (<code>docs/procese/</code>), lista de idei cu DRI (<code>docs/idei.md</code>)</span><span class="chip ok">activ</span></div></li><li><time>D-012</time><div><span>Repo-ul AgentsTeam rămâne <strong>public</strong>. Totul e la vedere, cu excepțiile din <code>docs/procese/ce-iese-public.md</code></span><span class="chip ok">activ</span></div></li><li><time>D-003</time><div><span>Emailuri, evenimente și <code>git push</code> cer mereu confirmare</span><span class="chip ok">activ</span></div></li><li><time>D-002</time><div><span>Memoria agenților în <code>.claude/agent-memory/</code> (în git)</span><span class="chip ok">activ</span></div></li></ul></section>
       <section class="card "><h3>Propuneri pentru echipă</h3><ul class="log"><li><time>2026-11-15</time><div><span>Rol viitor: <strong>Editor de carte</strong> (structură, ritm de scriere, redactare)</span><em>în așteptare</em></div></li><li><time>2026-11-15</time><div><span>Rol viitor: <strong>Product manager pentru tool-uri</strong> (dacă tool-urile devin multe)</span><em>în așteptare</em></div></li></ul></section>
-      <section class="card "><h3>Ultimele schimbări în repo</h3><ul class="log"><li><time>2026-11-15</time><div><span>Structură Mochary: arii de responsabilitate, lista de idei, procese, documente pe agenți</span></div></li><li><time>2026-11-15</time><div><span>Jobs to be done și categorie pentru fiecare agent, pagina web a echipei</span></div></li><li><time>2026-11-15</time><div><span>Inspirație și descoperire: arhitectura v1, ton, concept vizual și mock</span></div></li><li><time>2026-11-15</time><div><span>Notează instalarea GitHub CLI fără Homebrew</span></div></li><li><time>2026-11-15</time><div><span>Kickoff: echipa de agenți, research, charter și arhitectura v0</span></div></li></ul></section>
+      <section class="card "><h3>Ultimele schimbări în repo</h3><ul class="log"><li><time>2026-11-15</time><div><span>Regenerează pagina echipei</span></div></li><li><time>2026-11-15</time><div><span>Structură Mochary: arii de responsabilitate, lista de idei, procese, documente pe agenți</span></div></li><li><time>2026-11-15</time><div><span>Jobs to be done și categorie pentru fiecare agent, pagina web a echipei</span></div></li><li><time>2026-11-15</time><div><span>Inspirație și descoperire: arhitectura v1, ton, concept vizual și mock</span></div></li><li><time>2026-11-15</time><div><span>Notează instalarea GitHub CLI fără Homebrew</span></div></li><li><time>2026-11-15</time><div><span>Kickoff: echipa de agenți, research, charter și arhitectura v0</span></div></li></ul></section>
     </div>
   </section>
 
@@ -175,6 +504,7 @@ footer{color:var(--muted);font-size:13px}
     <div class="agent-t"><h2>Tudor</h2><p>Chief of Staff</p></div>
     <div class="chips"><span class="chip cat">Coordonare</span><span class="chip ok">Activ</span><span class="chip ">Raportează: Alex</span></div>
   </header>
+  <ul class="comp" aria-label="Ce are Tudor"><li class="on">✓ Categorie</li><li class="on">✓ Scop</li><li class="on">✓ Jobs to be done</li><li class="on">✓ Context</li><li class="on">✓ Responsabilități</li><li class="on">✓ Soft skills</li><li class="on">✓ Claude skills</li><li class="on">✓ KPI</li><li class="on">✓ Ce NU face</li><li class="on">✓ Memorie</li><li class="on">✓ Scorecard</li><li class="on">✓ Documente</li><li class="on">✓ Arii (DRI)</li><li class="on">✓ Instrucțiuni agent</li><li class="on">✓ Istoric rol</li></ul>
   <div class="grid">
     <section class="card wide"><h3>Scop</h3><p>Proiectul își atinge scopul și Alex e mulțumit. Tudor transformă dorințele lui Alex în sarcini clare, le deleagă, verifică rezultatele și raportează constant.</p></section>
     <section class="card wide jtbd"><h3>Jobs to be done</h3><ul><li><strong>Când</strong> am o idee sau o cerință vagă, <strong>vreau</strong> s-o spun o singură dată, în cuvintele mele, <strong>ca să</strong> devină sarcini clare, făcute de cine trebuie.</li><li><strong>Când</strong> echipa lucrează pe mai multe fronturi, <strong>vreau</strong> să văd dintr-o privire ce e gata, ce așteaptă după mine și ce e blocat, <strong>ca să</strong> decid repede, fără să caut prin fișiere.</li><li><strong>Când</strong> un agent nu e util sau lipsește un rol, <strong>vreau</strong> să primesc o propunere argumentată, <strong>ca</strong> echipa să rămână mică și eficientă.</li><li><strong>Când</strong> îmi vine o idee pentru site sau pentru echipă, <strong>vreau</strong> s-o spun o singură dată, <strong>ca să</strong> fie notată, să primească un responsabil și să fie urmărită până se termină.</li><li><strong>Când</strong> pornim o etapă nouă, <strong>vreau</strong> să știu ce skill-uri și ce research sunt necesare, <strong>ca să</strong> nu construim pe ipoteze greșite.</li></ul></section>
@@ -212,6 +542,7 @@ footer{color:var(--muted);font-size:13px}
     <div class="agent-t"><h2>Elena</h2><p>Coach și consultant extern</p></div>
     <div class="chips"><span class="chip cat">Calitate</span><span class="chip info">Activ (nume propus, de confirmat de Alex)</span><span class="chip ">Raportează: Alex (direct)</span></div>
   </header>
+  <ul class="comp" aria-label="Ce are Elena"><li class="on">✓ Categorie</li><li class="on">✓ Scop</li><li class="on">✓ Jobs to be done</li><li class="on">✓ Context</li><li class="on">✓ Responsabilități</li><li class="on">✓ Soft skills</li><li class="on">✓ Claude skills</li><li class="on">✓ KPI</li><li class="on">✓ Ce NU face</li><li class="on">✓ Memorie</li><li class="on">✓ Scorecard</li><li class="on">✓ Documente</li><li class="on">✓ Arii (DRI)</li><li class="on">✓ Instrucțiuni agent</li><li class="on">✓ Istoric rol</li></ul>
   <div class="grid">
     <section class="card wide"><h3>Scop</h3><p>Sistemul devine mai bun în fiecare lună: fluxuri mai simple, mai puțină muncă pentru Alex, lecții care nu se pierd.</p></section>
     <section class="card wide jtbd"><h3>Jobs to be done</h3><ul><li><strong>Când</strong> lucrez de o lună cu echipa, <strong>vreau</strong> să aflu ce merge și ce mă costă timp, <strong>ca să</strong> îmbunătățesc sistemul, nu doar să-l folosesc.</li><li><strong>Când</strong> ceva s-a blocat între agenți sau între mine și ei, <strong>vreau</strong> să înțeleg cauza, <strong>ca să</strong> nu se repete.</li><li><strong>Când</strong> învățăm din mers, <strong>vreau</strong> lecțiile să fie scrise undeva, <strong>ca să</strong> nu le pierdem.</li></ul></section>
@@ -244,6 +575,7 @@ footer{color:var(--muted);font-size:13px}
     <div class="agent-t"><h2>Maria</h2><p>Personal Branding Manager</p></div>
     <div class="chips"><span class="chip cat">Strategie</span><span class="chip ok">Activ</span><span class="chip ">Raportează: Tudor</span></div>
   </header>
+  <ul class="comp" aria-label="Ce are Maria"><li class="on">✓ Categorie</li><li class="on">✓ Scop</li><li class="on">✓ Jobs to be done</li><li class="on">✓ Context</li><li class="on">✓ Responsabilități</li><li class="on">✓ Soft skills</li><li class="on">✓ Claude skills</li><li class="on">✓ KPI</li><li class="on">✓ Ce NU face</li><li class="on">✓ Memorie</li><li class="on">✓ Scorecard</li><li class="on">✓ Documente</li><li class="on">✓ Arii (DRI)</li><li class="on">✓ Instrucțiuni agent</li><li class="on">✓ Istoric rol</li></ul>
   <div class="grid">
     <section class="card wide"><h3>Scop</h3><p>Brandul lui Alex e coerent, relevant și ușor de recunoscut. Oricine înțelege în 5 secunde cine e și cu ce îl ajută.</p></section>
     <section class="card wide jtbd"><h3>Jobs to be done</h3><ul><li><strong>Când</strong> oamenii mă descoperă, <strong>vreau</strong> să înțeleagă în 5 secunde cine sunt și cum se leagă tot ce fac, <strong>ca să</strong> nu par dispersat.</li><li><strong>Când</strong> scriu sau public ceva, <strong>vreau</strong> să sune a mine și să conțină cuvintele potrivite, <strong>ca să</strong> fiu găsit și recunoscut.</li><li><strong>Când</strong> trendurile de comunicare se schimbă, <strong>vreau</strong> să știu ce e relevant pentru brandul meu, <strong>ca să</strong> rămân actual fără să-mi pierd identitatea.</li></ul></section>
@@ -278,6 +610,7 @@ footer{color:var(--muted);font-size:13px}
     <div class="agent-t"><h2>Victor</h2><p>Impresar</p></div>
     <div class="chips"><span class="chip cat">Strategie</span><span class="chip info">Activ (nume propus, de confirmat de Alex)</span><span class="chip ">Raportează: Tudor</span></div>
   </header>
+  <ul class="comp" aria-label="Ce are Victor"><li class="on">✓ Categorie</li><li class="on">✓ Scop</li><li class="on">✓ Jobs to be done</li><li class="on">✓ Context</li><li class="on">✓ Responsabilități</li><li class="on">✓ Soft skills</li><li class="on">✓ Claude skills</li><li class="on">✓ KPI</li><li class="on">✓ Ce NU face</li><li class="on">✓ Memorie</li><li class="on">✓ Scorecard</li><li class="on">✓ Documente</li><li class="on">✓ Arii (DRI)</li><li class="on">✓ Instrucțiuni agent</li><li class="on">✓ Istoric rol</li></ul>
   <div class="grid">
     <section class="card wide"><h3>Scop</h3><p>Alex ajunge în contextele în care e cel mai potrivit: scene, audiențe și parteneriate unde expertiza lui contează.</p></section>
     <section class="card wide jtbd"><h3>Jobs to be done</h3><ul><li><strong>Când</strong> vreau mai multă vizibilitate, <strong>vreau</strong> să știu în ce contexte și în fața căror audiențe am cel mai mare impact, <strong>ca să</strong> să-mi investesc timpul unde contează.</li><li><strong>Când</strong> apare o oportunitate, <strong>vreau</strong> să primesc o evaluare rapidă și un draft de răspuns, <strong>ca să</strong> decid în 2 minute.</li><li><strong>Când</strong> scriu cartea, <strong>vreau</strong> să am o strategie de la idee până la lansare, <strong>ca să</strong> ajungă la oamenii potriviți.</li></ul></section>
@@ -310,6 +643,7 @@ footer{color:var(--muted);font-size:13px}
     <div class="agent-t"><h2>Radu</h2><p>Arhitect</p></div>
     <div class="chips"><span class="chip cat">Produs</span><span class="chip info">Activ (nume propus, de confirmat de Alex)</span><span class="chip ">Raportează: Tudor</span></div>
   </header>
+  <ul class="comp" aria-label="Ce are Radu"><li class="on">✓ Categorie</li><li class="on">✓ Scop</li><li class="on">✓ Jobs to be done</li><li class="on">✓ Context</li><li class="on">✓ Responsabilități</li><li class="on">✓ Soft skills</li><li class="on">✓ Claude skills</li><li class="on">✓ KPI</li><li class="on">✓ Ce NU face</li><li class="on">✓ Memorie</li><li class="on">✓ Scorecard</li><li class="on">✓ Documente</li><li class="on">✓ Arii (DRI)</li><li class="on">✓ Instrucțiuni agent</li><li class="on">✓ Istoric rol</li></ul>
   <div class="grid">
     <section class="card wide"><h3>Scop</h3><p>Site-ul și tool-urile au o structură simplă care vorbește pe limba vizitatorului: „Ai nevoie de X? Mergi aici.”</p></section>
     <section class="card wide jtbd"><h3>Jobs to be done</h3><ul><li><strong>Când</strong> vreau să adaug ceva nou pe site (tool, curs, business), <strong>vreau</strong> să știu exact unde intră și ce fișier completez, <strong>ca să</strong> nu stric navigarea.</li><li><strong>Când</strong> un vizitator vine cu o nevoie, <strong>vreau</strong> să ajungă la ce caută în cel mult 2 click-uri, <strong>ca să</strong> nu plece frustrat.</li><li><strong>Când</strong> site-ul crește, <strong>vreau</strong> structura să rămână simplă, <strong>ca să</strong> nu devină un labirint.</li></ul></section>
@@ -344,6 +678,7 @@ footer{color:var(--muted);font-size:13px}
     <div class="agent-t"><h2>Ioana</h2><p>Designer UI/UX</p></div>
     <div class="chips"><span class="chip cat">Produs</span><span class="chip info">Activ (nume propus, de confirmat de Alex)</span><span class="chip ">Raportează: Tudor</span></div>
   </header>
+  <ul class="comp" aria-label="Ce are Ioana"><li class="on">✓ Categorie</li><li class="on">✓ Scop</li><li class="on">✓ Jobs to be done</li><li class="on">✓ Context</li><li class="on">✓ Responsabilități</li><li class="on">✓ Soft skills</li><li class="on">✓ Claude skills</li><li class="on">✓ KPI</li><li class="on">✓ Ce NU face</li><li class="on">✓ Memorie</li><li class="on">✓ Scorecard</li><li class="on">✓ Documente</li><li class="on">✓ Arii (DRI)</li><li class="on">✓ Instrucțiuni agent</li><li class="on">✓ Istoric rol</li></ul>
   <div class="grid">
     <section class="card wide"><h3>Scop</h3><p>Totul arată actual, premium și calm, în stil Liquid Glass Apple, și e ușor de folosit.</p></section>
     <section class="card wide jtbd"><h3>Jobs to be done</h3><ul><li><strong>Când</strong> cineva intră pe site, <strong>vreau</strong> să simtă imediat calitate, calm și actualitate, <strong>ca să</strong> aibă încredere și să rămână.</li><li><strong>Când</strong> lansez ceva nou, <strong>vreau</strong> să primesc vizualuri gata pentru site și social, <strong>ca să</strong> nu pierd timp cu design.</li><li><strong>Când</strong> trendurile se schimbă, <strong>vreau</strong> să aflu ce merită adoptat și ce a devenit datat, <strong>ca să</strong> rămân actual fără să urmăresc moda orbește.</li></ul></section>
@@ -378,6 +713,7 @@ footer{color:var(--muted);font-size:13px}
     <div class="agent-t"><h2>Mike</h2><p>Developer</p></div>
     <div class="chips"><span class="chip cat">Produs</span><span class="chip ok">Activ</span><span class="chip ">Raportează: Tudor</span></div>
   </header>
+  <ul class="comp" aria-label="Ce are Mike"><li class="on">✓ Categorie</li><li class="on">✓ Scop</li><li class="on">✓ Jobs to be done</li><li class="on">✓ Context</li><li class="on">✓ Responsabilități</li><li class="on">✓ Soft skills</li><li class="on">✓ Claude skills</li><li class="on">✓ KPI</li><li class="on">✓ Ce NU face</li><li class="on">✓ Memorie</li><li class="on">✓ Scorecard</li><li class="off">– Documente</li><li class="on">✓ Arii (DRI)</li><li class="on">✓ Instrucțiuni agent</li><li class="on">✓ Istoric rol</li></ul>
   <div class="grid">
     <section class="card wide"><h3>Scop</h3><p>Un site rapid, accesibil și ușor de actualizat, plus tool-urile lui Alex disponibile online.</p></section>
     <section class="card wide jtbd"><h3>Jobs to be done</h3><ul><li><strong>Când</strong> vreau o schimbare pe site, <strong>vreau</strong> s-o descriu în cuvinte și s-o văd live după aprobare, <strong>ca să</strong> nu ating cod.</li><li><strong>Când</strong> am construit un tool sau o aplicație, <strong>vreau</strong> să fie publicată și integrată pe site, <strong>ca</strong> oamenii să o poată folosi imediat.</li><li><strong>Când</strong> site-ul rulează, <strong>vreau</strong> să fie rapid, sigur și să meargă pe orice telefon, <strong>ca să</strong> nu pierd vizitatori din motive tehnice.</li></ul></section>
@@ -410,6 +746,7 @@ footer{color:var(--muted);font-size:13px}
     <div class="agent-t"><h2>Sofia</h2><p>Social Media Manager</p></div>
     <div class="chips"><span class="chip cat">Comunicare</span><span class="chip warn">Activ (perioadă de probă 30 de zile)</span><span class="chip ">Raportează: Tudor</span></div>
   </header>
+  <ul class="comp" aria-label="Ce are Sofia"><li class="on">✓ Categorie</li><li class="on">✓ Scop</li><li class="on">✓ Jobs to be done</li><li class="on">✓ Context</li><li class="on">✓ Responsabilități</li><li class="on">✓ Soft skills</li><li class="on">✓ Claude skills</li><li class="on">✓ KPI</li><li class="on">✓ Ce NU face</li><li class="on">✓ Memorie</li><li class="on">✓ Scorecard</li><li class="on">✓ Documente</li><li class="on">✓ Arii (DRI)</li><li class="on">✓ Instrucțiuni agent</li><li class="on">✓ Istoric rol</li></ul>
   <div class="grid">
     <section class="card wide"><h3>Scop</h3><p>Alex apare constant, autentic și relevant pe rețelele sociale, fără să-i consume timpul.</p></section>
     <section class="card wide jtbd"><h3>Jobs to be done</h3><ul><li><strong>Când</strong> fac ceva valoros (lansare, sesiune, idee), <strong>vreau</strong> să devină postări gata de aprobat, <strong>ca să</strong> fiu prezent constant fără să-mi consume timpul.</li><li><strong>Când</strong> vreau să apar pe social media, <strong>vreau</strong> să am un calendar clar, <strong>ca să</strong> nu postez haotic.</li><li><strong>Când</strong> o postare a mers bine sau prost, <strong>vreau</strong> să aflu de ce, <strong>ca să</strong> data viitoare să fie mai bine.</li></ul></section>
@@ -455,5 +792,75 @@ footer{color:var(--muted);font-size:13px}
   });
   window.addEventListener("hashchange",function(){show(fromHash())});
   show(fromHash());
+})();
+
+// --- Decizii: verdicte și notițe în baza de date a paginii ---
+(function(){
+  var cards=[].slice.call(document.querySelectorAll(".dec"));
+  var statusEl=document.getElementById("dec-status");
+  var verdicts={}; var filter="toate"; var busy={};
+  var LABEL={aprobat:"Ai aprobat",respins:"Ai respins",discutam:"Vrei să discutăm"};
+  function fmt(iso){try{return new Date(iso).toLocaleString("ro-RO",{day:"numeric",month:"short",hour:"2-digit",minute:"2-digit"})}catch(e){return ""}}
+  function render(){
+    var nAns=0;
+    cards.forEach(function(c){
+      var id=c.dataset.id, v=verdicts[id], box=c.querySelector(".verdict");
+      var answered=!!(v&&v.verdict); if(answered)nAns++;
+      c.classList.toggle("done",answered);
+      if(v&&(v.verdict||v.note)){
+        box.hidden=false; box.className="verdict "+(v.verdict||"");
+        box.textContent=(v.verdict?LABEL[v.verdict]:"Notiță salvată")+(v.updatedAt?" · "+fmt(v.updatedAt):"")+(v.applied?" · trecut în repo de Tudor":(v.verdict?" · Tudor îl trece în repo la următoarea sesiune":""));
+        if(v.note){var q=document.createElement("q");q.textContent=v.note;box.appendChild(q)}
+      } else { box.hidden=true; }
+      c.querySelectorAll(".vb").forEach(function(b){b.classList.toggle("sel",!!v&&v.verdict===b.dataset.v)});
+      var ta=c.querySelector("textarea");
+      if(ta&&document.activeElement!==ta&&!ta.dataset.dirty)ta.value=(v&&v.note)||"";
+      var show=filter==="toate"||(filter==="fara"&&!answered)||(filter==="raspuns"&&answered);
+      c.hidden=!show;
+    });
+    document.getElementById("cnt-fara").textContent=cards.length-nAns;
+    document.getElementById("cnt-raspuns").textContent=nAns;
+  }
+  document.querySelectorAll(".flt").forEach(function(b){b.addEventListener("click",function(){
+    filter=b.dataset.f; document.querySelectorAll(".flt").forEach(function(x){x.classList.toggle("on",x===b)}); render();
+  })});
+  render();
+  if(!window.claude||!window.claude.use){statusEl.textContent="Deschide pagina în Claude ca să aprobi deciziile și să lași notițe.";return}
+  Promise.all([window.claude.use("db"),window.claude.use("user")]).then(function(res){
+    var db=res[0], user=res[1];
+    if(!db){statusEl.textContent="Răspunsurile nu se pot încărca aici. Deschide pagina în Claude, autentificat.";return}
+    var timer=setTimeout(function(){statusEl.textContent="Răspunsurile nu au putut fi încărcate încă. Pagina încearcă în continuare."},10000);
+    db.collection("verdicts").onSnapshot(function(snap){
+      verdicts={}; snap.docs.forEach(function(d){verdicts[d.id]=d.data()});
+      if(!snap.metadata.fromCache){clearTimeout(timer)}
+      render();
+    },function(){clearTimeout(timer);statusEl.textContent="Răspunsurile nu mai pot fi citite în această sesiune. Reîncarcă pagina mai târziu."});
+    (user?user.isOwner():Promise.resolve(null)).then(function(owner){
+      if(owner===false){statusEl.textContent="Doar Alex poate aproba deciziile. Le vezi aici, cu răspunsurile lui.";return}
+      statusEl.textContent="Alegerile și notițele tale se salvează pe loc. Tudor le citește și le trece în repo.";
+      cards.forEach(function(c){
+        var id=c.dataset.id, act=c.querySelector(".actions"), msg=c.querySelector(".msg"), ta=c.querySelector("textarea");
+        act.hidden=false;
+        ta.addEventListener("input",function(){ta.dataset.dirty="1"});
+        function save(patch){
+          if(busy[id])return; busy[id]=true;
+          var cur=verdicts[id]||{};
+          var body={verdict:cur.verdict||null,note:cur.note||"",updatedAt:new Date().toISOString(),applied:false};
+          Object.keys(patch).forEach(function(k){body[k]=patch[k]});
+          c.querySelectorAll("button").forEach(function(b){b.disabled=true}); msg.textContent="Se salvează…";
+          db.collection("verdicts").doc(id).set(body).then(function(){
+            delete ta.dataset.dirty; msg.textContent="Salvat.";
+          }).catch(function(e){
+            msg.textContent=(e&&e.code==="invalid_argument")?"Nu ai drept de scriere aici.":(e&&e.code==="quota_exceeded")?"Baza de date e plină. Spune-i lui Tudor.":"Nu s-a salvat. Încearcă din nou.";
+          }).then(function(){busy[id]=false;c.querySelectorAll("button").forEach(function(b){b.disabled=false})});
+        }
+        c.querySelectorAll(".vb").forEach(function(b){b.addEventListener("click",function(){
+          var cur=verdicts[id]||{}; var v=cur.verdict===b.dataset.v?null:b.dataset.v;
+          save({verdict:v,note:ta.value.trim()});
+        })});
+        c.querySelector(".save").addEventListener("click",function(){save({note:ta.value.trim()})});
+      });
+    });
+  });
 })();
 </script>

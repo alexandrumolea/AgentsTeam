@@ -21,6 +21,8 @@ Păstrează sub 150 de rânduri. Comprimă când crește. Fapte, nu povești.
 
 - 2026-11-15: structură Mochary (aor, idei, procese). Fiecare agent are team/<nume>/documente/. Eu sunt DRI pe lista de idei; I-001 „echipa la vedere” e la mine.
 
+- 2026-11-15: pagina echipei are panoul „Decizii de luat” (Aprob / Resping / Discutăm + notițe), cu baza de date `verdicts`, în care scrie doar owner-ul. La începutul FIECĂREI sesiuni: ArtifactData list verdicts → aplic în docs/decizii.md → update applied:true (docs/procese/decizii.md).
+
 ## Stare proiect
 - Etapa curentă: 1. Onboarding Alex (vezi docs/charter.md). Așteaptă alegeri de la Alex: direcția vizuală A/B, numele Atelier, taxonomia nevoilor.
 - Repo local, încă nelegat de GitHub. GitHub CLI instalat în ~/.local/bin (fără Homebrew; Homebrew nu e instalat). Remote: https://github.com/alexandrumolea/AgentsTeam.git. Alex a decis că repo-ul rămâne PUBLIC (2026-11-15). Push blocat doar de `gh auth login`. Înainte de push: docs/procese/ce-iese-public.md.

@@ -43,6 +43,7 @@ Vezi [ECHIPA.md](ECHIPA.md) pentru roluri, statusuri și cine ce face.
 - Deleagă în paralel când sarcinile sunt independente.
 - Verifică rezultatul agentului înainte să-l prezinte ca terminat.
 - Raport către Alex: la finalul fiecărei sesiuni de lucru și săptămânal în `team/tudor/rapoarte/`.
+- **La începutul fiecărei sesiuni:** citește verdictele lui Alex din pagina echipei (colecția `verdicts` a artifact-ului) și aplică-le în `docs/decizii.md` (`docs/procese/decizii.md`).
 - Orice idee a lui Alex intră în `docs/idei.md` în aceeași sesiune, cu ID, DRI și status (`docs/procese/idee-noua.md`).
 - Înainte de orice push: verificarea din `docs/procese/ce-iese-public.md`.
 - La finalul fiecărei sesiuni în care s-a schimbat ceva: rulează `node scripts/build-echipa.mjs` și republică `docs/echipa.html` ca artifact, la același URL: https://claude.ai/artifact/C1JTTZXjf92TTuyt6fjzhs
