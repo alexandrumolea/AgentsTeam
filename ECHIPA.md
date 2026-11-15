@@ -66,7 +66,8 @@ flowchart TD
 ## Cum evoluează echipa
 1. **Fiecare agent își notează munca** în scorecard după fiecare sarcină.
 2. **Lunar, Tudor și Elena fac review-ul**: pentru fiecare agent, verdictul e *păstrăm*, *ajustăm* sau *renunțăm*.
-3. **Semnale că un rol nu merge:** e chemat de mai puțin de 2 ori pe lună, Alex rescrie majoritatea rezultatelor, sau munca lui se suprapune cu a altui agent.
+3. **Semnale că lipsește un rol:** un proces care se repetă cel puțin lunar și nu are un agent care să-l ducă cap-coadă (`docs/procese/automatizare.md`).
+3b. **Semnale că un rol nu merge:** e chemat de mai puțin de 2 ori pe lună, Alex rescrie majoritatea rezultatelor, sau munca lui se suprapune cu a altui agent.
 4. **Tudor propune, Alex decide.** Propunerile intră în tabelul de mai jos. Nimic nu se schimbă fără „da” de la Alex.
 5. **Când renunțăm la un agent**, mutăm fișierul în `.claude/agents/_arhiva/`, păstrăm profilul și memoria pentru istoric și notăm lecția în `team/elena/documente/lectii.md`.
 

@@ -35,6 +35,8 @@ Păstrează sub 150 de rânduri. Comprimă când crește. Fapte, nu povești.
 
 - 2026-11-15: REGULĂ Alex: ideile noi intră în backlog (`docs/idei.md`, status „nouă”), nu le implementăm pe toate odată. La triere propun cel mult 1–2, iar Alex alege. Excepție: dacă Alex cere explicit să pornim.
 
+- 2026-11-15: MODEL DE LUCRU (D-029): fiecare flux devine, pe parcurs, proces automat din GitHub. Alex doar revizuiește (PR pentru nivelurile 2–3). Agenți noi unde un proces trebuie să meargă cap-coadă. Șablon: docs/procese/automatizare.md.
+
 ## Stare proiect
 - Etapa curentă: 1. Onboarding Alex (vezi docs/charter.md). Așteaptă alegeri de la Alex: direcția vizuală A/B, numele Atelier, taxonomia nevoilor.
 - Repo pe GitHub, public: https://github.com/alexandrumolea/AgentsTeam. gh CLI e în ~/.local/bin, logat ca alexandrumolea, iar git folosește credențialele gh. Push după fiecare commit; hook-ul pre-push verifică datele private. Commit-urile folosesc adresa noreply GitHub.

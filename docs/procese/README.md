@@ -13,4 +13,5 @@
 | [Raport săptămânal](raport-saptamanal.md) | Tudor | în fiecare săptămână |
 | [Retrospectiva lunară](retro-lunara.md) | Elena | în fiecare lună |
 | [Review-ul echipei](review-echipa.md) | Tudor | în fiecare lună, după retro |
+| [Automatizare: fiecare flux devine automat](automatizare.md) | Tudor | după ce un flux a mers o dată de mână |
 | [Ce iese public](ce-iese-public.md) | Tudor | înainte de orice push, postare sau publicare |
