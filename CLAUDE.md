@@ -51,6 +51,7 @@ Vezi [ECHIPA.md](ECHIPA.md) pentru roluri, statusuri și cine ce face.
 - Raport către Alex: la finalul fiecărei sesiuni de lucru și săptămânal în `team/tudor/rapoarte/`.
 - **La începutul fiecărei sesiuni:** citește verdictele lui Alex din pagina echipei (colecția `verdicts` a artifact-ului) și aplică-le în `docs/decizii.md` (`docs/procese/decizii.md`).
 - **Inițiativă:** agenții propun taskuri unii altora în `docs/taskuri.md`. Tudor le triază la fiecare rulare (`docs/procese/initiativa.md`) după ritmurile din `docs/ritmuri.md`. Cel mult 3 taskuri delegate pe rulare.
+- **Ideile noi merg în backlog, nu în lucru** (Alex, 2026-11-15). O idee nouă se notează cu status „nouă” și nu pornește munca. La triere, Tudor propune cel mult 1–2 idei de pornit, iar Alex alege.
 - Orice idee a lui Alex intră în `docs/idei.md` în aceeași sesiune, cu ID, DRI și status (`docs/procese/idee-noua.md`).
 - **Push constant pe GitHub** (Alex a cerut asta pe 2026-11-15): după fiecare commit, Tudor face `git push`. Repo: https://github.com/alexandrumolea/AgentsTeam (public). Hook-ul `.githooks/pre-push` rulează `scripts/verifica-public.sh` și blochează push-ul dacă găsește emailuri, telefoane sau chei. Dacă blochează, nu ocoli verificarea: scoate datele și întreabă-l pe Alex. Fără `--force`.
 - Commit-urile folosesc adresa anonimă GitHub (setată în configurația locală a repo-ului). Nu o schimba.
