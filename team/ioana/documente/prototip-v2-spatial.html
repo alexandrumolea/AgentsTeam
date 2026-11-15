@@ -1,0 +1,1034 @@
+<!doctype html>
+<html lang="ro">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Prototip v2 · Spațiu</title>
+<meta name="description" content="Direcția Spațiu, v2: intri în atelierul lui Alex. Invenții, Live, Învață și Ce m-a crescut sunt camere-obiecte. Prototip, conținut fictiv, etichete propuse.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@300;400;500&family=Onest:wght@400;500;600&family=JetBrains+Mono:wght@400;500&family=Fraunces:ital,opsz,wght@0,9..144,300..500;1,9..144,300..500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --space:#070910; --text:#F3F1EC; --muted:#AEB3C4; --line:rgba(255,255,255,.14);
+  --mint:#7CF5C8; --amber:#FFC37A; --coral:#FF8A65;
+  --panel:rgba(16,19,30,.94); --panel-solid:#10131E;
+  --paper:#F3EBDF; --ink:#2A1F17; --ink-muted:#6B5646; --ink-line:rgba(42,31,23,.16);
+  --display:"Unbounded","Avenir Next",system-ui,sans-serif;
+  --sans:"Onest",system-ui,-apple-system,sans-serif;
+  --mono:"JetBrains Mono",ui-monospace,monospace;
+  --serif:"Fraunces","Iowan Old Style",Georgia,serif;
+  --ease:cubic-bezier(.2,.7,.1,1);
+  --gut:clamp(16px,3vw,40px);
+}
+*{box-sizing:border-box}
+html,body{height:100%}
+body{margin:0;background:radial-gradient(120% 90% at 70% 40%,#121833 0%,var(--space) 60%);color:var(--text);font:400 16px/1.5 var(--sans);overflow:hidden;-webkit-text-size-adjust:100%}
+button{font:inherit;color:inherit}
+a{color:inherit}
+:focus-visible{outline:2px solid var(--mint);outline-offset:3px;border-radius:8px}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+canvas#gl{position:fixed;inset:0;width:100%;height:100%;display:block;touch-action:none;cursor:grab;opacity:0;transition:opacity 1.2s ease}
+canvas#gl.ready{opacity:1}
+canvas#gl.dragging{cursor:grabbing}
+
+/* bara de prototip */
+.proto{position:fixed;top:0;left:0;right:0;z-index:40;display:flex;gap:12px;align-items:center;justify-content:space-between;flex-wrap:wrap;padding:7px var(--gut);background:#000;color:#E9E7E1;font:500 12px/1.4 var(--mono)}
+.proto nav{display:flex;gap:14px;flex-wrap:wrap}
+.proto a{text-decoration:none;opacity:.75}
+.proto a[aria-current]{opacity:1;text-decoration:underline;text-underline-offset:3px}
+
+.ui{position:fixed;inset:0;pointer-events:none;z-index:10}
+.ui > *{pointer-events:auto}
+#tags,#nodeTags,.parts{pointer-events:none}
+
+/* titlu */
+.hero{position:absolute;left:var(--gut);top:64px;max-width:min(620px,44vw);padding:8px 0 24px;transition:opacity .5s var(--ease),transform .6s var(--ease)}
+.hero::before{content:"";position:absolute;inset:-40px -60px -20px -40px;z-index:-1;background:radial-gradient(closest-side,rgba(7,9,16,.85),rgba(7,9,16,0));pointer-events:none}
+.mark{display:inline-block;font:500 13px/1 var(--mono);letter-spacing:.12em;text-transform:uppercase;color:var(--mint);margin-bottom:18px;transition:color .8s}
+.hero h1{margin:0;font:300 clamp(28px,3.1vw,46px)/1.08 var(--display);letter-spacing:-.02em}
+.hero h1 b{font-weight:500}
+.hero p{margin:16px 0 0;max-width:44ch;color:var(--muted);font-size:17px}
+.hero p b{color:var(--text);font-weight:500}
+.hero p.who{margin-top:16px}
+.hero p.who a{text-decoration:underline;text-decoration-color:rgba(124,245,200,.45);text-underline-offset:5px;text-decoration-thickness:1px}
+.hero p.who a:hover{text-decoration-color:var(--mint)}
+.hero p.how{margin-top:14px}
+/* misiunea: inscripția de la intrare. Altă voce tipografică, fără ilustrație la propriu */
+.inscription{margin:14px 0 0;padding:2px 0 2px 14px;border-left:1px solid rgba(124,245,200,.55);font:400 italic clamp(19px,1.6vw,24px)/1.3 var(--serif)!important;color:var(--text)!important;font-variation-settings:"opsz" 72;opacity:0;animation:insc 1.4s 1.3s var(--ease) forwards}
+@keyframes insc{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+body.warm .inscription{border-left-color:var(--amber)}
+body.open .hero,body.live .hero{opacity:0;transform:translateY(-12px);pointer-events:none;visibility:hidden;transition:opacity .4s,transform .5s,visibility 0s .5s;}
+body.warm .mark{color:var(--amber)}
+
+/* etichete proiectate din 3D */
+.tag{position:absolute;left:0;top:0;font:500 12px/1 var(--mono);padding:6px 9px;border-radius:999px;background:rgba(7,9,16,.84);border:1px solid var(--line);white-space:nowrap;transition:opacity .3s;will-change:transform}
+.tag.on{border-color:var(--mint);color:var(--mint)}
+.tag i{font-style:normal;color:var(--muted);margin-left:5px;font-size:10px}
+.agent-tag{position:absolute;left:0;top:0;pointer-events:none;font:500 11px/1 var(--mono);color:var(--mint);padding:4px 7px;border-radius:6px;background:rgba(7,9,16,.86);opacity:0;transition:opacity .4s}
+.ntag{position:absolute;left:0;top:0;font:500 11px/1 var(--mono);padding:4px 7px;border-radius:6px;background:rgba(7,9,16,.86);border:1px solid transparent;color:var(--mint);white-space:nowrap;opacity:0;transition:opacity .35s,border-color .3s;will-change:transform}
+.ntag.om{color:var(--amber)}
+.ntag.alex{color:var(--text);font-size:12px;border-color:var(--line)}
+.ntag.hot{border-color:currentColor}
+
+/* ticker: ultimul task, se oprește la hover și la focus */
+.ticker{position:absolute;right:var(--gut);top:64px;display:flex;align-items:stretch;max-width:min(440px,40vw);border-radius:999px;background:rgba(7,9,16,.86);border:1px solid var(--line);transition:opacity .3s}
+.ticker .tk{display:flex;gap:9px;align-items:center;min-width:0;border:0;background:transparent;padding:8px 6px 8px 14px;font:400 12px/1.35 var(--mono);cursor:pointer;border-radius:999px 0 0 999px;text-align:left}
+.ticker .tk:hover .tkT{text-decoration:underline;text-underline-offset:3px}
+.ticker .dot{flex:none;width:7px;height:7px;border-radius:50%;background:var(--mint);box-shadow:0 0 12px var(--mint)}
+.ticker.held .dot{background:var(--muted);box-shadow:none}
+.tkL{flex:none;color:var(--mint);font-weight:500}
+.tkT{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.ticker .pz{flex:none;width:38px;border:0;border-left:1px solid var(--line);background:transparent;cursor:pointer;border-radius:0 999px 999px 0;color:var(--muted);font:500 11px/1 var(--mono)}
+.ticker .pz:hover{color:var(--text)}
+body.live .ticker{opacity:0;pointer-events:none;visibility:hidden;transition:opacity .4s,transform .5s,visibility 0s .5s;}
+
+/* butonul fix Rezervă (arhitectura v2: 1 interacțiune de oriunde) */
+.book{position:absolute;right:var(--gut);top:60px;padding:9px 16px;font-size:14px;z-index:3;gap:0;white-space:pre}
+.ticker{right:calc(var(--gut) + 172px)}
+/* fără 3D: aceleași 7 categorii, sub două titluri (titlurile sunt de lucru) */
+.cards{display:none}
+body.nogl .cards{display:block;position:absolute;right:var(--gut);top:110px;bottom:140px;width:min(560px,46vw);overflow:auto;padding:4px 2px;transition:opacity .3s}
+body.nogl.sheet .cards,body.nogl.open .cards{opacity:0;visibility:hidden}
+@media (min-width:761px){body.nogl .fallback svg{display:none}}
+.cards h2{margin:18px 0 10px;font:500 11px/1.3 var(--mono);letter-spacing:.1em;text-transform:uppercase;color:var(--muted)}
+.cards h2:first-child{margin-top:0}
+.cards .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:10px}
+.card{display:flex;flex-direction:column;gap:6px;padding:16px;border-radius:18px;background:var(--panel-solid);border:1px solid var(--line)}
+.card.room{border-color:rgba(124,245,200,.3)}
+.card h3{margin:0;font:400 18px/1.2 var(--display)}
+.card p{margin:0 0 6px;color:var(--muted);font-size:14px;line-height:1.4;flex:1}
+.card button{align-self:flex-start;border:0;border-radius:999px;padding:8px 14px;background:var(--text);color:#0A0C14;font-weight:600;font-size:14px;cursor:pointer}
+.dock .fam{display:none}
+/* invenția lunii */
+.feature{position:absolute;left:var(--gut);bottom:140px;width:min(360px,40vw);padding:18px 20px;border-radius:22px;background:var(--panel);border:1px solid var(--line);backdrop-filter:blur(18px) saturate(1.3);-webkit-backdrop-filter:blur(18px) saturate(1.3);transition:opacity .4s,transform .5s var(--ease)}
+.eyebrow{margin:0 0 8px;font:500 11px/1.3 var(--mono);letter-spacing:.1em;text-transform:uppercase;color:var(--muted)}
+.feature h2{margin:0;font:400 22px/1.2 var(--display);letter-spacing:-.01em}
+.feature p{margin:8px 0 14px;color:var(--muted);font-size:15px}
+.btn{display:inline-flex;align-items:center;gap:8px;padding:11px 18px;border-radius:999px;border:0;background:var(--mint);color:#06110C;font-weight:600;cursor:pointer;text-decoration:none}
+.btn:hover{filter:brightness(1.08)}
+.btn.ghost{background:transparent;color:var(--text);border:1px solid var(--line)}
+.pill{display:inline-block;padding:2px 8px;border-radius:999px;border:1px solid rgba(124,245,200,.5);color:var(--mint);font:500 11px/1.5 var(--mono);margin-right:6px}
+body.open .feature,body.live .feature{opacity:0;transform:translateY(12px);pointer-events:none;visibility:hidden;transition:opacity .4s,transform .5s,visibility 0s .5s;}
+
+/* bare de mod: desfăcut / Live */
+.closebar,.livebar{position:absolute;left:var(--gut);top:64px;display:flex;gap:14px;align-items:center;flex-wrap:wrap;opacity:0;pointer-events:none;visibility:hidden;transition:opacity .3s,visibility 0s .3s}
+.closebar h2,.livebar h2{margin:0;font:400 clamp(20px,2.2vw,30px)/1.15 var(--display)}
+.livebar small{font:500 11px/1 var(--mono);color:var(--muted);letter-spacing:.08em;text-transform:uppercase}
+.livebar .legend{flex-basis:100%;margin:0}
+body.open .closebar,body.live .livebar{opacity:1;pointer-events:auto;visibility:visible;transition:opacity .4s .2s,visibility 0s}
+
+.parts{position:absolute;inset:0;list-style:none;margin:0;padding:0}
+.parts li{position:absolute;left:0;top:0;width:max-content;max-width:min(300px,calc(100vw - var(--x,0px) - 20px));padding:10px 12px 10px 14px;border-radius:12px;background:rgba(10,12,20,.92);border:1px solid var(--line);opacity:0;transition:opacity .4s var(--ease);font-size:14px;line-height:1.35}
+.parts li::before{content:"";position:absolute;right:100%;top:50%;width:var(--lead,36px);height:1px;background:rgba(124,245,200,.6)}
+.parts li::after{content:"";position:absolute;right:calc(100% + var(--lead,36px) - 3px);top:calc(50% - 3px);width:6px;height:6px;border-radius:50%;background:var(--mint)}
+.parts li b{display:block;font:500 11px/1.3 var(--mono);letter-spacing:.08em;text-transform:uppercase;color:var(--mint);margin-bottom:3px}
+body.open .parts li{opacity:1}
+body.open .parts li:nth-child(2){transition-delay:.08s}body.open .parts li:nth-child(3){transition-delay:.16s}
+body.open .parts li:nth-child(4){transition-delay:.24s}body.open .parts li:nth-child(5){transition-delay:.32s}
+
+/* dock: toate intențiile, aceleași peste tot */
+.dock{position:absolute;left:50%;bottom:max(18px,env(safe-area-inset-bottom));transform:translateX(-50%);display:flex;flex-direction:column;align-items:center;gap:10px;max-width:calc(100vw - 2*var(--gut))}
+.dock > p{margin:0;font:400 15px/1 var(--display);color:var(--text)}
+.dock .row{display:flex;gap:4px;padding:6px;border-radius:999px;background:rgba(16,19,30,.9);border:1px solid var(--line);backdrop-filter:blur(20px) saturate(1.4);-webkit-backdrop-filter:blur(20px) saturate(1.4);overflow-x:auto;max-width:100%;scrollbar-width:none}
+.dock .row::-webkit-scrollbar{display:none}
+.dock button{flex:none;border:0;background:transparent;border-radius:999px;padding:10px 14px;font-size:14px;font-weight:500;cursor:pointer;white-space:nowrap;transition:background .2s,color .2s}
+.dock button:hover{background:rgba(255,255,255,.08)}
+.dock button[aria-pressed="true"]{background:var(--text);color:#0A0C14}
+.dock button .s{display:none}
+.dock .sep{flex:none;width:1px;margin:8px 4px;background:var(--line)}
+.dock button sup{font:500 9px/1 var(--mono);color:var(--muted);margin-left:3px;vertical-align:super}
+.dock button[aria-pressed="true"] sup{color:#4a4f5e}
+@media (max-width:1180px){.dock button .l{display:none}.dock button .s{display:inline}}
+
+/* panoul unei intenții */
+.panel{position:absolute;right:var(--gut);top:110px;bottom:140px;width:min(420px,calc(100vw - 2*var(--gut)));overflow:auto;overscroll-behavior:contain;padding:24px;border-radius:26px;background:var(--panel);border:1px solid var(--line);backdrop-filter:blur(24px) saturate(1.3);-webkit-backdrop-filter:blur(24px) saturate(1.3);transform:translateX(24px);opacity:0;pointer-events:none;visibility:hidden;transition:opacity .35s var(--ease),transform .45s var(--ease),visibility 0s .45s}
+.panel.show{opacity:1;transform:none;pointer-events:auto;visibility:visible;transition:opacity .35s var(--ease),transform .45s var(--ease),visibility 0s}
+.panel h2{margin:0 0 10px;font:400 clamp(24px,2.4vw,32px)/1.1 var(--display);letter-spacing:-.01em;padding-right:40px}
+.panel h3{margin:0;font:500 11px/1.3 var(--mono);letter-spacing:.1em;text-transform:uppercase;color:var(--muted)}
+.panel > p,.panel .lead{margin:0 0 16px;color:var(--muted)}
+.panel ul.list{list-style:none;margin:0 0 20px;padding:0}
+.panel ul.list li{padding:11px 0;border-top:1px solid var(--line);display:flex;justify-content:space-between;gap:12px}
+.panel ul.list li span{color:var(--muted);font-size:14px;text-align:right}
+#pBody > .eyebrow:first-child,.story > .eyebrow:first-child{padding-right:44px}
+.panel .x{position:absolute;right:14px;top:14px;width:36px;height:36px;border-radius:50%;border:1px solid var(--line);background:transparent;cursor:pointer;z-index:2}
+
+/* Live: feed-ul de taskuri, pe forma din docs/taskuri.md */
+.legend{display:flex;gap:14px;margin:0 0 16px;font:500 11px/1.3 var(--mono);color:var(--muted)}
+.legend span::before{content:"";display:inline-block;width:8px;height:8px;margin-right:6px;vertical-align:-1px}
+.legend .a::before{border-radius:50%;background:var(--mint)}
+.legend .h::before{background:var(--amber);transform:rotate(45deg) scale(.85)}
+.legend{flex-wrap:wrap}
+.bench{list-style:none;margin:8px 0 18px;padding:0;display:grid;gap:6px}
+.bench li{padding:9px 12px;border-radius:12px;background:rgba(124,245,200,.07);border:1px solid rgba(124,245,200,.2);font-size:14px;line-height:1.35}
+.bench li b{font:500 11px/1 var(--mono);color:var(--mint);margin-right:8px}
+.feedhead{display:flex;justify-content:space-between;align-items:center;gap:10px;margin:0 0 8px}
+.pz2{border:1px solid var(--line);background:transparent;border-radius:999px;padding:5px 11px;font:500 11px/1 var(--mono);color:var(--text);cursor:pointer}
+.pz2[aria-pressed="true"]{border-color:var(--mint);color:var(--mint)}
+.cols{display:grid;grid-template-columns:52px 1fr auto;gap:2px 10px;padding:0 0 6px;font:500 10px/1.3 var(--mono);color:var(--muted);letter-spacing:.06em;text-transform:uppercase;border-bottom:1px solid var(--line)}
+.feed{list-style:none;margin:0 0 18px;padding:0;font:400 12px/1.4 var(--mono)}
+.feed li{display:grid;grid-template-columns:52px 1fr auto;gap:3px 10px;padding:9px 0;border-bottom:1px solid rgba(255,255,255,.07)}
+.feed li.new{animation:in .6s var(--ease)}
+.feed li.flash .st{animation:flash 1.2s var(--ease)}
+.feed .id{color:var(--muted)}
+.feed .who b{font-weight:500;color:var(--mint)}
+.feed .who b.om{color:var(--amber)}
+.feed .who b.alex{color:var(--text)}
+.feed .who i{font-style:normal;color:var(--muted)}
+.feed .task{grid-column:2/4;color:var(--text);font-family:var(--sans);font-size:14px;line-height:1.35}
+.st{align-self:start;padding:2px 7px;border-radius:999px;border:1px solid var(--line);font-size:10.5px;white-space:nowrap;color:var(--muted)}
+.st.lucru{color:var(--mint);border-color:rgba(124,245,200,.45)}
+.st.gata{color:var(--mint);border-color:transparent;background:rgba(124,245,200,.1)}
+.st.blocat{color:var(--coral);border-color:rgba(255,138,101,.5)}
+.st.alex{color:var(--amber);border-color:rgba(255,195,122,.5)}
+.st.facut{color:var(--text)}
+@keyframes in{from{opacity:0;transform:translateY(-6px)}to{opacity:1;transform:none}}
+@keyframes flash{0%{background:rgba(124,245,200,.45);color:#06110C}100%{}}
+
+/* Knowledge: principii în straturi */
+.prin{margin:8px 0 18px;border-top:1px solid var(--line)}
+.needs{display:flex;flex-wrap:wrap;gap:6px;margin:8px 0 18px}
+.needs a{padding:7px 12px;border-radius:999px;border:1px solid var(--line);text-decoration:none;font-size:14px}
+.needs a:hover{border-color:var(--mint)}
+.bookrow{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:14px 16px;border-radius:16px;border:1px solid var(--line);text-decoration:none;color:var(--muted);font-size:14px}
+.bookrow b{display:block;color:var(--text);font:400 17px/1.2 var(--display);margin-bottom:2px}
+.bookrow:hover{border-color:var(--mint)}
+.prin details{border-bottom:1px solid var(--line)}
+.prin summary{list-style:none;display:grid;grid-template-columns:28px 1fr;gap:2px 10px;padding:13px 0;cursor:pointer}
+.prin summary::-webkit-details-marker{display:none}
+.prin summary .n{grid-row:1/3;font:500 12px/1.5 var(--mono);color:var(--mint)}
+.prin summary .t{font-weight:500;line-height:1.35}
+.prin summary .m{font:400 11px/1.3 var(--mono);color:var(--muted)}
+.prin summary:hover .t{text-decoration:underline;text-underline-offset:3px}
+.strata{list-style:none;margin:0 0 14px;padding:0 0 0 38px;display:grid;gap:6px}
+.strata li{position:relative;padding:10px 12px;border-radius:12px;background:rgba(124,245,200,var(--a,.07));border:1px solid rgba(124,245,200,.18);font-size:14px;line-height:1.4;color:var(--text)}
+.strata li:nth-child(1){--a:.05}.strata li:nth-child(2){--a:.09;margin-left:10px}.strata li:nth-child(3){--a:.14;margin-left:20px}
+.strata li b{display:block;font:500 10.5px/1.3 var(--mono);letter-spacing:.08em;text-transform:uppercase;color:var(--mint);margin-bottom:3px}
+.prin details[open] .strata li{animation:in .45s var(--ease) both}
+.prin details[open] .strata li:nth-child(2){animation-delay:.08s}.prin details[open] .strata li:nth-child(3){animation-delay:.16s}
+
+/* Povești: hârtie caldă, serif, fără sticlă. Contrast intenționat cu restul atelierului */
+.panel.paper{background:var(--paper);color:var(--ink);border-color:var(--ink-line);backdrop-filter:none;-webkit-backdrop-filter:none;width:min(480px,calc(100vw - 2*var(--gut)));padding:28px 30px}
+.panel.paper .x{border-color:var(--ink-line);color:var(--ink)}
+.panel.paper :focus-visible{outline-color:var(--ink)}
+.panel.paper .eyebrow,.panel.paper h3{color:var(--ink-muted)}
+.story .season{margin:0 0 6px;font:400 italic 15px/1.3 var(--serif);color:var(--ink-muted)}
+.story h2{font:400 italic clamp(28px,2.8vw,36px)/1.1 var(--serif);letter-spacing:-.01em;margin:0 0 22px;font-variation-settings:"opsz" 96}
+.story .mv{margin:0 0 18px;padding:0 0 0 16px;border-left:2px solid #C98B5E}
+.story .mv h3{margin:0 0 4px;font:500 12px/1.3 var(--serif);letter-spacing:.06em;text-transform:uppercase;color:#8A4F27}
+.story .mv p{margin:0;font:400 17px/1.55 var(--serif);color:var(--ink);font-variation-settings:"opsz" 14}
+.story .note{margin:20px 0 6px;font:400 14px/1.45 var(--sans);color:var(--ink-muted)}
+.story ul{list-style:none;margin:8px 0 22px;padding:0}
+.story ul li{padding:10px 0;border-top:1px solid var(--ink-line);font:400 16px/1.35 var(--serif)}
+.story ul li span{display:block;font:400 12px/1.4 var(--sans);color:var(--ink-muted)}
+.btn.ink{background:var(--ink);color:var(--paper)}
+
+/* fără WebGL: aceleași intenții, aceleași panouri */
+.fallback{display:none}
+body.nogl .fallback{display:block;position:fixed;inset:0;background:radial-gradient(60% 50% at 70% 45%,rgba(124,245,200,.14),transparent 70%),radial-gradient(40% 40% at 60% 60%,rgba(255,138,101,.10),transparent 70%);transition:background .8s}
+body.nogl.warm .fallback{background:radial-gradient(70% 60% at 65% 45%,rgba(255,170,100,.22),transparent 70%),#140C08}
+.fallback svg{position:absolute;right:4vw;top:50%;width:min(56vw,760px);height:auto;transform:translateY(-52%);opacity:.95}
+body.nogl .parts li{position:static;opacity:1;margin:0 0 8px;transform:none!important;max-width:none}
+body.nogl .parts{position:absolute;inset:auto var(--gut) 140px auto;top:120px;width:min(360px,44vw);overflow:auto;display:none}
+body.nogl.open .parts{display:block;pointer-events:auto}
+body.nogl .parts li::before,body.nogl .parts li::after{display:none}
+
+/* sticlă: fallback-uri */
+@supports not ((backdrop-filter:blur(1px)) or (-webkit-backdrop-filter:blur(1px))){
+  .feature,.panel,.dock .row{background:var(--panel-solid)}
+}
+@media (prefers-reduced-transparency:reduce){
+  .feature,.panel,.dock .row,.ticker,.tag,.ntag,.parts li{background:var(--panel-solid);backdrop-filter:none;-webkit-backdrop-filter:none}
+  .panel.paper{background:var(--paper)}
+}
+
+@media (max-width:760px){
+  .hero{top:62px;max-width:none;right:var(--gut);padding-bottom:8px}
+  .hero h1{font-size:clamp(24px,7vw,30px)}
+  .hero p{font-size:15px;margin-top:8px}
+  .hero p.who{margin-top:10px}.hero p.how{margin-top:8px}
+  .inscription{font-size:18px!important;margin-top:10px}
+  .mark{margin-bottom:10px}
+  .ticker{top:auto;bottom:206px;left:var(--gut);right:var(--gut);max-width:none}
+  .feature{left:var(--gut);right:var(--gut);bottom:136px;width:auto;padding:12px 14px;display:grid;grid-template-columns:1fr auto;gap:2px 12px;align-items:center;border-radius:18px}
+  .feature .eyebrow{grid-column:1;margin:0}
+  .feature h2{grid-column:1;font-size:16px}
+  .feature p:not(.eyebrow){display:none}
+  .feature .btn{grid-column:2;grid-row:1/3;padding:10px 14px;font-size:14px}
+  .dock{width:calc(100vw - 2*var(--gut));bottom:max(12px,env(safe-area-inset-bottom));gap:8px}
+  .dock > p{font-size:13px}
+  .dock .row{display:flex;flex-wrap:wrap;gap:4px;border-radius:20px;width:100%}
+  .dock .row > button{flex:1 1 auto}
+  .dock .sep{flex-basis:100%;width:auto;height:0;margin:0}
+  .dock .f-titlu,.dock .sep:last-of-type{display:none}
+  body.sheet .dock .f-titlu,body.open .dock .f-titlu{display:inline-block}
+  body.sheet .dock .sep,body.open .dock .sep{display:none}
+  .dock button{padding:8px 6px;font-size:13.5px}
+  .dock button sup{display:none}
+  /* când e deschis ceva, dock-ul devine un singur rând, ca scena să aibă loc */
+  body.sheet .dock > p,body.open .dock > p{display:none}
+  body.sheet .dock .row,body.open .dock .row{display:flex;flex-wrap:nowrap;border-radius:999px;-webkit-mask-image:linear-gradient(90deg,transparent,#000 18px,#000 calc(100% - 18px),transparent);mask-image:linear-gradient(90deg,transparent,#000 18px,#000 calc(100% - 18px),transparent)}
+  body.sheet .dock button,body.open .dock button{padding:9px 13px;flex:none}
+  body.sheet .feature,body.sheet .ticker,body.sheet .hero{opacity:0;pointer-events:none;visibility:hidden;transition:opacity .4s,transform .5s,visibility 0s .5s;}
+  .panel{top:auto;bottom:74px;right:var(--gut);left:var(--gut);width:auto;max-height:min(62dvh,calc(100dvh - 150px));border-radius:22px;transform:translateY(20px);padding:20px}
+  .panel.paper{width:auto;padding:22px 20px}
+  body.live .panel{max-height:46dvh}
+  body.live .panel .lead{display:none}
+  .closebar,.livebar{top:62px;gap:10px}
+  .livebar h2{font-size:20px}
+  .livebar small{display:none}
+  .book{top:56px;padding:8px 14px;font-size:13px}
+  .closebar,.livebar{right:118px}
+  .ticker{right:var(--gut)}
+  body.nogl .dock .fam{display:block;flex-basis:100%;margin:6px 8px 0;font:500 10px/1.3 var(--mono);letter-spacing:.1em;text-transform:uppercase;color:var(--muted)}
+  body.nogl.sheet .dock .fam,body.nogl.open .dock .fam{display:none}
+  body.nogl .cards{display:none}
+  body.nogl .feature{bottom:186px}
+  body.nogl .ticker{bottom:256px}
+  .livebar .btn{padding:8px 14px;font-size:14px}
+  body.open .ticker{opacity:0;pointer-events:none;visibility:hidden;transition:opacity .4s,transform .5s,visibility 0s .5s;}
+  body.open .parts{inset:auto var(--gut) 74px var(--gut);display:grid;gap:6px;pointer-events:auto}
+  .parts li{position:static;transform:none!important;max-width:none;width:auto;padding:8px 12px;font-size:13px}
+  .parts li::before,.parts li::after{display:none}
+  .parts li b{display:inline;margin-right:8px}
+  body.nogl .parts{left:var(--gut);right:var(--gut);width:auto;top:auto;bottom:74px}
+  .fallback svg{right:50%;transform:translate(50%,-62%);width:120vw}
+  .pv-long{display:none}
+  .proto nav{gap:10px}
+  .proto{flex-wrap:nowrap;gap:8px}
+  .proto > span{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+}
+@media (max-width:760px) and (max-height:740px){
+  /* pe telefoane scunde, textul rămâne întreg; renunțăm la ticker (Live e oricum în dock) */
+  .ticker{display:none}
+  .hero h1{font-size:23px}
+  .hero p{font-size:14px}
+  .inscription{font-size:17px!important}
+}
+@media (prefers-reduced-motion:reduce){
+  *,*::before,*::after{transition-duration:.01ms!important;transition-delay:0s!important;animation:none!important}
+  .inscription{opacity:1}
+}
+</style>
+<script type="importmap">
+{"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.min.js","three/addons/":"https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/"}}
+</script>
+</head>
+<body>
+<div class="proto" role="note">
+  <span>Prototip v2<span class="pv-long"> · Spațiu</span> · conținut fictiv<span class="pv-long"> · etichete și texte propuse de Maria (D-025, D-027)</span></span>
+  <nav aria-label="Versiuni">
+    <a href="prototip-v1-spatial.html">v1</a>
+    <a href="prototip-v2-spatial.html" aria-current="page">v2</a>
+    <a href="?nogl">fără 3D</a>
+  </nav>
+</div>
+
+<div class="fallback" aria-hidden="true">
+  <svg viewBox="0 0 800 600" fill="none">
+    <g stroke="rgba(124,245,200,.22)"><ellipse cx="400" cy="320" rx="330" ry="110"/><ellipse cx="400" cy="320" rx="250" ry="80"/><ellipse cx="400" cy="300" rx="380" ry="150" stroke="rgba(255,255,255,.08)"/></g>
+    <g><circle cx="400" cy="300" r="78" fill="rgba(191,239,255,.06)" stroke="rgba(191,239,255,.5)"/><circle cx="400" cy="300" r="56" stroke="#7CF5C8" stroke-width="2"/><path d="M400 252 L410 300 L400 348 L390 300 Z" fill="#FF8A65"/><path d="M400 300 L410 300 L400 348 L390 300 Z" fill="#c9cfdf"/></g>
+    <g fill="#7CF5C8"><circle cx="90" cy="300" r="5"/><circle cx="185" cy="390" r="4"/><circle cx="640" cy="230" r="5"/><circle cx="730" cy="330" r="4"/><circle cx="520" cy="410" r="4"/><circle cx="270" cy="225" r="4"/><circle cx="560" cy="200" r="3"/><circle cx="330" cy="420" r="3"/></g>
+  </svg>
+</div>
+<canvas id="gl" aria-hidden="true"></canvas>
+
+<div class="ui">
+  <section class="hero" aria-labelledby="h1">
+    <span class="mark">Alex · Atelier</span>
+    <h1 id="h1">Construiesc unelte pentru oameni care <b>vor să crească.</b></h1>
+    <p class="who"><a href="#despre" id="about"><b>Sunt Alex: coach, fondator și inventator.</b></a></p>
+    <p class="inscription">Necunoscutul creează monștri.<br>Educația creează poduri.</p>
+    <p class="how">Fiecare obiect de aici e un drum. Trage de spațiu sau alege mai jos.</p>
+  </section>
+
+  <div id="tags" aria-hidden="true"></div>
+  <div id="nodeTags" aria-hidden="true"></div>
+  <div class="agent-tag" id="agentTag" aria-hidden="true"></div>
+
+  <a class="btn book" id="book" href="#">Rezervă<span class="pv-long"> o sesiune</span></a>
+  <section class="cards" id="cards" aria-label="Tot atelierul, fără 3D"></section>
+
+  <div class="ticker" id="ticker">
+    <button class="tk" id="tk" type="button" aria-label="Deschide Live: ultimul task al echipei"><span class="dot" aria-hidden="true"></span><span class="tkL">Live</span><span class="tkT" id="tick">…</span></button>
+    <button class="pz" type="button" data-pause aria-pressed="false" aria-label="Oprește actualizările">❚❚</button>
+  </div>
+
+  <aside class="feature" aria-labelledby="fH">
+    <p class="eyebrow"><span class="pill">nou</span><span class="pv-long">Din atelier · </span>fictiv</p>
+    <h2 id="fH">Busola</h2>
+    <p>Când nu mai știi pe ce să te concentrezi azi. 5 minute, pe telefon.</p>
+    <button class="btn" id="explode" type="button" aria-expanded="false" aria-controls="parts">Desfă invenția</button>
+  </aside>
+
+  <div class="closebar">
+    <h2>Busola, strat cu strat</h2>
+    <a class="btn" href="#">Încearcă (5 min)</a>
+    <button class="btn ghost" id="collapse" type="button">Strânge</button>
+  </div>
+
+  <div class="livebar">
+    <h2>Live</h2><small>jurnalul atelierului · simulat</small>
+    <button class="btn ghost" id="liveOut" type="button">Ieși din Live</button>
+  </div>
+
+  <ol class="parts" id="parts" aria-label="Busola, strat cu strat">
+    <li><b>Întrebarea</b>„Pe ce să mă concentrez azi?”</li>
+    <li><b>Acul</b>Îți arată un singur lucru, nu o listă.</li>
+    <li><b>Inelul</b>Patru direcții: azi, mâine, deleagă, lasă.</li>
+    <li><b>Sticla</b>5 minute. Merge pe telefon.</li>
+    <li><b>Baza</b>Logica: Radu. Forma: Ioana. Codul: Mike. Toți agenți AI.</li>
+  </ol>
+
+  <nav class="dock" aria-label="De ce ai nevoie?">
+    <p>De ce ai nevoie?</p>
+    <div class="row" id="dock"></div>
+  </nav>
+
+  <aside class="panel" id="panel" aria-labelledby="pH">
+    <button class="x" id="px" type="button" aria-label="Închide">✕</button>
+    <div id="pBody"></div>
+  </aside>
+  <p class="sr" id="sr" aria-live="polite"></p>
+</div>
+
+<script type="module">
+const qs = new URLSearchParams(location.search);
+const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+const coarse = matchMedia('(pointer: coarse)').matches;
+const saveData = !!(navigator.connection && navigator.connection.saveData);
+const $ = s => document.querySelector(s);
+const body = document.body;
+let selected = -1, open = false;
+const esc = s => String(s).replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+
+/* ---------- conținut (fictiv) ---------- */
+// Arhitectura v2 (Radu, D-028): 7 obiecte în două familii; Despre stă în titlu, nu e obiect.
+const INTENTS = [
+  {k:'coaching', fam:'drum', label:'Coaching', short:'Coaching', eb:'Ore libere · fictiv', h:'Hai să vorbim 30 de minute.', p:'Prima discuție e ca să vedem dacă ne potrivim. Fără pregătire.', list:[['Marți 10:00','online'],['Joi 17:30','online'],['Vineri 09:00','online']], cta:'Alege o oră'},
+  {k:'compania', fam:'drum', label:'Compania mea', short:'Compania mea', eb:'Business · fictiv', h:'Patru companii, un singur fir.', p:'Oameni și echipe care cresc. Descrierile sunt de confirmat.', list:[['BEMORE','învățare'],['Wise Teams','echipe'],['LIFT','de confirmat'],['Innersis','de confirmat']], cta:'Scrie-mi despre o colaborare'},
+  {k:'speaking', fam:'drum', label:'Speaking', short:'Speaking', eb:'Speaking · fictiv', h:'Trei subiecte, fiecare cu un exercițiu.', p:'Sala nu doar ascultă. Face ceva pe loc.', list:[['Echipe care își spun adevărul','45 min'],['Cum conduc o echipă de agenți AI','30 min'],['Unelte mici, schimbări mari','45 min']], cta:'Invită-l pe Alex'},
+  {k:'tools', fam:'camera', label:'Invenții', short:'Invenții', room:true, eb:'Invenții · cameră din atelier · fictiv', h:'Tool-uri, cursuri, aplicații.', p:'Cele mai noi trei invenții din atelier. Fiecare se încearcă în câteva minute.', list:[['Busola','aplicație · 5 min'],['Oglinda echipei','diagnostic · 10 min'],['Ritm','curs · 7 zile']], cta:'Toate invențiile'},
+  {k:'live', fam:'camera', label:'Live', short:'Live', room:true},
+  {k:'povesti', fam:'camera', label:'Ce m-a crescut', short:'Ce m-a crescut', room:true},
+  {k:'knowledge', fam:'camera', label:'Învață', short:'Învață', room:true},
+  {k:'despre', fam:'titlu', label:'Despre mine', short:'Despre', orbit:false, eb:'Despre · fictiv', h:'Coach, fondator, inventator.', p:'Construiesc unelte ca oamenii să poată face singuri o parte din drum. Și îmi deschid atelierul.', list:[['Misiunea','întreagă, aici'],['Echipa de agenți','8 roluri'],['Ce m-a crescut','poveștile mele']], cta:'Povestea completă'}
+];
+const IDX = Object.fromEntries(INTENTS.map((it, i) => [it.k, i]));
+
+const NODES = [
+  {id:'Alex', kind:'alex'},
+  {id:'Tudor', kind:'agent'}, {id:'Radu', kind:'agent'}, {id:'Ioana', kind:'agent'}, {id:'Mike', kind:'agent'},
+  {id:'Maria', kind:'agent'}, {id:'Sofia', kind:'agent'}, {id:'Victor', kind:'agent'}, {id:'Elena', kind:'agent'}
+];
+// Oamenii (colaboratori, după rol) apar doar în textul jurnalului, după 24 de ore, cu ziua. Fără luminițe.
+const KIND = Object.assign(Object.fromEntries(NODES.map(n => [n.id, n.kind])), { Facilitator:'om', Editor:'om', Dezvoltator:'om' });
+
+// Jurnalul atelierului: datele vin din docs/taskuri.md (ID, Data, De la, Pentru, Task, Status).
+// Afișare (Maria, D-025): „data · cine → cui · ce · stadiu”. Fără oră, pentru că aici nu e reală. Rânduri fictive.
+const day = d => new Date(Date.now() - d * 864e5).toLocaleDateString('ro-RO', { day:'numeric', month:'short' });
+const SCRIPT = [ // în timp real: doar agenți
+  ['Tudor','Ioana','Prototipul Spațiu v2, cu Live și Învață','în lucru'],
+  ['Ioana','Mike','Testul scenei 3D pe un telefon Android','de făcut'],
+  ['Radu','Maria','Numele camerelor din atelier','gata'],
+  ['Maria','Victor','Legătura dintre Învață și carte','nou'],
+  ['Mike','Radu','Jurnalul generat din taskuri.md la build','în lucru'],
+  ['Sofia','Maria','Postarea despre Busola v0.3','de făcut'],
+  ['Elena','Tudor','Retrospectiva săptămânii','nou'],
+  ['Mike','Ioana','Două perechi de culori sub AA pe mobil','blocat'],
+  ['Tudor','Radu','Locul camerei Învață în hartă','de făcut'],
+  ['Radu','Mike','Modelul de date pentru unitățile din Învață','nou'],
+  ['Victor','Sofia','Calendarul aparițiilor din martie','în lucru'],
+  ['Ioana','Maria','Inscripția de la intrare, două variante','gata']
+];
+const PAST = [ // oameni și Alex: cel puțin 24 de ore, doar cu ziua
+  [1,'Alex','Tudor','Interviul pentru povestea trimestrului','de făcut'],
+  [1,'Facilitator','Radu','Structura atelierului pentru echipe','în lucru'],
+  [2,'Ioana','Editor','Ilustrațiile pentru capitolul 1','nou'],
+  [2,'Dezvoltator','Mike','Review la integrarea calendarului','gata'],
+  [3,'Victor','Alex','Trei conferințe pentru martie','la Alex']
+];
+const ST = {'nou':'', 'de făcut':'facut', 'în lucru':'lucru', 'gata':'gata', 'blocat':'blocat', 'la Alex':'alex'};
+const FEED = []; let nextId = 101, si = 0;
+function addTask(){
+  const [from,to,task,st] = SCRIPT[si++ % SCRIPT.length];
+  const row = {id:'T-' + nextId++, date: day(0), from, to, task, st, fresh:true};
+  FEED.unshift(row); if (FEED.length > 30) FEED.splice(FEED.findIndex(r => r.past) - 1, 1);
+  return row;
+}
+function finishTask(){
+  const c = FEED.slice(1).filter(r => !r.past && (r.st === 'în lucru' || r.st === 'de făcut'));
+  if (!c.length) return null;
+  const r = c[Math.floor(Math.random() * c.length)]; r.st = 'gata'; r.flash = true; return r;
+}
+PAST.forEach(([d, from, to, task, st]) => FEED.push({ id:'T-0' + (90 - d * 3 - FEED.length), date: day(d), from, to, task, st, past:true }));
+for (let i = 0; i < 4; i++) addTask();
+FEED.forEach(r => r.fresh = false);
+
+const PRINCIPLES = [
+  ['O întrebare bună bate un plan lung.', 'Când nu știi ce urmează, nu-ți trebuie un plan. Îți trebuie o singură întrebare care taie zgomotul.', 'Din sesiunile de coaching: oamenii se blochează mai rar din lipsă de idei, mai des din prea multe.', 'Scrie „Ce ar face ziua de azi mai ușoară?” și alege un singur răspuns. 5 minute.'],
+  ['O echipă își spune adevărul doar când e sigur să o facă.', 'Siguranța nu e un bonus. E condiția ca problemele să iasă la suprafață la timp.', 'Din diagnosticele de echipă: scorurile mici apar unde nimeni nu întreabă „ce nu merge?”.', 'La următoarea ședință, întreabă primul: „Ce n-am spus încă?”. Apoi taci 10 secunde.'],
+  ['Unealta mică, folosită zilnic, bate cursul mare, uitat.', 'Schimbarea vine din repetiție, nu din intensitate.', 'De aici vin invențiile din Atelier: fiecare încape în 5–10 minute.', 'Alege un obicei de 2 minute și leagă-l de cafeaua de dimineață, 7 zile.'],
+  ['Deleagă rezultatul, nu pașii.', 'Când spui doar pașii, primești exact pașii. Când spui rezultatul, primești gândire.', 'Din felul în care lucrez cu echipa de agenți: fiecare sarcină începe cu „ca să…”.', 'Rescrie o sarcină delegată azi în forma „Vreau X, ca să Y. Cum faci, alegi tu.”']
+];
+
+/* ---------- pauza actualizărilor (WCAG 2.2.2) ---------- */
+let paused = reduce, hold = 0;
+const sr = $('#sr');
+function syncPause(){
+  document.querySelectorAll('[data-pause]').forEach(b => {
+    b.setAttribute('aria-pressed', String(paused));
+    if (b.classList.contains('pz')) { b.textContent = paused ? '▶' : '❚❚'; b.setAttribute('aria-label', paused ? 'Pornește actualizările' : 'Oprește actualizările'); }
+    else b.textContent = paused ? 'Pornește' : 'Pauză';
+  });
+  $('#ticker').classList.toggle('held', paused || hold > 0);
+}
+document.addEventListener('click', e => { const b = e.target.closest('[data-pause]'); if (!b) return; paused = !paused; syncPause(); sr.textContent = paused ? 'Actualizările sunt oprite.' : 'Actualizările au pornit.'; });
+function holdOn(el){
+  const on = () => { hold++; syncPause(); }, off = () => { hold = Math.max(0, hold - 1); syncPause(); };
+  el.addEventListener('pointerenter', on); el.addEventListener('pointerleave', off);
+  el.addEventListener('focusin', on); el.addEventListener('focusout', off);
+}
+holdOn($('#ticker'));
+
+/* ---------- ticker + feed ---------- */
+const tick = $('#tick');
+function tickText(r){ return `${r.date} · ${r.from} → ${r.to} · ${r.task} · ${r.st}`; }
+tick.textContent = tickText(FEED[0]);
+function who(id){ const k = KIND[id] || 'agent'; return `<b class="${k === 'agent' ? '' : k}">${esc(id)}</b>`; }
+function renderFeed(){
+  const bench = $('#bench');
+  if (bench) bench.innerHTML = FEED.filter(r => !r.past && r.st === 'în lucru').slice(0, 3).map(r => `<li><b>${esc(r.to)}</b> ${esc(r.task)}</li>`).join('') || '<li>Nimic pe banc acum.</li>';
+  const el = $('#feed'); if (!el) return;
+  el.innerHTML = FEED.slice(0, 12).map(r => `<li class="${r.fresh && !reduce ? 'new' : ''}${r.flash && !reduce ? ' flash' : ''}" data-id="${r.id}"><span class="id">${r.date}</span><span class="who">${who(r.from)} <i>→</i> ${who(r.to)}</span><span class="st ${ST[r.st]}">${r.st}</span><span class="task">${esc(r.task)}</span></li>`).join('');
+  FEED.forEach(r => { r.fresh = false; r.flash = false; });
+}
+function step(){
+  let r, done = false;
+  if (FEED.length > 5 && Math.random() < 0.28) { r = finishTask(); done = !!r; }
+  if (!r) r = addTask();
+  tick.textContent = tickText(r);
+  renderFeed();
+  if (window.__pulse) window.__pulse(done ? r.to : r.from, done ? r.from : r.to);
+}
+(function loopTicks(){
+  const live = selected === IDX.live;
+  if (!paused && hold === 0 && !document.hidden) step();
+  setTimeout(loopTicks, live ? 2600 : 4200);
+})();
+
+/* ---------- dock ---------- */
+const dock = $('#dock');
+const FAM = { drum:'Drumuri directe', camera:'Camerele atelierului' }; // titluri de lucru (Radu, D-028); numele le dă Maria
+const LINE = { live:'Cum lucrez, chiar acum: Jurnalul atelierului.', povesti:'O poveste la 3 luni: ce am trăit, ce m-a durut, ce am învățat.', knowledge:'Învață de la mine, nu din cărți. Și cartea.' };
+const dockBtns = [];
+INTENTS.forEach((it, i) => {
+  if (i > 0 && INTENTS[i - 1].fam !== it.fam){ const sep = document.createElement('span'); sep.className = 'sep'; sep.setAttribute('aria-hidden','true'); dock.appendChild(sep); }
+  if (FAM[it.fam] && (i === 0 || INTENTS[i - 1].fam !== it.fam)){ const f = document.createElement('span'); f.className = 'fam'; f.textContent = FAM[it.fam]; f.setAttribute('aria-hidden','true'); dock.appendChild(f); }
+  const b = document.createElement('button'); b.type = 'button'; b.setAttribute('aria-pressed','false'); b.className = 'f-' + it.fam; dockBtns.push(b);
+  b.innerHTML = `<span class="l">${it.label}</span><span class="s">${it.short}</span>`;
+  b.addEventListener('click', () => select(i)); dock.appendChild(b);
+});
+
+/* ---------- carduri (fără 3D) ---------- */
+$('#cards').innerHTML = ['drum','camera'].map(f => `<h2>${FAM[f]}</h2><div class="grid">${INTENTS.map((it, i) => it.fam !== f ? '' :
+  `<article class="card${it.room ? ' room' : ''}"><h3>${it.label}</h3><p>${LINE[it.k] || it.h}</p><button type="button" data-open="${i}">Deschide</button></article>`).join('')}</div>`).join('');
+$('#cards').addEventListener('click', e => { const b = e.target.closest('[data-open]'); if (b){ select(+b.dataset.open); $('#px').focus({preventScroll:true}); } });
+$('#book').addEventListener('click', e => { e.preventDefault(); sr.textContent = 'Prototip: aici se deschide calendarul de rezervare.'; });
+
+/* ---------- panouri ---------- */
+const panel = $('#panel'), pBody = $('#pBody');
+function tplGeneric(it){
+  return `<p class="eyebrow">${it.eb}</p><h2 id="pH">${it.h}</h2><p class="lead">${it.p}</p>
+  <ul class="list">${it.list.map(([a,b]) => `<li><b>${a}</b><span>${b}</span></li>`).join('')}</ul><a class="btn" href="#">${it.cta} →</a>`;
+}
+function tplLive(){
+  return `<p class="eyebrow">Live · cameră din atelier · simulat, date fictive</p><h2 id="pH">Cum lucrez, chiar acum.</h2>
+  <p class="lead">Lucrez cu 8 agenți AI și cu oameni din echipele mele. Fiecare task pe care ni-l dăm unii altora apare aici. Contează munca, nu cine e conectat.</p>
+  <p class="legend"><span class="a">agent AI · în timp real</span><span class="h">om · după 24 h, cu ziua</span></p>
+  <h3>Pe banc acum</h3><ul class="bench" id="bench"></ul>
+  <div class="feedhead"><h3>Jurnalul atelierului</h3><button class="pz2" type="button" data-pause aria-pressed="false">Pauză</button></div>
+  <div id="feedWrap"><div class="cols" aria-hidden="true"><span>Data</span><span>Cine → cui</span><span>Stadiu</span></div>
+  <ol class="feed" id="feed" aria-label="Jurnalul atelierului, cele mai noi primele"></ol></div>
+  <a class="btn" href="#">Tot jurnalul →</a>`;
+}
+function tplKnowledge(){
+  return `<p class="eyebrow">Învață · cameră din atelier · conținut fictiv</p><h2 id="pH">Învață de la mine, nu din cărți.</h2>
+  <p class="lead">Fiecare principiu are trei straturi: ideea, de unde vine, ce faci azi. Te oprești la cel de care ai nevoie.</p>
+  <h3>Începe de aici</h3>
+  <div class="prin">${PRINCIPLES.slice(0, 3).map((p, i) => `<details data-k="${i}"><summary><span class="n">0${i+1}</span><span class="t">${p[0]}</span><span class="m">3 straturi · 4 min</span></summary>
+  <ol class="strata"><li><b>Ideea</b>${p[1]}</li><li><b>De unde vine</b>${p[2]}</li><li><b>Încearcă azi</b>${p[3]}</li></ol></details>`).join('')}</div>
+  <h3>Ce te frământă?</h3>
+  <p class="needs"><a href="#">Echipa mea</a><a href="#">Focusul</a><a href="#">Delegarea</a><a href="#">Conflictele</a></p>
+  <a class="bookrow" href="#"><span><b>Cartea</b>în lucru · primul capitol, când e gata</span><span aria-hidden="true">→</span></a>`;
+}
+function tplPovesti(){
+  return `<div class="story"><p class="eyebrow">Ce m-a crescut · cameră din atelier · text fictiv, arată doar forma</p>
+  <p class="season">Toamna 2026 · o poveste la 3 luni</p>
+  <h2 id="pH">Anul în care am învățat să cer ajutor.</h2>
+  <div class="mv"><h3>Ce am trăit</h3><p>Am construit mai mult decât puteam duce singur. Proiecte noi, o echipă nouă, aceleași 24 de ore.</p></div>
+  <div class="mv"><h3>Ce m-a durut</h3><p>Spuneam da la tot și ajungeam să nu fiu cu adevărat prezent nicăieri. Mai ales acasă.</p></div>
+  <div class="mv"><h3>Ce am învățat</h3><p>Să deleg nu înseamnă să renunț. Înseamnă să am încredere că și alții pot duce o parte din drum.</p></div>
+  <p class="note">Următoarea poveste: februarie 2027. Textul real îl scrie Alex.</p>
+  <h3>Poveștile de până acum</h3>
+  <ul><li>„Ce rămâne după o lansare ratată”<span>Vara 2026 · fictiv</span></li><li>„Primul an cu o echipă care nu doarme”<span>Primăvara 2026 · fictiv</span></li></ul>
+  <a class="btn ink" href="#">Citește povestea întreagă →</a></div>`;
+}
+function renderPanel(it){
+  pBody.innerHTML = it.k === 'live' ? tplLive() : it.k === 'knowledge' ? tplKnowledge() : it.k === 'povesti' ? tplPovesti() : tplGeneric(it);
+  panel.classList.toggle('paper', it.k === 'povesti');
+  panel.scrollTop = 0;
+  if (it.k === 'live'){ renderFeed(); syncPause(); holdOn($('#feedWrap')); }
+  if (it.k === 'knowledge'){
+    pBody.querySelectorAll('details').forEach(d => d.addEventListener('toggle', () => {
+      if (d.open) pBody.querySelectorAll('details').forEach(o => { if (o !== d) o.open = false; });
+      const openOne = pBody.querySelector('details[open]');
+      if (window.__kLift) window.__kLift(openOne ? +openOne.dataset.k : -1);
+    }));
+  }
+}
+function setModes(k){
+  body.classList.toggle('live', k === 'live');
+  body.classList.toggle('warm', k === 'povesti');
+  body.classList.toggle('know', k === 'knowledge');
+}
+function select(i){
+  if (open) setOpen(false, true);
+  if (selected === i){ closePanel(); return; }
+  selected = i; const it = INTENTS[i];
+  dockBtns.forEach((b, j) => b.setAttribute('aria-pressed', String(j === i)));
+  renderPanel(it); setModes(it.k);
+  panel.classList.add('show'); body.classList.add('sheet');
+  sr.textContent = `Deschis: ${it.label}.`;
+  requestAnimationFrame(() => dockBtns[i].scrollIntoView({ inline:'center', block:'nearest', behavior: reduce ? 'auto' : 'smooth' }));
+  if (window.__focusRing) window.__focusRing(i);
+  if (window.__kLift) window.__kLift(-1);
+  if (window.__bridge) window.__bridge(i);
+}
+function closePanel(){
+  const back = selected >= 0 && panel.contains(document.activeElement) ? dockBtns[selected] : null;
+  panel.classList.remove('show'); body.classList.remove('sheet'); setModes('');
+  selected = -1; dockBtns.forEach(b => b.setAttribute('aria-pressed','false'));
+  if (window.__kLift) window.__kLift(-1);
+  if (back) back.focus({preventScroll:true});
+}
+$('#px').addEventListener('click', closePanel);
+$('#about').addEventListener('click', e => { e.preventDefault(); if (selected !== IDX.despre) select(IDX.despre); $('#px').focus({preventScroll:true}); });
+$('#liveOut').addEventListener('click', () => { closePanel(); $('#tk').focus({preventScroll:true}); });
+$('#tk').addEventListener('click', () => { if (selected !== IDX.live) select(IDX.live); $('#px').focus({preventScroll:true}); });
+addEventListener('keydown', e => { if (e.key === 'Escape'){ closePanel(); setOpen(false); } });
+
+function setOpen(v, quiet){
+  open = v; body.classList.toggle('open', v);
+  $('#explode').setAttribute('aria-expanded', String(v));
+  if (v){ closePanel(); $('#collapse').focus({preventScroll:true}); }
+  else if (!quiet) {}
+}
+$('#explode').addEventListener('click', () => setOpen(true));
+$('#collapse').addEventListener('click', () => { setOpen(false); $('#explode').focus({preventScroll:true}); });
+syncPause();
+
+/* ---------- scena 3D (îmbunătățire progresivă) ---------- */
+function noGL(why){ if (why) console.info('Rămâne varianta fără 3D:', why); body.classList.add('nogl'); }
+const probe = document.createElement('canvas');
+const hasGL = !!(window.WebGL2RenderingContext && probe.getContext('webgl2'));
+if (qs.has('nogl')) noGL('cerută din adresă');
+else if (saveData) noGL('Economisire date activă');
+else if (!hasGL) noGL('WebGL2 indisponibil');
+else {
+  try {
+    const THREE = await import('three');
+    const { RoomEnvironment } = await import('three/addons/environments/RoomEnvironment.js');
+    start(THREE, RoomEnvironment);
+  } catch (err) { noGL(err && err.message); }
+}
+
+function start(THREE, RoomEnvironment){
+  const canvas = $('#gl');
+  const low = coarse && ((navigator.deviceMemory || 4) <= 4 || (navigator.hardwareConcurrency || 8) <= 4);
+  const renderer = new THREE.WebGLRenderer({ canvas, antialias: !coarse, powerPreference: 'high-performance' });
+  let dpr = Math.min(devicePixelRatio, low ? 1 : coarse ? 1.5 : 2);
+  renderer.setPixelRatio(dpr);
+  renderer.toneMapping = THREE.ACESFilmicToneMapping;
+  renderer.toneMappingExposure = 1.05;
+  renderer.outputColorSpace = THREE.SRGBColorSpace;
+  window.__perf = { dpr, low, avgMs: 0 };
+  const seg = n => coarse ? Math.max(8, Math.round(n * 0.5)) : n;
+  const V3 = THREE.Vector3;
+
+  const BG = new THREE.Color('#070910'), WARM = new THREE.Color('#160D08');
+  const scene = new THREE.Scene();
+  scene.background = BG.clone();
+  scene.fog = new THREE.Fog(BG.clone(), 9, 22);
+  const pmrem = new THREE.PMREMGenerator(renderer);
+  scene.environment = pmrem.fromScene(new RoomEnvironment(renderer), 0.04).texture;
+
+  const camera = new THREE.PerspectiveCamera(35, 1, 0.1, 60);
+  const world = new THREE.Group(); scene.add(world);
+  const hemi = new THREE.HemisphereLight('#9fb4ff', '#120c08', 0.5); scene.add(hemi);
+  const key = new THREE.DirectionalLight('#ffffff', 1.6); key.position.set(3, 5, 4); scene.add(key);
+  const glow = new THREE.PointLight('#7CF5C8', 6, 8, 2); glow.position.set(0, 0.6, 0.8); world.add(glow);
+  const C = { hemi: new THREE.Color('#9fb4ff'), hemiW: new THREE.Color('#ffb37a'), key: new THREE.Color('#ffffff'), keyW: new THREE.Color('#ffd2a8'),
+              glow: new THREE.Color('#7CF5C8'), glowW: new THREE.Color('#ff9a4a'), floor: new THREE.Color('#ffffff'), floorW: new THREE.Color('#e0b48e') };
+
+  // planșa de atelier
+  const gc = document.createElement('canvas'); gc.width = gc.height = 256;
+  const g = gc.getContext('2d'); g.fillStyle = '#0a0d17'; g.fillRect(0,0,256,256);
+  g.strokeStyle = '#1f3b44'; g.lineWidth = 2; g.strokeRect(0,0,256,256);
+  g.strokeStyle = '#141f2e'; g.lineWidth = 1; for (let i = 64; i < 256; i += 64){ g.beginPath(); g.moveTo(i,0); g.lineTo(i,256); g.moveTo(0,i); g.lineTo(256,i); g.stroke(); }
+  const gridTex = new THREE.CanvasTexture(gc); gridTex.wrapS = gridTex.wrapT = THREE.RepeatWrapping; gridTex.repeat.set(24,24); gridTex.colorSpace = THREE.SRGBColorSpace;
+  gridTex.anisotropy = Math.min(8, renderer.capabilities.getMaxAnisotropy());
+  const floorMat = new THREE.MeshBasicMaterial({ map: gridTex });
+  const floor = new THREE.Mesh(new THREE.PlaneGeometry(60,60), floorMat);
+  floor.rotation.x = -Math.PI/2; floor.position.y = -1.5; world.add(floor);
+
+  const glass = (tint = '#ffffff', rough = 0.08, op = 0.6) => coarse
+    ? new THREE.MeshPhysicalMaterial({ color: new THREE.Color(tint).multiplyScalar(0.35), metalness: 0.1, roughness: 0.08, clearcoat: 1, iridescence: low ? 0 : 0.5, transparent: true, opacity: op, depthWrite: op > 0.5, envMapIntensity: 1.8 })
+    : new THREE.MeshPhysicalMaterial({ color: '#ffffff', transmission: 1, thickness: 0.6, roughness: rough, ior: 1.45, iridescence: 0.55, iridescenceIOR: 1.3, attenuationColor: new THREE.Color(tint), attenuationDistance: 2.5, envMapIntensity: 1.2, specularIntensity: 1 });
+
+  const halo = (r, g2, b) => {
+    const c = document.createElement('canvas'); c.width = c.height = 64; const x = c.getContext('2d');
+    const rg = x.createRadialGradient(32,32,0,32,32,32);
+    rg.addColorStop(0, `rgba(${r},${g2},${b},1)`); rg.addColorStop(.25, `rgba(${r},${g2},${b},.45)`); rg.addColorStop(1, `rgba(${r},${g2},${b},0)`);
+    x.fillStyle = rg; x.fillRect(0,0,64,64); return new THREE.CanvasTexture(c);
+  };
+  const TEX = { agent: halo(124,245,200), om: halo(255,195,122), alex: halo(255,244,230), pulse: halo(230,255,246) };
+  const sprite = (tex, s = 0.32) => { const sp = new THREE.Sprite(new THREE.SpriteMaterial({ map: tex, depthWrite: false, blending: THREE.AdditiveBlending, transparent: true })); sp.scale.setScalar(s); return sp; };
+
+  /* --- invenția: Busola, 5 straturi --- */
+  const inv = new THREE.Group(); inv.position.y = 0.15; world.add(inv);
+  const L = [];
+  const base = new THREE.Mesh(new THREE.CylinderGeometry(1.32, 1.4, 0.14, seg(72)), new THREE.MeshStandardMaterial({ color:'#161a28', metalness:0.85, roughness:0.32 }));
+  const disc = new THREE.Mesh(new THREE.CylinderGeometry(1.26, 1.26, 0.16, seg(72)), glass('#bfefff', 0.06, 0.45));
+  const ring = new THREE.Group();
+  ring.add(new THREE.Mesh(new THREE.TorusGeometry(1.0, 0.024, 12, seg(120)), new THREE.MeshStandardMaterial({ color:'#7CF5C8', emissive:'#2fd69c', emissiveIntensity:1.4, roughness:.3 })));
+  ring.children[0].rotation.x = Math.PI/2;
+  for (let i = 0; i < 4; i++){ const t = new THREE.Mesh(new THREE.BoxGeometry(0.05,0.05,0.2), new THREE.MeshStandardMaterial({ color:'#e8fff6', emissive:'#7CF5C8', emissiveIntensity:.8 }));
+    const a = i * Math.PI/2; t.position.set(Math.sin(a), 0, Math.cos(a)); t.rotation.y = a; ring.add(t); }
+  const needle = new THREE.Group();
+  const nN = new THREE.Mesh(new THREE.ConeGeometry(0.09, 0.82, 4), new THREE.MeshStandardMaterial({ color:'#FF8A65', emissive:'#c2401c', emissiveIntensity:.7, metalness:.3, roughness:.35 }));
+  nN.rotation.x = -Math.PI/2; nN.position.z = -0.41;
+  const nS = new THREE.Mesh(new THREE.ConeGeometry(0.09, 0.82, 4), new THREE.MeshStandardMaterial({ color:'#c9cfdf', metalness:.8, roughness:.3 }));
+  nS.rotation.x = Math.PI/2; nS.position.z = 0.41;
+  needle.add(nN, nS, new THREE.Mesh(new THREE.SphereGeometry(0.07, 24, 12), new THREE.MeshStandardMaterial({ color:'#ffffff', metalness:1, roughness:.15 })));
+  const dome = new THREE.Mesh(new THREE.SphereGeometry(1.24, seg(64), seg(24), 0, Math.PI*2, 0, Math.PI/2), glass('#d8ccff', 0.04, 0.28));
+  dome.scale.y = 0.32;
+  [[base,0,-1.75],[disc,0.13,-0.85],[ring,0.24,0.0],[needle,0.29,0.85],[dome,0.3,1.7]].forEach(([m,y0,y1]) => { inv.add(m); L.push({ m, y0: y0 - 0.15, y1 }); });
+
+  /* --- intențiile: obiecte pe orbită --- */
+  const R = 3.7;
+  const orbit = new THREE.Group(); world.add(orbit);
+  const liveInner = [], plates = [];
+  let pebble = null, pebbleHalo = null;
+  const build = {
+    coaching: () => new THREE.Mesh(new THREE.TorusGeometry(0.34, 0.12, seg(24), seg(64)), glass('#ffd2c2', .18)),
+    tools: () => new THREE.Mesh(new THREE.IcosahedronGeometry(0.46, 0), glass('#c9fff0', .18)),
+    live: () => { // lanternă de sticlă cu lumini care lucrează înăuntru
+      const gr = new THREE.Group(); gr.add(new THREE.Mesh(new THREE.SphereGeometry(0.42, seg(40), seg(20)), glass('#d6fff1', .12)));
+      [0, 2.1, 4.2].forEach(ph => { const s = sprite(TEX.agent, 0.2); gr.add(s); liveInner.push({ s, ph }); });
+      return gr; },
+    knowledge: () => { // straturi de cunoaștere: plăci care se desfac
+      const gr = new THREE.Group(); ['#c9fff0','#d8d2ff','#ffe9c2','#c9e4ff'].forEach((t, i) => {
+        const m = glass(t, .12); m.emissive = new THREE.Color('#7CF5C8'); m.emissiveIntensity = 0;
+        const p = new THREE.Mesh(new THREE.BoxGeometry(0.74, 0.045, 0.52), m); gr.add(p); plates.push({ p, lift: 0 }); });
+      return gr; },
+    povesti: () => { // piatră caldă, mată: singurul obiect care nu e din sticlă
+      const gr = new THREE.Group();
+      pebble = new THREE.Mesh(new THREE.SphereGeometry(0.36, seg(40), seg(20)), new THREE.MeshStandardMaterial({ color:'#d9a273', emissive:'#ff8a3d', emissiveIntensity:.35, roughness:.85, metalness:0 }));
+      pebble.scale.set(1.15, 0.72, 1); gr.add(pebble);
+      pebbleHalo = sprite(TEX.om, 1.5); pebbleHalo.material.opacity = .45; gr.add(pebbleHalo);
+      return gr; },
+    speaking: () => new THREE.Mesh(new THREE.CapsuleGeometry(0.22, 0.5, 8, seg(24)), glass('#fff3c2', .18)),
+    compania: () => new THREE.Mesh(new THREE.BoxGeometry(0.62, 0.62, 0.62), glass('#d8d2ff', .18))
+  };
+  const tagsEl = $('#tags');
+  const ON = INTENTS.map((it, i) => [it, i]).filter(([it]) => it.orbit !== false);
+  const byI = {};
+  const items = ON.map(([it, i], j) => {
+    const m = build[it.k]();
+    const holder = new THREE.Group(); holder.add(m); holder.userData.i = i; orbit.add(holder);
+    if (it.fam === 'drum') holder.add(new THREE.Mesh(new THREE.SphereGeometry(0.06, 12, 6), new THREE.MeshBasicMaterial({ color: '#ffffff' })));
+    if (it.room){ // fiecare cameră își aruncă lumina pe planșă: semn că e un loc, nu un buton
+      const pool = new THREE.Mesh(new THREE.PlaneGeometry(1.9, 1.9), new THREE.MeshBasicMaterial({ map: it.k === 'povesti' ? TEX.om : it.k === 'tools' ? TEX.alex : TEX.agent, transparent:true, opacity:.42, depthWrite:false, blending:THREE.AdditiveBlending }));
+      pool.rotation.x = -Math.PI/2; pool.position.y = -1.23; holder.add(pool);
+    }
+    const tag = document.createElement('div'); tag.className = 'tag'; tag.textContent = it.short; tagsEl.appendChild(tag);
+    return (byI[i] = { i, k: it.k, holder, m, tag, w: 0, a: j * Math.PI * 2 / ON.length, s: 1, spin: 0.2 + Math.random() * 0.3 });
+  });
+  const measure = () => items.forEach(o => o.w = o.tag.offsetWidth);
+  measure(); document.fonts && document.fonts.ready.then(measure);
+
+  /* --- echipa: agenți (menta) și oameni (chihlimbar); în Live devin rețeaua --- */
+  const NET = {};
+  NET['Alex'] = new V3(0, 0.25, 0);
+  NET['Tudor'] = new V3(0, 1.25, 0.3);
+  const ring2 = [['Radu',160],['Ioana',125],['Mike',55],['Maria',20],['Sofia',-25],['Victor',205],['Elena',250]];
+  ring2.forEach(([id, deg], i) => { const a = deg * Math.PI / 180, r = 2.2;
+    NET[id] = new V3(Math.cos(a) * r, 0.25 + Math.sin(a) * r * 0.72, Math.sin(i * 1.7) * 0.35); });
+  const nodeTagsEl = $('#nodeTags');
+  const team = NODES.map((n, i) => {
+    // Alex nu e o luminiță: un punct solid, fără strălucire, vizibil doar în Live
+    const sp = n.kind === 'alex' ? new THREE.Mesh(new THREE.SphereGeometry(0.16, 24, 12), new THREE.MeshStandardMaterial({ color:'#F3F1EC', roughness:.55, metalness:.1 })) : sprite(TEX.agent, 0.32);
+    world.add(sp);
+    const tg = document.createElement('div'); tg.className = 'ntag ' + n.kind; tg.textContent = n.id; nodeTagsEl.appendChild(tg);
+    return { n, sp, tg, tw: 0, r: 4.9 + (i % 3) * 0.35, inc: -0.5 + (i / NODES.length), ph: i * 0.7, sp0: 0.08 + (i % 4) * 0.03, pulse: 0, hot: 0, pos: new V3() };
+  });
+  const T = Object.fromEntries(team.map(t => [t.n.id, t]));
+  const measureN = () => team.forEach(t => t.tw = t.tg.offsetWidth);
+  measureN(); document.fonts && document.fonts.ready.then(measureN);
+
+  // firele rețelei
+  const EDGES = [['Alex','Tudor'], ...['Radu','Ioana','Mike','Maria','Sofia','Victor','Elena'].map(a => ['Tudor', a])];
+  const ePos = new Float32Array(EDGES.length * 6);
+  const eGeo = new THREE.BufferGeometry(); eGeo.setAttribute('position', new THREE.BufferAttribute(ePos, 3));
+  const eMat = new THREE.LineBasicMaterial({ color:'#7CF5C8', transparent:true, opacity:0, depthWrite:false });
+  const edges = new THREE.LineSegments(eGeo, eMat); edges.frustumCulled = false; world.add(edges);
+  // firul activ al fiecărui task
+  const aPos = new Float32Array(3 * 6);
+  const aGeo = new THREE.BufferGeometry(); aGeo.setAttribute('position', new THREE.BufferAttribute(aPos, 3));
+  const aMat = new THREE.LineBasicMaterial({ color:'#E6FFF6', transparent:true, opacity:0, depthWrite:false });
+  const aLines = new THREE.LineSegments(aGeo, aMat); aLines.frustumCulled = false; world.add(aLines);
+  const pool = [0,1,2].map(() => { const s = sprite(TEX.pulse, 0.26); s.visible = false; world.add(s); return { s, a: null, b: null, t: 1 }; });
+
+  let activeAgent = 'Mike', liveK = 0, warmK = 0;
+  window.__pulse = (from, to) => {
+    if (!T[from] || !T[to]) return;
+    activeAgent = KIND[from] === 'agent' ? from : (KIND[to] === 'agent' ? to : activeAgent);
+    T[from].pulse = 1;
+    if (liveK > 0.5 && !reduce){
+      const p = pool.find(q => q.t >= 1) || pool[0];
+      p.a = T[from]; p.b = T[to]; p.t = 0; p.s.visible = true; p.a.hot = 1; p.b.hot = 1;
+    } else T[to].pulse = 0.6;
+  };
+  let kLift = -1; window.__kLift = i => { kLift = i; };
+
+  /* --- pragul: intri în atelier, nu deschizi un site --- */
+  const door = new THREE.Group(); scene.add(door);
+  const dMat = new THREE.MeshBasicMaterial({ color:'#7CF5C8', transparent:true, opacity:.6, fog:false });
+  [[6,.035,0,3.3],[6,.035,0,-1.5],[.035,4.8,-3,0.9],[.035,4.8,3,0.9]].forEach(([w,h,x,y]) => { const b = new THREE.Mesh(new THREE.BoxGeometry(w,h,.035), dMat); b.position.set(x,y,0); door.add(b); });
+  door.position.z = 15;
+  let entry = reduce ? 1 : 0;
+  setTimeout(() => { entry = 1; }, 3200); // plasă: în tab-uri lente, intrarea se termină oricum
+
+  /* --- poduri: ce explorezi se leagă. Misiunea (D-026) ca gest, nu ca text --- */
+  const visited = [], bridges = [];
+  const bMat = new THREE.LineBasicMaterial({ color:'#E6FFF6', transparent:true, opacity:.75, depthWrite:false });
+  const NB = 16, bA = new V3(), bB = new V3();
+  window.__bridge = i => {
+    if (!byI[i]) return;
+    const prev = visited[visited.length - 1];
+    if (prev === i) return;
+    if (prev !== undefined && !bridges.some(b => (b.a === prev && b.b === i) || (b.a === i && b.b === prev)) && bridges.length < 10){
+      const geo = new THREE.BufferGeometry(); geo.setAttribute('position', new THREE.BufferAttribute(new Float32Array((NB + 1) * 3), 3));
+      const line = new THREE.Line(geo, bMat); line.frustumCulled = false; orbit.add(line);
+      bridges.push({ a: prev, b: i, g: reduce ? 1 : 0, line, geo });
+    }
+    visited.push(i);
+  };
+  window.__bridges = () => bridges.length;
+
+  /* --- interacțiune --- */
+  let ringA = 0, ringT = 0, vel = 0, dragging = false, moved = 0, lastX = 0;
+  const px = { x:0, y:0 }, pxT = { x:0, y:0 };
+  const ray = new THREE.Raycaster(), ndc = new THREE.Vector2();
+  window.__focusRing = i => { if (!byI[i]) return; const target = -byI[i].a; ringT += Math.atan2(Math.sin(target - ringT), Math.cos(target - ringT)); vel = 0; };
+  canvas.addEventListener('pointerdown', e => { dragging = true; moved = 0; lastX = e.clientX; canvas.setPointerCapture(e.pointerId); canvas.classList.add('dragging'); });
+  canvas.addEventListener('pointermove', e => {
+    pxT.x = e.clientX / innerWidth - 0.5; pxT.y = e.clientY / innerHeight - 0.5;
+    if (!dragging) return;
+    const dx = e.clientX - lastX; lastX = e.clientX; moved += Math.abs(dx);
+    if (!open && liveK < 0.5){ ringT += dx * 0.006; vel = dx * 0.006; }
+  });
+  canvas.addEventListener('pointerup', e => {
+    dragging = false; canvas.classList.remove('dragging');
+    if (moved >= 6 || liveK > 0.5) return;
+    ndc.set(e.clientX / innerWidth * 2 - 1, -(e.clientY / innerHeight) * 2 + 1);
+    ray.setFromCamera(ndc, camera);
+    const hit = ray.intersectObjects([...items.map(o => o.holder), inv], true).find(h => !h.object.isSprite);
+    if (!hit) return;
+    let o = hit.object; while (o && o.userData.i === undefined && o !== inv) o = o.parent;
+    if (o && o.userData.i !== undefined) select(o.userData.i);
+    else if (o === inv && !open) setOpen(true);
+  });
+
+  function resize(){
+    renderer.setSize(innerWidth, innerHeight, false); camera.aspect = innerWidth / innerHeight;
+    camera.fov = innerWidth < 760 ? 46 : 35; camera.updateProjectionMatrix();
+  }
+  addEventListener('resize', () => { resize(); measure(); measureN(); });
+  resize();
+
+  /* --- buclă --- */
+  const v = new V3(), zero = new V3(), offRight = new V3(1.38, 0, 0);
+  const heroEl = $('.hero'), featEl = $('.feature'), partEls = [...document.querySelectorAll('#parts li')], agentTag = $('#agentTag');
+  let hr = heroEl.getBoundingClientRect(), fr = featEl.getBoundingClientRect();
+  const comp = { x:0, y:0, z:10, l:0 };
+  let explode = 0, last = performance.now(), t = 0, running = true, frame = 0, fAcc = 0, fN = 0;
+  document.addEventListener('visibilitychange', () => { running = !document.hidden; if (running){ last = performance.now(); requestAnimationFrame(loop); } });
+  const damp = (a, b, k, dt) => a + (b - a) * (1 - Math.exp(-k * dt));
+  const toScreen = (obj, off) => { v.copy(off); obj.localToWorld(v); v.project(camera); return { x: (v.x * .5 + .5) * innerWidth, y: (-v.y * .5 + .5) * innerHeight, z: v.z }; };
+
+  function loop(now){
+    if (!running) return;
+    frame++;
+    const sheet = body.classList.contains('sheet');
+    const mode = selected >= 0 ? INTENTS[selected].k : '';
+    // pe telefon, cu un panou deschis și scena liniștită, desenăm la jumătate din cadre
+    if (coarse && sheet && mode !== 'live' && liveK < 0.01 && Math.abs(warmK - (mode === 'povesti' ? 1 : 0)) < 0.01 && (frame & 1)){ requestAnimationFrame(loop); return; }
+    const raw = (now - last) / 1000; last = now;
+    const dt = Math.min(0.2, raw); t += dt;
+    // pixeli adaptivi: dacă media cadrelor trece de ~26 ms, scădem rezoluția (minimum 1)
+    fAcc += raw; fN++;
+    if (fN >= 90){ const avg = fAcc / fN; window.__perf.avgMs = Math.round(avg * 1000);
+      if (avg > 0.026 && dpr > 1){ dpr = Math.max(1, dpr - 0.25); renderer.setPixelRatio(dpr); resize(); window.__perf.dpr = dpr; }
+      fAcc = 0; fN = 0; }
+    if (frame % 30 === 0){ hr = heroEl.getBoundingClientRect(); fr = featEl.getBoundingClientRect(); }
+
+    const narrow = innerWidth < 760;
+    const K = reduce ? 60 : 4.5;
+    const live = mode === 'live', warm = mode === 'povesti', know = mode === 'knowledge';
+    liveK = damp(liveK, live ? 1 : 0, reduce ? 60 : 2.6, dt);
+    warmK = damp(warmK, warm ? 1 : 0, reduce ? 60 : 2.2, dt);
+    explode = damp(explode, open ? 1 : 0, reduce ? 60 : 3.2, dt);
+
+    // compoziția
+    let tx, ty, tz;
+    if (open){ tx = narrow ? 0 : 0.9; ty = narrow ? 1.9 : -0.05; tz = narrow ? 15 : 8.6; }
+    else if (live){ tx = narrow ? 0 : -1.6; ty = narrow ? 2.1 : 0.05; tz = narrow ? 14 : 9.4; }
+    else { tx = narrow ? 0 : (selected >= 0 ? 0.2 : 2.2); ty = narrow ? (selected >= 0 ? 1.7 : -0.3) : -0.1; tz = narrow ? (selected >= 0 ? 16 : 15) : 10.5; }
+    comp.x = damp(comp.x, tx, K, dt); comp.y = damp(comp.y, ty, K, dt); comp.z = damp(comp.z, tz, K, dt);
+    world.position.set(comp.x, comp.y, 0);
+    if (!reduce && !coarse){ px.x = damp(px.x, pxT.x, 3, dt); px.y = damp(px.y, pxT.y, 3, dt); }
+    entry = Math.min(1, entry + dt / 2.2);
+    const ee = 1 - Math.pow(1 - entry, 3);
+    door.visible = entry < 1;
+    camera.position.set(px.x * 0.9, 1.4 - px.y * 0.6 + liveK * 0.2, comp.z + (1 - ee) * 10);
+    comp.l = damp(comp.l, narrow ? (selected >= 0 ? -1.6 : 0) : liveK * 0.15, K, dt);
+    camera.lookAt(world.position.x * 0.35, world.position.y * 0.5 + comp.l, 0);
+
+    // lumina caldă pentru Povești
+    scene.background.lerpColors(BG, WARM, warmK); scene.fog.color.copy(scene.background);
+    hemi.color.lerpColors(C.hemi, C.hemiW, warmK); key.color.lerpColors(C.key, C.keyW, warmK);
+    glow.color.lerpColors(C.glow, C.glowW, warmK); floorMat.color.lerpColors(C.floor, C.floorW, warmK);
+
+    // orbita
+    if (!dragging){
+      if (Math.abs(vel) > 0.0001){ ringT += vel; vel *= 0.92; }
+      else if (!reduce && selected < 0 && !open) ringT += dt * 0.07;
+    }
+    ringA = damp(ringA, ringT, reduce ? 60 : 5, dt);
+    const hide = Math.max(explode, liveK);
+    items.forEach((o, j) => {
+      const i = o.i;
+      const a = o.a + ringA, rr = R * (1 + 0.45 * explode);
+      // pe telefon, obiectul ales urcă deasupra panoului
+      o.ly = damp(o.ly || 0, narrow && i === selected ? 2.2 : 0, K, dt);
+      o.holder.position.set(Math.sin(a) * rr, -0.25 + o.ly + Math.sin(t * 0.6 + j) * (reduce ? 0 : 0.06), Math.cos(a) * rr);
+      const target = (open || live) ? 0.001 : (i === selected ? 1.35 : 1) * (open ? 0.55 : 1);
+      o.s = damp(o.s, (open && !narrow) ? 0.55 : target, 6, dt); o.holder.scale.setScalar(Math.max(0.001, o.s));
+      if (!reduce){ o.m.rotation.y += dt * o.spin * (o.k === 'knowledge' && know ? 0.3 : 1); if (o.k !== 'knowledge' && o.k !== 'povesti') o.m.rotation.x += dt * o.spin * 0.4; }
+      const p = toScreen(o.holder, zero);
+      o.tag.style.opacity = (hide > 0.1) ? 0 : (Math.cos(a) > 0.15 ? 1 : 0);
+      o.tag.classList.toggle('on', i === selected);
+      o.tag.style.transform = `translate(${(p.x - o.w / 2).toFixed(1)}px,${(p.y + 34 - (narrow ? 6 : 0)).toFixed(1)}px)`;
+    });
+    // poduri între obiectele explorate: arce care se construiesc de la un capăt la altul
+    bridges.forEach(br => {
+      br.g = Math.min(1, br.g + dt / 0.9);
+      bA.copy(byI[br.a].holder.position); bB.copy(byI[br.b].holder.position);
+      const arr = br.geo.attributes.position.array, n = Math.max(1, Math.round(NB * br.g));
+      for (let k = 0; k <= NB; k++){ const u = Math.min(k, n) / NB;
+        arr[k*3] = bA.x + (bB.x - bA.x) * u; arr[k*3+1] = bA.y + (bB.y - bA.y) * u + Math.sin(Math.PI * u) * 0.7 - 0.1; arr[k*3+2] = bA.z + (bB.z - bA.z) * u; }
+      br.geo.attributes.position.needsUpdate = true;
+      br.line.visible = hide < 0.1;
+    });
+    bMat.color.setRGB(0.9 + warmK * 0.1, 1 - warmK * 0.2, 0.96 - warmK * 0.4);
+    // lanterna Live
+    liveInner.forEach((l, j) => { const a = (reduce ? 0 : t * 1.4) + l.ph; l.s.position.set(Math.cos(a) * 0.2, Math.sin(a * 1.3) * 0.14, Math.sin(a) * 0.2); });
+    // straturile Knowledge
+    const spread = know ? 1 : 0;
+    plates.forEach((pl, i) => {
+      pl.lift = damp(pl.lift, kLift === i ? 1 : 0, reduce ? 60 : 6, dt);
+      const y = (i - 1.5) * (0.085 + 0.17 * spread) + pl.lift * 0.14;
+      pl.p.position.y = damp(pl.p.position.y, y, reduce ? 60 : 5, dt);
+      pl.p.rotation.y = damp(pl.p.rotation.y, i * 0.22 * spread, reduce ? 60 : 4, dt);
+      pl.p.material.emissiveIntensity = pl.lift * 0.9;
+    });
+    // piatra Povești respiră încet
+    if (pebble){ const b = reduce ? 1 : 1 + Math.sin(t * 0.9) * 0.025; pebble.scale.set(1.15 * b, 0.72 * b, b); pebbleHalo.material.opacity = 0.35 + warmK * 0.4; }
+
+    // busola
+    comp.inv = damp(comp.inv ?? 1, narrow && selected >= 0 ? 0.001 : 1, K, dt);
+    inv.scale.setScalar(Math.max(0.001, 0.88 * (1 - liveK) * comp.inv));
+    inv.rotation.x = 0.95 + (0.32 - 0.95) * explode;
+    inv.rotation.y = (reduce ? 0 : Math.sin(t * 0.25) * 0.12) * (1 - explode);
+    L.forEach(l => { l.m.position.y = l.y0 + (l.y1 - l.y0) * explode; });
+    needle.rotation.y = (reduce ? 0 : Math.sin(t * 0.9) * 0.35 * (1 - explode) + Math.sin(t * 0.5) * 0.08) + explode * 1.15;
+    ring.rotation.y = explode * 0.4;
+    if (explode > 0.02 && !narrow){
+      [L[4], L[3], L[2], L[1], L[0]].forEach((l, i) => {
+        const p = toScreen(l.m, offRight), el = partEls[i];
+        el.style.setProperty('--x', (p.x + 36) + 'px');
+        el.style.transform = `translate(${(p.x + 36).toFixed(1)}px,${(p.y - el.offsetHeight / 2).toFixed(1)}px)`;
+      });
+    }
+
+    // echipa: pe orbită sau în rețea
+    team.forEach((m, i) => {
+      const ang = m.ph + (reduce ? 0 : t * m.sp0);
+      const ox = Math.sin(ang) * m.r, oz = Math.cos(ang) * m.r;
+      v.set(ox, 0.3 + oz * Math.sin(m.inc) * 0.35 + Math.sin(ang * 2) * 0.2, oz * Math.cos(m.inc));
+      const k = m.n.kind === 'alex' ? 1 : liveK;
+      m.pos.copy(v).lerp(NET[m.n.id], k);
+      if (!reduce && liveK > 0.5) m.pos.y += Math.sin(t * 0.8 + i) * 0.03;
+      m.sp.position.copy(m.pos);
+      m.pulse = Math.max(0, m.pulse - dt * 0.6); m.hot = Math.max(0, m.hot - dt * 0.45);
+      let s = 0.3 + m.pulse * 0.5 + (m.n.id === activeAgent && liveK < 0.5 ? 0.12 : 0) + liveK * 0.08;
+      if (m.n.kind === 'alex') s = liveK + 0.001;
+      m.sp.scale.setScalar(s);
+      if (m.sp.isSprite) m.sp.material.opacity = 1 - warmK * 0.7;
+    });
+    // fire
+    if (liveK > 0.01){
+      EDGES.forEach(([a, b], j) => { const A = T[a].pos, B = T[b].pos; ePos.set([A.x, A.y, A.z, B.x, B.y, B.z], j * 6); });
+      eGeo.attributes.position.needsUpdate = true;
+    }
+    eMat.opacity = liveK * 0.3;
+    let ai2 = 0; aPos.fill(0);
+    pool.forEach(p => {
+      if (p.t >= 1 || !p.a){ p.s.visible = false; return; }
+      p.t = Math.min(1, p.t + dt / 1.1);
+      const e = p.t < .5 ? 2 * p.t * p.t : 1 - Math.pow(-2 * p.t + 2, 2) / 2;
+      p.s.position.copy(p.a.pos).lerp(p.b.pos, e); p.s.position.y += Math.sin(Math.PI * e) * 0.35;
+      p.s.scale.setScalar(0.22 + Math.sin(Math.PI * e) * 0.12);
+      const A = p.a.pos, B = p.b.pos; aPos.set([A.x, A.y, A.z, B.x, B.y, B.z], ai2++ * 6);
+      if (p.t >= 1){ p.b.pulse = 1; p.s.visible = false; }
+    });
+    aGeo.attributes.position.needsUpdate = true;
+    aMat.opacity = liveK * 0.75;
+
+    // etichetele rețelei: pe desktop toate, pe telefon doar Alex și cine lucrează acum
+    team.forEach(m => {
+      if (liveK < 0.05){ if (m.tg.style.opacity !== '0') m.tg.style.opacity = 0; return; }
+      const p = toScreen(m.sp, zero);
+      const show = !narrow || m.n.kind === 'alex' || m.hot > 0.05;
+      m.tg.style.opacity = show ? Math.min(1, (liveK - 0.3) * 2).toFixed(2) : 0;
+      m.tg.classList.toggle('hot', m.hot > 0.05);
+      m.tg.style.transform = `translate(${Math.max(4, Math.min(innerWidth - m.tw - 4, p.x - m.tw / 2)).toFixed(1)}px,${(p.y + (m.n.kind === 'alex' ? 16 : 11)).toFixed(1)}px)`;
+    });
+    // eticheta agentului activ, pe orbită
+    const aa = T[activeAgent], ap = toScreen(aa.sp, zero);
+    agentTag.textContent = activeAgent;
+    const overUI = (ap.x < hr.right + 20 && ap.y < hr.bottom + 10) || (ap.x < fr.right + 20 && ap.y > fr.top - 30) || (sheet && !narrow && ap.x > innerWidth - 480);
+    agentTag.style.opacity = (open || liveK > 0.1 || warmK > 0.3 || ap.z > 1 || overUI || narrow && sheet) ? 0 : 0.95;
+    agentTag.style.transform = `translate(${(ap.x + 12).toFixed(1)}px,${(ap.y - 22).toFixed(1)}px)`;
+
+    renderer.render(scene, camera);
+    if (!canvas.classList.contains('ready')) canvas.classList.add('ready');
+    requestAnimationFrame(loop);
+  }
+  requestAnimationFrame(loop);
+}
+</script>
+</body>
+</html>

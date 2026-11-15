@@ -1,6 +1,6 @@
 ---
 name: project-directii-v1
-description: Trei direcții de site v1 (Dialog, Spațiu, Sistem viu) livrate 2026-11-15 ca prototipuri HTML; recomandarea: Sistem viu + vederea desfăcută pentru pagina invenției
+description: Trei direcții de site v1 (Dialog, Spațiu, Sistem viu) livrate 2026-11-15; Alex a ales Spațiu (D-023), continuat în v2
 metadata:
   type: project
 ---
@@ -15,4 +15,5 @@ Recomandare: Sistem viu ca fundație, vederea desfăcută din Spațiu pe pagina 
 
 **Why:** răspuns la respingerea v0 ([[feedback-inovatie-nu-calm]]). Direcția 3 pune ideea I-001 pe prima pagină.
 
-**How to apply:** când Alex alege, trece alegerea în MEMORY.md la „Preferințe confirmate”. Jurnalul real depinde de răspunsurile lui Alex din I-001 (ce iese public). Tot ce rămâne de implementare: pauză (WCAG 2.2.2) pentru pastila din D1 și ticker-ul din D2, testare reduced-motion din setările sistemului.
+2026-11-15: Alex a ales Spațiu (D-023), deși recomandasem Sistem viu. Din Sistem viu i-a plăcut feed-ul de taskuri, care a intrat în v2 ([[project-spatial-v2]]). Lecție: recomandarea mea a fost cea „corectă” pe hârtie, el a ales ce l-a inspirat.
+**How to apply:** Jurnalul real depinde de răspunsurile lui Alex din I-001 (ce iese public). Tot ce rămâne de implementare: pauză (WCAG 2.2.2) pentru pastila din D1 și ticker-ul din D2, testare reduced-motion din setările sistemului.
