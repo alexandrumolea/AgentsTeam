@@ -1,0 +1,77 @@
+# Setările site-ului (D-030: conținutul stă ca date).
+# Regula: un câmp gol înseamnă că elementul nu apare. Nu inventăm nimic ca să umplem un loc.
+# După o schimbare: commit + push pe main. Site-ul se publică singur în câteva minute.
+
+titlu: "Alex · Atelier"
+descriere: "Construiesc unelte pentru oameni care vor să crească. Sunt Alex: coach, fondator și inventator."
+
+# Domeniul propriu, fără https:// (ex.: alex.ro). Gol = adresa GitHub Pages.
+# Completat → build-ul scrie fișierul CNAME. Domeniul se setează și în GitHub: Settings → Pages → Custom domain.
+domeniu: ""
+
+# Repo-ul public: contactul și „vezi cum se construiește” duc aici. Fără email, fără telefon.
+github: "https://github.com/alexandrumolea/AgentsTeam"
+
+# Linkul de rezervare (ex.: Cal.com). Gol = butonul „Rezervă o sesiune” e ascuns peste tot.
+rezervare: ""
+
+# Introducerea, aprobată de Alex (vocea-alex, 2026-11-15). Nu se rescrie fără el.
+intro:
+  marca: "Alex · Atelier"
+  titlu: "Construiesc unelte pentru oameni care"
+  titlu_accent: "vor să crească."
+  cine: "Sunt Alex: coach, fondator și inventator."
+  # Inscripția misiunii, cuvintele lui Alex (D-026). Citatul intact apare doar aici și în Despre.
+  inscriptie:
+    - "Necunoscutul creează monștri."
+    - "Educația creează poduri."
+  cum: "Fiecare obiect de aici e un drum. Trage de spațiu sau alege mai jos."
+
+# Textul pentru camerele și drumurile care încă nu au conținut real.
+in_pregatire: "În pregătire. Atelierul e deschis, camera asta se construiește acum."
+
+# Obiectul din centrul scenei: „Desfă invenția”. Gol = fără obiect în centru și fără card.
+# Acum e chiar site-ul: singura invenție reală din atelier azi. Straturile, de sus în jos (exact 5 pentru obiectul actual).
+in_centru:
+  eticheta: "Din atelier · în lucru"
+  titlu: "Site-ul pe care îl vezi"
+  text: "Prima invenție din atelier. Desfă-l și vezi cum funcționează pe dinăuntru."
+  buton: "Desfă invenția"
+  link_text: "Vezi codul"
+  straturi:
+    - nume: "Scena"
+      text: "Spațiul 3D. Fără 3D, aceleași drumuri, ca listă."
+    - nume: "Jurnalul"
+      text: "Live se scrie singur, din taskurile echipei și din istoricul git."
+    - nume: "Echipa"
+      text: "Agenți AI, fiecare cu un rol. Deciziile rămân la Alex."
+    - nume: "Conținutul"
+      text: "Fișiere text în repo. Un text nou înseamnă un fișier editat."
+    - nume: "Baza"
+      text: "Structura: Radu. Forma: Ioana. Codul: Mike. Toți agenți AI."
+
+# Echipa de agenți (I-001). Rolurile se citesc automat din team/*/profil.md.
+echipa:
+  titlu: "Cum lucrez cu echipa mea de agenți"
+  text:
+    - "Lucrez cu o echipă de agenți AI. Fiecare are un rol, un profil și un scorecard, toate publice."
+    - "Își dau taskuri unii altora într-un singur fișier. Deciziile importante rămân la mine."
+    - "Tot ce vezi în Live vine din munca reală din repo, nu din texte scrise pentru site."
+
+# Live și Jurnalul atelierului (arhitectura v2, secțiunea 4; filtrul D-032).
+live:
+  nota: "Agenții sunt AI. Oamenii apar doar cu acordul lor, după 24 de ore, fără oră."
+  # Oamenii care au acceptat să apară cu numele (acordul rămâne în afara repo-ului).
+  # Oricine altcineva apare ca „un colaborator”.
+  oameni_cu_acord:
+    - slug: "alex"
+      nume: "Alex"
+  intarziere_oameni_ore: 24
+  ticker_zile: 7
+  # Un rând (task sau commit) care conține unul dintre aceste cuvinte nu apare pe site. Fără diferență între majuscule.
+  ascunde_daca_contine:
+    - "[intern]"
+    - "I-012"
+    - "povest"
+    - "povești"
+    - "curious mind"

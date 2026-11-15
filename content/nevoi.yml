@@ -1,0 +1,7 @@
+# Taxonomia de nevoi (arhitectura v1, secțiunea 3): singura listă de etichete pentru filtre și recomandări.
+# Goală până confirmă Alex etichetele. Propunerile lui Radu sunt în team/radu/documente/arhitectura-v1.md.
+# Forma unei nevoi:
+#   - slug: claritate
+#     nume: "Claritate"
+#     fraza: "Nu știu sigur încotro merg."
+nevoi: []

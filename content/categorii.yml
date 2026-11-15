@@ -1,0 +1,103 @@
+# Cele 8 categorii ale atelierului (arhitectura v2, 1.8; numele din D-025, de confirmat de Alex).
+# Citit de scenă, de bara de jos, de varianta fără 3D și de meniul paginilor.
+# `cheie` nu se schimbă niciodată. Etichetele și frazele le schimbă Maria, aici, fără cod.
+# `stare`: deschis (are conținut real) sau in-pregatire (apare cu textul `in_pregatire` din site.yml).
+# `pod`: propoziția-pod a camerei (T-015, Maria). Gol = nu apare.
+
+familii:
+  - cheie: direct
+    titlu: "De ce ai nevoie?"
+  - cheie: atelier
+    titlu: "Intră în atelier"
+
+categorii:
+  - cheie: coaching
+    eticheta: "Coaching"
+    fraza: "Vreau să lucrez cu tine, unu la unu."
+    url: coaching
+    familie: direct
+    dimensiune: munca
+    ordine: 1
+    pe_orbita: true
+    stare: in-pregatire
+    pod: ""
+
+  - cheie: companie
+    eticheta: "Compania mea"
+    fraza: "Vreau ceva pentru echipa sau compania mea."
+    url: business
+    familie: direct
+    dimensiune: munca
+    ordine: 2
+    pe_orbita: true
+    stare: in-pregatire
+    pod: ""
+
+  - cheie: speaking
+    eticheta: "Speaking"
+    fraza: "Vreau să te invit să vorbești."
+    url: speaking
+    familie: direct
+    dimensiune: munca
+    ordine: 3
+    pe_orbita: true
+    stare: in-pregatire
+    pod: ""
+
+  - cheie: inventii
+    eticheta: "Invenții"
+    fraza: "Tool-uri, aplicații și cursuri de încercat."
+    url: inventii
+    familie: atelier
+    dimensiune: inovatie
+    ordine: 1
+    pe_orbita: true
+    stare: in-pregatire
+    pod: ""
+
+  - cheie: live
+    eticheta: "Live"
+    fraza: "Ce construim chiar acum."
+    url: live
+    familie: atelier
+    dimensiune: munca
+    ordine: 2
+    pe_orbita: true
+    stare: deschis
+    buton: "Tot jurnalul"
+    pod: ""
+
+  - cheie: povesti
+    eticheta: "Ce m-a crescut"
+    fraza: "Vreau să știu prin ce ai trecut și ce ai învățat."
+    url: ce-m-a-crescut
+    familie: atelier
+    dimensiune: viata
+    ordine: 3
+    pe_orbita: true
+    stare: in-pregatire
+    pod: ""
+
+  - cheie: knowledge
+    eticheta: "Învață"
+    fraza: "Ce am învățat construind, nu ce am citit."
+    url: invata
+    familie: atelier
+    dimensiune: distilat
+    ordine: 4
+    pe_orbita: true
+    stare: in-pregatire
+    pod: ""
+
+  - cheie: despre
+    eticheta: "Despre mine"
+    scurt: "Despre"
+    fraza: "Vreau să te cunosc."
+    url: despre
+    familie: titlu
+    dimensiune: viata
+    ordine: 1
+    pe_orbita: false
+    stare: deschis
+    buton: "Pagina Despre"
+    pod: ""
