@@ -27,4 +27,4 @@ Pașii: `ECHIPA.md`, secțiunea „Cum adăugăm un agent nou”.
 ## Procese automate
 | Proces | Trigger | Owner | Revizuire Alex | Workflow | Status |
 |---|---|---|---|---|---|
-| Rutina zilnică (triere, ritmuri, raport) | luni–vineri 9:00 | Tudor | raportul zilnic sau săptămânal | `rutina-zilnica.yml` | scris, neurcat (lipsește permisiunea `workflow` și cheia) |
+| [Rutina de dimineață](rutina-dimineata.md): backlog → propunere → agenții lucrează | luni–vineri 9:00 | Tudor | issue-ul de dimineață pe GitHub | `rutina-zilnica.yml` | scris, neurcat (lipsesc permisiunea `workflow` și cheia) |
