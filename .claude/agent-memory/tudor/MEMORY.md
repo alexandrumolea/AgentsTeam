@@ -39,6 +39,8 @@ Păstrează sub 150 de rânduri. Comprimă când crește. Fapte, nu povești.
 
 - 2026-11-15: Alex se descrie ca „curious mind”. Notat în vocea-alex. Folosirea publică o decide Maria (T-016).
 
+- 2026-11-15: Rutina de dimineață merge pe GitHub Actions (secret CLAUDE_CODE_OAUTH_TOKEN, scope workflow). Lecții: tokenul trebuie lipit pe un singur rând; agenții se pornesc în prim-plan (run_in_background: false), altfel munca se pierde la finalul rulării. Prima rulare completă: issue #2, 4 taskuri gata.
+
 ## Stare proiect
 - Etapa curentă: 1. Onboarding Alex (vezi docs/charter.md). Așteaptă alegeri de la Alex: direcția vizuală A/B, numele Atelier, taxonomia nevoilor.
 - Repo pe GitHub, public: https://github.com/alexandrumolea/AgentsTeam. gh CLI e în ~/.local/bin, logat ca alexandrumolea, iar git folosește credențialele gh. Push după fiecare commit; hook-ul pre-push verifică datele private. Commit-urile folosesc adresa noreply GitHub.
