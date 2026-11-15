@@ -27,3 +27,4 @@ Păstrează sub 150 de rânduri. Comprimă când crește. Fapte, nu povești.
 ## Deschis
 - Vezi `docs/intrebari-pentru-alex.md`.
 - Profilul meu (`team/ioana/profil.md`, „calm”) și estetica din `vocea-alex` trebuie actualizate după feedback (semnalat lui Tudor).
+- 2026-11-15: Alex a ales direcția **Spațiu** (D-023): „Mă inspiră varianta spațială. Pe direcția aceea vom merge. Ioana a făcut treabă bună acum.” Asta confirmă lecția: inovație și viitor, nu sigur și calm.

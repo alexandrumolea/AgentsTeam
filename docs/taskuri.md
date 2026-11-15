@@ -24,5 +24,5 @@
 | T-003 | 2026-11-15 | Mike | Mike | Verifică dacă Netlify și Cloudflare Pages permit uz comercial pe planul gratuit și dacă Cal.com Free permite embed | Rămăsese neverificat în stack-tehnic-v0 | 1 | de făcut | – |
 | T-004 | 2026-11-15 | Tudor | Maria | Propune formatul paginii „Acum” (I-005) | Idee nouă, fără document | 1 | de făcut | – |
 | T-005 | 2026-11-15 | Tudor | Victor | Schița strategiei cărții: întrebările de pus lui Alex și scenarii de subiect, marcate ca ipoteze (I-003) | Cartea nu are încă niciun document | 1 | de făcut | – |
-| T-006 | 2026-11-15 | Ioana | Maria | După alegerea lui Alex (D-023), actualizează secțiunea de estetică din `vocea-alex`, care spune încă „Liquid Glass, calm” | Contradicție între profilul lui Alex și noua direcție | 1 | blocat | așteaptă D-023 |
+| T-006 | 2026-11-15 | Ioana | Maria | După alegerea lui Alex (D-023), actualizează secțiunea de estetică din `vocea-alex`, care spune încă „Liquid Glass, calm” | Contradicție între profilul lui Alex și noua direcție | 1 | de făcut | D-023 aprobată: Spațiu |
 | T-007 | 2026-11-15 | Tudor | Tudor | Research: ce roluri și skill-uri are nevoie o echipă de agenți care ajută la conducerea unui business cu mai multe linii (I-009). Propunere pentru Alex | Scop extins (D-024) | 1 | de făcut | – |
