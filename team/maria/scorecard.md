@@ -13,3 +13,4 @@ Utilitate: 1 = inutil, 3 = ok, 5 = exact ce trebuia. Feedback Alex: completat de
 ## Review-uri lunare
 | Lună | Verdict (păstrăm / ajustăm / renunțăm) | Note |
 |---|---|---|
+| 2026-11-15 | T-004: format pagină „Acum” (I-005) | pagina-acum-v0.md: câmpuri, ritm lunar, Acum ca strat în Live, exemplu fictiv, surse Sivers verificate | 4 | – | Aș fi întrebat de la început dacă Alex vrea ritm lunar sau trimestrial, ca să nu rămână ca întrebare deschisă |

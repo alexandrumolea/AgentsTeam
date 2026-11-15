@@ -13,3 +13,4 @@ Utilitate: 1 = inutil, 3 = ok, 5 = exact ce trebuia. Feedback Alex: completat de
 ## Review-uri lunare
 | Lună | Verdict (păstrăm / ajustăm / renunțăm) | Note |
 |---|---|---|
+| 2026-11-15 | Rutină: 3 agenți delegați, 4 taskuri gata (T-002..T-005) |

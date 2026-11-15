@@ -24,3 +24,4 @@ Păstrează sub 150 de rânduri. Comprimă când crește. Fapte, nu povești.
 
 ## Deschis
 - Vezi `docs/intrebari-pentru-alex.md`.
+- 2026-11-15: [Pagina Acum v0](../../../team/maria/documente/pagina-acum-v0.md) (T-004): Acum = strat în Live (3–5 rânduri, lunar, dispare după 90 zile), nu pagină separată. Sivers (sive.rs/nowff): /now ≠ /news; nownownow.com nu dă cifre de adopție, nu le citez.

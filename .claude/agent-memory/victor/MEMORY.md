@@ -16,5 +16,7 @@ Păstrează sub 150 de rânduri. Comprimă când crește. Fapte, nu povești.
 ## Ce a mers / ce nu
 - (gol la 2026-11-15)
 
+- 2026-11-15: T-005 livrat: `team/victor/documente/strategia-cartii-v0.md`. Subiectul cărții NU e dat de Alex; scenariile sunt ipoteze. Blocaj: întrebările 1–3 (subiect, obiectiv, public). Piața RO: fără date pe tiraje/self-publishing, doar Forbes RO. Cifrele de royalty vin din surse comerciale; de verificat la KDP/IBPA.
+
 ## Deschis
 - Vezi `docs/intrebari-pentru-alex.md`.
