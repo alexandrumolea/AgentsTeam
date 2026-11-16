@@ -69,3 +69,5 @@ Păstrează sub 150 de rânduri. Comprimă când crește. Fapte, nu povești.
 - 2026-11-16: Alex a cumpărat alexandrumolea.com (GoDaddy, D-046); aștept DNS-ul și verificarea lui în GitHub, apoi leg domeniul. Roluri (D-047): BEMORE owner, Wise Teams partener, Innersis Leadership Trainer, LIFT colaborator. Coaching: față în față și online, oameni și echipe, prima conversație gratuită; lipsește linkul de rezervare (întrebarea 45). Lista de tool-uri: amânată de Alex.
 
 - 2026-11-16: SITE-UL E LIVE PE https://alexandrumolea.com (D-046). Custom domain setat prin API, HTTPS obligatoriu, github.io redirecționează. Lipsește CNAME www → alexandrumolea.github.io (Alex). Build-ul folosește domeniul din site.yml pentru adresa publică.
+
+- 2026-11-16: www CNAME pus de Alex; se propagă. Certificatul HTTPS nu include încă www (T-021: verific la următoarea sesiune; dacă lipsește după 24 h, scot și repun domeniul).
