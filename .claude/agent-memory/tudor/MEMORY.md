@@ -67,3 +67,5 @@ Păstrează sub 150 de rânduri. Comprimă când crește. Fapte, nu povești.
 - 2026-11-16: PRIORITATEA NR. 1 (D-044): workshop-urile Change Agility (23.11) și Self-management în relația cu AI (25.11), din cursul I-018. Echipa Studio propusă (D-045): Daria, Matei, Irina. Skill-urile lui Alex pentru training: training-flow-design, innersis-ive, bemore-ls-ive (cont claude.ai, nu pe disc). Materialele pentru client nu intră în repo-ul public; numele clientului e doar în agent-memory-local.
 
 - 2026-11-16: Alex a cumpărat alexandrumolea.com (GoDaddy, D-046); aștept DNS-ul și verificarea lui în GitHub, apoi leg domeniul. Roluri (D-047): BEMORE owner, Wise Teams partener, Innersis Leadership Trainer, LIFT colaborator. Coaching: față în față și online, oameni și echipe, prima conversație gratuită; lipsește linkul de rezervare (întrebarea 45). Lista de tool-uri: amânată de Alex.
+
+- 2026-11-16: SITE-UL E LIVE PE https://alexandrumolea.com (D-046). Custom domain setat prin API, HTTPS obligatoriu, github.io redirecționează. Lipsește CNAME www → alexandrumolea.github.io (Alex). Build-ul folosește domeniul din site.yml pentru adresa publică.

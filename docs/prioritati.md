@@ -11,12 +11,12 @@ Alex, 2026-11-16: „workshop-urile sunt prima nevoie”. Totul de mai jos aște
 3. **Studio:** Self-management în relația cu AI, livrat pe 25.
 4. **Elena:** retrospectiva pe 26. Lecțiile devin skill-uri noi (ghidul facilitatorului, pre-work și follow-up, evaluarea).
 
-## 1. Acum: site-ul v1 pe GitHub Pages (D-036) · **LANSAT 2026-11-15**: https://alexandrumolea.github.io/AgentsTeam/
+## 1. Acum: site-ul v1 pe GitHub Pages (D-036) · **LANSAT 2026-11-15**, pe domeniul propriu din 2026-11-16: https://alexandrumolea.com
 1. ~~**T-017** Mike:~~ gata. construiește site-ul v1 și deploy-ul pe GitHub Pages (direcția Spațiu, structura v2, doar conținut real).
 2. ~~**T-018** Tudor:~~ gata. activează GitHub Pages, verifică site-ul live, raportează linkul lui Alex.
 3. **T-014** Mike: test pe Android mediu și iPhone (după ce site-ul e live).
 4. **T-015** Maria: propoziția „pod” pe camere și numele familiilor (îmbunătățește v1).
-5. **Domeniul alexandrumolea.com** (docs/domeniu.md): Alex îl cumpără și setează DNS-ul, Tudor îl leagă.
+5. ~~**Domeniul alexandrumolea.com**~~ gata 2026-11-16 (D-046). Rămâne CNAME-ul pentru `www` (Alex).
 6. Răspunsurile lui Alex care umplu site-ul cu conținut real: business-uri (rol, link), coaching (format, link de rezervare), invenții (lista). Le cere Tudor.
 
 ## 2. Imediat după lansare
