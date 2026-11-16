@@ -497,7 +497,7 @@ function teamPage(){
 }
 
 const redirect = to => `<!doctype html><html lang="ro"><head><meta charset="utf-8"><title>Mutat</title><meta name="robots" content="noindex"><meta http-equiv="refresh" content="0; url=${esc(to)}"><link rel="canonical" href="${esc(to)}"></head><body><p><a href="${esc(to)}">Pagina s-a mutat aici.</a></p></body></html>\n`;
-const REDIRECTS = { tools: 'innovations', creatii: 'innovations', atelier: 'innovations', inventii: 'innovations', speaking: 'workshops', invata: 'knowledge-base', carte: 'knowledge-base', jurnal: 'knowledge-base', knowledge: 'knowledge-base', acum: 'live', now: 'live', povesti: 'ce-m-a-crescut', misiune: 'despre' };
+const REDIRECTS = { tools: 'innovations', creatii: 'innovations', atelier: 'innovations', inventii: 'innovations', speaking: 'workshops', invata: 'knowledge-base', carte: 'knowledge-base', jurnal: 'knowledge-base', knowledge: 'knowledge-base', acum: 'live', now: 'live', povesti: 'my-journey', 'ce-m-a-crescut': 'my-journey', journey: 'my-journey', misiune: 'despre' };
 
 /* ---------- scriere ---------- */
 rmSync(OUT, { recursive: true, force: true });

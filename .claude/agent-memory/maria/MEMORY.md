@@ -26,3 +26,5 @@ Păstrează sub 150 de rânduri. Comprimă când crește. Fapte, nu povești.
 - Vezi `docs/intrebari-pentru-alex.md`.
 - 2026-11-15: [Pagina Acum v0](../../../team/maria/documente/pagina-acum-v0.md) (T-004): Acum = strat în Live (3–5 rânduri, lunar, dispare după 90 zile), nu pagină separată. Sivers (sive.rs/nowff): /now ≠ /news; nownownow.com nu dă cifre de adopție, nu le citez.
 - 2026-11-15: Alex a rescris misiunea (D-039): „Învățarea ca sursă a binelui…”. Regulile mele despre „poduri/monștri” țin de v1. A redenumit camerele (D-040): Innovations, Latest Workshops, Knowledge Base, în engleză. Preferă etichete în engleză pentru camere.
+
+- 2026-11-16: Alex a redenumit camera poveștilor în „My Journey” (D-042), adresa /my-journey. Camerele sunt acum: Innovations, Live, My Journey, Knowledge Base, plus Latest Workshops ca drum direct.

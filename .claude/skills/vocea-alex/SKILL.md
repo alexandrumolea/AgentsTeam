@@ -68,6 +68,7 @@ description: Profilul, personalitatea și vocea publică a lui Alex. Folosește-
 
 ## Knowledge, Live și poveștile (de confirmat)
 > Propunere Maria, 2026-11-15. Detalii: `team/maria/documente/knowledge-si-live-v0.md`. Decizia de nume: D-025.
+- 2026-11-16: **Numele actuale, alese de Alex** (D-040, D-042), care înlocuiesc propunerile de mai jos: **Innovations**, **Latest Workshops**, **Knowledge Base**, **My Journey** (poveștile), **Live**. Se scriu în engleză, exact așa.
 - 2026-11-15: Sistemul propus, pe metafora lui Alex („atelierul meu de inovație, work & living”): tot site-ul e **Atelierul**; înăuntru, **Invenții** (ce poți încerca), **Învață** (ce am învățat construind), **Live** (ce construim acum), **Ce m-a crescut** (poveștile, o dată la 3 luni).
 - 2026-11-15: În Live arătăm **munca, nu oamenii**. Colaboratorii umani apar doar cu acordul lor, clienții niciodată. Agenții se spun agenți. Fără „online acum”, fără „urmărește”, fără activitate simulată.
 - 2026-11-15: În Învață, fiecare lecție are o idee, un exercițiu și o unealtă. Nu „în loc de cărți” ca titlu public: sună a guru. Varianta propusă: „Ce am învățat construind, nu ce am citit.”

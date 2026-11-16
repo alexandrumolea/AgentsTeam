@@ -68,9 +68,9 @@ categorii:
     pod: ""
 
   - cheie: povesti
-    eticheta: "Ce m-a crescut"
+    eticheta: "My Journey"
     fraza: "Vreau să știu prin ce ai trecut și ce ai învățat."
-    url: ce-m-a-crescut
+    url: my-journey
     familie: atelier
     dimensiune: viata
     ordine: 3
