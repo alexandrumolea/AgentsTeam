@@ -46,3 +46,24 @@
 
 ## Arhitectura v2 (adăugat 2026-11-15, pentru Radu)
 27. Cele 11 întrebări de la finalul `team/radu/documente/arhitectura-v2.md` (decizia D-028). Cele mai importante: cele 7 obiecte în două familii (drumuri directe și camerele atelierului), ce arată Live din fluxul de taskuri și cine sunt primii colaboratori umani care ar apărea (doar rolurile, nu numele).
+
+## Perioada următoare (adăugat 2026-11-16, harta: `team/tudor/documente/harta-2026-11-16.md`)
+**MyAgenda (I-016)**
+28. Ce face MyAgenda și pentru cine e? Două-trei propoziții, cum i-ai explica unui prieten.
+29. Există deja, ca aplicație, prototip sau cod, ori o construim noi?
+30. Unde rulează: în browser, pe iPhone, pe Android?
+31. E gratuită sau cu plată? Dacă e cu plată, contează pentru găzduire (D-037).
+
+**Wise Teams (I-017)**
+32. Ce vinzi azi prin Wise Teams și cui? De exemplu, instrumentul Strategic Focus și raportul Drum critic, pentru ce fel de echipe.
+33. Cum se vinde acum: cine face ce și unde se blochează?
+34. Ce înseamnă „merge” pentru Wise Teams peste 12 luni? Cifrele le notăm doar în privat.
+
+**Cursul Change & Self Management with AI (I-018)**
+35. Pentru cine e cursul și ce se schimbă pentru ei după el?
+36. Ce format are: live, online, hibrid? Cât durează?
+37. Ce există deja: o schiță, un flow, slide-uri?
+
+**BEMORE (I-015)**
+38. Ce te face să nu fii sigur de relansare?
+39. Prin ce ar fi BEMORE diferit de Innersis și de BEMORE Learning Studio?

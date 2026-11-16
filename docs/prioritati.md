@@ -2,7 +2,7 @@
 
 > **DRI:** Tudor. Alex, 2026-11-15: „Vreau ca toate task-urile din backlog să fie prioritizate în ordinea logicii. Momentan, avem nevoie să facem pagina.”
 > Ordinea vine din dependențe (ce deblochează ce), apoi din impact. Rutina de dimineață alege taskurile de aici, de sus în jos, nu după vechime.
-> Ultima actualizare: 2026-11-15.
+> Ultima actualizare: 2026-11-16 (dorințele noi ale lui Alex: I-015…I-019, harta în `team/tudor/documente/harta-2026-11-16.md`).
 
 ## 1. Acum: site-ul v1 pe GitHub Pages (D-036) · **LANSAT 2026-11-15**: https://alexandrumolea.github.io/AgentsTeam/
 1. ~~**T-017** Mike:~~ gata. construiește site-ul v1 și deploy-ul pe GitHub Pages (direcția Spațiu, structura v2, doar conținut real).
@@ -16,6 +16,14 @@
 6. **T-002** Mike: aplicarea verificării în generator (cere o sesiune cu drept pe `scripts/`).
 7. **T-013** Radu: „Pregătit pentru aplicații” (D-030).
 8. **T-007** Tudor: research pe rolurile pentru conducerea business-ului (I-009).
+
+## 2b. Dorințele pentru perioada următoare (Alex, 2026-11-16), în ordinea logică
+Propunerea mea de pornit acum: **I-019** și **I-016**. Alex alege.
+1. **I-019** Tudor: modelul de echipe, CORE plus echipe pe business. Deblochează I-017 și I-018. Așteaptă D-043 (repo privat).
+2. **I-016** Radu: MyAgenda, prima aplicație în Innovations. Așteaptă răspunsurile 28–31.
+3. **I-017** Wise Teams: procesul de vânzare și echipa proprie. După I-019.
+4. **I-018** Cursul Change & Self Management with AI: pe site și cu echipă proprie. După I-019.
+5. **I-015** BEMORE: notă de decizie, fără construcție. Cursul poate fi testul.
 
 ## 3. Backlog, în ordine
 9. Învață (I-011), apoi sondajele (I-013).

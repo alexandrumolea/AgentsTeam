@@ -61,3 +61,5 @@ Păstrează sub 150 de rânduri. Comprimă când crește. Fapte, nu povești.
 - 2026-11-16: Rutina de dimineață mutată la 7:30 ora României, tot anul (D-041). Alex se aștepta la 7:30; ora veche era 9:00. GitHub poate întârzia rulările programate cu 5–30 min.
 
 - 2026-11-16: camera poveștilor = „My Journey” (D-042). Cinci nume publice sunt în engleză (Innovations, Latest Workshops, Knowledge Base, My Journey, Live); restul site-ului e în română.
+
+- 2026-11-16: Alex a dat 4 dorințe noi: BEMORE (nesigur), aplicații în Innovations cu MyAgenda prima, vânzarea Wise Teams cu echipă proprie, cursul Change & Self Management with AI cu echipă proprie. Notate I-015…I-019, harta în team/tudor/documente/harta-2026-11-16.md. Alex numește echipa noastră „CORE”. Propus de pornit: I-019 (modelul de echipe) și I-016 (MyAgenda). D-043 (repo privat) de luat.
