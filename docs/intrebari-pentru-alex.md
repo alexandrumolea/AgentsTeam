@@ -3,9 +3,9 @@
 > Owner: Tudor. Răspunsurile deblochează etapa 1. Poți răspunde direct aici sau în chat, pe rând.
 
 ## Cele mai importante 5 (deblochează tot)
-1. **Domeniu și site existent:** ai deja un domeniu sau un site? Unde e găzduit?
+1. ~~**Domeniu și site existent:** ai deja un domeniu sau un site? Unde e găzduit?~~ **Răspuns 2026-11-16:** a cumpărat alexandrumolea.com pe GoDaddy (D-046).
 2. **Cine ești în 3 propoziții:** cum te-ai prezenta unui om pe care îl cunoști azi?
-3. **Business-urile:** pentru fiecare (BEMORE, Wise Teams, LIFT, Innersis): ce face, ce rol ai tu, pentru cine e, link.
+3. **Business-urile:** pentru fiecare (BEMORE, Wise Teams, LIFT, Innersis): ce face, ce rol ai tu, pentru cine e, link. **Rolurile, răspuns 2026-11-16:** BEMORE owner, Wise Teams partener, Innersis Leadership Trainer, LIFT colaborator. Mai lipsesc: ce face fiecare, pentru cine și linkul.
 4. **Coaching:** pentru cine e, ce format (online, față în față), durată, preț sau „discutăm”, ce calendar folosești acum.
 5. **Tool-urile tale:** lista cu nume, ce problemă rezolvă fiecare, link sau fișiere.
 
@@ -34,7 +34,7 @@
 19. Vrei să creăm acum repo-ul privat pe GitHub? (vezi README)
 
 ## Inspirație și invenții (adăugat 2026-11-15)
-20. **Lista invențiilor tale:** cursuri, aplicații, tool-uri, experimente. Pentru fiecare: nume, ce face, pentru cine, status (disponibil, în curând, idee), link.
+20. **(Amânată de Alex, 2026-11-16: „Lista cu tool-urile o facem mai încolo.”)** **Lista invențiilor tale:** cursuri, aplicații, tool-uri, experimente. Pentru fiecare: nume, ce face, pentru cine, status (disponibil, în curând, idee), link.
 21. **Ce lansezi în următoarele 3 luni?** Asta umple banda „Nou” de la început.
 22. **Ce te inspiră pe tine** și ce vrei să simtă oamenii după ce trec pe la tine? Răspunde în cuvintele tale, fără să cauți formularea perfectă.
 
@@ -74,3 +74,6 @@
 42. **Limba:** română sau engleză?
 43. **Ce există deja:** materiale vechi pe change sau pe AI pe care să le refolosim?
 44. **Livrezi singur sau cu un co-trainer?**
+
+## Coaching (adăugat 2026-11-16)
+45. **Cum se programează prima conversație gratuită?** Un link de rezervare (de exemplu Cal.com, Calendly sau programările din Google Calendar). Fără el, pe site nu apare butonul de rezervare.

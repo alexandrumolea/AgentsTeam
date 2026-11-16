@@ -271,6 +271,8 @@ const famTitle = k => (familii.find(f => f.cheie === k) || {}).titlu || '';
 const pageUrl = c => u(c.url + '/');
 const stateHtml = c => c.stare === 'in-pregatire' ? `<p class="state"><span class="dot" aria-hidden="true"></span>${esc(site.in_pregatire || '')}</p>` : '';
 const podHtml = c => c.pod ? `<p class="pod">${esc(c.pod)}</p>` : '';
+// Câmpul opțional `detalii` din categorii.yml: perechi eticheta / text, ca listă (ex.: coaching).
+const detaliiHtml = c => Array.isArray(c.detalii) && c.detalii.length ? `<ul class="list facts">${c.detalii.filter(d => d && d.eticheta && d.text).map(d => `<li><b>${esc(d.eticheta)}</b><span>${esc(d.text)}</span></li>`).join('')}</ul>` : '';
 const bookBtn = cls => rezervare ? `<a class="btn book ${cls || ''}" href="${esc(rezervare)}" rel="noopener">Rezervă<span class="pv-long"> o sesiune</span></a>` : '';
 const businessList = () => BUSINESS.length ? `<ul class="list biz">${BUSINESS.map(b => `<li><b>${b.link ? `<a href="${esc(b.link)}" rel="noopener">${esc(b.nume)}</a>` : esc(b.nume)}</b>${b.nevoie ? `<span>${esc(b.nevoie)}</span>` : ''}${b.rol ? `<small>${esc(b.rol)}</small>` : ''}${b.pod ? `<small class="pod">${esc(b.pod)}</small>` : ''}</li>`).join('')}</ul>` : '';
 const despreHtml = marked.parse(despre.body || '');
@@ -369,7 +371,7 @@ function panelBody(c){
   <p class="note">${esc(site.in_pregatire || '')}</p>
   <p class="actions"><a class="btn ink" href="${pageUrl(C.live)}" data-go="live">Vezi ce se lucrează acum →</a></p></div>`;
   return `<p class="eyebrow">${esc(c.eticheta)} · ${fam}</p><h2 id="pH">${esc(c.eticheta)}</h2>
-  <p class="lead">${esc(c.fraza)}</p>${podHtml(c)}${stateHtml(c)}${extra}
+  <p class="lead">${esc(c.fraza)}</p>${podHtml(c)}${detaliiHtml(c)}${stateHtml(c)}${extra}
   <p class="actions"><a class="btn" href="${pageUrl(C.live)}" data-go="live">Vezi ce se lucrează acum →</a><a class="btn ghost" href="${pageUrl(c)}">Deschide pagina</a></p>`;
 }
 
@@ -478,7 +480,7 @@ ${events.length ? [...days].map(([, list]) => `<h3 class="day">${esc(fLongDay(li
 <p>Lucrez cu o echipă de agenți AI, iar munca noastră e publică. <a href="${u('live/echipa/')}">Vezi echipa și procesele</a> sau <a href="${pageUrl(C.live)}">ce construim acum</a>.</p>
 <h2>Contact</h2><p>Mă găsești pe <a href="${esc(GH)}" rel="noopener">GitHub</a>.</p>`;
   } else {
-    inner = `${podHtml(c)}${stateHtml(c)}${c.cheie === 'companie' ? businessList() : ''}${c.cheie === 'coaching' && rezervare ? `<p><a class="btn" href="${esc(rezervare)}" rel="noopener">Alege o oră →</a></p>` : ''}
+    inner = `${podHtml(c)}${detaliiHtml(c)}${stateHtml(c)}${c.cheie === 'companie' ? businessList() : ''}${c.cheie === 'coaching' && rezervare ? `<p><a class="btn" href="${esc(rezervare)}" rel="noopener">Alege o oră →</a></p>` : ''}
 <p class="actions"><a class="btn" href="${pageUrl(C.live)}">Vezi ce se lucrează acum →</a></p>`;
   }
   const lead = c.cheie === 'despre' ? '' : `<p class="kicker">${esc(c.fraza)}</p>`;

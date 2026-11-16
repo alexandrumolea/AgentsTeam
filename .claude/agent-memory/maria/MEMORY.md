@@ -28,3 +28,5 @@ Păstrează sub 150 de rânduri. Comprimă când crește. Fapte, nu povești.
 - 2026-11-15: Alex a rescris misiunea (D-039): „Învățarea ca sursă a binelui…”. Regulile mele despre „poduri/monștri” țin de v1. A redenumit camerele (D-040): Innovations, Latest Workshops, Knowledge Base, în engleză. Preferă etichete în engleză pentru camere.
 
 - 2026-11-16: Alex a redenumit camera poveștilor în „My Journey” (D-042), adresa /my-journey. Camerele sunt acum: Innovations, Live, My Journey, Knowledge Base, plus Latest Workshops ca drum direct.
+
+- 2026-11-16: Rolurile lui Alex (D-047): BEMORE owner, Wise Teams partener, Innersis Leadership Trainer, LIFT colaborator. „Fondator” nu se potrivește peste tot: de revăzut în intro când Alex dă formularea lui despre sine.

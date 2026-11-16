@@ -24,8 +24,10 @@ description: Profilul, personalitatea și vocea publică a lui Alex. Folosește-
 
 ## Cine e Alex (pe scurt)
 - 2026-11-15: **Alex e un „curious mind”** (cuvintele lui). Curiozitatea e o trăsătură de bază: explică invențiile, atelierul deschis și dorința de a vedea din alte perspective. Ideea lui: poate site-ul se adresează explicit „curious minds”. Decizia îi aparține Mariei (T-016).
-- Coach și fondator. Implicat în **BEMORE** (inclusiv BEMORE Learning Studio), **Wise Teams**, **LIFT** și **Innersis**. Rolul exact în fiecare: de confirmat.
-- Construiește tool-uri și aplicații pentru optimizare și dezvoltare personală continuă (ex.: instrumente de diagnostic pentru echipe). Lista: de confirmat.
+- Coach și fondator. Implicat în **BEMORE** (inclusiv BEMORE Learning Studio), **Wise Teams**, **LIFT** și **Innersis**.
+- 2026-11-16: **Rolurile exacte (Alex):** BEMORE: **owner**. Wise Teams: **partener**. Innersis: **Leadership Trainer**. LIFT: **colaborator**. Nu spunem „fondator” la businessurile unde nu e owner.
+- 2026-11-16: **Coaching (Alex):** față în față și online, pentru oameni și pentru echipe. **Prima conversație e gratuită.**
+- Construiește tool-uri și aplicații pentru optimizare și dezvoltare personală continuă (ex.: instrumente de diagnostic pentru echipe). Lista: de confirmat. 2026-11-16: Alex: „Lista cu tool-urile o facem mai încolo.” Nu o cerem acum.
 - Vrea să scrie o carte. Subiectul: de confirmat.
 - Are o personalitate complexă: mai multe fațete care trebuie să coexiste fără să pară dispersat.
 

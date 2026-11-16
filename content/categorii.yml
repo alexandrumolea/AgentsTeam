@@ -13,7 +13,7 @@ familii:
 categorii:
   - cheie: coaching
     eticheta: "Coaching"
-    fraza: "Vreau să lucrez cu tine, unu la unu."
+    fraza: "Vreau să lucrez cu tine, singur sau cu echipa mea."
     url: coaching
     familie: direct
     dimensiune: munca
@@ -21,6 +21,14 @@ categorii:
     pe_orbita: true
     stare: in-pregatire
     pod: ""
+    # Faptele confirmate de Alex (2026-11-16). Fiecare rând apare ca o linie: eticheta în stânga, textul în dreapta.
+    detalii:
+      - eticheta: "Pentru cine"
+        text: "oameni și echipe"
+      - eticheta: "Unde"
+        text: "față în față sau online"
+      - eticheta: "Prima conversație"
+        text: "gratuită"
 
   - cheie: companie
     eticheta: "Compania mea"
