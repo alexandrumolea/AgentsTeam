@@ -7,7 +7,7 @@ descriere: "Construiesc unelte pentru oameni care vor să crească. Sunt Alex: c
 
 # Domeniul propriu, fără https:// (ex.: alex.ro). Gol = adresa GitHub Pages.
 # Completat → build-ul scrie fișierul CNAME. Domeniul se setează și în GitHub: Settings → Pages → Custom domain.
-domeniu: ""
+domeniu: "alexandrumolea.com"
 
 # Publicare fără domeniu, pe linkul GitHub (Alex, 2026-11-15: „Hai să-l facem cu link de GitHub momentan.”).
 # true = site-ul se publică la fiecare push, la adresa GitHub Pages. Când `domeniu` e completat, contează domeniul.

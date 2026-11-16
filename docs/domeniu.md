@@ -3,7 +3,8 @@
 > **DRI:** Tudor (configurarea), Alex (cumpărarea și setările din GoDaddy). D-038. Creat 2026-11-15.
 
 ## Stare
-- 2026-11-16: **pasul 1 gata**, Alex a cumpărat `alexandrumolea.com` pe GoDaddy. DNS-ul arată încă spre pagina de parcare GoDaddy (3.33.130.190, 15.197.148.33). Urmează pașii 2 și 3 (Alex), apoi 4 (Tudor). Tudor nu setează domeniul în GitHub înainte ca DNS-ul să arate spre GitHub: altfel linkul github.io ar redirecționa spre o adresă care nu merge încă.
+- 2026-11-16: **pasul 1 gata**, Alex a cumpărat `alexandrumolea.com` pe GoDaddy. DNS-ul arată încă spre pagina de parcare GoDaddy (3.33.130.190, 15.197.148.33). Urmează pașii 2 și 3 (Alex), apoi 4 (Tudor).
+- 2026-11-16: Alex a pus DNS-ul (A, AAAA) și TXT-ul de verificare. Tudor a setat domeniul personalizat în GitHub Pages (API) și `domeniu` în `content/site.yml`. **Lipsește CNAME-ul pentru `www`** (Alex îl adaugă: `www` → `alexandrumolea.github.io`). HTTPS: certificatul e în emitere; Tudor îl activează când e gata. Tudor nu setează domeniul în GitHub înainte ca DNS-ul să arate spre GitHub: altfel linkul github.io ar redirecționa spre o adresă care nu merge încă.
 
 ## 1. Alex: cumpără domeniul pe GoDaddy
 - Doar domeniul `alexandrumolea.com`. Nu ai nevoie de hosting, website builder sau email de la GoDaddy: site-ul stă pe GitHub Pages.

@@ -4,7 +4,7 @@
 //
 // Variabile de mediu (toate opționale):
 //   SITE_BASE  calea de bază a site-ului, cu „/” la final. Implicit „/” (domeniu propriu sau alexandrumolea.github.io).
-//   SITE_URL   adresa publică completă (ex.: https://alex.ro/). Implicit: din `domeniu` în content/site.yml, altfel nimic.
+//   SITE_URL   adresa publică completă (ex.: https://alex.ro/). Dacă `domeniu` din content/site.yml e completat, el are prioritate.
 //   OUT        folderul de ieșire. Implicit site/dist.
 import { readFileSync, writeFileSync, mkdirSync, readdirSync, existsSync, rmSync, cpSync } from 'node:fs';
 import { join, dirname, resolve } from 'node:path';
@@ -43,7 +43,8 @@ let BASE = process.env.SITE_BASE || '/';
 if (!BASE.startsWith('/')) BASE = '/' + BASE;
 if (!BASE.endsWith('/')) BASE += '/';
 const domeniu = String(site.domeniu || '').trim().replace(/^https?:\/\//, '').replace(/\/.*$/, '');
-let SITE_URL = (process.env.SITE_URL || (domeniu ? `https://${domeniu}/` : '')).trim();
+// Domeniul din site.yml are prioritate: GitHub dă base_url cu http:// până se activează HTTPS.
+let SITE_URL = (domeniu ? `https://${domeniu}/` : (process.env.SITE_URL || '')).trim();
 if (SITE_URL && !SITE_URL.endsWith('/')) SITE_URL += '/';
 const u = (p = '') => BASE + String(p).replace(/^\//, '');          // cale internă, cu baza
 const abs = (p = '') => SITE_URL ? SITE_URL + String(p).replace(/^\//, '') : u(p);
