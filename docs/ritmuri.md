@@ -1,6 +1,6 @@
 # Ritmurile echipei
 
-> Ce face fiecare agent din proprie inițiativă și când. Rulările le pornește **rutina zilnică a lui Tudor**, un workflow GitHub Actions (`.github/workflows/rutina-zilnica.yml`) care rulează pe serverele GitHub de luni până vineri la 9:00 (ora României, iarna), fără aplicația Claude deschisă. Rutina verifică acest tabel și panoul de taskuri.
+> Ce face fiecare agent din proprie inițiativă și când. Rulările le pornește **rutina zilnică a lui Tudor**, un workflow GitHub Actions (`.github/workflows/rutina-zilnica.yml`) care rulează pe serverele GitHub de luni până vineri la 7:30 (ora României, tot anul), fără aplicația Claude deschisă. Rutina verifică acest tabel și panoul de taskuri.
 > Rutina nu poate citi verdictele din pagina echipei. Pe acelea le aplică Tudor când deschizi o sesiune în aplicație.
 > **DRI:** Tudor. Alex poate schimba orice ritm.
 

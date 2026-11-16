@@ -28,7 +28,7 @@ git config core.hooksPath .githooks
 ```
 
 ## Rutina zilnică pe GitHub (fără aplicația deschisă)
-Workflow-ul `.github/workflows/rutina-zilnica.yml` îl pornește pe Tudor de luni până vineri la 9:00, pe serverele GitHub. Folosește abonamentul tău Claude, printr-o cheie pe care o adaugi o singură dată:
+Workflow-ul `.github/workflows/rutina-zilnica.yml` îl pornește pe Tudor de luni până vineri la 7:30 (ora României), pe serverele GitHub. Folosește abonamentul tău Claude, printr-o cheie pe care o adaugi o singură dată:
 1. Instalează Claude Code în terminal și generează cheia: `claude setup-token`.
 2. Pune cheia în repo: `gh secret set CLAUDE_CODE_OAUTH_TOKEN --repo alexandrumolea/AgentsTeam` (lipești cheia când ți-o cere).
 3. Test: tab-ul Actions → „Rutina zilnică a lui Tudor” → Run workflow.

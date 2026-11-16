@@ -7,8 +7,10 @@ name: Rutina zilnică a lui Tudor
 
 on:
   schedule:
-    # Cron în UTC: 07:00 UTC = 09:00 în România iarna (10:00 vara). Luni–vineri.
-    - cron: "0 7 * * 1-5"
+    # Ținta: 7:30 ora României, luni–vineri, tot anul. Cron-ul e în UTC, deci avem două:
+    # 05:30 UTC = 7:30 iarna (EET), 04:30 UTC = 7:30 vara (EEST). Pasul „Ora potrivită” o lasă să ruleze doar pe cea bună.
+    - cron: "30 5 * * 1-5"
+    - cron: "30 4 * * 1-5"
   workflow_dispatch:
     inputs:
       diagnostic:
@@ -34,11 +36,19 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: Verifică cheia de acces Claude
+      - name: Verifică ora potrivită și cheia de acces Claude
         id: cheie
         env:
           T: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}
+          CRON: ${{ github.event.schedule }}
         run: |
+          # Din cele două cron-uri rulează doar cel care cade la 7:30 ora României azi (iarnă +0200, vară +0300).
+          OFS=$(TZ=Europe/Bucharest date +%z)
+          if { [ "$CRON" = "30 5 * * 1-5" ] && [ "$OFS" != "+0200" ]; } || { [ "$CRON" = "30 4 * * 1-5" ] && [ "$OFS" != "+0300" ]; }; then
+            echo "lipsa=1" >> "$GITHUB_OUTPUT"
+            echo "::notice::Cron-ul $CRON nu e 7:30 în România azi (fus $OFS). Rulează celălalt."
+            exit 0
+          fi
           if [ -z "$T" ]; then
             echo "lipsa=1" >> "$GITHUB_OUTPUT"
             echo "::warning::Lipsește secretul CLAUDE_CODE_OAUTH_TOKEN. Rutina nu rulează până nu e adăugat (vezi README)."

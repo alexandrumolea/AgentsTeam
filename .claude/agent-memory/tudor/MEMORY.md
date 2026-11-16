@@ -57,3 +57,5 @@ Păstrează sub 150 de rânduri. Comprimă când crește. Fapte, nu povești.
 - Vezi `docs/intrebari-pentru-alex.md`.
 
 - 2026-11-15: rutina (rulare repetată): T-002, T-003 (Mike), T-004 (Maria), T-005 (Victor) gata. Taskurile „în lucru” rămase fără agent se resetează pe „de făcut”. Patch-ul verificării generatorului așteaptă o sesiune cu drept pe scripts/.
+
+- 2026-11-16: Rutina de dimineață mutată la 7:30 ora României, tot anul (D-041). Alex se aștepta la 7:30; ora veche era 9:00. GitHub poate întârzia rulările programate cu 5–30 min.

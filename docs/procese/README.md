@@ -5,7 +5,7 @@
 
 | Proces | DRI | Când |
 |---|---|---|
-| [Rutina de dimineață](rutina-dimineata.md) (primul proces automat) | Tudor | luni–vineri, 9:00 |
+| [Rutina de dimineață](rutina-dimineata.md) (primul proces automat) | Tudor | luni–vineri, 7:30 |
 | [Idee nouă](idee-noua.md) | Tudor | Alex are o idee |
 | [Decizii](decizii.md) | Tudor | o propunere cere acordul lui Alex |
 | [Delegare](delegare.md) | Tudor | orice sarcină pentru un agent |

@@ -4,7 +4,7 @@
 
 | Element | Ce scrie |
 |---|---|
-| **Trigger** | luni–vineri, 9:00 ora României (iarna; 10:00 vara), pe GitHub Actions. Și manual: Actions → „Rutina zilnică a lui Tudor” → Run workflow |
+| **Trigger** | luni–vineri, 7:30 ora României, tot anul, pe GitHub Actions (două cron-uri în UTC, rulează doar cel potrivit; din 2026-11-16, la cererea lui Alex). Și manual: Actions → „Rutina zilnică a lui Tudor” → Run workflow |
 | **Owner** | Tudor |
 | **Intrări** | `docs/taskuri.md`, `docs/idei.md`, `docs/ritmuri.md`, `docs/decizii.md`, memoria lui Tudor |
 | **Ieșire** | 1. **Propunerea de dimineață:** issue pe GitHub, cu ce intră azi în lucru și de ce, ce idei propune să pornim (cel mult 2) și ce așteaptă după Alex. 2. Munca agenților (cel mult 3 taskuri pe zi). 3. Raport în `team/tudor/rapoarte/`. |
