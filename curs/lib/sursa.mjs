@@ -335,13 +335,14 @@ export function citesteCurs(folder, { editie: numeEditie } = {}) {
     if (r.fel === 'modul' && r.durata > 90 && urm && !ePauza(urm) && !ePauza(r)) avertismente.push(`agenda: „${r.modul.id}” ține ${r.durata} min și nu are o pauză după`);
   });
   if (ziStart != null && ziSfarsit != null && oraStart != null && t > ziSfarsit) {
-    erori.push(`agenda nu încape în ziua cursului: începe la ${ora(oraStart)}, se termină la ${ora(t)}, iar ziua (durata_zi) se termină la ${ora(ziSfarsit)}. Scurtează, scoate un modul din agendă sau alege un exercițiu mai scurt`);
+    // Alex (2026-11-17): depășirea se vede în material, ca s-o poată corecta în timp ce face agenda. Nu mai oprește build-ul.
+    avertismente.push(`agenda nu încape în ziua cursului: începe la ${ora(oraStart)}, se termină la ${ora(t)}, iar ziua (durata_zi) se termină la ${ora(ziSfarsit)}. Scurtează, scoate un modul din agendă sau alege un exercițiu mai scurt`);
   }
   if (oraStart != null && ziStart != null && oraStart < ziStart) avertismente.push(`ora_start ${ora(oraStart)} e înainte de începutul zilei (${ora(ziStart)})`);
   const inAgenda = new Set(agenda.filter((r) => r.fel === 'modul').map((r) => r.modul.id));
   for (const m of module) m.inAgenda = inAgenda.has(m.id);
 
-  // Totalurile zilei (D-053): suma agendei și cât rămâne până la sfârșitul zilei (negativ = depășire, care oprește build-ul).
+  // Totalurile zilei (D-053): suma agendei și cât rămâne până la sfârșitul zilei (negativ = depășire, arătată în material și ca avertisment).
   const total = { agenda: t - (oraStart ?? 0), zi: ziStart != null && ziSfarsit != null ? ziSfarsit - ziStart : null, ramas: ziSfarsit != null ? ziSfarsit - t : null, sfarsit: t };
   return { folder, curs: { ...curs, zi_start: ziStart, zi_sfarsit: ziSfarsit }, editie: { ...editie, start: oraStart }, module, piese, agenda, total, erori, avertismente };
 }

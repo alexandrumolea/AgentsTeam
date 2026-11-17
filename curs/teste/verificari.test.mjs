@@ -48,7 +48,12 @@ test('nota trainerului dintr-o piesă copiată în modul', () => opreste((e) => 
 test('instrucțiunile din sală copiate în textul de citit', () => opreste((e) => e('04-pasul-de-luni.md', (s) => s + '\nScrie un pas care durează sub 30 de minute.\n'), /exportul conține text din .*:::sala/));
 test('schița are 4 puncte', () => opreste((e) => e('02-curba-schimbarii.md', (s) => s.replace('  - "Întrebarea: unde ești tu acum?"', '  - "Întrebarea: unde ești tu acum?"\n  - "Al patrulea"')), /cel mult 3/));
 test('un punct din schiță are peste 8 cuvinte', () => opreste((e) => e('01-deschidere.md', (s) => s.replace('"Cine suntem, ce facem azi"', '"Cine suntem noi și ce facem azi toată ziua aici"')), /cel mult 8/));
-test('agenda nu încape în zi (modul prea lung)', () => opreste((e) => e('04-pasul-de-luni.md', (s) => s.replace('durata: 40', 'durata: 140')), /nu încape/));
+test('agenda nu încape în zi (modul prea lung): avertisment și depășirea în material', () => {
+  const r = cu((e) => e('04-pasul-de-luni.md', (s) => s.replace('durata: 40', 'durata: 140'))); ok(r);
+  assert.ok(r.avertismente.some((a) => /nu încape/.test(a)));
+  assert.match(html(r), /total-zi depasire/);
+  assert.match(html(r), /depășire 45 min/);
+});
 test('cronometru mai lung decât modulul', () => opreste((e) => e('01-deschidere.md', (s) => s.replace('cronometru=5', 'cronometru=25')), /mai lung decât durata/));
 test('imagine de pe internet', () => opreste((e) => e('04-pasul-de-luni.md', (s) => s.replace('**Ce faci luni, între 9 și 10?**', '![x](https://exemplu.ro/x.png)')), /e pe internet/));
 test('imagine care lipsește', () => opreste((e) => e('04-pasul-de-luni.md', (s) => s.replace('**Ce faci luni, între 9 și 10?**', '![x](materiale/lipsa.png)')), /nu există/));
@@ -147,7 +152,11 @@ test('agenda: modul de două ori', () => opreste(AG('  - deschidere\n  - curba\n
 test('agenda: piesă inexistentă la un modul', () => opreste(AG('  - modul: curba\n    piese: [nu-exista]'), /piesa „nu-exista” nu există/));
 test('agenda: rând care nu e nici modul, nici piesă, nici pauză', () => opreste(AG('  - deschidere\n  - prânz: 60'), /un rând din agendă/));
 test('agenda: pauza nu e un număr', () => opreste(AG('  - deschidere\n  - pauza: zece'), /număr de minute/));
-test('agenda nu încape în zi', () => opreste(AG('  - deschidere\n  - pauza: 200'), /nu încape/));
+test('agenda nu încape în zi (pauză prea lungă): avertisment, materialul se generează', () => {
+  const r = cu(AG('  - deschidere\n  - pauza: 200')); ok(r);
+  assert.ok(r.avertismente.some((a) => /nu încape/.test(a)));
+  assert.match(html(r), /total-zi depasire/);
+});
 test('agenda: comun/… înainte să existe biblioteca comună', () => opreste(AG('  - deschidere\n  - comun/energizant'), /biblioteca comună/));
 test('agenda: comun/… în piesele unui modul', () => opreste(AG('  - modul: curba\n    piese: [comun/model-curba]'), /biblioteca comună/));
 test('agenda: „exercitii” rămas de la v1.1', () => opreste(AG('  - modul: curba\n    exercitii: [perechi-curba]'), /a devenit „piese”/));

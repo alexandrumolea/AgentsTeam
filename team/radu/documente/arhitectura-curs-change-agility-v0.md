@@ -258,7 +258,7 @@ Cerința lui Alex (2026-11-17): „Aș vrea să avem un fel de bancă de exerci�
 - două exerciții au același id sau un exercițiu apare și în implicite, și în alternative la același modul;
 - un modul apare de două ori în agendă;
 - un rând din agendă nu e nici `modul`, nici `pauza`, sau `pauza` nu e un număr de minute;
-- agenda nu încape în `durata_zi`;
+- ~~agenda nu încape în `durata_zi`~~ → avertisment, iar depășirea se vede în material (Alex, 2026-11-17);
 - un câmp obligatoriu lipsește sau are o valoare din afara listei (`format`, `tip`, `energie`).
 
 Doar avertisment: un exercițiu ales la un modul care nu e în câmpul lui `module`, sau un modul de peste 90 de minute fără nicio pauză după.
