@@ -93,7 +93,7 @@ Gradientul e semnătura: culori mari care se topesc, cu o granulație fină, ca 
 
 ## 4. Tipografie
 Două fonturi, ambele cu licență liberă (SIL Open Font License) și cu ș și ț cu virgulă:
-- **Sora** pentru **titluri și cifre mari**: titluri, inițiale, mesajul de final, ideea de reținut, inscripția, cronometrele, semnătura. Greutăți: 200 și 300 (400 doar la semnătură).
+- **Sora** pentru **titluri și cifre mari**: titluri, inițiale, mesajul de final, ideea de reținut, cronometrele, semnătura. Inscripția misiunii (22 px) e sub 26 px, deci intră în Inter Tight. Greutăți: 200 și 300 (400 doar la semnătură).
 - **Inter Tight** pentru **tot ce citești și apeși**: text, introducere, liste, legendă, meniu, butoane, linkuri, etichete. Greutăți: 300, 400, 500.
 
 Pe site se găzduiesc local; pe proiector se includ local (vezi 9). Sora nu are italic: titlurile sunt mereu drepte. Italicul din Inter Tight doar pentru citate în text.
@@ -287,7 +287,7 @@ Pornesc din `slide-tipuri-v1.md`: cinci semnale deodată (fond, semn, așezare, 
 - **Blur 16 px pe telefon** și cel mult 3 panouri de sticlă vizibile deodată.
 - **Marginea paginii pe telefon e 16 px.** În mock-ul v3.1 era 14 px; 16 e regula.
 - **Ce se apasă are cel puțin 16 px**, inclusiv linkurile din subsol (textul subsolului poate fi 14 px doar dacă nu e link).
-- **Două fonturi (D-057):** Sora doar la titluri și cifre mari (nu sub 26 px), Inter Tight la tot restul, inclusiv butoane, meniu, legendă și textul lecției (20 px, rând 1,7). Sora nu are italic: inscripția misiunii e dreaptă (`font-style: normal`).
+- **Două fonturi (D-057):** Sora doar la titluri și cifre mari (nu sub 26 px), Inter Tight la tot restul, inclusiv butoane, meniu, legendă și textul lecției (20 px, rând 1,7). Inscripția misiunii e în Inter Tight (e sub 26 px), dreaptă, fără italic.
 - **Alerta are o culoare nouă:** `#A63D2A` (5,29 pe sticlă în cel mai rău punct), mereu cu cuvânt.
 - **Etichetele scenei sunt HTML**, ca să se citească la 16+ px și să se ajungă la ele cu Tab.
 
