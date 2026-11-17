@@ -16,3 +16,4 @@ Utilitate: 1 = inutil, 3 = ok, 5 = exact ce trebuia. Feedback Alex: completat de
 | Lună | Verdict (păstrăm / ajustăm / renunțăm) | Note |
 |---|---|---|
 | 2026-11-15 | Rutină: 3 agenți delegați, 4 taskuri gata (T-002..T-005) |
+| 2026-11-17 | Culori: Ioana (audit, 3 variante) și Mike (culori într-un singur loc) în paralel; Head of Learning propus (D-052); I-020 notată | verificat build-ul, local și push-ul; conflict de numerotare D-048 prins și corectat |

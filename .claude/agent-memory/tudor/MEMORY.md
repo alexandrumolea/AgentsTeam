@@ -73,3 +73,7 @@ Păstrează sub 150 de rânduri. Comprimă când crește. Fapte, nu povești.
 - 2026-11-16: www CNAME pus de Alex; se propagă. Certificatul HTTPS nu include încă www (T-021: verific la următoarea sesiune; dacă lipsește după 24 h, scot și repun domeniul).
 
 - 2026-11-17: Alex vrea 3 ieșiri pentru cursuri (curs online, material trainer legat de el, schiță). Radu a propus „o sursă, trei ieșiri” (D-048–D-051, de luat). După aprobare: T-022 Mike (generatorul), T-023 Ioana (designul schiței, după 23). În lucru, în paralel, e o altă sesiune pe culori/site (fișiere necomise în site/; nu le comite eu).
+
+- 2026-11-17: Culorile site-ului sunt toate în `content/tema.yml` (Mike); o paletă nouă = un fișier, plus `npm run imagini` pe Mac pentru og.png și iconiță. Ioana a dat 3 variante (https://claude.ai/artifact/BzqmTAH4bYJNh1ZxZ3t7e1), recomandă B „Noapte și zi”; Alex alege (T-024). Alex: site-ul e prea închis pentru cursuri online; îi plac compactul și interactivul.
+- 2026-11-17: Alex vrea un Head of Learning (D-052, propus „Andrei”, șeful Studio). Cursuri online cu acces sau cumpărare: I-020, Radu.
+- 2026-11-17: LECȚIE: altă sesiune lucrează în paralel în același repo. Înainte să dau un număr nou (D-, I-, T-), verific ultimul număr din fișier chiar atunci; fac commit doar pe fișierele mele.
