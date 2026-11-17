@@ -301,8 +301,7 @@ function start(THREE, RoomEnvironment){
       const gr = new THREE.Group(), D = LENS;
       const body = obj(new THREE.SphereGeometry(D / 2, seg(48), seg(24)), pair('despre'), { k: 1.6 }) /* ~60 % cer, piersica doar în colțul din dreapta jos (T-036) */; body.scale.set(1, 1, 0.3); gr.add(body);
       gr.add(new THREE.Mesh(new THREE.TorusGeometry(D / 2, D * 0.018, 10, seg(96)), new THREE.MeshStandardMaterial({ color: SC.edge, roughness: 0.3 })));
-      lensDot = new THREE.Mesh(new THREE.SphereGeometry(D / 16, 24, 12), new THREE.MeshStandardMaterial({ color: COL.punct, emissive: COL.piersica, emissiveIntensity: 0.35, roughness: 0.4 }));
-      gr.add(lensDot);
+      // fără punct pe față (Alex, 2026-11-17: „mai are un punct care îl face să arate ciudat”)
       return gr; }
   };
   const LENS = 0.6; // diametrul lentilei = 0,65 × lățimea discului Coaching (0,92)
@@ -567,7 +566,7 @@ function start(THREE, RoomEnvironment){
       if (o.k === 'despre'){ // lentila: întoarsă spre dreapta, se leagănă ±0,15 rad în 14 s; la hover și Tab se întoarce spre tine, iar punctul iese în față
         const e = 1 - Math.pow(1 - o.glowK, 3);
         o.m.rotation.set(0.08, (-0.6 + (reduce ? 0 : Math.sin(t * Math.PI * 2 / 14 + j) * 0.15)) * (1 - e), 0);
-        lensDot.position.z = LENS * (reduce ? 0.2 : 0.16 + 0.06 * e); // fără sticlă cu transmisie, punctul stă chiar pe fața lentilei (manualul: 0,1 D, sub suprafață) lensDot.scale.setScalar(reduce ? 1 : 1 + 0.5 * e);
+        if (lensDot) lensDot.position.z = LENS * (reduce ? 0.2 : 0.16 + 0.06 * e); // fără sticlă cu transmisie, punctul stă chiar pe fața lentilei (manualul: 0,1 D, sub suprafață) lensDot.scale.setScalar(reduce ? 1 : 1 + 0.5 * e);
       } else o.m.rotation.y = reduce ? 0 : Math.sin(t * 0.3 + j * 1.7) * 0.32 * (o.k === 'knowledge' && know ? 0.3 : 1);
       // numărul de reper: mereu, dacă obiectul e în față; numele: doar la hover, Tab, atingere sau când e ales
       const front = items.length <= 3 ? 1 : Math.cos(a), show = hide < 0.1 && front > -0.45;

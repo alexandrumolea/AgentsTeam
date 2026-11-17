@@ -173,7 +173,7 @@ Sticla e finisajul, nu fundația. Stă pe straturile de navigare și pe carduri;
 ### Despre mine: lentila (2026-11-17)
 Obiectul nou pentru al treilea drum vizibil (D-056). Mostra 2D, cu hover: [poza-forme-v1.html](poza-forme-v1.html), secțiunea „Obiectul pentru Despre mine”.
 
-- **Ideea, pentru echipă (nu se scrie pe site):** o lentilă e felul în care vezi din altă perspectivă. Punctul portocaliu din centru e semnătura lui Alex, același ca lângă nume, în meniu. E singurul obiect vertical din scenă și singurul care poartă punctul.
+- **Ideea, pentru echipă (nu se scrie pe site):** o lentilă e felul în care vezi din altă perspectivă. E singurul obiect vertical din scenă. **Fără punct pe față** (Alex, 2026-11-17: „mai are un punct care îl face să arate ciudat”); punctul-semnătură rămâne doar în marcă și pe rama portretului.
 - **Forma:** un disc biconvex de sticlă (o sferă turtită), ținut vertical și întors pe jumătate spre dreapta. Pe margine, o ramă albă subțire. În centru, un punct portocaliu cu inelul lui.
 - **Gradientul:** cer `#4FA3F0` → piersică `#F7B79A`, diagonal, 92 %, ca toate obiectele. **Cerul e culoarea principală:** cam 60 % din lentilă e cer, iar piersica stă doar în colțul din dreapta jos. În 3D, exponentul de amestec e 1,6 pentru lentilă (celelalte obiecte au 0,6). Înlocuiește cer → lavandă, care e al Companiei mele (în `content/tema.yml`: `obj-despre: [cer, piersica]`).
 - **Proporțiile față de celelalte** (W = lățimea elipsei Coaching):
@@ -186,11 +186,10 @@ Obiectul nou pentru al treilea drum vizibil (D-056). Mostra 2D, cu hover: [poza-
 - **În 3D (Three.js), pentru Mike.** D = diametrul lentilei = 0,65 W:
   - **Corpul:** `SphereGeometry(D/2, seg(48), seg(24))` cu `scale.set(1, 1, 0.3)`. Grosimea e 0,3 D. Materialul de sticlă al celorlalte obiecte, `pair('despre')`.
   - **Rama:** `TorusGeometry(D/2, D × 0.018, 10, seg(96))` în planul discului, culoarea `edge` (alb), `roughness 0.3`.
-  - **Punctul:** `SphereGeometry(D/16, 24, 12)`, culoarea `punct` (`#F28C3B`), `emissive` piersică la 0,35 (ca cristalul din centru). Sticla de pe site nu are transmisie, deci în repaus punctul stă chiar pe fața lentilei (`z = 0.16 D`).
   - **Orientarea în repaus:** `rotation.y = -0.6` (cam 34°, întoarsă spre dreapta), `rotation.x = 0.08`.
   - **Mișcarea:** plutește ca celelalte (7 px, 14 s). Nu se rotește complet: se leagănă pe `y` cu ±0,15 rad, în 14 s, `ease-in-out`.
-  - **Hover și focus:** în 0,45 s, `cubic-bezier(.2,.7,.2,1)`, lentila se întoarce cu fața spre vizitator (`rotation.y → 0`), iar punctul iese în fața suprafeței (`z → 0.22 D`) și crește de 1,5 ori. Rama se îngroașă ca la celelalte obiecte.
-  - **`prefers-reduced-motion`:** lentila stă întoarsă pe jumătate, cu punctul deja în față, mărimea 1. Fără legănare.
+  - **Hover și focus:** în 0,45 s, `cubic-bezier(.2,.7,.2,1)`, lentila se întoarce cu fața spre vizitator (`rotation.y → 0`). Conturul se aprinde ca la celelalte obiecte.
+  - **`prefers-reduced-motion`:** lentila stă întoarsă pe jumătate, fără legănare.
 - **În 2D** (desenul fără WebGL din `build.mjs`, coordonate centrate):
   `<ellipse class="s" cx="8" rx="34" ry="46" opacity=".55"/><ellipse class="s" rx="34" ry="46"/><ellipse class="f" rx="27.5" ry="39"/><circle class="m" r="6"/>`
   Prima elipsă e marginea discului, văzută din lateral.
@@ -343,4 +342,5 @@ Pornesc din `slide-tipuri-v1.md`: cinci semnale deodată (fond, semn, așezare, 
 |---|---|---|
 | 2026-11-17 | v1 | Prima versiune, din D-054, D-055, D-057 și din documentele de lucru v2, v3 și slide-tipuri v1. Manualul BEMORE; site-ul lui Alex îl folosește ca owner. |
 | 2026-11-17 | v1.1 | Secțiunea 7: obiectul „Despre mine” (lentila), cu gradientul cer → piersică și specificația 3D. |
+| 2026-11-17 | v1.3 | Secțiunea 7: lentila „Despre mine” fără punct pe față (Alex). |
 | 2026-11-17 | v1.2 | Secțiunea 8: portretul lui Alex devine lentilă (D-060): decupaj, ramă, halo, punct, așezare pe desktop și telefon. Pagina cu planșe (05, 06) e la zi. |

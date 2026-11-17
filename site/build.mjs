@@ -407,7 +407,7 @@ const SHAPES = {
   live: '<circle class="s" r="34"/><circle class="m" cx="-10" cy="-8" r="3.5"/><circle class="m" cx="12" cy="-2" r="3.5"/><circle class="m" cx="-2" cy="12" r="3.5"/>',
   povesti: '<ellipse class="f" cy="32" rx="48" ry="8"/><ellipse class="s" rx="58" ry="30"/>',
   knowledge: '<path class="s" d="M-56 16.5l56-17.5 56 17.5-56 17.5z"/><path class="s" d="M-56 5.5l56-17.5 56 17.5-56 17.5z"/><path class="s" d="M-56 -5.5l56-17.5 56 17.5-56 17.5z"/><path class="s" d="M-56 -16.5l56-17.5 56 17.5-56 17.5z"/>', // plăci de 0,5 cu pasul 0,07, ca în 3D (T-036)
-  despre: '<ellipse class="s" cx="8" rx="34" ry="46" opacity=".55"/><ellipse class="s" rx="34" ry="46"/><ellipse class="f" rx="27.5" ry="39"/><circle class="m" r="6"/>' // lentila (manualul §7)
+  despre: '<ellipse class="s" cx="8" rx="34" ry="46" opacity=".55"/><ellipse class="s" rx="34" ry="46"/><ellipse class="f" rx="27.5" ry="39"/>' // lentila, fără punct (Alex, 2026-11-17) (manualul §7)
 };
 function fallbackSvg(){
   // cu „Desfă inovația”, Innovations e nucleul din centru, nu încă un obiect pe orbită (ca în scena 3D)
