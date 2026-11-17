@@ -9,6 +9,7 @@ module: [curba]
 obiective: [1]
 materiale: ["post-it-uri în 3 culori", "worksheet Curba mea"]
 in_curs: da
+etichete: [Self-awareness, Change Curve]
 ---
 
 Unde ești tu acum pe curbă, pentru schimbarea cea mai mare din viața ta de lucru?

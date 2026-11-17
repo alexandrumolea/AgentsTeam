@@ -5,6 +5,7 @@ tip: model
 ancora: "Curba, nu linia"
 module: [curba]
 materiale: ["flipchart cu curba desenată"]
+etichete: [Change Curve, Foundations]
 ---
 
 ## Ideea

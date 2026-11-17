@@ -74,7 +74,7 @@ export function verificaExport(json, c) {
     const n = normal(nume);
     if (n && totCuSpatii.includes(` ${n} `)) erori.push(`exportul conține un nume interzis de ediție („${nume}”). Scoate-l din textul cursului (poate sta în :::trainer)`);
   }
-  for (const cheie of ['ancora', 'schita', 'materiale', 'nota_trainer', 'nume_interzise', 'agenda', 'obiectiv', 'energie', 'familie']) {
+  for (const cheie of ['ancora', 'schita', 'materiale', 'nota_trainer', 'nume_interzise', 'agenda', 'obiectiv', 'energie', 'familie', 'etichete']) {
     if (brut.includes(`"${cheie}"`)) erori.push(`exportul conține câmpul „${cheie}”, care e doar pentru trainer`);
   }
   return erori;

@@ -4,6 +4,7 @@ durata: 10
 tip: poveste
 ancora: "Două echipe"
 module: [curba]
+etichete: [Storytelling, Change Curve]
 ---
 
 [EXEMPLU] Două echipe se unesc. Prima lună, toată lumea lucrează mai încet. A treia lună, mai repede ca înainte.

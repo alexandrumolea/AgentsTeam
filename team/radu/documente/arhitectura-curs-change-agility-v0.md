@@ -281,6 +281,8 @@ Doar avertisment: un exercițiu ales la un modul care nu e în câmpul lui `modu
 
 Antetul piesei e cel din 1.8, cu trei schimbări: `tip` are lista de mai sus; `format` și `energie` sunt obligatorii doar la activități; apare `ancora` opțional (o linie în schiță când piesa stă singură în agendă).
 
+**Etichete (Alex, 2026-11-17).** Piesele și modulele pot avea `etichete: [Positive Outlook, Closing]`: texte libere, scrise cum vrea Alex (și în engleză, cu spații). La grupare, majusculele și diacriticele nu contează; pe ecran rămâne forma folosită prima, iar două forme diferite dau avertisment. În Biblioteca de piese: chip-uri mici pe rândul piesei (un click pornește filtrul), un rând de filtre „Etichete” cu numărul de piese, căutare după etichetă. În Ziua și Modul apar discret. Nu ajung pe ecranele din sală și nici în cursul participanților (organizare internă).
+
 #### Unde stau piesele
 | Varianta | Cum | Pentru | Contra |
 |---|---|---|---|

@@ -59,6 +59,13 @@ Doar în cursul online.
 
 Primul ecran al fiecărui modul (numărul și titlul) se face singur. O pauză primește automat un cronometru cât durata ei.
 
+### Etichetele (Alex, 2026-11-17)
+
+- `etichete: [Positive Outlook, Closing]` pe piese și pe module, opțional. Texte libere, scrise cum vrei (și în engleză, cu spații).
+- Majusculele și diacriticele nu contează la grupare: pe ecran rămâne forma folosită prima, iar „Positive outlook” față de „Positive Outlook” dă avertisment.
+- **Biblioteca de piese:** chip-uri mici pe rândul piesei (un click pornește filtrul etichetei), un rând de filtre „Etichete” cu numărul de piese (chip-urile se adună), căutare după etichetă. În Ziua și Modul apar discret.
+- Etichetele sunt organizare internă: nu ajung pe ecranele din sală și nici în cursul participanților.
+
 ### Obiectivele zilei (Alex, 2026-11-17)
 
 - `obiective` în `curs.yml`: o listă de texte scurte (peste ~12 cuvinte, doar avertisment). Ediția poate avea propriul `obiective`, care o înlocuiește pe a cursului.

@@ -8,6 +8,7 @@ obiectiv: "[EXEMPLU] Grupul vede, cu corpul, că fiecare e în alt punct al curb
 module: [curba]
 materiale: ["bandă adezivă pentru podea"]
 in_curs: da
+etichete: [Energizing, Change Curve]
 ---
 
 Dacă schimbarea ar fi un drum pe podea, unde ai sta tu acum?

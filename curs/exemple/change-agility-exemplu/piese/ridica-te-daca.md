@@ -8,6 +8,7 @@ obiectiv: "[EXEMPLU] Grupul se trezește după pauză și vede ce are în comun"
 ancora: "În picioare"
 materiale: []
 in_curs: nu
+etichete: [Energizing, Opening]
 ---
 
 :::sala

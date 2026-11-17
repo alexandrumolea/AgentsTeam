@@ -25,6 +25,8 @@ export function caleTema(brand) {
 const ENERGIE = { calm: 'energie calmă', mediu: 'energie medie', activ: 'energie activă' };
 const lumePiesa = (x) => (x.tip === 'pauza' ? 'luminos' : LUME_FAMILIE[x.familie] ?? 'luminos');
 const lumeDe = (r, s) => (s && s.piesa ? lumePiesa(s.piesa) : r.fel === 'piesa' ? lumePiesa(r.piesa) : LUME[r.fel === 'pauza' ? 'pauza' : r.modul.tip]) ?? 'luminos';
+/** Etichetele (Alex, 2026-11-17): organizare internă. Nu ajung în sală și nici în cursul participanților. */
+const eticheteMici = (x) => (x.etichete?.length ? ` <span class="etichete-mici">${x.etichete.map((t) => e(t.text)).join(' · ')}</span>` : '');
 /** „15 min · perechi · energie medie” la activități; „20 min · model” la restul. */
 const despre = (x) => `${x.durata} min · ${x.familie === 'activitate' ? `${e(x.format)} · ${ENERGIE[x.energie] ?? e(x.energie)}` : TIP[x.tip] ?? e(x.tip)}`;
 /** „1 h 25 min” */
@@ -92,16 +94,16 @@ function totalZi(c) {
 }
 
 function vedereaZiua(c) {
-  const randPiesa = (x, i, cls) => `<tr class="${cls}" data-modul="${i}"><td></td><td>↳ <a href="#ex-${e(x.id)}" data-banca>${e(x.titlu)}</a></td><td><span class="tip">${TIP[x.tip] ?? e(x.tip)}</span></td><td>${x.durata} min</td><td class="sters">${x.familie === 'activitate' ? `${e(x.format)} · ${ENERGIE[x.energie] ?? e(x.energie)}` : e(x.ancora)}</td><td>${x.materiale.map(e).join('<br>')}</td></tr>`;
+  const randPiesa = (x, i, cls) => `<tr class="${cls}" data-modul="${i}"><td></td><td>↳ <a href="#ex-${e(x.id)}" data-banca>${e(x.titlu)}</a>${eticheteMici(x)}</td><td><span class="tip">${TIP[x.tip] ?? e(x.tip)}</span></td><td>${x.durata} min</td><td class="sters">${x.familie === 'activitate' ? `${e(x.format)} · ${ENERGIE[x.energie] ?? e(x.energie)}` : e(x.ancora)}</td><td>${x.materiale.map(e).join('<br>')}</td></tr>`;
   const randuri = c.agenda.map((r, i) => {
     if (r.fel === 'pauza') return `<tr data-modul="${i}" class="pauza"><td class="ora">${oraR(r)}</td><td>${e(r.titlu)}</td><td><span class="tip">pauză</span></td><td>${r.durata} min</td><td></td><td></td></tr>`;
     if (r.fel === 'piesa') {
       const x = r.piesa;
-      return `<tr data-modul="${i}" class="${x.tip === 'pauza' ? 'pauza' : 'piesa-singura'}"><td class="ora">${oraR(r)}</td><td><a href="#ex-${e(x.id)}" data-banca>${e(x.titlu)}</a> <span class="sters">(piesă)</span></td><td><span class="tip">${TIP[x.tip] ?? e(x.tip)}</span></td><td>${r.durata} min</td><td>${e(x.ancora)}</td><td>${x.materiale.map(e).join('<br>') || '<span class="sters">–</span>'}</td></tr>`;
+      return `<tr data-modul="${i}" class="${x.tip === 'pauza' ? 'pauza' : 'piesa-singura'}"><td class="ora">${oraR(r)}</td><td><a href="#ex-${e(x.id)}" data-banca>${e(x.titlu)}</a> <span class="sters">(piesă)</span>${eticheteMici(x)}</td><td><span class="tip">${TIP[x.tip] ?? e(x.tip)}</span></td><td>${r.durata} min</td><td>${e(x.ancora)}</td><td>${x.materiale.map(e).join('<br>') || '<span class="sters">–</span>'}</td></tr>`;
     }
     const m = r.modul;
     const calcul = r.piese.length ? `<span class="calcul">${r.durataModul} + ${r.piese.map((x) => x.durata).join(' + ')}</span>` : '';
-    return `<tr data-modul="${i}"><td class="ora">${oraR(r)}</td><td><b>${e(m.titlu)}</b></td>
+    return `<tr data-modul="${i}"><td class="ora">${oraR(r)}</td><td><b>${e(m.titlu)}</b>${eticheteMici(m)}</td>
   <td><span class="tip">${TIP[m.tip] ?? e(m.tip)}</span></td><td><b>${r.durata} min</b>${calcul}</td><td>${e(m.ancora)}</td>
   <td>${m.materiale.map(e).join('<br>') || '<span class="sters">–</span>'}</td></tr>${r.piese.map((x) => randPiesa(x, i, 'exercitiu-rand')).join('')}`;
   }).join('\n');
@@ -145,7 +147,7 @@ function piesa(s, lume, randeaza) {
   if (s.strat === 'trainer') return `<div class="strat strat-trainer"><span class="eticheta">Trainer</span>${randeaza(s.md)}</div>`;
   if (s.strat === 'participant') return `<div class="strat strat-participant"><span class="eticheta">Doar în cursul online</span>${randeaza(s.md)}</div>`;
   if (s.strat === 'piese') return `<p class="strat sters">Aici intră piesele alese în agendă.</p>`;
-  if (s.strat === 'piesa-inceput') { const x = s.piesa; return `<div class="exercitiu-incadrat"><p class="eticheta">Piesă · ${e(x.titlu)} · ${despre(x)}${x.in_curs ? '' : ' · nu apare în cursul online'}</p>${x.obiectiv ? `<p>${e(x.obiectiv)}</p>` : ''}`; }
+  if (s.strat === 'piesa-inceput') { const x = s.piesa; return `<div class="exercitiu-incadrat"><p class="eticheta">Piesă · ${e(x.titlu)} · ${despre(x)}${x.in_curs ? '' : ' · nu apare în cursul online'}</p>${x.etichete.length ? `<p>${eticheteMici(x)}</p>` : ''}${x.obiectiv ? `<p>${e(x.obiectiv)}</p>` : ''}`; }
   if (s.strat === 'piesa-sfarsit') return '</div>';
   const randeazaEcran = creeazaRandare({ atribut: 'data-img', randuriNoi: true });
   const eticheta = s.strat === 'sala' ? 'Ecran în sală' : 'Ecran în sală și în curs';
@@ -166,11 +168,11 @@ function vedereaModul(c) {
     const durata = r ? `${r.durata} min${r.piese.length ? ` (modul ${r.durataModul} + piese ${r.durataPiese})` : ''}` : `${m.durata} min fără piese`;
     return `<article class="modul ${r ? '' : 'sarit'}" id="modul-${e(m.id)}">
 <header><span class="eticheta">${r ? oraR(r) + ' · ' : ''}${TIP[m.tip] ?? e(m.tip)} · ${durata}${r ? '' : ' · nu e în agenda acestei ediții'}</span>
-<h3>${e(m.titlu)}</h3>${m.materiale.length ? `<p class="sters">Materiale: ${m.materiale.map(e).join(', ')}</p>` : ''}${alternativeHtml(c, m, r ? r.piese : [])}</header>
+<h3>${e(m.titlu)}</h3>${m.etichete.length ? `<p>${eticheteMici(m)}</p>` : ''}${m.materiale.length ? `<p class="sters">Materiale: ${m.materiale.map(e).join(', ')}</p>` : ''}${alternativeHtml(c, m, r ? r.piese : [])}</header>
 ${continut}</article>`;
   };
   const singura = (r) => `<article class="modul piesa-singura" id="rand-${e(r.piesa.id)}">
-<header><span class="eticheta">${oraR(r)} · piesă singură · ${despre(r.piesa)}</span><h3>${e(r.piesa.titlu)}</h3>${r.piesa.materiale.length ? `<p class="sters">Materiale: ${r.piesa.materiale.map(e).join(', ')}</p>` : ''}</header>
+<header><span class="eticheta">${oraR(r)} · piesă singură · ${despre(r.piesa)}</span><h3>${e(r.piesa.titlu)}</h3>${r.piesa.etichete.length ? `<p>${eticheteMici(r.piesa)}</p>` : ''}${r.piesa.materiale.length ? `<p class="sters">Materiale: ${r.piesa.materiale.map(e).join(', ')}</p>` : ''}</header>
 ${desfasoara(r).filter((s) => s.strat !== 'piesa-inceput' && s.strat !== 'piesa-sfarsit').map((s) => piesa(s, lumeDe(r, s), randeaza)).join('\n')}</article>`;
   const dinAgenda = c.agenda.filter((r) => r.fel === 'modul' || (r.fel === 'piesa' && r.piesa.tip !== 'pauza')).map((r) => (r.fel === 'modul' ? articol(r.modul, r) : singura(r))).join('\n');
   const afara = c.module.filter((m) => !m.inAgenda).map((m) => articol(m, null)).join('\n');
@@ -202,7 +204,7 @@ function vedereaBanca(c) {
 
   const rand = (x) => {
     const randuriAzi = azi.get(x.id) ?? [], mod = moduleDe(x);
-    const cauta = normal([x.titlu, x.obiectiv, x.ancora, x.format ?? '', TIP[x.tip] ?? x.tip, NUME_FAMILIE[x.familie] ?? '', x.energie ?? '', ...x.materiale, ...mod.map((m) => m.titlu), ...x.segmente.map((s) => s.md)].join(' '));
+    const cauta = normal([x.titlu, x.obiectiv, x.ancora, ...x.etichete.map((t) => t.text), x.format ?? '', TIP[x.tip] ?? x.tip, NUME_FAMILIE[x.familie] ?? '', x.energie ?? '', ...x.materiale, ...mod.map((m) => m.titlu), ...x.segmente.map((s) => s.md)].join(' '));
     const energie = x.energie ? `<span class="energie" data-n="${N_ENERGIE[x.energie] ?? 0}" title="${ENERGIE[x.energie] ?? e(x.energie)}"><i></i><i></i><i></i> ${e(x.energie)}</span>` : '';
     const minuteAzi = randuriAzi.length * x.durata;
     const badgeAzi = randuriAzi.length ? `<span class="azi">Azi · ${randuriAzi.map((r) => `${r.start == null ? '' : ora(r.start) + ' · '}${e(titluR(r))}`).join('; ')} · ${minuteAzi} min, ${Math.round((minuteAzi / ziua) * 100)}% din zi</span>` : '';
@@ -210,9 +212,9 @@ function vedereaBanca(c) {
       ? `<ul class="unde">${mod.map((m) => `<li>${e(m.titlu)} <span class="sters">· ${rolLa(x, m)}${randuriAzi.some((r) => r.modul === m) ? ', aleasă azi' : ''}</span></li>`).join('')}</ul>`
       : '<p>Oriunde în zi.</p>';
     const detalii = `${NUME_FAMILIE[x.familie] ?? ''} · ${TIP[x.tip] ?? e(x.tip)} · ${x.durata} min${x.familie === 'activitate' ? ` · ${e(x.format)} · ${ENERGIE[x.energie] ?? e(x.energie)}` : ''}`;
-    return `<details class="ex" id="ex-${e(x.id)}" data-familie="${e(x.familie ?? '')}" data-tip="${e(x.tip)}" data-format="${e(x.format ?? '')}" data-energie="${e(x.energie ?? '')}" data-durata="${x.durata}" data-folosit="${randuriAzi.length ? 1 : 0}" data-module="${mod.map((m) => e(m.id)).join(' ')}" data-cauta="${e(cauta)}">
+    return `<details class="ex" id="ex-${e(x.id)}" data-familie="${e(x.familie ?? '')}" data-tip="${e(x.tip)}" data-format="${e(x.format ?? '')}" data-energie="${e(x.energie ?? '')}" data-durata="${x.durata}" data-folosit="${randuriAzi.length ? 1 : 0}" data-module="${mod.map((m) => e(m.id)).join(' ')}" data-etichete="|${x.etichete.map((t) => e(t.cheie)).join('|')}|" data-cauta="${e(cauta)}">
 <summary><span class="ex-rand"><span class="ex-durata"><b>${x.durata}</b> min</span>
-<span class="ex-cap"><span class="ex-titlu">${e(x.titlu)}</span>${x.obiectiv || x.ancora ? `<span class="ex-obiectiv">${e(x.obiectiv || x.ancora)}</span>` : ''}${badgeAzi}</span>
+<span class="ex-cap"><span class="ex-titlu">${e(x.titlu)}</span>${x.obiectiv || x.ancora ? `<span class="ex-obiectiv">${e(x.obiectiv || x.ancora)}</span>` : ''}${badgeAzi}${x.etichete.length ? `<span class="ex-etichete">${x.etichete.map((t) => `<button type="button" class="et-chip" data-eticheta="${e(t.cheie)}" title="Arată toate piesele cu eticheta „${e(t.text)}”">${e(t.text)}</button>`).join('')}</span>` : ''}</span>
 <span class="ex-meta">${x.format ? `<span class="ex-format">${e(x.format)}</span>` : ''}${energie}${x.tip !== 'exercitiu' ? `<span class="ex-tip ex-tip-${e(x.familie ?? '')}">${TIP[x.tip] ?? e(x.tip)}</span>` : ''}</span><span class="ex-semn" aria-hidden="true"></span></span></summary>
 <div class="ex-detalii">
 ${x.obiectiv ? `<p class="ex-obiectiv-tot">${e(x.obiectiv)}</p>` : ''}
@@ -233,15 +235,17 @@ ${x.segmente.map((s) => piesa(s, lumePiesa(x), randeaza)).join('\n')}
   // Familia și tipul: doar valorile care există în bibliotecă, în ordinea din 1.9.
   const familii = FAMILII.filter((f) => toate.some((x) => x.familie === f));
   const tipuri = Object.keys(FAMILIE).filter((t) => toate.some((x) => x.tip === t));
+  const eticheteFiltru = c.etichete.filter((t) => t.piese > 0);
   const minAzi = deAzi.reduce((s, x) => s + azi.get(x.id).length * x.durata, 0);
 
   return `<div class="banca-cap"><h2>Biblioteca de piese</h2><p class="sters banca-numar" id="banca-numar" role="status"></p></div>
 <div class="banca-filtre">
-<div class="cautare"><input type="search" id="banca-cauta" placeholder="Caută: titlu, obiectiv, materiale…" aria-label="Caută în bibliotecă" autocomplete="off" enterkeyhint="search"><kbd aria-hidden="true">/</kbd></div>
+<div class="cautare"><input type="search" id="banca-cauta" placeholder="Caută: titlu, obiectiv, etichetă, materiale…" aria-label="Caută în bibliotecă" autocomplete="off" enterkeyhint="search"><kbd aria-hidden="true">/</kbd></div>
 ${rand_filtre('Familie și tip', familii.map((f) => chip('familie', f, `<b>${NUME_FAMILIE[f]}</b>`, ' data-familie-chip')).join('') + '<span class="chip-sep" aria-hidden="true"></span>' + tipuri.map((t) => chip('tip', t, TIP[t] ?? e(t))).join(''))}
 ${rand_filtre('Format', FORMATE.map((v) => chip('format', v, e(v))).join(''))}
 ${rand_filtre('Energie', ENERGII.map((v) => chip('energie', v, `<span class="energie" data-n="${N_ENERGIE[v]}"><i></i><i></i><i></i></span> ${e(v)}`)).join(''))}
 ${rand_filtre('Durata', [10, 15, 20, 30].map((v) => chip('durata', v, `≤ ${v} min`)).join(''))}
+${eticheteFiltru.length ? rand_filtre('Etichete', eticheteFiltru.map((t) => chip('eticheta', t.cheie, `${e(t.text)} <span class="chip-nr">${t.piese}</span>`)).join('')) : ''}
 ${moduleChip.length ? rand_filtre('Modulul', moduleChip.map((m) => chip('modul', m.id, e(m.titlu), ` title="${e(m.titlu)}"`)).join('')) : ''}
 <p class="filtre-nota sters">Format și energie privesc doar activitățile.</p>
 <button type="button" class="sterge-filtre" id="banca-sterge" hidden>Șterge filtrele</button>

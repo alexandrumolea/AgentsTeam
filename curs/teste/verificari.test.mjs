@@ -240,3 +240,39 @@ test('fără obiective: nicio secțiune goală', () => {
   assert.ok(!html(r).includes('<section class="obiective"'));
   assert.deepEqual(JSON.parse(exportul(r)).obiective, []);
 });
+
+// Etichetele (Alex, 2026-11-17): organizare internă în bibliotecă
+test('etichetele: rând de filtre cu numărul de piese, chip-uri pe rânduri, căutare', () => {
+  const r = cu(() => {}); ok(r);
+  const h = html(r);
+  assert.match(h, /data-filtru="eticheta" data-valoare="change curve"[^>]*>Change Curve <span class="chip-nr">4<\/span>/);
+  assert.match(h, /id="ex-apreciere-ceilalti"[^>]*data-etichete="\|positive outlook\|closing\|"/);
+  assert.match(h, /<button type="button" class="et-chip" data-eticheta="positive outlook"[^>]*>Positive Outlook<\/button>/);
+  assert.match(h.match(/id="ex-apreciere-ceilalti"[^>]*data-cauta="([^"]*)"/)[1], /positive outlook/);
+});
+test('etichetele: majusculele și diacriticele nu contează; rămâne prima formă, cu avertisment', () => {
+  const r = cu((e) => e('piese/plimbare-curba.md', (s) => s.replace('etichete: [Energizing, Change Curve]', 'etichete: [energizing, Change curve]'))); ok(r);
+  assert.ok(r.avertismente.some((a) => /„Change curve” diferă doar prin majuscule sau diacritice de „Change Curve”/.test(a)));
+  const h = html(r);
+  assert.match(h, />Change Curve <span class="chip-nr">4<\/span>/);
+  assert.ok(!/>Change curve</.test(h), 'pe ecran apare doar forma folosită prima');
+});
+test('etichetele: diacriticele nu despart o etichetă', () => {
+  const r = cu((e) => { e('piese/model-curba.md', (s) => s.replace('Foundations', 'Bază teoretică')); e('piese/poveste-fuziune.md', (s) => s.replace('Storytelling', 'Baza teoretica')); }); ok(r);
+  assert.match(html(r), />Bază teoretică <span class="chip-nr">2<\/span>/);
+});
+test('etichetele nu ajung în sală și nici în cursul participanților', () => {
+  const r = cu(AG('  - deschidere\n  - modul: inchidere\n    piese: [apreciere-ceilalti]')); ok(r);
+  const d = date(r);
+  assert.ok(d.ecrane.some((x) => x.html.includes('Un lucru bun')), 'piesa e în sală');
+  assert.ok(!d.ecrane.some((x) => /Positive Outlook|Closing/.test(x.html + x.note.join(''))), 'eticheta nu e pe ecrane');
+  const j = exportul(r);
+  assert.ok(j.includes('Aprecierea celorlalți') && !/Positive Outlook|"etichete"/.test(j), 'eticheta nu e în export');
+});
+test('etichetele apar discret în Ziua și în Modul', () => {
+  const r = cu(AG('  - deschidere\n  - modul: inchidere\n    piese: [apreciere-ceilalti]')); ok(r);
+  const h = html(r);
+  assert.match(h, /Aprecierea celorlalți<\/a> <span class="etichete-mici">Positive Outlook · Closing<\/span>/);
+  assert.match(h, /<h3>Ce iei cu tine<\/h3><p> <span class="etichete-mici">Closing<\/span><\/p>/);
+});
+test('etichetele: format greșit oprește build-ul', () => opreste((e) => e('piese/model-curba.md', (s) => s.replace('etichete: [Change Curve, Foundations]', 'etichete: [{a: 1}]')), /„etichete” e o listă de texte/));

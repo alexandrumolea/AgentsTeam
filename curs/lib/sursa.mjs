@@ -5,6 +5,7 @@
 import { readFileSync, readdirSync, existsSync, statSync } from 'node:fs';
 import { join, normalize } from 'node:path';
 import { parse as parseYaml } from 'yaml';
+import { normal } from './randare.mjs';
 
 export const STRATURI = ['sala', 'sala-si-curs', 'trainer', 'participant'];
 export const TIPURI = ['teorie', 'exercitiu', 'reflectie', 'mesaj', 'pauza'];
@@ -33,6 +34,14 @@ export function minute(ora) {
   return +m[1] * 60 + +m[2];
 }
 export const ora = (min) => `${Math.floor(min / 60)}:${String(min % 60).padStart(2, '0')}`;
+/** `etichete: [Positive Outlook, Closing]`: texte libere, scrise cum vrea Alex (Alex, 2026-11-17). */
+function citesteEtichete(v, nume, erori) {
+  if (v === undefined || v === null) return [];
+  const l = Array.isArray(v) ? v : [v];
+  if (!l.every((x) => (typeof x === 'string' && x.trim()) || typeof x === 'number')) { erori.push(`${nume}: „etichete” e o listă de texte, de exemplu [Positive Outlook, Closing]`); return []; }
+  return l.map((x) => String(x).trim().replace(/\s+/g, ' '));
+}
+
 /** `obiective: [1, 3]` la un modul sau o piesă: indexuri (de la 1) în lista de obiective a zilei. */
 function indexuriObiective(v, nume, erori) {
   if (v === undefined || v === null) return [];
@@ -175,7 +184,7 @@ function citesteModule(folder, erori, avertismente) {
     verificaSegmente(folder, f, mod.segmente, a.durata, erori, avertismente);
     const obiective = indexuriObiective(a.obiective, f, erori);
     module.push({
-      obiective,
+      obiective, etichete: citesteEtichete(a.etichete, f, erori),
       fisier: f, id: a.id, titlu: a.titlu, durata: a.durata, tip: a.tip, ancora: a.ancora ?? '',
       schita: Array.isArray(a.schita) ? a.schita : [], materiale: Array.isArray(a.materiale) ? a.materiale : [],
       implicite: lista(ex.implicite).map(String), alternative: lista(ex.alternative).map(String),
@@ -219,7 +228,7 @@ function citestePiese(folder, erori, avertismente) {
     const activitate = familie === 'activitate';
     const obiective = indexuriObiective(a.obiective, nume, erori);
     piese.set(id, {
-      obiective,
+      obiective, etichete: citesteEtichete(a.etichete, nume, erori),
       id, fisier: nume, titlu: a.titlu, durata: a.durata, tip: a.tip, familie: familie ?? null,
       format: activitate ? a.format : null, energie: activitate ? a.energie : null, obiectiv: a.obiectiv ?? '', ancora: a.ancora ?? '',
       module: Array.isArray(a.module) ? a.module.map(String) : [], materiale: Array.isArray(a.materiale) ? a.materiale : [],
@@ -317,6 +326,24 @@ export function citesteCurs(folder, { editie: numeEditie } = {}) {
   const piese = citestePiese(folder, erori, avertismente);
   const iduriModule = new Set(module.map((m) => m.id));
 
+  // Etichetele: grupate fără majuscule și diacritice; pe ecran rămâne forma folosită prima (modulele, apoi piesele, în ordinea fișierelor).
+  const forme = new Map(); // cheie → { text, fisier }
+  const etichete = new Map(); // cheie → { cheie, text, piese, module }
+  for (const f of [...module, ...piese.values()]) {
+    const vazute = new Set();
+    f.etichete = f.etichete.map((t) => {
+      const cheie = normal(t);
+      const prima = forme.get(cheie);
+      if (!prima) forme.set(cheie, { text: t, fisier: f.fisier });
+      else if (prima.text !== t) avertismente.push(`${f.fisier}: eticheta „${t}” diferă doar prin majuscule sau diacritice de „${prima.text}” (${prima.fisier}); folosesc „${prima.text}”`);
+      return { cheie, text: forme.get(cheie).text };
+    }).filter((x) => x.cheie && !vazute.has(x.cheie) && vazute.add(x.cheie));
+    for (const x of f.etichete) {
+      if (!etichete.has(x.cheie)) etichete.set(x.cheie, { cheie: x.cheie, text: x.text, piese: 0, module: 0 });
+      etichete.get(x.cheie)[piese.has(f.id) && f.fisier.startsWith('piese/') ? 'piese' : 'module']++;
+    }
+  }
+
   // Id-urile sunt unice în tot cursul: un id simplu din agendă e fie modul, fie piesă.
   for (const m of module) if (piese.has(m.id)) erori.push(`${m.fisier}: id „${m.id}” e folosit și de piesa piese/${m.id}.md; id-urile sunt unice în tot cursul`);
   // Legăturile: modulele propun piese care trebuie să existe; o piesă nu e și implicită, și alternativă.
@@ -368,7 +395,7 @@ export function citesteCurs(folder, { editie: numeEditie } = {}) {
   }
 
   const total = { agenda: t - (oraStart ?? 0), zi: ziStart != null && ziSfarsit != null ? ziSfarsit - ziStart : null, ramas: ziSfarsit != null ? ziSfarsit - t : null, sfarsit: t };
-  return { folder, curs: { ...curs, zi_start: ziStart, zi_sfarsit: ziSfarsit }, editie: { ...editie, start: oraStart }, module, piese, agenda, total, obiective, erori, avertismente };
+  return { folder, curs: { ...curs, zi_start: ziStart, zi_sfarsit: ziSfarsit }, editie: { ...editie, start: oraStart }, module, piese, agenda, total, obiective, etichete: [...etichete.values()].sort((a, b) => a.text.localeCompare(b.text, 'ro')), erori, avertismente };
 }
 
 /**

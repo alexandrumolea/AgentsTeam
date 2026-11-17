@@ -34,7 +34,7 @@ try {
   await b.click(ctrl, '[data-vedere="banca"]');
   const vizibile = () => b.evaluate(ctrl, '[...document.querySelectorAll("details.ex")].filter(a => !a.hidden).length');
   const chip = (f, v) => b.click(ctrl, `.chip[data-filtru="${f}"][data-valoare="${v}"]`);
-  ok((await vizibile()) === 6, 'Biblioteca arată toate cele 6 piese');
+  ok((await vizibile()) === 7, 'Biblioteca arată toate cele 7 piese');
   await chip('familie', 'continut');
   ok((await vizibile()) === 2, 'chipul „conținut” lasă modelul și povestea');
   await chip('tip', 'energizant');
@@ -50,9 +50,24 @@ try {
   await chip('durata', '20');
   ok((await vizibile()) === 2 && (await b.evaluate(ctrl, 'document.querySelectorAll(".chip[data-filtru=durata][aria-pressed=true]").length')) === 1, 'durata e un singur prag: „≤ 20 min” îl înlocuiește pe „≤ 10 min”');
   await b.click(ctrl, '#banca-sterge');
-  ok((await vizibile()) === 6, '„Șterge filtrele” le arată din nou pe toate');
+  ok((await vizibile()) === 7, '„Șterge filtrele” le arată din nou pe toate');
   await chip('format', 'perechi'); await chip('format', 'grup');
   ok((await vizibile()) === 2, 'două chipuri din același grup se adună (perechi sau grup)');
+  await b.click(ctrl, '#banca-sterge');
+  // Etichetele (Alex, 2026-11-17): rând de filtre cu numărul de piese, click pe eticheta de pe rând, căutare.
+  ok(/Change Curve\s*4/.test(await b.evaluate(ctrl, 'document.querySelector(\'.chip[data-filtru="eticheta"][data-valoare="change curve"]\').textContent')), 'rândul „Etichete” arată „Change Curve 4”');
+  await chip('eticheta', 'energizing');
+  ok((await vizibile()) === 2, 'chipul „Energizing” lasă 2 piese');
+  await chip('eticheta', 'closing');
+  ok((await vizibile()) === 3, '+ „Closing” (același rând se adună)');
+  await b.click(ctrl, '#banca-sterge');
+  await b.click(ctrl, '#ex-apreciere-ceilalti .et-chip[data-eticheta="positive outlook"]');
+  ok((await vizibile()) === 1 && await b.evaluate(ctrl, 'document.querySelector(\'.chip[data-filtru="eticheta"][data-valoare="positive outlook"]\').getAttribute("aria-pressed") === "true"'), 'click pe eticheta de pe rând pornește filtrul ei');
+  ok(!(await b.evaluate(ctrl, 'document.getElementById("ex-apreciere-ceilalti").open')), 'și nu deschide rândul');
+  await b.click(ctrl, '#banca-sterge');
+  await b.evaluate(ctrl, '{ const c=document.getElementById("banca-cauta"); c.value="positive outlook"; c.dispatchEvent(new Event("input")); }');
+  ok((await vizibile()) === 1, 'căutarea găsește după etichetă („positive outlook”)');
+  await b.click(ctrl, '#banca-sterge');
   await b.click(ctrl, '#banca-sterge');
   await chip('modul', 'curba');
   ok((await vizibile()) === 6, 'filtrul pe modul: cele 4 potrivite la „curba” + cele 2 bune oriunde');
@@ -65,7 +80,7 @@ try {
   await b.evaluate(ctrl, '{ const c=document.getElementById("banca-cauta"); c.value="nu exista nicaieri"; c.dispatchEvent(new Event("input")); }');
   ok((await vizibile()) === 0 && !(await b.evaluate(ctrl, 'document.getElementById("banca-gol").hidden')), 'fără rezultate: mesaj și buton de ștergere');
   await b.key(ctrl, 'Escape');
-  ok((await vizibile()) === 6, 'Esc golește căutarea');
+  ok((await vizibile()) === 7, 'Esc golește căutarea');
   await b.key(ctrl, 'ArrowDown');
   ok(await b.evaluate(ctrl, 'document.activeElement === document.querySelector("#ex-model-curba > summary")'), 'săgeata jos din căutare duce la prima piesă (Enter o deschide, nativ)');
   await b.key(ctrl, 'ArrowDown');
