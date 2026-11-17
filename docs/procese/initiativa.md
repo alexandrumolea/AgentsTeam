@@ -17,6 +17,7 @@
    - **nivel 2:** Tudor adaugă o decizie (`D-NNN`) în `docs/decizii.md`, iar statusul devine **la Alex**;
    - **dublură sau inutil:** **anulat**, cu motiv.
 4. Când termină, agentul pune status **gata** și link la rezultat.
+5. **Curățenie** (Alex, 2026-11-17: „simplificare continuă”). La fiecare triere, Tudor închide deciziile, întrebările și taskurile devenite irelevante („înlocuită de D-xxx”, „anulat: motiv”) și mută documentele înlocuite în `arhiva/` din folderul agentului. Panoul de control trebuie să arate doar ce mai contează.
 
 ## Cum lucrează agenții între ei
 Subagenții nu se pot chema direct unul pe altul. Totul trece prin panoul de taskuri și prin Tudor, ceea ce înseamnă că totul rămâne scris și la vedere.
