@@ -108,6 +108,8 @@ body.sala { background: #000; overflow: hidden; height: 100vh; }
 .comanda .schita-mica .ora { left: -3.8rem; width: 3.2rem; font-size: .85rem; }
 .comanda.schita-mare .schita-mica { position: fixed; inset: 4rem 1rem 1rem; max-height: none; background: var(--t-suprafata); border: 1px solid var(--t-linie); padding: 1.5rem 1.5rem 1.5rem 5rem; z-index: 20; }
 .comanda.schita-mare .schita-mica .ancora { font-size: 1.6rem; }
+.comanda .inchide-schita { display: none; }
+.comanda.schita-mare .inchide-schita { display: block; position: sticky; top: 0; margin-left: auto; z-index: 1; }
 .mesaj { padding: .6rem .9rem; border: 1px solid var(--t-nota-linie); background: var(--t-nota-fundal); border-radius: 6px; }
 .mesaj:empty { display: none; }
 .taste { font-size: .85rem; color: var(--t-sters); }

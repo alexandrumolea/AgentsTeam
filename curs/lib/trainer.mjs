@@ -228,7 +228,7 @@ export function construiesteTrainer(c) {
         <div><span class="eticheta">Cronometru</span><b id="cron">–</b></div>
       </div>
       <div class="urmeaza"><p class="eticheta">Urmează</p><div class="cadru" id="cadru-urmeaza"></div></div>
-      <div class="schita-mica" id="schita-mica"><p class="eticheta">Schița zilei</p>${listaSchita(c)}</div>
+      <div class="schita-mica" id="schita-mica"><button type="button" class="inchide-schita" id="inchide-schita">Închide schița (S / Esc)</button><p class="eticheta">Schița zilei</p>${listaSchita(c)}</div>
     </div>
   </div>
 </section>

@@ -76,7 +76,15 @@
     bate();
   }
   function negruComuta() { negru = !negru; randeaza(); }
-  function schitaComuta() { $('comanda').classList.toggle('schita-mare'); }
+  // Schița mare acoperă ecranul de comandă: are buton propriu de închidere, se închide cu S sau Esc,
+  // la alegerea unui modul și la schimbarea vederii, și începe sub bara de sus (care poate avea două rânduri).
+  function schitaSeteaza(mare) {
+    var c = $('comanda'); if (!c) return;
+    c.classList.toggle('schita-mare', mare);
+    var cutie = $('schita-mica'), bara = document.querySelector('.bara');
+    if (cutie) cutie.style.top = mare && bara ? (bara.getBoundingClientRect().bottom + 8) + 'px' : '';
+  }
+  function schitaComuta() { schitaSeteaza(!$('comanda').classList.contains('schita-mare')); }
 
   // ---------- fereastra sălii (văzută din ecranul de comandă) ----------
   var salaGata = false;
@@ -135,6 +143,7 @@
     else if (k === 'c' || k === 'C') cronComuta();
     else if (k === 'n' || k === 'N' || k === 'b' || k === 'B' || k === '.') negruComuta(); // telecomenzile trimit „.” sau „B” pentru ecran negru
     else if ((k === 's' || k === 'S') && !aici) schitaComuta();
+    else if (k === 'Escape' && !aici && !dinSala && $('comanda').classList.contains('schita-mare')) schitaSeteaza(false);
     else if (k === 'F5' || k === 'Escape' && !aici && !dinSala) { /* telecomenzile trimit F5 / Esc la „start”: nu reîncărcăm pagina */ }
     else if (k === 'Escape' && aici) { iesiAici(); }
     else oprit = false;
@@ -223,6 +232,7 @@
   // ---------- vederi ----------
   function arata(v) {
     vedere = v;
+    schitaSeteaza(false);
     var s = document.querySelectorAll('main > section');
     for (var k = 0; k < s.length; k++) s[k].hidden = s[k].id !== v;
     var b = document.querySelectorAll('[data-vedere]');
@@ -269,7 +279,9 @@
   for (var q = 0; q < lista.length; q++) lista[q].addEventListener('click', function () {
     var mi = +this.getAttribute('data-modul');
     for (var k = 0; k < ECRANE.length; k++) if (ECRANE[k].modul === mi) { mergiLa(k); break; }
+    schitaSeteaza(false);
   });
+  $('inchide-schita').addEventListener('click', function () { schitaSeteaza(false); });
   window.addEventListener('resize', function () { ['cadru-acum', 'cadru-urmeaza', 'aici-cadru'].forEach(function (id) { var c = $(id); if (c) potriveste(c); }); });
   var filtre = document.querySelectorAll('[data-filtru]');
   for (var fi = 0; fi < filtre.length; fi++) filtre[fi].addEventListener('change', filtreaza);
