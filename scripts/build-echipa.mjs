@@ -108,11 +108,84 @@ const ideas = tableRows(rd("docs/idei.md")).filter((r) => /^I-\d+/.test(r[0]));
 const activeIdeas = ideas.filter((r) => !/respins|live/i.test(r[4])).length;
 const plain = (t) => t.replace(/\*\*/g, "");
 const proposals = tableRows((rd("ECHIPA.md").split("### Propuneri deschise")[1] || "").split("\n## ")[0]);
-const questions = (rd("docs/intrebari-pentru-alex.md").match(/^\d+\. /gm) || []).length;
 const commits = git("log -8 --format=%cs%x09%s").split("\n").filter(Boolean).map((l) => l.split("\t"));
 const head = git("log -1 --format=%cs");
 const now = new Date().toISOString().slice(0, 10);
 const pendingDecisions = pending.length;
+
+// --- Panou de control: ce așteaptă după Alex, ce e în lucru, ce așteaptă alt input, ce s-a terminat ---
+// Citește doar statusurile care există în docs/taskuri.md, docs/decizii.md și docs/intrebari-pentru-alex.md.
+// Un status necunoscut nu dispare: apare la „Așteaptă alt input” cu eticheta lui și un avertisment la build.
+const linesOf = (file) => rd(file).replace(/\r/g, "").split("\n");
+const rowsAt = (file) => linesOf(file).map((l, i) => ({ l, n: i + 1 })).filter((x) => /^\|/.test(x.l)).map((x) => ({ n: x.n, c: x.l.replace(/^\||\|$/g, "").split("|").map((s) => s.trim()) }));
+const srcLink = (file, n) => `${GH}${file}?plain=1#L${n}`;
+const blameDates = (file) => { // data ultimei schimbări a fiecărui rând (≈ când s-a schimbat statusul)
+  const out = {}; let line = 0;
+  git(`blame --line-porcelain -- "${file}"`).split("\n").forEach((l) => {
+    const h = l.match(/^[0-9a-f]{40} \d+ (\d+)/); if (h) line = +h[1];
+    const t = l.match(/^committer-time (\d+)/); if (t) out[line] = new Date(+t[1] * 1000).toISOString().slice(0, 10);
+  });
+  return out;
+};
+const short = (s, max = 150) => {
+  let t = s.replace(/\[([^\]]+)\]\([^)]+\)/g, "$1").replace(/\*\*|~~|`/g, "").trim();
+  const m = t.match(/^(.{20,}?[.?!])(\s|$)/); if (m && m[1].length <= max) t = m[1];
+  return t.length > max ? t.slice(0, max).replace(/\s+\S*$/, "") + "…" : t;
+};
+const warnings = [];
+
+const decRows = rowsAt("docs/decizii.md").filter((x) => /^D-\d+/.test(x.c[0]));
+decRows.forEach(({ c }) => { if (!isPending(c[5]) && !/activ|aprobat|respins/i.test(c[5])) warnings.push(`${c[0]}: status necunoscut „${c[5]}”`); });
+const pendingDec = decRows.filter(({ c }) => isPending(c[5])).sort((a, b) => b.c[0].localeCompare(a.c[0])); // cele mai noi întâi
+
+const qFile = "docs/intrebari-pentru-alex.md";
+const qSince = git(`log --diff-filter=A --format=%cs -- ${qFile}`).split("\n").pop() || "";
+const qAll = []; let qSec = {};
+linesOf(qFile).forEach((l, i) => {
+  if (/^## /.test(l)) { qSec = { date: (l.match(/\d{4}-\d{2}-\d{2}/) || [qSince])[0], who: (l.match(/pentru (\p{Lu}\p{Ll}+)/u) || [, "Tudor"])[1], urgent: /URGENT/.test(l) }; return; }
+  const m = l.match(/^(\d+)\. (.*)$/); if (!m) return;
+  const body = m[2];
+  const state = /^~~/.test(body) ? "răspunsă" : /^\W*\(?Amânat/i.test(body) ? "amânată" : /răspuns \d{4}-/i.test(body) ? "parțial" : "deschisă";
+  qAll.push({ nr: m[1], body: body.replace(/^\*\*\(Amânat[^)]*\)\*\*\s*/i, ""), n: i + 1, ...qSec, state });
+});
+const qOpen = qAll.filter((q) => q.state === "deschisă" || q.state === "parțial").sort((a, b) => (b.urgent - a.urgent) || b.date.localeCompare(a.date) || a.nr - b.nr);
+const qParked = qAll.filter((q) => q.state === "amânată");
+
+const tFile = "docs/taskuri.md";
+const tBlame = blameDates(tFile);
+const tRows = rowsAt(tFile).filter((x) => /^T-\d+/.test(x.c[0])).map((x) => ({ ...x, changed: tBlame[x.n] || x.c[1] }));
+const cp = { alexTasks: [], linked: {}, working: [], blocked: [], nou: [], deFacut: [], other: [], done: [] };
+tRows.forEach((t) => {
+  const st = t.c[7] || "";
+  if (/^gata/i.test(st)) return cp.done.push(t);
+  if (/^anulat/i.test(st)) return;
+  if (/^în lucru/i.test(st)) return cp.working.push(t);
+  if (/^la alex/i.test(st)) { // legat de o decizie deschisă: apare pe rândul deciziei, nu de două ori
+    const d = (st.match(/D-\d+/) || [])[0];
+    if (d && pendingDec.some((x) => x.c[0] === d)) return (cp.linked[d] ||= []).push(t.c[0]);
+    return cp.alexTasks.push(t);
+  }
+  if (/^blocat/i.test(st)) return (/alex/i.test(st) ? cp.alexTasks : cp.blocked).push(t);
+  if (/^nou/i.test(st)) return cp.nou.push(t);
+  if (/^de făcut/i.test(st)) return cp.deFacut.push(t);
+  warnings.push(`${t.c[0]}: status necunoscut „${st}”`); cp.other.push(t);
+});
+cp.done.sort((a, b) => b.changed.localeCompare(a.changed) || b.c[0].localeCompare(a.c[0]));
+
+// Ce se lucrează chiar acum, din fișierele necomise (doar dosare și agenți, nu nume de fișiere)
+const dirtyGroups = {};
+git("status --porcelain").split("\n").filter(Boolean).forEach((l) => {
+  const p = l.replace(/^\s*\S{1,2}\s+/, "").split(" -> ").pop().replace(/^"|"$/g, ""); // git() taie spațiul de la începutul primului rând
+  if (p === "docs/echipa.html") return;
+  const ag = p.match(/^team\/([^/]+)\//) || p.match(/^\.claude\/agent-memory\/([^/]+)\//);
+  const a = ag && agents.find((x) => x.slug === ag[1]);
+  const key = a ? a.name : p.includes("/") ? p.split("/")[0] + "/" : p;
+  dirtyGroups[key] = (dirtyGroups[key] || 0) + 1;
+});
+const dirtyList = Object.entries(dirtyGroups).sort((a, b) => b[1] - a[1]);
+const alexCount = pendingDec.length + qOpen.length + cp.alexTasks.length;
+const otherCount = cp.blocked.length + cp.nou.length + cp.deFacut.length + cp.other.length;
+warnings.forEach((w) => console.warn("Panou de control: " + w));
 
 // --- HTML ---
 const chip = (txt, cls = "") => `<span class="chip ${cls}">${inline(txt)}</span>`;
@@ -174,6 +247,60 @@ const agentPanel = (a) => `
   </div>
 </article>`;
 
+// --- Panou de control: HTML ---
+const whoLink = (s) => { const t = plain(s); const ag = agents.find((x) => t.includes(x.name)); return ag ? `<a href="#${ag.slug}" class="who" style="--c:${ag.color}">${esc(t)}</a>` : esc(t); };
+const cpRow = ({ id, idHref, idTitle = "", text, meta, src, dec = "" }) => `<li class="cp-row"${dec ? ` data-dec="${esc(dec)}"` : ""}>
+  <div class="cp-tx"><a class="cp-id" href="${esc(idHref)}"${/^https?:/.test(idHref) ? ' target="_blank" rel="noopener"' : ""}${idTitle ? ` title="${esc(idTitle)}"` : ""}>${esc(id)}</a> ${esc(text)}</div>
+  <div class="cp-m">${meta.filter(Boolean).join('<span aria-hidden="true">·</span>')}<a href="${esc(src)}" target="_blank" rel="noopener">sursa ↗</a>${dec ? '<span class="ans chip ok">ai răspuns</span>' : ""}</div>
+</li>`;
+const cpSub = (title, rows, k = 4) => rows.length ? `<div class="cp-sub"><h3>${esc(title)} <b>${rows.length}</b></h3><ul class="cp-list">${rows.slice(0, k).join("")}</ul>${rows.length > k ? `<details><summary>Încă ${rows.length - k}</summary><ul class="cp-list">${rows.slice(k).join("")}</ul></details>` : ""}</div>` : "";
+const taskRow = (t, meta) => cpRow({ id: t.c[0], idHref: srcLink(tFile, t.n), text: short(t.c[4]), meta, src: srcLink(tFile, t.n) });
+const decRow = ({ c, n }) => cpRow({
+  id: c[0], idHref: `#dec-${c[0]}`, idTitle: "Răspunde în Decizii de luat", text: short(c[2]), dec: c[0], src: srcLink("docs/decizii.md", n),
+  meta: [whoLink(c[4]), `din ${esc(c[1])}`, chip(c[5], /de luat/.test(c[5]) ? "warn" : "info"), cp.linked[c[0]] ? `și ${cp.linked[c[0]].map(esc).join(", ")}` : ""],
+});
+const qRow = (q) => cpRow({
+  id: "Î" + q.nr, idHref: srcLink(qFile, q.n), idTitle: "Întrebarea " + q.nr, text: short(q.body), src: srcLink(qFile, q.n),
+  meta: [`pentru ${whoLink(q.who)}`, `din ${esc(q.date)}`, q.urgent ? chip("urgent", "warn") : "", q.state === "parțial" ? chip("parțial răspunsă", "info") : ""],
+});
+const resultLink = (r) => { const m = (r || "").match(/\[[^\]]+\]\(([^)]+)\)/); if (!m) return ""; return /^https?:/.test(m[1]) ? m[1] : GH + encodeURI(path.posix.normalize(path.posix.join("docs", m[1]))); };
+const doneRow = (t) => { const res = resultLink(t.c[8]); return cpRow({
+  id: t.c[0], idHref: srcLink(tFile, t.n), text: short(t.c[4], 110), src: res || srcLink(tFile, t.n),
+  meta: [whoLink(t.c[3]), `gata ${esc(t.changed)}`],
+}); };
+const controlPanel = `
+  <section aria-labelledby="cp-h" id="panou" class="cp">
+    <div class="label" id="cp-h">Panou de control · la ${now}</div>
+    <div class="cp-cols">
+      <div class="card cp-col alex">
+        <h2 class="cp-t">Așteaptă după tine <b>${alexCount}</b></h2>
+        <p class="cp-sum">${[["de luat", /de luat/], ["de confirmat", /de confirmat/], ["de discutat", /de discutat/]].map(([t, re]) => [t, pendingDec.filter((x) => re.test(x.c[5])).length]).filter(([, n]) => n).map(([t, n]) => `${n} ${t}`).join(" · ")} · ${qOpen.length} întrebări<span id="cp-ans"></span></p>
+        ${cpSub("Decizii de luat", pendingDec.filter((x) => /de luat/.test(x.c[5])).map(decRow), 3)}
+        ${cpSub("Decizii de confirmat sau de discutat", pendingDec.filter((x) => !/de luat/.test(x.c[5])).map(decRow), 3)}
+        ${cpSub("Întrebări deschise", qOpen.map(qRow), 3)}
+        ${cpSub("Taskuri la tine sau blocate de tine", cp.alexTasks.map((t) => taskRow(t, [whoLink(t.c[3]), `din ${esc(t.c[1])}`, chip(t.c[7], "warn")])))}
+        ${alexCount ? "" : '<p class="cp-empty">Nimic nu așteaptă după tine.</p>'}
+      </div>
+      <div class="card cp-col now">
+        <h2 class="cp-t">În lucru acum <b>${cp.working.length}</b></h2>
+        <p class="cp-sum">Taskurile cu status „în lucru”: cine lucrează și pentru cine.</p>
+        ${cp.working.length ? `<div class="cp-sub"><ul class="cp-list">${cp.working.map((t) => taskRow(t, [`${whoLink(t.c[3])} pentru ${whoLink(t.c[2])}`, `din ${esc(t.c[1])}`, `actualizat ${esc(t.changed)}`])).join("")}</ul></div>` : '<p class="cp-empty">Niciun task în lucru.</p>'}
+        ${dirtyList.length ? `<div class="cp-sub"><h3>Necomis acum <b>${dirtyList.reduce((s, [, n]) => s + n, 0)}</b></h3><p class="cp-dirty">${dirtyList.map(([k, n]) => `<span>${esc(k)} <b>${n}</b></span>`).join("")}</p><p class="cp-note">Fișiere schimbate și încă necomise când s-a generat pagina: semn că o sesiune lucrează acolo.</p></div>` : ""}
+      </div>
+      <div class="card cp-col other">
+        <h2 class="cp-t">Așteaptă alt input <b>${otherCount}</b></h2>
+        <p class="cp-sum">${cp.blocked.length} blocate · ${cp.nou.length} noi, la trierea lui Tudor · ${cp.deFacut.length} aprobate, intră la următoarea rulare</p>
+        ${cpSub("Blocate de altceva decât tine", cp.blocked.map((t) => taskRow(t, [whoLink(t.c[3]), `din ${esc(t.c[1])}`, chip(t.c[7], "warn")])))}
+        ${cpSub("Noi: așteaptă trierea lui Tudor", cp.nou.map((t) => taskRow(t, [`pentru ${whoLink(t.c[3])}`, `de la ${whoLink(t.c[2])}`, `din ${esc(t.c[1])}`])), 3)}
+        ${cpSub("De făcut: așteaptă următoarea rulare", cp.deFacut.map((t) => taskRow(t, [`pentru ${whoLink(t.c[3])}`, `din ${esc(t.c[1])}`])), 3)}
+        ${cpSub("Status necunoscut", cp.other.map((t) => taskRow(t, [whoLink(t.c[3]), chip(t.c[7], "warn")])))}
+        ${otherCount ? "" : '<p class="cp-empty">Nimic nu așteaptă.</p>'}
+      </div>
+    </div>
+    ${cp.done.length ? `<div class="card cp-done"><h2 class="cp-t">Ultimele terminate <b>${Math.min(5, cp.done.length)}</b><span class="cp-of">din ${cp.done.length} gata</span></h2><ul class="cp-list">${cp.done.slice(0, 5).map(doneRow).join("")}</ul></div>` : ""}
+    ${qParked.length ? `<p class="cp-note">Amânate de tine: ${qParked.map((q) => `întrebarea ${esc(q.nr)}`).join(", ")}. Nu apar mai sus.</p>` : ""}
+  </section>`;
+
 const html = `<title>Echipa lui Alex</title>
 <meta name="claude:viewport-fit-sides" content="cover">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -196,7 +323,7 @@ const html = `<title>Echipa lui Alex</title>
   --accent:#6cc3d9; --ok:#6fcf97; --warn:#e6b84a; --info:#93b0f0; color-scheme:dark}
 *{box-sizing:border-box}
 body{background:var(--bg);background-image:radial-gradient(60rem 30rem at 85% -10%,var(--bg2),transparent 70%),radial-gradient(40rem 24rem at -10% 10%,var(--bg2),transparent 70%);background-attachment:fixed;color:var(--fg);font:15px/1.55 var(--body);margin:0}
-.wrap{max-width:1180px;margin:0 auto;padding-block:28px 64px;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));display:grid;gap:28px}
+.wrap{max-width:1180px;margin:0 auto;padding-block:28px 64px;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));display:grid;grid-template-columns:minmax(0,1fr);gap:28px} /* minmax(0): tabelele late nu mai lățesc pagina pe telefon */
 h1,h2,h3{font-family:var(--display);text-wrap:balance;margin:0;font-weight:600}
 h1{font-size:clamp(26px,4vw,36px);letter-spacing:-.01em}
 .sub{color:var(--muted);margin:6px 0 0}
@@ -232,7 +359,7 @@ h1{font-size:clamp(26px,4vw,36px);letter-spacing:-.01em}
 @media (prefers-reduced-transparency:reduce){.node,.stat,.card{background:var(--glass-solid);backdrop-filter:none;-webkit-backdrop-filter:none}}
 /* Noutăți */
 .news{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:16px}
-.card{background:var(--glass);backdrop-filter:blur(14px) saturate(1.3);-webkit-backdrop-filter:blur(14px) saturate(1.3);border:1px solid var(--edge);border-radius:18px;padding:18px 20px;box-shadow:var(--shadow);min-width:0}
+.card{background:var(--glass);backdrop-filter:blur(14px) saturate(1.3);-webkit-backdrop-filter:blur(14px) saturate(1.3);border:1px solid var(--edge);border-radius:18px;padding:18px 20px;box-shadow:var(--shadow);min-width:0;overflow-wrap:anywhere}
 .card h3{font-size:15px;margin-bottom:10px}
 .card p,.card li{margin:0 0 6px}
 .card ul,.card ol{margin:0;padding-left:18px}
@@ -315,6 +442,38 @@ th,td{text-align:left;padding:6px 8px;border-bottom:1px solid var(--line);vertic
 th{color:var(--muted);font-weight:600}
 a{color:var(--accent)}
 footer{color:var(--muted);font-size:13px}
+/* Panou de control */
+.cp-cols{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px;align-items:start}
+.cp-col{border-top:3px solid var(--k,var(--line));padding:16px 18px}
+.cp-col.alex{--k:var(--warn)} .cp-col.now{--k:var(--info)} .cp-col.other{--k:var(--muted)} .cp-done{--k:var(--ok);border-top:3px solid var(--k);margin-top:16px;padding:16px 18px}
+.cp-t{font:600 16px/1.3 var(--display);display:flex;align-items:baseline;gap:8px;flex-wrap:wrap}
+.cp-t b{font:600 22px/1 var(--display);color:var(--k);font-variant-numeric:tabular-nums;margin-left:auto}
+.cp-of{font:500 12.5px var(--body);color:var(--muted);flex-basis:100%;text-align:right;margin-top:-2px}
+.cp-sum{margin:4px 0 10px!important;font-size:13px;color:var(--muted)}
+.cp-sub{margin-top:12px}
+.cp-sub h3{font:600 12px/1 var(--body)!important;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);margin:0 0 4px!important}
+.cp-sub h3 b{color:var(--fg);margin-left:2px;font-variant-numeric:tabular-nums}
+.cp-list{list-style:none;margin:0;padding:0!important;display:grid}
+.cp-row{display:grid;gap:3px;padding:8px 0;margin:0!important;border-top:1px solid var(--line);min-width:0}
+.cp-tx{font-size:14px;line-height:1.4;overflow-wrap:anywhere}
+.cp-id{font:12px var(--mono);color:var(--fg);background:color-mix(in srgb,var(--fg) 7%,transparent);padding:1px 6px;border-radius:6px;text-decoration:none;white-space:nowrap;margin-right:2px}
+.cp-id:hover{background:color-mix(in srgb,var(--accent) 18%,transparent)}
+.cp-m{display:flex;flex-wrap:wrap;align-items:center;gap:2px 8px;font-size:12.5px;color:var(--muted)}
+.cp-m a{font-size:12.5px}
+.cp-m .chip{white-space:normal;padding:1px 8px}
+.cp-row .ans{display:none}
+.cp-row.answered .ans{display:inline-flex}
+.cp-row.answered .cp-tx{opacity:.7}
+.cp details{margin-top:2px}
+.cp summary{cursor:pointer;font-size:13px;color:var(--accent);padding:6px 0;list-style-position:inside}
+.cp summary:focus-visible,.cp-id:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.cp-dirty{display:flex;flex-wrap:wrap;gap:6px;margin:6px 0 0!important}
+.cp-dirty span{font:12.5px var(--mono);padding:2px 8px;border-radius:999px;border:1px solid var(--line)}
+.cp-dirty b{font-weight:600;color:var(--info)}
+.cp-note{font-size:12.5px;color:var(--muted);margin:8px 0 0}
+.cp-empty{color:var(--muted);font-size:13.5px}
+.cp-done .cp-list{grid-template-columns:repeat(auto-fill,minmax(260px,1fr));column-gap:20px}
+@media (max-width:980px){.cp-cols{grid-template-columns:1fr}}
 @media (max-width:720px){.grid{grid-template-columns:1fr}.node{min-width:0;width:100%}.org-mid{flex-direction:column}.mid-main,.mid-side{width:100%}.chips{margin-left:0}}
 @media (prefers-reduced-motion:reduce){.node{transition:none}}
 </style>
@@ -331,9 +490,10 @@ footer{color:var(--muted);font-size:13px}
       <div class="stat"><b>${activeIdeas}</b>idei active</div>
       <div class="stat"><b>${reports.length}</b>rapoarte</div>
       <a class="stat" href="#decizii"><b>${pendingDecisions}</b>decizii de luat</a>
-      <div class="stat"><b>${questions}</b>întrebări pentru tine</div>
+      <div class="stat"><b>${qOpen.length}</b>întrebări pentru tine</div>
     </div>
   </header>
+${controlPanel}
 
   <section aria-labelledby="org-h">
     <div class="label" id="org-h">Organigrama · alege un agent</div>
@@ -416,7 +576,7 @@ footer{color:var(--muted);font-size:13px}
     n.addEventListener("click",function(e){e.preventDefault();var s=n.dataset.slug;try{history.replaceState(null,"","#"+s)}catch(_){location.hash=s}show(s);
       var t=document.getElementById("panel-"+s);if(t)t.scrollIntoView({behavior:matchMedia("(prefers-reduced-motion: reduce)").matches?"auto":"smooth",block:"start"})});
   });
-  window.addEventListener("hashchange",function(){show(fromHash())});
+  window.addEventListener("hashchange",function(){var h=fromHash();if(order.indexOf(h)>=0)show(h)}); // #dec-… și #panou nu schimbă agentul
   show(fromHash());
 })();
 
@@ -444,6 +604,9 @@ footer{color:var(--muted);font-size:13px}
       var show=filter==="toate"||(filter==="fara"&&!answered)||(filter==="raspuns"&&answered);
       c.hidden=!show;
     });
+    var nCp=0;
+    document.querySelectorAll(".cp-row[data-dec]").forEach(function(r){var v=verdicts[r.dataset.dec];var on=!!(v&&v.verdict&&!v.applied);r.classList.toggle("answered",on);if(on)nCp++});
+    var ca=document.getElementById("cp-ans"); if(ca)ca.textContent=nCp?" · ai răspuns la "+nCp+", Tudor le trece în repo":"";
     document.getElementById("cnt-fara").textContent=cards.length-nAns;
     document.getElementById("cnt-raspuns").textContent=nAns;
   }

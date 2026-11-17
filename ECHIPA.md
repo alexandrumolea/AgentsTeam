@@ -77,6 +77,7 @@ flowchart TD
 | 2026-11-15 | Rol viitor: **Editor de carte** (structură, ritm de scriere, redactare) | Cartea e un proiect de luni de zile, cu nevoi diferite de social media | Tudor | în așteptare |
 | 2026-11-15 | Rol viitor: **Product manager pentru tool-uri** (dacă tool-urile devin multe) | Lansarea și întreținerea aplicațiilor e o muncă separată de site | Tudor | în așteptare |
 | 2026-11-17 | Rol nou: **Head of Learning** (D-052), strategia și portofoliul de cursuri, șeful echipei Studio | Cererea lui Alex: cursuri noi constant, cursurile vechi transformate în materiale care rămân și se vând, inovație, renunțări după trenduri | Alex, Tudor | în așteptare (D-052) |
+| 2026-11-17 | Rol nou: **Ofertare și clienți** (account manager). Ține evidența clienților și a discuțiilor, pregătește oferte din istoricul de email și din tarifele lui Alex, urmărește follow-up-ul. Lucrează doar privat: datele clienților nu intră în repo-ul public (depinde de D-043). Nu trimite nimic: Alex trimite (nivelul 3) | Alex a întrebat „Cine lucrează cu clienții?”. Azi nimeni din echipă; ofertele le face Tudor ad-hoc, iar contractele și facturile le face Roxana (BEMORE) | Tudor | în așteptare |
 
 ## Cum adăugăm un agent nou
 1. Copiază un fișier din `.claude/agents/` și schimbă `name`, `description` și misiunea.
