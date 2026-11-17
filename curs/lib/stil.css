@@ -100,9 +100,10 @@ article.modul.sarit { opacity: .5; }
 .ecran ul li::marker { color: var(--ecran-accent); }
 /* Listele numerotate, ca în slide-urile lui Alex: 01, 02… în accent, cu linii subțiri între pași */
 .ecran ol { list-style: none; counter-reset: pas; margin: .35em 0 0; padding: 0; font-size: .9em; }
-.ecran ol > li { counter-increment: pas; display: grid; grid-template-columns: 2.1em 1fr; margin: 0; padding: .3em 0; border-top: 2px solid var(--ecran-linie); }
+/* Bloc cu numărul în stânga (nu grid): un punct cu text îngroșat și text simplu rămâne un singur paragraf, nu un cuvânt pe rând. */
+.ecran ol > li { counter-increment: pas; display: block; position: relative; margin: 0; padding: .3em 0 .3em 2.1em; border-top: 2px solid var(--ecran-linie); }
 .ecran ol > li:first-child { border-top: 0; }
-.ecran ol > li::before { content: counter(pas, decimal-leading-zero); color: var(--ecran-accent); font-weight: var(--font-greutate-text); }
+.ecran ol > li::before { content: counter(pas, decimal-leading-zero); position: absolute; left: 0; top: .3em; color: var(--ecran-accent); font-weight: var(--font-greutate-text); }
 .ecran img { display: block; width: auto; height: auto; max-width: 100%; max-height: 100%; min-height: 0; margin: 0 auto; object-fit: contain; }
 .ecran .ecran-numar { font-size: 40px; font-weight: var(--font-greutate-accent); letter-spacing: .2em; color: var(--ecran-accent); margin-bottom: 28px; }
 .ecran .ecran-sub { font-size: 36px; opacity: .75; margin-top: 24px; }
@@ -126,6 +127,8 @@ article.modul.sarit { opacity: .5; }
 .ecran.fel-mesaj .ecran-continut { max-width: 1260px; font-family: var(--font-titlu, var(--font)); }
 .ecran.fel-mesaj .ecran-continut::before { content: ""; display: block; width: 120px; height: 8px; margin: 0 auto 60px; background: var(--ecran-accent); }
 .ecran.fel-mesaj strong { font-weight: var(--font-greutate-text); }
+.ecran.fel-mesaj .ecran-continut.lung { font-size: 72px; }
+.ecran.fel-mesaj .ecran-continut.foarte-lung { font-size: 58px; }
 .ecran.fel-mesaj ol, .ecran.fel-mesaj ul { text-align: left; font-size: .6em; }
 
 /* Exercițiu: pașii la stânga, panoul de aur la dreapta, cu cronometrul mare și formatul (în perechi, în grup…) */

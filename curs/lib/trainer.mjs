@@ -41,6 +41,13 @@ const sursaPiesa = (x) => ({ tip: x.tip, titlu: x.titlu, format: x.format });
 const sursaModul = (m) => ({ tip: m.tip, titlu: m.titlu });
 const sursaDe = (r, s) => (s && s.piesa ? sursaPiesa(s.piesa) : r.fel === 'piesa' ? sursaPiesa(r.piesa) : r.fel === 'pauza' ? { tip: 'pauza', titlu: r.titlu } : sursaModul(r.modul));
 
+/** Mesajele cheie lungi se micșorează ca să încapă: peste 14 cuvinte „lung”, peste 22 „foarte-lung” (Tudor, 2026-11-17). */
+function lungime(fel, html) {
+  if (fel !== 'mesaj') return '';
+  const n = html.replace(/<[^>]+>/g, ' ').split(/\s+/).filter(Boolean).length;
+  return n > 22 ? ' foarte-lung' : n > 14 ? ' lung' : '';
+}
+
 /** Un ecran din sală: felul, eticheta și interiorul (eticheta cu semnul felului, conținutul, panoul sau cronometrul).
  *  Același HTML în sală, în previzualizări, în ecranul de comandă și la tipar. */
 export function ecranul(sursa, continut, cronometru = 0, titlu = false) {
@@ -56,7 +63,7 @@ export function ecranul(sursa, continut, cronometru = 0, titlu = false) {
     ? `<div class="ecran-panou">${cron || '<span class="panou-semn" aria-hidden="true"></span>'}${format ? `<p class="panou-format">${e(format)}</p>` : ''}</div>`
     : cron;
   const html = `<p class="ecran-eticheta"><span class="ecran-semn" aria-hidden="true"></span><span class="ecran-eticheta-text">${e(eticheta)}</span></p>`
-    + `<div class="ecran-continut">${continut}</div>${panou}`;
+    + `<div class="ecran-continut${lungime(fel, continut)}">${continut}</div>${panou}`;
   return { fel, eticheta, html };
 }
 /** Etichetele (Alex, 2026-11-17): organizare internă. Nu ajung în sală și nici în cursul participanților. */
