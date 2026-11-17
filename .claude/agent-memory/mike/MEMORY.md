@@ -22,6 +22,7 @@ Păstrează sub 150 de rânduri. Comprimă când crește. Fapte, nu povești.
 - 2026-11-17: când un coleg lucrează în paralel la nume (Ioana, culori-v1.md), verifică-i fișierul înainte de primul nume ales; altfel redenumești de două ori.
 - 2026-11-17: în file:// fiecare încărcare are altă origine (Chrome). Testează mereu și refresh-ul, nu doar drumul fericit. Chrome se poate comanda prin DevTools cu Node 24 (WebSocket global), fără dependențe: `curs/teste/cdp.mjs`.
 - 2026-11-17: T-024: capturile WebGL din browserul integrat sunt nesigure; Chrome headless prin `curs/teste/cdp.mjs` (Emulation.setDeviceMetricsOverride, setScriptExecutionDisabled, setEmulatedMedia) dă capturi și verificări corecte la orice lățime. Pe fundal luminos: fără AdditiveBlending, fără transmission, NoToneMapping (ACES spală pastelurile).
+- 2026-11-17: Obiecte 3D pe fundal luminos: culoarea se pierde din lumină și mediu prea puternice și din ceață fixă (pe telefon camera e mai departe). Verifică cu testul din manualul BEMORE §7: contur, culoare proprie, umbră. Chrome headless pe Mac randează pe GPU-ul real (ANGLE Metal), deci capturile sunt fidele; panoul browserului integrat nu prinde canvasul WebGL.
 - 2026-11-17: Alex extinde cerințele în timpul lucrului (D-056, D-057, D-058 în aceeași sarcină). Fă configurabil ce e probabil să se schimbe (vizibil, fonturi, semnătură), nu valori fixe.
 - 2026-11-17: panoul de control: cere „mapează statusurile, nu inventa” → clasific doar după coloana Status, iar ce scrie în textul taskului („după ce Alex…”) îl raportez lui Tudor, nu-l parsez.
 

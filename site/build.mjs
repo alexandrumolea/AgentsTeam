@@ -11,6 +11,7 @@ import { join, dirname, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { execFileSync } from 'node:child_process';
 import { createHash } from 'node:crypto';
+import { deflateSync } from 'node:zlib';
 import { parse as parseYaml } from 'yaml';
 import { marked } from 'marked';
 import { loadTema, checkUsage } from './tema.mjs';
@@ -70,10 +71,20 @@ const CATS = (cat.categorii || []).map(c => ({ ...c, url: String(c.url || '').re
     if (c.familie !== 'titlu' && !famKeys.has(c.familie)) fail(`content/categorii.yml: „${c.cheie}” are familia „${c.familie}”, care nu e în lista familii.`);
     if (!STARI.includes(c.stare)) fail(`content/categorii.yml: „${c.cheie}” are starea „${c.stare}”. Permise: ${STARI.join(', ')}.`);
   }
-  for (const k of ['live', 'despre']) if (!seen.has(k)) fail(`content/categorii.yml: lipsește categoria „${k}”.`);
+  for (const k of ['live', 'despre']) if (!seen.has(k)) fail(`content/categorii.yml: lipsește categoria „${k}” (poate fi ascunsă cu vizibil: false, dar rămâne în listă).`);
+  for (const c of CATS){
+    if (c.vizibil === undefined){ warn(`content/categorii.yml: „${c.cheie}” nu are câmpul „vizibil”. O consider vizibilă.`); c.vizibil = true; }
+    if (typeof c.vizibil !== 'boolean') fail(`content/categorii.yml: „${c.cheie}” are vizibil: ${c.vizibil}. Scrie true sau false.`);
+  }
 }
 const famOrder = [...familii.map(f => f.cheie), 'titlu'];
 CATS.sort((a, b) => famOrder.indexOf(a.familie) - famOrder.indexOf(b.familie) || (a.ordine || 0) - (b.ordine || 0));
+// D-056: o secțiune ascunsă (vizibil: false) nu apare nicăieri. Mai jos, CATS și C au doar secțiunile vizibile.
+const HIDDEN = CATS.filter(c => !c.vizibil);
+CATS.splice(0, CATS.length, ...CATS.filter(c => c.vizibil));
+if (!CATS.length) fail('content/categorii.yml: nicio secțiune nu e vizibilă. Pune vizibil: true la cel puțin una.');
+// numerele de reper ale obiectelor din scenă (și din legendă), în ordinea legendei
+{ let n = 0; for (const c of CATS) if (c.pe_orbita !== false) c.nr = ++n; }
 const C = Object.fromEntries(CATS.map(c => [c.cheie, c]));
 
 const nevoiSlugs = new Set(nevoi.map(n => n.slug));
@@ -87,7 +98,8 @@ const BUSINESS = existsSync(join(ROOT, 'content/business')) ? readdirSync(join(R
 
 const rezervare = String(site.rezervare || '').trim();
 if (rezervare && !/^https:\/\//.test(rezervare)) fail('content/site.yml: „rezervare” trebuie să fie un link https://.');
-const centru = site.in_centru && site.in_centru.titlu ? site.in_centru : null;
+// „Desfă inovația” ține de Innovations: fără Innovations vizibil, centrul scenei rămâne liber.
+const centru = site.in_centru && site.in_centru.titlu && C.inventii ? site.in_centru : null;
 if (centru && (centru.straturi || []).length !== 5) fail('content/site.yml: in_centru.straturi are nevoie de exact 5 straturi (obiectul 3D actual are 5).');
 
 // ---------- echipa (I-001): din team/<agent>/profil.md ----------
@@ -239,8 +251,6 @@ const bench = Object.values(latestStatus).filter(({ row, st }) => st && st.cheie
 const taskEvents = events.filter(e => e.tip === 'task');
 const recent = taskEvents.filter(e => e.ora_reala && NOW - e._t < 864e5);
 const lit = new Set(recent.flatMap(e => [e.de_la, e.pentru]).filter(isAgent));
-const tickerDays = L.ticker_zile ?? 7;
-const tickerEvents = taskEvents.filter(e => NOW - e._t < tickerDays * 864e5).slice(0, 5);
 const pulses = taskEvents.filter(e => e.ora_reala && isAgent(e.de_la) && isAgent(e.pentru) && e.de_la !== e.pentru).slice(0, 6).reverse().map(e => ({ de_la: e.de_la, pentru: e.pentru, id: e.id }));
 
 const pub = e => { const { _t, ...rest } = e; return Object.fromEntries(Object.entries(rest).filter(([, v]) => v !== '' && v !== undefined)); };
@@ -269,7 +279,6 @@ function feedRow(e, timeOnly = false){
   return `<li data-ev="${esc(e.id)}"><span class="id">${when}</span><span class="who">${whoHtml(e.de_la)} <i>→</i> ${whoHtml(e.pentru)}</span><span class="st ${STATUS.find(s => s[0] === e.stadiu_cheie)?.[2] || ''}">${esc(e.stadiu)}</span><span class="task">${text}</span></li>`;
 }
 const benchHtml = () => bench.length ? bench.map(b => `<li><b>${esc(pname(b.pentru))}</b> ${esc(b.titlu)}</li>`).join('') : '<li>Nimic pe banc acum.</li>';
-const tickText = e => `${fDay(e._t)} · ${pname(e.de_la)} → ${pname(e.pentru)} · ${e.titlu} · ${e.stadiu}`;
 
 /* ---------- șabloane comune ---------- */
 const famTitle = k => (familii.find(f => f.cheie === k) || {}).titlu || '';
@@ -288,7 +297,7 @@ let cssV = '';
 // Politica de securitate: doar resurse de pe site; import map-ul inline e permis prin hash.
 const csp = scriptHash => `default-src 'self'; script-src 'self'${scriptHash ? ` '${scriptHash}'` : ''}; style-src 'self'; img-src 'self' data:; font-src 'self'; connect-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'`;
 function head({ title, description, path, extra = '', scriptHash = '' }){
-  const t = title ? `${title} · ${site.titlu}` : site.titlu;
+  const t = title ? `${title} · ${site.titlu_scurt || site.titlu}` : site.titlu; // pagina întâi, ca să se vadă în tab-urile înguste
   const canon = SITE_URL ? `<link rel="canonical" href="${esc(abs(path))}">` : '';
   return `<!doctype html>
 <html lang="ro">
@@ -309,13 +318,13 @@ ${SITE_URL ? `<meta property="og:url" content="${esc(abs(path))}">` : ''}
 <meta property="og:image" content="${esc(abs('og.png'))}">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
-<meta property="og:image:alt" content="Atelierul lui Alex: obiecte de sticlă pe orbită, pe o planșă întunecată.">
+<meta property="og:image:alt" content="Atelierul lui Alex: obiecte de sticlă colorată pe orbită, pe un fundal luminos.">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="theme-color" content="${TEMA.get('bg')}">
-<meta name="color-scheme" content="dark">
+<meta name="color-scheme" content="light">
 <link rel="icon" href="${u('favicon.svg')}" type="image/svg+xml">
 <link rel="apple-touch-icon" href="${u('apple-touch-icon.png')}">
-<link rel="preload" href="${u('assets/fonts/onest-latin-wght-normal.woff2')}" as="font" type="font/woff2" crossorigin>
+${Object.values(TEMA.fonturi).map(f => `<link rel="preload" href="${u(`assets/fonts/${f.pachet}-latin-wght-normal.woff2`)}" as="font" type="font/woff2" crossorigin>`).join('\n')}
 <link rel="stylesheet" href="${u(CSS_HASHLESS)}?v=${cssV}">
 ${extra}
 </head>`;
@@ -326,23 +335,29 @@ function topNav(current){
     const sep = i > 0 && CATS[i - 1].familie !== c.familie ? '<span class="sep" aria-hidden="true"></span>' : '';
     return `${sep}<a href="${pageUrl(c)}"${current === c.cheie ? ' aria-current="page"' : ''}>${esc(c.scurt || c.eticheta)}</a>`;
   }).join('');
+  // două meniuri cu aceleași linkuri: în rând (ecran lat) și „Meniu” (telefon). Doar unul se vede; merge fără JavaScript.
   return `<a class="skip" href="#main">Sari la conținut</a>
-<header class="top">
-  <a class="mark" href="${u()}">${esc(site.intro?.marca || site.titlu)}</a>
-  <nav aria-label="Atelierul">${links}</nav>
+<header class="top glass${CATS.length <= 4 ? ' few' : ''}">
+  <a class="brand" href="${u()}"><span class="dot" aria-hidden="true"></span>${brandText()}</a>
+  <nav class="nav-wide" aria-label="Atelierul">${links}</nav>
+  <details class="nav-menu"><summary>Meniu</summary><nav class="glass-read" aria-label="Atelierul">${links}</nav></details>
   ${bookBtn('top-book')}
 </header>`;
 }
-const footer = () => `<footer class="foot">
+// semnătura din colț: forma lungă, iar pe telefon forma scurtă (content/site.yml → intro.marca, intro.marca_scurta)
+const brandText = () => { const lung = site.intro?.marca || site.titlu, scurt = site.intro?.marca_scurta || '';
+  return scurt && scurt !== lung ? `<span class="m-long">${esc(lung)}</span><span class="m-short">${esc(scurt)}</span>` : esc(lung); };
+const footer = () => `<footer class="foot glass">
   <p>Site construit de Alex cu o echipă de agenți AI, la vedere. Codul și tot ce lucrăm: <a href="${esc(GH)}" rel="noopener">repo-ul public pe GitHub</a>.</p>
-  <p class="small">Actualizat ${esc(fLongDay(NOW))}, ${esc(fTime(NOW))}. Datele: <a href="${u('api/continut.json')}">continut.json</a> · <a href="${u('api/live.json')}">live.json</a></p>
+  <p>Actualizat ${esc(fLongDay(NOW))}, ${esc(fTime(NOW))}. Datele: <a href="${u('api/continut.json')}">continut.json</a>${C.live ? ` · <a href="${u('api/live.json')}">live.json</a>` : ''}</p>
 </footer>`;
 
 function page({ cheie, title, description, path, bodyHtml }){
   return `${head({ title, description, path })}
 <body class="page">
+<div class="bg" aria-hidden="true"></div>
 ${topNav(cheie)}
-<main id="main" class="wrap">
+<main id="main" class="wrap glass-read">
 ${bodyHtml}
 </main>
 ${footer()}
@@ -366,96 +381,107 @@ function panelBody(c){
   <p class="actions"><a class="btn" href="${pageUrl(c)}">${esc(c.buton || 'Tot jurnalul')} →</a><a class="btn ghost" href="${u('live/echipa/')}">Echipa</a></p>`;
   if (c.cheie === 'despre') return `<p class="eyebrow">Despre</p><h2 id="pH">${esc(c.eticheta)}</h2>
   <p class="lead">${esc(site.intro?.cine || '')}</p>
-  <h3>${esc(C.companie ? C.companie.eticheta : 'Business')}</h3>${businessList()}
+  ${C.companie && BUSINESS.length ? `<h3>${esc(C.companie.eticheta)}</h3>${businessList()}` : ''}
   <h3>Atelierul, la vedere</h3>
-  <ul class="list"><li><a href="${u('live/echipa/')}">Echipa mea de agenți AI</a><span>roluri și procese</span></li><li><a href="${pageUrl(C.live)}">Live</a><span>ce construim acum</span></li><li><a href="${esc(GH)}" rel="noopener">GitHub</a><span>contact și cod</span></li></ul>
+  <ul class="list">${C.live ? `<li><a href="${u('live/echipa/')}">Echipa mea de agenți AI</a><span>roluri și procese</span></li><li><a href="${pageUrl(C.live)}">Live</a><span>ce construim acum</span></li>` : ''}<li><a href="${esc(GH)}" rel="noopener">GitHub</a><span>contact și cod</span></li></ul>
   <a class="btn" href="${pageUrl(c)}">${esc(c.buton || 'Pagina Despre')} →</a>`;
   const extra = c.cheie === 'companie' ? businessList() : c.cheie === 'coaching' && rezervare ? `<p><a class="btn" href="${esc(rezervare)}" rel="noopener">Alege o oră →</a></p>` : '';
   if (c.cheie === 'povesti') return `<div class="story"><p class="eyebrow">${esc(c.eticheta)} · ${fam}</p><h2 id="pH">${esc(c.eticheta)}</h2>
   <p class="season">${esc(c.fraza)}</p>${podHtml(c)}
   <p class="note">${esc(site.in_pregatire || '')}</p>
-  <p class="actions"><a class="btn ink" href="${pageUrl(C.live)}" data-go="live">Vezi ce se lucrează acum →</a></p></div>`;
+  ${C.live ? `<p class="actions"><a class="btn ink" href="${pageUrl(C.live)}" data-go="live">Vezi ce se lucrează acum →</a></p>` : ''}</div>`;
   return `<p class="eyebrow">${esc(c.eticheta)} · ${fam}</p><h2 id="pH">${esc(c.eticheta)}</h2>
   <p class="lead">${esc(c.fraza)}</p>${podHtml(c)}${detaliiHtml(c)}${stateHtml(c)}${extra}
-  <p class="actions"><a class="btn" href="${pageUrl(C.live)}" data-go="live">Vezi ce se lucrează acum →</a><a class="btn ghost" href="${pageUrl(c)}">Deschide pagina</a></p>`;
+  <p class="actions"><a class="btn" href="${pageUrl(c)}">Deschide pagina →</a>${C.live ? `<a class="btn ghost" href="${pageUrl(C.live)}" data-go="live">Vezi ce se lucrează acum</a>` : ''}</p>`;
 }
 
-/* ---------- pagina principală: scena ---------- */
+/* ---------- pagina principală: scena („1 · Sticlă colorată”, design v3.1) ---------- */
+// Desenul 2D al scenei: varianta fără WebGL și fără JavaScript. Aceleași obiecte, aceleași gradiente.
+const SHAPES = {
+  coaching: '<ellipse class="s" rx="74" ry="40"/><ellipse class="h" rx="24" ry="12" cy="-4"/>',
+  companie: '<path class="s" d="M-50-20l50-24 50 24-50 24z"/><path class="s" d="M-50-20v56l50 24v-56z"/><path class="s" d="M50-20v56l-50 24v-56z"/>',
+  speaking: '<path class="s" d="M-60 20a60 60 0 0 1 120 0z"/>',
+  inventii: '<path class="s" d="M0-48l42 24v48L0 48-42 24v-48z"/>',
+  live: '<circle class="s" r="34"/><circle class="m" cx="-10" cy="-8" r="3.5"/><circle class="m" cx="12" cy="-2" r="3.5"/><circle class="m" cx="-2" cy="12" r="3.5"/>',
+  povesti: '<ellipse class="s" rx="58" ry="30"/>',
+  knowledge: '<path class="s" d="M-70 34l70-22 70 22-70 22z"/><path class="s" d="M-70 17l70-22 70 22-70 22z"/><path class="s" d="M-70 0l70-22 70 22-70 22z"/><path class="s" d="M-70-17l70-22 70 22-70 22z"/>',
+  despre: '<circle class="s" r="40"/><circle class="f" r="25"/>'
+};
+function fallbackSvg(){
+  const orb = CATS.filter(c => c.pe_orbita !== false && SHAPES[c.cheie]);
+  const cx = 980, cy = 520, rx = 380, ry = 96;
+  const grad = (id, pair) => `<linearGradient id="${id}" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="${pair[0]}"/><stop offset="1" stop-color="${pair[1]}"/></linearGradient>`;
+  const defs = orb.map(c => grad(`fg-${c.cheie}`, TEMA.scena[`obj-${c.cheie}`])).join('') + (centru ? grad('fg-centru', TEMA.scena['obj-centru']) : '');
+  const objs = orb.map((c, j) => {
+    const a = Math.PI * 0.15 + j * Math.PI * 2 / orb.length, x = Math.round(cx + Math.sin(a) * rx), y = Math.round(cy + Math.cos(a) * ry);
+    return `<ellipse class="sh" cx="${x}" cy="${y + 58}" rx="56" ry="10"/><g transform="translate(${x} ${y - 20})" fill="url(#fg-${esc(c.cheie)})">${SHAPES[c.cheie]}</g><g class="nr" transform="translate(${x + 62} ${y - 70})"><circle r="16"/><text y="6">${c.nr}</text></g>`;
+  }).join('');
+  const core = centru ? `<ellipse class="sh" cx="${cx}" cy="${cy + 40}" rx="150" ry="20"/><g transform="translate(${cx} ${cy - 110})" fill="url(#fg-centru)">${[4, 3, 2, 1, 0].map(i => `<ellipse class="s" cy="${(i - 2) * 7}" rx="${150 - i * 8}" ry="${38 - i * 2}"/>`).join('')}<circle class="m" r="6" cy="-14"/></g>`
+    : `<circle class="m" cx="${cx}" cy="${cy - 30}" r="7"/>`;
+  return `<svg class="fb" viewBox="520 330 920 400" preserveAspectRatio="xMidYMid meet" role="presentation">
+  <defs>${defs}</defs>
+  <ellipse class="o" cx="${cx}" cy="${cy}" rx="${rx - 70}" ry="${ry - 20}"/><ellipse class="o" cx="${cx}" cy="${cy}" rx="${rx + 40}" ry="${ry + 12}"/>
+  ${core}${objs}
+</svg>`;
+}
+
 function indexHtml(importmap){
   const imHash = 'sha256-' + createHash('sha256').update(importmap).digest('base64');
   const intro = site.intro || {};
-  const dockBtns = CATS.map((c, i) => {
-    const sep = i > 0 && CATS[i - 1].familie !== c.familie ? '<span class="sep" aria-hidden="true"></span>' : '';
-    const fam = (i === 0 || CATS[i - 1].familie !== c.familie) && famTitle(c.familie) ? `<span class="fam" aria-hidden="true">${esc(famTitle(c.familie))}</span>` : '';
-    return `${sep}${fam}<button type="button" class="f-${esc(c.familie)}" data-k="${esc(c.cheie)}" aria-pressed="false"><span class="l">${esc(c.eticheta)}</span><span class="s">${esc(c.scurt || c.eticheta)}</span></button>`;
-  }).join('');
-  const cards = familii.map(f => `<h2>${esc(f.titlu)}</h2><div class="grid">${CATS.filter(c => c.familie === f.cheie).map(c =>
-    `<article class="card${c.familie === 'atelier' ? ' room' : ''}"><h3><a href="${pageUrl(c)}">${esc(c.eticheta)}</a></h3><p>${esc(c.fraza)}</p>${c.stare === 'in-pregatire' ? '<p class="soon">În pregătire</p>' : ''}<button type="button" data-open="${esc(c.cheie)}">Deschide</button></article>`).join('')}</div>`).join('');
+  const first = familii[0]?.cheie;
+  const road = c => `<li><a href="${pageUrl(c)}" data-k="${esc(c.cheie)}"><span class="nn" aria-hidden="true">${c.nr || ''}</span><span>${esc(c.eticheta)}</span></a></li>`;
+  // cu puține drumuri (cel mult 4), o singură listă; altfel două coloane, ca în mostră
+  const split = CATS.length > 4;
+  const g1 = split ? CATS.filter(c => c.familie === first) : CATS, g2 = split ? CATS.filter(c => c.familie !== first) : [];
+  // pe telefon se văd doar drumurile directe, plus „Toate cele N drumuri” (dacă mai sunt altele)
+  const g2Title = famTitle(g2.find(c => famTitle(c.familie))?.familie) || '';
+  const roads = `<nav class="roads glass${g2.length ? '' : ' all one'}" id="roads" aria-label="Drumuri">
+    <div class="g g1">${famTitle(first) ? `<h2 class="cap">${esc(famTitle(first))}</h2>` : ''}<ul>${g1.map(road).join('')}</ul>${g2.length ? `<button class="more" id="more" type="button" aria-expanded="false" aria-controls="g2">Toate cele ${CATS.length} drumuri →</button>` : ''}</div>
+    ${g2.length ? `<div class="g g2" id="g2">${g2Title ? `<h2 class="cap">${esc(g2Title)}</h2>` : '<h2 class="cap" aria-hidden="true">&nbsp;</h2>'}<ul>${g2.map(road).join('')}</ul></div>` : ''}
+  </nav>`;
   const templates = CATS.map(c => `<template id="tpl-${esc(c.cheie)}">${panelBody(c)}</template>`).join('\n');
   const data = {
     base: BASE,
-    categorii: CATS.map(c => ({ k: c.cheie, label: c.eticheta, fam: c.familie, orbit: c.pe_orbita !== false, room: c.familie === 'atelier', url: pageUrl(c) })),
-    echipa: [{ slug: 'alex', nume: 'Alex', tip: 'alex', aprins: true }, ...AGENTS.map(a => ({ slug: a.slug, nume: a.nume, tip: 'agent', aprins: lit.has(a.slug) }))],
-    puls: pulses,
-    ticker: tickerEvents.map(e => ({ t: tickText(e), id: e.id })),
+    categorii: CATS.map(c => ({ k: c.cheie, label: c.eticheta, fam: c.familie, orbit: c.pe_orbita !== false, nr: c.nr || 0, url: pageUrl(c) })),
+    // luminițele echipei țin de Live: cât timp Live e ascuns, nu apar
+    echipa: C.live ? [{ slug: 'alex', nume: 'Alex', tip: 'alex', aprins: true }, ...AGENTS.map(a => ({ slug: a.slug, nume: a.nume, tip: 'agent', aprins: lit.has(a.slug) }))] : [],
+    puls: C.live ? pulses : [],
     centru: !!centru,
     culori: TEMA.culori, scena: TEMA.scena // scena 3D își ia culorile de aici (content/tema.yml)
   };
   const json = JSON.stringify(data).replace(/</g, '\\u003c');
-  const ticker = tickerEvents.length ? `<div class="ticker" id="ticker">
-    <button class="tk" id="tk" type="button" aria-label="Deschide Live: ultimul task al echipei"><span class="dot" aria-hidden="true"></span><span class="tkL">Live</span><span class="tkT" id="tick">${esc(tickText(tickerEvents[0]))}</span></button>
-    ${tickerEvents.length > 1 ? '<button class="pz" type="button" data-pause aria-pressed="false" aria-label="Oprește actualizările">❚❚</button>' : ''}
-  </div>` : '';
-  const feature = centru ? `<aside class="feature" aria-labelledby="fH">
-    <p class="eyebrow"><span class="pill">${esc((centru.eticheta || '').split('·').pop().trim() || 'nou')}</span><span class="pv-long">${esc((centru.eticheta || '').split('·')[0].trim())}</span></p>
-    <h2 id="fH">${esc(centru.titlu)}</h2>
-    <p>${esc(centru.text || '')}</p>
-    <button class="btn" id="explode" type="button" aria-expanded="false" aria-controls="parts">${esc(centru.buton || 'Desfă inovația')}</button>
-  </aside>
-  <div class="closebar">
-    <h2>${esc(centru.titlu)}, strat cu strat</h2>
-    ${GH ? `<a class="btn" href="${esc(GH)}" rel="noopener">${esc(centru.link_text || 'Vezi codul')}</a>` : ''}
-    <button class="btn ghost" id="collapse" type="button">Strânge</button>
-  </div>
+  const closebar = centru ? `<div class="closebar glass" id="closebar">
+      <p class="cap">${esc(centru.eticheta || '')}</p>
+      <h2>${esc(centru.titlu)}, strat cu strat</h2>
+      <p class="actions">${GH ? `<a class="btn" href="${esc(GH)}" rel="noopener">${esc(centru.link_text || 'Vezi codul')}</a>` : ''}<button class="btn ghost" id="collapse" type="button">Strânge</button></p>
+    </div>` : '';
+  const parts = centru ? `<button class="explode" id="explode" type="button" aria-expanded="false" aria-controls="parts">${esc(centru.buton || 'Desfă inovația')}</button>
   <ol class="parts" id="parts" aria-label="${esc(centru.titlu)}, strat cu strat">${centru.straturi.map(s => `<li><b>${esc(s.nume)}</b>${esc(s.text)}</li>`).join('')}</ol>` : '';
 
   return `${head({ title: '', path: '', scriptHash: imHash, extra: `<script type="importmap">${importmap}</script>\n<link rel="modulepreload" href="${u('assets/scena.js')}?v=${cssV}">` })}
 <body class="home no-js${rezervare ? ' has-book' : ''}">
-<div class="fallback" aria-hidden="true">
-  <svg viewBox="0 0 800 600" fill="none">
-    <g stroke="${rgba('accent', '.22')}"><ellipse cx="400" cy="320" rx="330" ry="110"/><ellipse cx="400" cy="320" rx="250" ry="80"/><ellipse cx="400" cy="300" rx="380" ry="150" stroke="${rgba('line', '.08')}"/></g>
-    <g><circle cx="400" cy="300" r="78" fill="${rgba('scena.glass-disc', '.06')}" stroke="${rgba('scena.glass-disc', '.5')}"/><circle cx="400" cy="300" r="56" stroke="${TEMA.get('accent')}" stroke-width="2"/><path d="M400 262 L428 300 L400 338 L372 300 Z" fill="${rgba('accent', '.35')}" stroke="${TEMA.get('accent')}"/></g>
-    <g fill="${TEMA.get('accent')}"><circle cx="90" cy="300" r="5"/><circle cx="185" cy="390" r="4"/><circle cx="640" cy="230" r="5"/><circle cx="730" cy="330" r="4"/><circle cx="520" cy="410" r="4"/><circle cx="270" cy="225" r="4"/><circle cx="560" cy="200" r="3"/><circle cx="330" cy="420" r="3"/></g>
-  </svg>
-</div>
+<div class="bg" aria-hidden="true"><i></i></div>
+<div class="fallback" aria-hidden="true">${fallbackSvg()}</div>
 <canvas id="gl" aria-hidden="true"></canvas>
 <div class="ui">
-  <section class="hero" aria-labelledby="h1">
-    <span class="mark">${esc(intro.marca || site.titlu)}</span>
-    <h1 id="h1">${esc(intro.titlu || '')} <b>${esc(intro.titlu_accent || '')}</b></h1>
-    <p class="who"><a href="${pageUrl(C.despre)}" id="about"><b>${esc(intro.cine || '')}</b></a></p>
-    ${misiune.length ? `<p class="inscription">${misiune.map(esc).join('<br>')}</p>` : ''}
-    <p class="how">${esc(intro.cum || '')}</p>
-  </section>
+  <div class="col">
+    <section class="hero glass" aria-labelledby="h1">
+      <div class="row"><span class="brand"><span class="dot" aria-hidden="true"></span>${brandText()}</span><span class="row-r">${bookBtn()}${C.live ? `<a class="live-link" id="liveLink" href="${pageUrl(C.live)}"><i aria-hidden="true"></i>${esc(C.live.eticheta)}</a>` : ''}</span></div>
+      <h1 id="h1">${esc(intro.titlu || '')} <b>${esc(intro.titlu_accent || '')}</b></h1>
+      <p class="who"><a href="${pageUrl(C.despre || CATS[0])}" id="about">${esc(intro.cine || '')}</a></p>
+      <p class="how">${esc(intro.cum || '')}</p>
+    </section>
+    <aside class="panel glass-read" id="panel" aria-labelledby="pH">
+      <button class="x" id="px" type="button" aria-label="Închide">✕</button>
+      <div id="pBody"></div>
+    </aside>
+    ${closebar}
+    ${roads}
+  </div>
+  ${misiune.length ? `<p class="inscription glass">${misiune.map(esc).join('<br>')}</p>` : ''}
   <div id="tags" aria-hidden="true"></div>
   <div id="nodeTags" aria-hidden="true"></div>
-  <div class="agent-tag" id="agentTag" aria-hidden="true"></div>
-  ${bookBtn()}
-  <section class="cards" id="cards" aria-label="Tot atelierul, fără 3D">${cards}</section>
-  ${ticker}
-  ${feature}
-  <div class="livebar">
-    <h2>Live</h2><small>jurnalul atelierului · date reale</small>
-    <button class="btn ghost" id="liveOut" type="button">Ieși din Live</button>
-  </div>
-  <nav class="dock" aria-label="${esc(famTitle(familii[0]?.cheie) || 'Atelierul')}">
-    <p>${esc(famTitle(familii[0]?.cheie) || '')}</p>
-    <div class="row" id="dock">${dockBtns}</div>
-  </nav>
-  <aside class="panel" id="panel" aria-labelledby="pH">
-    <button class="x" id="px" type="button" aria-label="Închide">✕</button>
-    <div id="pBody"></div>
-  </aside>
+  ${parts}
   <p class="sr" id="sr" aria-live="polite"></p>
 </div>
 ${templates}
@@ -483,11 +509,11 @@ ${events.length ? [...days].map(([, list]) => `<h3 class="day">${esc(fLongDay(li
     const poza = despre.data.poza ? `<figure class="me"><img src="${u(despre.data.poza)}" alt="${esc(despre.data.poza_alt || 'Alex')}" width="900" height="1200" loading="eager" decoding="async"><figcaption>${esc(despre.data.rol || '')}</figcaption></figure>` : '';
     inner = `${poza}<div class="prose">${despreHtml}</div>
 <h2>Atelierul, la vedere</h2>
-<p>Lucrez cu o echipă de agenți AI, iar munca noastră e publică. <a href="${u('live/echipa/')}">Vezi echipa și procesele</a> sau <a href="${pageUrl(C.live)}">ce construim acum</a>.</p>
+<p>Lucrez cu o echipă de agenți AI, iar munca noastră e publică. ${C.live ? `<a href="${u('live/echipa/')}">Vezi echipa și procesele</a> sau <a href="${pageUrl(C.live)}">ce construim acum</a>.` : `Totul e în <a href="${esc(GH)}" rel="noopener">repo-ul public pe GitHub</a>.`}</p>
 <h2>Contact</h2><p>Mă găsești pe <a href="${esc(GH)}" rel="noopener">GitHub</a>.</p>`;
   } else {
     inner = `${podHtml(c)}${detaliiHtml(c)}${stateHtml(c)}${c.cheie === 'companie' ? businessList() : ''}${c.cheie === 'coaching' && rezervare ? `<p><a class="btn" href="${esc(rezervare)}" rel="noopener">Alege o oră →</a></p>` : ''}
-<p class="actions"><a class="btn" href="${pageUrl(C.live)}">Vezi ce se lucrează acum →</a></p>`;
+${C.live ? `<p class="actions"><a class="btn" href="${pageUrl(C.live)}">Vezi ce se lucrează acum →</a></p>` : ''}`;
   }
   const lead = c.cheie === 'despre' ? '' : `<p class="kicker">${esc(c.fraza)}</p>`;
   return page({ cheie: c.cheie, title: c.eticheta, description: c.cheie === 'despre' ? site.descriere : `${c.eticheta}: ${c.fraza}`, path: c.url + '/', bodyHtml: `<h1>${esc(c.cheie === 'despre' ? c.eticheta : c.eticheta)}</h1>${lead}\n${inner}` });
@@ -505,7 +531,25 @@ function teamPage(){
 }
 
 const redirect = to => `<!doctype html><html lang="ro"><head><meta charset="utf-8"><title>Mutat</title><meta name="robots" content="noindex"><meta http-equiv="refresh" content="0; url=${esc(to)}"><link rel="canonical" href="${esc(to)}"></head><body><p><a href="${esc(to)}">Pagina s-a mutat aici.</a></p></body></html>\n`;
+// Adresele vechi. Dacă ținta e o secțiune ascunsă (vizibil: false), duc la prima pagină (D-056).
 const REDIRECTS = { tools: 'innovations', creatii: 'innovations', atelier: 'innovations', inventii: 'innovations', speaking: 'workshops', invata: 'knowledge-base', carte: 'knowledge-base', jurnal: 'knowledge-base', knowledge: 'knowledge-base', acum: 'live', now: 'live', povesti: 'my-journey', 'ce-m-a-crescut': 'my-journey', journey: 'my-journey', misiune: 'despre' };
+
+// Granulația fundalului: un PNG mic (128 × 128), negru cu transparență aleatoare, repetat peste gradient.
+// Generat aici, determinist (aceeași sămânță = același fișier), fără dependențe.
+function grainPng(size = 128){
+  let seed = 20261117; const rnd = () => (seed = (Math.imul(seed, 1103515245) + 12345) >>> 0) / 4294967296;
+  const stride = 1 + size * 2, raw = Buffer.alloc(size * stride);
+  for (let y = 0; y < size; y++) for (let x = 0; x < size; x++){
+    const n = (rnd() + rnd() + rnd()) / 3;                    // în jur de 0,5, ca zgomotul din mostră
+    raw[y * stride + 2 + x * 2] = Math.round(Math.round(n * 0.7 * 7) / 7 * 255); // 8 trepte de transparență
+  }
+  const T = Array.from({ length: 256 }, (_, n) => { for (let k = 0; k < 8; k++) n = n & 1 ? 0xEDB88320 ^ (n >>> 1) : n >>> 1; return n >>> 0; });
+  const crc = b => { let c = ~0; for (const x of b) c = T[(c ^ x) & 255] ^ (c >>> 8); return ~c >>> 0; };
+  const chunk = (type, data) => { const td = Buffer.concat([Buffer.from(type), data]), out = Buffer.alloc(8 + td.length + 4);
+    out.writeUInt32BE(data.length, 0); td.copy(out, 4); out.writeUInt32BE(crc(td), 4 + td.length); return out; };
+  const ihdr = Buffer.alloc(13); ihdr.writeUInt32BE(size, 0); ihdr.writeUInt32BE(size, 4); ihdr[8] = 8; ihdr[9] = 4; // gri + alfa, 8 biți
+  return Buffer.concat([Buffer.from([137, 80, 78, 71, 13, 10, 26, 10]), chunk('IHDR', ihdr), chunk('IDAT', deflateSync(raw, { level: 9 })), chunk('IEND', Buffer.alloc(0))]);
+}
 
 /* ---------- scriere ---------- */
 rmSync(OUT, { recursive: true, force: true });
@@ -515,21 +559,33 @@ const write = (p, s) => { const f = join(OUT, p); mkdirSync(dirname(f), { recurs
 const js = readFileSync(join(HERE, 'src/scena.js'), 'utf8');
 const cssSrc = readFileSync(join(HERE, 'src/site.css'), 'utf8');
 try { checkUsage(TEMA, { css: cssSrc, js }); } catch (e) { fail(e.message); }
-const css = TEMA.css() + cssSrc; // :root cu culorile din content/tema.yml, apoi restul stilului
+// @font-face din pachetele fonturilor alese în content/tema.yml (fonturi), doar latin și latin-ext (cu ș și ț)
+const NM = join(HERE, 'node_modules');
+if (!existsSync(join(NM, 'three'))) fail('Lipsesc dependențele. Rulează întâi: npm ci (în folderul site/).');
+const FONT_SUBSETS = ['latin', 'latin-ext'];
+const fontFaces = Object.values(TEMA.fonturi).filter((f, i, all) => all.findIndex(g => g.pachet === f.pachet) === i).map(f => {
+  const dir = join(NM, '@fontsource-variable', f.pachet);
+  if (!existsSync(dir)) fail(`content/tema.yml: fontul „${f.nume}” are nevoie de pachetul @fontsource-variable/${f.pachet}. Rulează: npm ci (în site/).`);
+  const src = readFileSync(join(dir, 'index.css'), 'utf8');
+  return FONT_SUBSETS.map(sub => {
+    const file = `${f.pachet}-${sub}-wght-normal.woff2`;
+    const block = (src.match(/@font-face\s*\{[^}]*\}/g) || []).find(b => b.includes(`/${file})`));
+    if (!block) fail(`@fontsource-variable/${f.pachet}: nu găsesc ${file}.`);
+    return block.replace(/font-family:\s*'[^']*'/, `font-family:"${f.nume}"`).replace(/url\(\.\/files\//, 'url(fonts/').replace(/format\('woff2-variations'\)/, 'format("woff2")').replace(/\s*\n\s*/g, '');
+  }).join('\n');
+}).join('\n');
+const css = TEMA.css() + fontFaces + '\n' + cssSrc; // :root cu culorile și fonturile din content/tema.yml, apoi restul stilului
 cssV = createHash('sha256').update(css + js).digest('hex').slice(0, 10);
 write('assets/site.css', css);
 write('assets/scena.js', js);
-const NM = join(HERE, 'node_modules');
-if (!existsSync(join(NM, 'three'))) fail('Lipsesc dependențele. Rulează întâi: npm ci (în folderul site/).');
 cpSync(join(NM, 'three/build/three.module.min.js'), join(OUT, 'assets/three/three.module.min.js'));
 cpSync(join(NM, 'three/examples/jsm/environments/RoomEnvironment.js'), join(OUT, 'assets/three/addons/environments/RoomEnvironment.js'));
 cpSync(join(NM, 'three/LICENSE'), join(OUT, 'assets/three/LICENSE'));
-const FONTS = [['unbounded', 'unbounded-{s}-wght-normal'], ['onest', 'onest-{s}-wght-normal'], ['jetbrains-mono', 'jetbrains-mono-{s}-wght-normal'], ['fraunces', 'fraunces-{s}-opsz-normal'], ['fraunces', 'fraunces-{s}-opsz-italic']];
-for (const [pkg, pat] of FONTS) for (const s of ['latin', 'latin-ext']){
-  const f = pat.replace('{s}', s) + '.woff2';
-  cpSync(join(NM, '@fontsource-variable', pkg, 'files', f), join(OUT, 'assets/fonts', f));
+for (const { pachet } of Object.values(TEMA.fonturi)){
+  for (const sub of FONT_SUBSETS){ const f = `${pachet}-${sub}-wght-normal.woff2`; cpSync(join(NM, '@fontsource-variable', pachet, 'files', f), join(OUT, 'assets/fonts', f)); }
+  cpSync(join(NM, '@fontsource-variable', pachet, 'LICENSE'), join(OUT, 'assets/fonts', `LICENSE-${pachet}.txt`));
 }
-for (const f of ['onest', 'unbounded', 'jetbrains-mono', 'fraunces']) cpSync(join(NM, '@fontsource-variable', f, 'LICENSE'), join(OUT, 'assets/fonts', `LICENSE-${f}.txt`));
+write('assets/grain.png', grainPng());
 cpSync(join(HERE, 'static'), OUT, { recursive: true });
 write('favicon.svg', TEMA.fill(readFileSync(join(HERE, 'src/favicon.svg'), 'utf8'), 'site/src/favicon.svg'));
 
@@ -537,7 +593,9 @@ const importmap = JSON.stringify({ imports: { three: u('assets/three/three.modul
 write('index.html', indexHtml(importmap));
 for (const c of CATS) write(`${c.url}/index.html`, categoryPage(c));
 write('live/echipa/index.html', teamPage());
-for (const [from, to] of Object.entries(REDIRECTS)) if (!CATS.some(c => c.url === from)) write(`${from}/index.html`, redirect(u(to + '/')));
+const visibleUrl = to => CATS.some(c => c.url === to) ? u(to + '/') : u();
+for (const c of HIDDEN) if (!CATS.some(v => v.url === c.url)) write(`${c.url}/index.html`, redirect(u()));
+for (const [from, to] of Object.entries(REDIRECTS)) if (!CATS.some(c => c.url === from) && !HIDDEN.some(c => c.url === from)) write(`${from}/index.html`, redirect(visibleUrl(to)));
 write('404.html', page({ title: 'Pagina nu există', path: '404.html', bodyHtml: `<h1>Drumul ăsta nu duce nicăieri.</h1><p class="kicker">Pagina nu există sau s-a mutat.</p><p class="actions"><a class="btn" href="${u()}">Înapoi în atelier →</a></p>` }));
 write('.nojekyll', '');
 if (domeniu) write('CNAME', domeniu + '\n');
@@ -545,18 +603,19 @@ write('robots.txt', `User-agent: *\nAllow: /\n${SITE_URL ? `Sitemap: ${abs('site
 if (SITE_URL) write('sitemap.xml', `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${['', ...CATS.map(c => c.url + '/'), 'live/echipa/'].map(p => `  <url><loc>${esc(abs(p))}</loc></url>`).join('\n')}\n</urlset>\n`);
 
 // API: același conținut pentru site și pentru o viitoare aplicație (D-030)
-write('api/live.json', JSON.stringify(liveJson, null, 2) + '\n');
+if (C.live) write('api/live.json', JSON.stringify(liveJson, null, 2) + '\n'); // Live ascuns: fără jurnal public
 write('api/continut.json', JSON.stringify({
   generat: new Date(NOW).toISOString(),
   site: { titlu: site.titlu, descriere: site.descriere, github: GH, rezervare: rezervare || null, intro: site.intro, in_pregatire: site.in_pregatire, in_centru: centru },
   familii, categorii: CATS.map(c => ({ ...c, url: pageUrl(c) })),
-  business: BUSINESS, nevoi,
+  ...(C.companie ? { business: BUSINESS } : {}), nevoi,
   despre: { titlu: despre.data.titlu || 'Despre mine', markdown: despre.body },
   echipa: { ...(site.echipa || {}), agenti: AGENTS.map(({ status, ...a }) => a), procese: PROCESE }
 }, null, 2) + '\n');
 
 console.log(`Gata: ${OUT}`);
 console.log(`  bază: ${BASE}${SITE_URL ? `  adresă: ${SITE_URL}` : ''}${domeniu ? `  CNAME: ${domeniu}` : ''}`);
+console.log(`  secțiuni vizibile: ${CATS.map(c => c.cheie).join(', ')}${HIDDEN.length ? `; ascunse: ${HIDDEN.map(c => c.cheie).join(', ')}` : ''}`);
 console.log(`  Live: ${events.length} evenimente (${taskEvents.length} taskuri), pe banc: ${bench.length}, luminițe aprinse: ${lit.size}`);
 console.log(`  oprite de filtru: ${JSON.stringify(skipped)}`);
 if (warnings.length) console.log(`  ${warnings.length} avertismente`);

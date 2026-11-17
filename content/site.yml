@@ -2,7 +2,10 @@
 # Regula: un câmp gol înseamnă că elementul nu apare. Nu inventăm nimic ca să umplem un loc.
 # După o schimbare: commit + push pe main. Site-ul se publică singur în câteva minute.
 
-titlu: "Alex · Atelier"
+# Semnătura (D-059, 2026-11-17, Alex, recomandarea Mariei: team/maria/documente/manual-brand-pozitionare-v1.md, secțiunea 4).
+# `titlu`: tab-ul primei pagini. `titlu_scurt`: în tab-ul paginilor, după numele paginii („Coaching · Alex”).
+titlu: "Alex · Atelier de învățare"
+titlu_scurt: "Alex"
 descriere: "Construiesc unelte pentru oameni care vor să crească. Sunt Alex: coach, fondator și inventator."
 
 # Domeniul propriu, fără https:// (ex.: alex.ro). Gol = adresa GitHub Pages.
@@ -21,7 +24,8 @@ rezervare: ""
 
 # Introducerea, aprobată de Alex (vocea-alex, 2026-11-15). Nu se rescrie fără el.
 intro:
-  marca: "Alex · Atelier"
+  marca: "Alex · Atelier de învățare"   # colțul paginii și imaginea de previzualizare
+  marca_scurta: "Alex · Atelier"        # colțul pe telefon
   titlu: "Construiesc unelte pentru oameni care"
   titlu_accent: "vor să crească."
   cine: "Sunt Alex: coach, fondator și inventator."

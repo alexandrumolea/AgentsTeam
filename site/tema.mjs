@@ -13,6 +13,12 @@ export function loadTema(root){
   let raw;
   try { raw = parseYaml(readFileSync(join(root, FILE), 'utf8')) || {}; } catch (e) { throw new Error(`${FILE}: nu pot citi fișierul (${e.message})`); }
   const src = { culori: raw.culori || {}, scena: raw.scena || {} };
+  // o pereche [sus, jos] în scenă (gradientul unui obiect) se rezolvă ca două roluri ascunse: obj-x.0, obj-x.1
+  for (const [k, v] of Object.entries(src.scena)) if (Array.isArray(v)){
+    if (v.length !== 2) throw new Error(`${FILE}: scena.${k} are nevoie de exact două culori, [sus, jos].`);
+    v.forEach((c, i) => { src.scena[`${k}.${i}`] = c; });
+    delete src.scena[k];
+  }
   if (!Object.keys(src.culori).length) throw new Error(`${FILE}: lipsește lista „culori”.`);
 
   // Valoarea: „#hex”, „rol”, „#hex / .14” sau „rol / .94”. Un rol se caută întâi în `culori`, apoi în `scena`.
@@ -38,13 +44,69 @@ export function loadTema(root){
   };
   const full = Object.fromEntries(Object.keys(src.culori).map(k => [k, resolve('culori', k)]));
   const culori = Object.fromEntries(Object.entries(full).map(([k, v]) => [k, v.hex]));
-  const scena = Object.fromEntries(Object.keys(src.scena).map(k => [k, resolve('scena', k).hex]));
+  const scena = {};
+  for (const k of Object.keys(src.scena)){
+    const hex = resolve('scena', k).hex, m = k.match(/^(.+)\.([01])$/);
+    if (m) (scena[m[1]] ||= [])[+m[2]] = hex; else scena[k] = hex;
+  }
+
+  // Valoare liberă (în `mesh` și `contrast`): același format, rezolvată prin culori.
+  const value = (v, where) => {
+    src.culori['\u0000'] = v;
+    try { return resolve('culori', '\u0000'); }
+    catch (e) { throw new Error(e.message.replace('culori.\u0000', where)); }
+    finally { delete src.culori['\u0000']; }
+  };
+  const rgb3 = hex => [1, 3, 5].map(i => parseInt(hex.slice(i, i + 2), 16));
+
+  // Gradientul de fundal: pete radiale peste o bază. Devine --mesh-<nume> în CSS.
+  const POS = /^-?\d+(\.\d+)?% -?\d+(\.\d+)?%$/;
+  const mesh = {};
+  for (const [name, m] of Object.entries(raw.mesh || {})){
+    const where = `mesh.${name}`;
+    if (!m || !m.baza || !Array.isArray(m.pete)) throw new Error(`${FILE}: ${where} are nevoie de „baza” și de lista „pete”.`);
+    const baza = value(m.baza, `${where}.baza`);
+    if (baza.a !== undefined) throw new Error(`${FILE}: ${where}.baza trebuie să fie o culoare plină.`);
+    const pete = m.pete.map((p, i) => {
+      if (!Array.isArray(p) || p.length !== 3 || !POS.test(String(p[1])) || !POS.test(String(p[2]))) throw new Error(`${FILE}: ${where}.pete[${i + 1}] se scrie [culoare, "x% y%", "lățime% înălțime%"].`);
+      return { ...value(p[0], `${where}.pete[${i + 1}]`), at: String(p[1]), size: String(p[2]) };
+    });
+    mesh[name] = { baza: baza.hex, pete };
+  }
+  const meshCss = ({ baza, pete }) => [...pete.map(p => { const c = rgb3(p.hex).join(' ');
+    return `radial-gradient(${p.size} at ${p.at},rgb(${c} / ${p.a ?? 1}) 0%,rgb(${c} / 0) 70%)`; }), baza].join(',');
+
+  // Fonturile, pe roluri: --font-titluri, --font-text
+  const FONTURI = { 'Sora': 'sora', 'Inter Tight': 'inter-tight' }; // numele familiei → pachetul @fontsource-variable
+  const fonturi = {};
+  for (const rol of ['titluri', 'text']){
+    const f = String((raw.fonturi || {})[rol] || '').trim();
+    if (!FONTURI[f]) throw new Error(`${FILE}: fonturi.${rol} = „${f}”. Fonturile găzduite pe site: ${Object.keys(FONTURI).join(', ')}.`);
+    fonturi[rol] = { nume: f, pachet: FONTURI[f] };
+  }
+
+  // Contrastul (WCAG 2.2): o culoare transparentă e pusă peste fiecare culoare din fiecare gradient.
+  const lum = c => { const v = c.map(x => { x /= 255; return x <= .03928 ? x / 12.92 : ((x + .055) / 1.055) ** 2.4; }); return .2126 * v[0] + .7152 * v[1] + .0722 * v[2]; };
+  const ratio = (a, b) => { const x = lum(a), y = lum(b); return (Math.max(x, y) + .05) / (Math.min(x, y) + .05); };
+  const over = (top, a, bot) => top.map((v, i) => v * a + bot[i] * (1 - a));
+  const backdrops = Object.values(mesh).flatMap(({ baza, pete }) => [rgb3(baza), ...pete.map(p => over(rgb3(p.hex), +(p.a ?? 1), rgb3(baza)))]);
+  const contrast = [];
+  for (const [i, row] of (raw.contrast || []).entries()){
+    if (!Array.isArray(row) || row.length !== 3 || !(+row[2] > 1)) throw new Error(`${FILE}: contrast[${i + 1}] se scrie [text, fundal, prag], de exemplu [text, glass, 4.5].`);
+    const fg = value(row[0], `contrast[${i + 1}]`), bg = value(row[1], `contrast[${i + 1}]`);
+    if (fg.a !== undefined) throw new Error(`${FILE}: contrast[${i + 1}]: textul (${row[0]}) trebuie să fie o culoare plină.`);
+    const f = rgb3(fg.hex), b = rgb3(bg.hex);
+    const worst = bg.a === undefined ? ratio(f, b) : Math.min(...(backdrops.length ? backdrops : [[255, 255, 255]]).map(d => ratio(f, over(b, +bg.a, d))));
+    contrast.push({ fg: row[0], bg: row[1], min: +row[2], worst: Math.round(worst * 100) / 100 });
+    if (worst < +row[2]) throw new Error(`${FILE}: contrastul ${row[0]} pe ${row[1]} e ${worst.toFixed(2)} în cel mai rău punct al gradientului; trebuie cel puțin ${row[2]}. Închide textul sau fă sticla mai plină.`);
+  }
 
   const rgb = hex => [1, 3, 5].map(i => parseInt(hex.slice(i, i + 2), 16));
-  const get = name => { // culoarea de bază (fără transparență): „accent” sau „scena.glass-disc”
+  const get = name => { // culoarea de bază (fără transparență): „accent”, „scena.ring” sau „scena.obj-live.0”
     const [grp, key] = name.startsWith('scena.') ? ['scena', name.slice(6)] : ['culori', name];
-    const v = (grp === 'culori' ? culori : scena)[key];
-    if (!v) throw new Error(`${FILE}: rolul „${name}” nu există, dar e folosit în cod.`);
+    const m = grp === 'scena' && key.match(/^(.+)\.([01])$/);
+    const v = m ? (scena[m[1]] || [])[+m[2]] : (grp === 'culori' ? culori : scena)[key];
+    if (!v || typeof v !== 'string') throw new Error(`${FILE}: rolul „${name}” nu există, dar e folosit în cod.`);
     return v;
   };
 
@@ -55,7 +117,8 @@ export function loadTema(root){
     // :root cu fiecare rol de două ori: --accent:#7CF5C8 și --accent-rgb:124 245 200 (baza, pentru alte transparențe)
     css: () => `/* Generat din ${FILE}. Nu edita aici. */\n:root{\n${Object.entries(full).map(([k, { hex, a }]) => {
       const c = rgb(hex).join(' ');
-      return `  --${k}:${a === undefined ? hex : `rgb(${c} / ${a})`}; --${k}-rgb:${c};`; }).join('\n')}\n}\n`,
+      return `  --${k}:${a === undefined ? hex : `rgb(${c} / ${a})`}; --${k}-rgb:${c};`; }).join('\n')}\n${Object.entries(mesh).map(([k, m]) => `  --mesh-${k}:${meshCss(m)};`).join('\n')}\n${Object.entries(fonturi).map(([k, f]) => `  --font-${k}:"${f.nume}",${k === 'titluri' ? '"Avenir Next",' : ''}system-ui,-apple-system,"Segoe UI",sans-serif;`).join('\n')}\n}\n`,
+    mesh, contrast, fonturi,
     // șabloane SVG: {{accent}} sau {{scena.glass-disc}} → codul hex
     fill: (text, where) => text.replace(/\{\{\s*([a-z0-9_.-]+)\s*\}\}/gi, (m, name) => {
       try { return get(name); } catch (e) { throw new Error(`${where}: ${e.message}`); }
@@ -65,7 +128,7 @@ export function loadTema(root){
 
 // Verifică faptul că tot ce cere codul există în temă: var(--x) în CSS, COL.x / SC['x'] în scenă.
 export function checkUsage(tema, { css, js }){
-  const defined = new Set(Object.keys(tema.culori).flatMap(k => [k, k + '-rgb']));
+  const defined = new Set([...Object.keys(tema.culori).flatMap(k => [k, k + '-rgb']), ...Object.keys(tema.mesh).map(k => 'mesh-' + k), ...Object.keys(tema.fonturi).map(k => 'font-' + k)]);
   for (const m of css.matchAll(/--([a-z0-9-]+)\s*:/gi)) defined.add(m[1]);
   const missing = new Set();
   for (const m of css.matchAll(/var\(--([a-z0-9-]+)\s*\)/gi)) // cu valoare de rezervă, var(--x,0) nu cere temă

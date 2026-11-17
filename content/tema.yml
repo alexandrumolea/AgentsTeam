@@ -1,96 +1,161 @@
 # Culorile site-ului. Singurul loc în care se schimbă paleta.
 #
-# Din acest fișier pleacă tot: CSS-ul (variabilele din :root), scena 3D,
-# culoarea barei de adrese pe telefon (theme-color), favicon-ul și imaginea
+# Din acest fișier pleacă tot: CSS-ul (variabilele din :root), gradientul de fundal,
+# scena 3D, culoarea barei de adrese pe telefon (theme-color), favicon-ul și imaginea
 # de previzualizare (og.png). Ghidul: site/README.md, „Cum schimbi culorile”.
 #
 # Cum se scrie o valoare:
-#   "#7CF5C8"          un cod hex (merge și scurt: "#FFF")
+#   "#2B44B8"          un cod hex (merge și scurt: "#FFF")
 #   accent             numele altui rol: culoarea urmează rolul de care ține
-#   "#FFFFFF / .14"    o culoare cu transparență (0 = invizibil, 1 = plin)
-#   surface / .94      un rol, cu transparență
-# Numele sunt roluri, nu culori: „accent” poate fi verde azi și albastru mâine.
-# Sunt numele propuse de Ioana în team/ioana/documente/culori-v1.md.
-# O greșeală (cod invalid, nume care nu există) oprește build-ul, cu mesaj clar.
+#   "#FFFFFF / .80"    o culoare cu transparență (0 = invizibil, 1 = plin)
+#   sticla / .93       un rol, cu transparență
+# Numele sunt roluri, nu culori: „accent” poate fi albastru azi și verde mâine.
+# O greșeală (cod invalid, nume care nu există, contrast prea mic) oprește build-ul, cu mesaj clar.
 #
-# Valorile de mai jos sunt exact paleta de acum (direcția Spațiu, varianta A din culori-v1).
+# Paleta Sora (D-054, design v3.1 al Ioanei: team/ioana/documente/design-v3.md).
+# Din D-057 (2026-11-17) e brandingul BEMORE: aceiași tokeni îi folosește și tema cursurilor.
+
+# Fonturile, pe roluri. Ambele găzduite pe site (woff2, cu licența SIL OFL lângă).
+# Fonturile cunoscute de build: "Sora", "Inter Tight". Altul cere un pachet nou (site/README.md).
+fonturi:
+  titluri: "Sora"                # titlurile (greutatea 200), marca, numerele mari, inscripția
+  text: "Inter Tight"            # textul, meniul, legenda, etichetele, butoanele
 
 culori:
-  # --- scena și navigarea (noaptea atelierului) ---
-  bg: "#070910"                  # fundalul paginii și al scenei 3D; și theme-color
-  bg-glow: "#121833"             # lumina difuză din spatele scenei
-  surface: "#10131E"             # panouri, carduri, dock (plin)
-  glass: surface / .94           # panourile cu sticlă (fundalul de sub text)
-  line: "#FFFFFF / .14"          # liniile subțiri și contururile; aceeași bază, mai stinsă, la hover
-  text: "#F3F1EC"                # textul principal
-  muted: "#AEB3C4"               # explicații, date, etichete mici
-  accent: "#7CF5C8"              # aici apeși / se lucrează acum: butonul, focusul, agenții AI, „în lucru”
-  on-accent: "#06110C"           # textul de pe butonul de acțiune
-  human: "#FFC37A"               # oamenii din Live și „așteaptă decizia lui Alex”
-  alert: "#FF8A65"               # „blocat”
-  pressed-bg: text               # butonul apăsat din dock, pagina curentă din meniu, butoanele deschise
-  pressed-fg: "#0A0C14"          # textul de pe ele
-  pressed-muted: "#4A4F5E"       # cifra mică de pe butonul apăsat din dock
-  label-bg: "#0A0C14"            # etichetele straturilor când desfaci inovația
+  # --- paleta Sora: cer, lavandă, piersică, portocaliu (afișul fontului Sora) ---
+  cer: "#4FA3F0"
+  cer-deschis: "#8FD3F7"
+  lavanda: "#B7A6EA"
+  piersica: "#F7B79A"
+  portocaliu: "#F28C3B"
 
-  # --- My Journey ---
-  warm-glow: "#FFC37A"           # accentul modului cald, peste scenă (marca, linia misiunii, lumina pietrei)
-  warm-bg: "#F3EBDF"             # hârtia: fundalul panoului My Journey
+  # --- fundalurile ---
+  bg: "#F6F4FA"                  # prima pagină: fundalul liniștit din spatele scenei; și theme-color
+  mesh-baza: "#F3EEF6"           # paginile interioare: culoarea de sub gradient
+
+  # --- sticla și textul (textul stă mereu pe sticlă, niciodată direct pe gradient) ---
+  sticla: "#FFFFFF"              # baza sticlei
+  glass: sticla / .80            # navigarea, panourile, legenda, cardurile
+  glass-read: sticla / .93       # unde citești text lung (paginile, panoul deschis)
+  glass-edge: "#FFFFFF / .6"     # marginea luminoasă a sticlei
+  surface: sticla                # rezerva plină: fără blur sau cu „reduce transparency”
+  line: text / .14               # liniile subțiri dintre rânduri
+  text: "#14161F"                # textul principal (15,04 în cel mai rău punct)
+  muted: "#474A58"               # explicații, date, etichete mici (7,33)
+  accent: "#2B44B8"              # linkuri, focus, numerele obiectelor, agenții AI (6,68)
+  on-accent: "#FFFFFF"           # textul de pe accent („Sari la conținut”)
+  buton: text                    # butonul principal
+  pe-buton: "#FFFFFF"            # textul de pe el (18,04)
+  punct: portocaliu              # punctul semnului BEMORE (D-058): colțul paginii, centrul scenei, Live (doar decor)
+  punct-inel: "#C96A1E"          # inelul subțire al punctului
+  umbra: accent                  # umbrele colorate ale sticlei și ale obiectelor (cu transparență mică)
+
+  # --- Live: un singur sens pe culoare ---
+  human: "#8A4A14"               # oamenii din Live și „așteaptă decizia lui Alex” (5,70)
+  alert: "#A63D2A"               # „blocat”, eroare (manualul de brand v1)
+  pressed-bg: text               # „în lucru” acum, pagina curentă, butoanele apăsate
+  pressed-fg: "#FFFFFF"          # textul de pe ele
+
+  # --- My Journey: hârtie caldă, fără sticlă ---
+  warm-bg: "#FDF3EC"             # hârtia: fundalul panoului My Journey
   warm-text: "#2A1F17"           # textul de pe hârtie
   warm-muted: "#6B5646"          # textul mic de pe hârtie
   warm-accent: "#8A4F27"         # titlurile mișcărilor din poveste
-  warm-line: "#C98B5E"           # linia din stânga a fiecărei mișcări
+  warm-line: portocaliu          # linia din stânga a fiecărei mișcări (decor)
   warm-divider: warm-text / .16  # liniile subțiri de pe hârtie
 
-  # --- varianta fără 3D (telefoane vechi, economisire de date) ---
-  fallback-glow: accent          # lumina rece din spatele desenului
-  fallback-glow-2: alert         # a doua lumină, caldă
-  fallback-warm-bg: "#140C08"    # fundalul modului cald
-  fallback-warm-glow: "#FFAA64"  # lumina modului cald
+  # --- lecțiile (pregătit pentru cursuri; site-ul nu are încă lecții) ---
+  # Sage doar în lecții: culoarea a ce faci tu și a ce ai terminat (D-054).
+  masa: "#EEF1FB"                # masa de lucru (exercițiul), varianta fără sage
+  masa-sage: "#E9EFE4"           # masa de lucru, varianta cu sage
+  sage: "#9DB08A"                # doar decor: cercul care respiră, punctul din Live în lecție
+  sage-ink: "#4E6B45"            # text: bifa ✓ a lecțiilor parcurse, „Pe masa de lucru” (5,10 pe masă)
 
-# Scena 3D (doar pagina principală): lumini, materiale, nuanțele de sticlă.
-# Aici nu se folosește transparența. Multe valori trimit la un rol de sus.
-# Nuanțele deschise (sticla, cristalul, semnele) sunt variante ale accentului,
-# alese de mână: dacă schimbi `accent`, schimbă-le și pe ele.
+# Gradientul de fundal: pete de culoare care se topesc, cu granulație fină deasupra.
+# Fiecare pată: [culoare, poziție „x% y%”, mărime „lățime% înălțime%”]. Culoarea poate avea transparență.
+mesh:
+  pagini:                        # paginile interioare (Despre, camerele, Live, 404)
+    baza: mesh-baza
+    pete:
+      - [cer, "4% 6%", "60% 70%"]
+      - [cer-deschis, "70% 0%", "50% 55%"]
+      - [lavanda, "32% 80%", "55% 60%"]
+      - [piersica, "86% 56%", "50% 60%"]
+      - [portocaliu, "100% 100%", "48% 58%"]
+  prima-pagina:                  # „1 · Sticlă colorată”: fundalul se liniștește, culoarea trece în obiecte
+    baza: bg
+    pete:
+      - [cer / .30, "0% 0%", "45% 55%"]
+      - [portocaliu / .24, "100% 100%", "40% 50%"]
+      - [lavanda / .30, "0% 100%", "40% 50%"]
+  journey:                       # prima pagină când e deschis My Journey: mai cald
+    baza: warm-bg
+    pete:
+      - [piersica / .55, "70% 30%", "60% 70%"]
+      - [portocaliu / .30, "100% 100%", "50% 60%"]
+      - [lavanda / .22, "0% 100%", "40% 50%"]
+
+# Contrastul (WCAG 2.2, AA). Build-ul verifică fiecare pereche [text, fundal, prag]
+# în cel mai nefavorabil punct: o sticlă transparentă e pusă, fără blur, peste fiecare
+# culoare din fiecare gradient de mai sus. O pereche care nu trece oprește build-ul.
+contrast:
+  - [text, glass, 4.5]
+  - [muted, glass, 4.5]
+  - [accent, glass, 4.5]
+  - [human, glass, 4.5]
+  - [alert, glass, 4.5]
+  - [text, glass-read, 7]         # textul lung: AAA
+  - [muted, glass-read, 4.5]
+  - [accent, glass-read, 4.5]
+  - [human, glass-read, 4.5]
+  - [alert, glass-read, 4.5]
+  - [pe-buton, buton, 4.5]
+  - [pressed-fg, pressed-bg, 4.5]
+  - [on-accent, accent, 4.5]
+  - [warm-text, warm-bg, 7]
+  - [warm-muted, warm-bg, 4.5]
+  - [warm-accent, warm-bg, 4.5]
+  - [text, masa, 7]
+  - [text, masa-sage, 7]
+  - [sage-ink, masa-sage, 4.5]
+  - [sage-ink, glass, 4.5]
+
+# Scena 3D (doar prima pagină): lumini, materiale, perechile de gradient ale obiectelor.
+# Aici nu se folosește transparența. O pereche [sus, jos] e gradientul unui obiect.
 scena:
-  bg-warm: "#160D08"             # fundalul și ceața în My Journey (cel normal e `bg`)
-  sky: "#9FB4FF"                 # lumina de sus
-  sky-warm: "#FFB37A"
-  ground: "#120C08"              # lumina de jos
-  key: "#FFFFFF"                 # lumina principală
+  bg-warm: warm-bg               # ceața scenei în My Journey (cea normală e `bg`)
+  sky: "#FFFFFF"                 # lumina de sus
+  sky-warm: "#FFE3D1"
+  ground: "#D9D2F0"              # lumina de jos (lavandă deschisă)
+  key: "#FFFFFF"                 # lumina principală, dintr-o parte
   key-warm: "#FFD2A8"
-  glow: accent                   # lumina din centrul atelierului
-  glow-warm: "#FF9A4A"
-  floor: "#FFFFFF"               # nuanța planșei (alb = planșa cum e desenată)
-  floor-warm: "#E0B48E"
-  grid-bg: "#0A0D17"             # desenul planșei: fundal, margine, grilă
-  grid-edge: "#1F3B44"
-  grid-line: "#141F2E"
-  metal: "#161A28"               # baza inovației din centru
+  glow: cer-deschis              # lumina din centrul atelierului
+  glow-warm: portocaliu
+  edge: "#FFFFFF"                # conturul alb al obiectelor
+  orbit: accent                  # orbitele desenate (linie punctată, foarte stinsă)
+  orbit-light: punct             # cele două lumini mici care se rotesc pe orbite
+  # obiectele-simbol: fiecare are gradientul lui (Ioana, home-1-obiecte)
+  obj-coaching: [piersica, lavanda]
+  obj-companie: [cer, lavanda]
+  obj-speaking: [cer-deschis, lavanda]
+  obj-inventii: [lavanda, piersica]
+  obj-live: [cer-deschis, cer]
+  obj-povesti: [piersica, portocaliu]   # piatra din My Journey: singurul obiect mat
+  obj-knowledge: [lavanda, cer-deschis]
+  obj-despre: [cer, lavanda]            # medalionul „Despre mine” (manualul: cer → lavandă)
+  obj-centru: [cer-deschis, lavanda]    # baza inovației din centru (doar când Innovations e vizibil)
   ring: accent                   # inelul inovației
-  ticks: "#E8FFF6"               # semnele de pe inel și inelul cristalului
-  core: "#C9FFF0"                # cristalul
-  core-emissive: "#2FD69C"       # strălucirea inelului și a cristalului
-  agent: accent                  # luminițele agenților și lumina camerelor
-  alex: text                     # punctul solid al lui Alex în Live
-  network: accent                # firele rețelei în Live
-  pulse: "#E6FFF6"               # impulsurile dintre agenți și firele care se aprind
-  bridge: "#F3FFFA"              # podurile dintre camerele vizitate
-  bridge-warm: "#FFE7C5"         # podurile în My Journey
+  ticks: "#FFFFFF"               # semnele de pe inel
+  core: punct                    # cristalul din centru
+  core-emissive: piersica
+  disc: "#FFFFFF"                # discul și cupola de sticlă (translucide)
+  dome: lavanda
+  # Live: echipa ca rețea
+  agent: accent                  # luminițele agenților
+  alex: text                     # punctul solid al lui Alex
+  network: accent                # firele rețelei
+  pulse: punct                   # impulsurile dintre agenți
+  bridge: accent                 # podurile dintre camerele vizitate
+  bridge-warm: portocaliu        # podurile în My Journey
   door: accent                   # pragul de la intrare
-  marker: "#FFFFFF"              # punctul de pe obiectele „drum direct”
-  journey-glow: warm-glow        # lumina camerei My Journey
-  innovations-glow: "#FFF4E6"    # lumina camerei Innovations
-  pebble: "#D9A273"              # piatra din My Journey (singurul obiect mat)
-  pebble-glow: "#FF8A3D"
-  glass-disc: "#BFEFFF"          # nuanțele de sticlă, pe obiecte
-  glass-dome: "#D8CCFF"
-  glass-coaching: "#FFD2C2"
-  glass-innovations: core
-  glass-live: "#D6FFF1"
-  glass-knowledge-1: core
-  glass-knowledge-2: "#D8D2FF"
-  glass-knowledge-3: "#FFE9C2"
-  glass-knowledge-4: "#C9E4FF"
-  glass-speaking: "#FFF3C2"
-  glass-company: "#D8D2FF"
+  journey-glow: piersica         # lumina caldă din jurul pietrei

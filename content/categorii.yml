@@ -3,6 +3,9 @@
 # `cheie` nu se schimbă niciodată. Etichetele și frazele le schimbă Maria, aici, fără cod.
 # `stare`: deschis (are conținut real) sau in-pregatire (apare cu textul `in_pregatire` din site.yml).
 # `pod`: propoziția-pod a camerei (T-015, Maria). Gol = nu apare.
+# `vizibil`: true = secțiunea apare pe site; false = există doar aici, ascunsă peste tot (meniu, legendă,
+#   scena 3D, pagină, sitemap, api/continut.json, linkuri). Adresa ei duce la prima pagină.
+#   Le facem vizibile pe măsură ce avem ce pune în ele (Alex, D-056, 2026-11-17).
 
 familii:
   - cheie: direct
@@ -12,6 +15,7 @@ familii:
 
 categorii:
   - cheie: coaching
+    vizibil: true
     eticheta: "Coaching"
     fraza: "Vreau să lucrez cu tine, singur sau cu echipa mea."
     url: coaching
@@ -31,6 +35,7 @@ categorii:
         text: "gratuită"
 
   - cheie: companie
+    vizibil: false
     eticheta: "Compania mea"
     fraza: "Vreau ceva pentru echipa sau compania mea."
     url: business
@@ -42,6 +47,7 @@ categorii:
     pod: ""
 
   - cheie: speaking
+    vizibil: true
     eticheta: "Latest Workshops"
     fraza: "Vreau să văd ultimele workshopuri."
     url: workshops
@@ -53,6 +59,7 @@ categorii:
     pod: ""
 
   - cheie: inventii
+    vizibil: false
     eticheta: "Innovations"
     fraza: "Tool-uri, aplicații și cursuri de încercat."
     url: innovations
@@ -64,6 +71,7 @@ categorii:
     pod: ""
 
   - cheie: live
+    vizibil: false
     eticheta: "Live"
     fraza: "Ce construim chiar acum."
     url: live
@@ -76,6 +84,7 @@ categorii:
     pod: ""
 
   - cheie: povesti
+    vizibil: false
     eticheta: "My Journey"
     fraza: "Vreau să știu prin ce ai trecut și ce ai învățat."
     url: my-journey
@@ -87,6 +96,7 @@ categorii:
     pod: ""
 
   - cheie: knowledge
+    vizibil: false
     eticheta: "Knowledge Base"
     fraza: "Ce am învățat construind, nu ce am citit."
     url: knowledge-base
@@ -98,6 +108,7 @@ categorii:
     pod: ""
 
   - cheie: despre
+    vizibil: true
     eticheta: "Despre mine"
     scurt: "Despre"
     fraza: "Vreau să te cunosc."
@@ -105,7 +116,7 @@ categorii:
     familie: titlu
     dimensiune: viata
     ordine: 1
-    pe_orbita: false
+    pe_orbita: true
     stare: deschis
     buton: "Pagina Despre"
     pod: ""
