@@ -85,4 +85,4 @@
 49. **Intro-ul spune „coach, fondator și inventator”, Despre spune „Systemic Coach & Team Coach”.** Le aliniem? Cum vrei să te prezinți în prima propoziție?
 50. **Logo-urile Innersis, Wise Teams și LIFT:** avem acordul lor să le arătăm pe site? Au un ghid de brand pe care să ni-l dea?
 51. ~~**Semnul BEMORE:** păstrăm vechiul logo sau devine cuvântul BEMORE scris în Sora, cu punctul portocaliu? Ioana recomandă cuvântul în Sora.~~ Răspuns 2026-11-17 (D-058): BEMORE în Sora, cu punctul portocaliu.
-52. **Semnătura de pe site:** „Alex · Atelier” rămâne sau devine numele tău (sau BEMORE)? Alex propune 2026-11-17: „Alex · Atelier de dezvoltare”; Maria aduce alte variante.
+52. ~~**Semnătura de pe site:** „Alex · Atelier” rămâne sau devine numele tău (sau BEMORE)? Alex propune 2026-11-17: „Alex · Atelier de dezvoltare”; Maria aduce alte variante.~~ Răspuns 2026-11-17 (D-059): „Alex · Atelier de învățare”.
