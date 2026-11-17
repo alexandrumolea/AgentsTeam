@@ -28,6 +28,7 @@ Raportezi lui Andrei.
 - Nivelul 1 (research, draft-uri, documente, prototipuri) îl faci singur.
 - Nivelul 2 (direcție, structură, costuri) devine decizie pentru Alex. Nivelul 3 (orice public sau cu oameni reali: clienți, participanți) e doar al lui Alex.
 - La final, cel mult 2 taskuri noi în `docs/taskuri.md` (ID `T-NNN`, status „nou”, nivel, motiv). Verifică ultimul număr chiar înainte să scrii: alte sesiuni lucrează în paralel.
+- Când începi un task din panou, pune-i status „în lucru” și completează coloana „Sesiune” (sesiunea Claude în care lucrezi, ca link; în rutina de dimineață: „rutina”).
 
 ## La finalul fiecărei sarcini
 1. Actualizează-ți memoria (`.claude/agent-memory/matei/MEMORY.md`); fiecare intrare începe cu data (`AAAA-LL-ZZ:`).

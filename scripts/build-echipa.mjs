@@ -254,7 +254,13 @@ const cpRow = ({ id, idHref, idTitle = "", text, meta, src, dec = "" }) => `<li 
   <div class="cp-m">${meta.filter(Boolean).join('<span aria-hidden="true">·</span>')}<a href="${esc(src)}" target="_blank" rel="noopener">sursa ↗</a>${dec ? '<span class="ans chip ok">ai răspuns</span>' : ""}</div>
 </li>`;
 const cpSub = (title, rows, k = 4) => rows.length ? `<div class="cp-sub"><h3>${esc(title)} <b>${rows.length}</b></h3><ul class="cp-list">${rows.slice(0, k).join("")}</ul>${rows.length > k ? `<details><summary>Încă ${rows.length - k}</summary><ul class="cp-list">${rows.slice(k).join("")}</ul></details>` : ""}</div>` : "";
-const taskRow = (t, meta) => cpRow({ id: t.c[0], idHref: srcLink(tFile, t.n), text: short(t.c[4]), meta, src: srcLink(tFile, t.n) });
+// Sesiunea în care se lucrează (coloana „Sesiune” din docs/taskuri.md): link spre sesiunea Claude sau text simplu.
+const sessHtml = (cell) => {
+  const v = (cell || "").trim(); if (!v || v === "–" || v === "-") return "";
+  const m = v.match(/^\[([^\]]+)\]\(((?:claude|https?):\/\/[^)\s]+)\)$/);
+  return m ? `<a class="sess" href="${esc(m[2])}" title="Deschide sesiunea în aplicația Claude">⌘ ${esc(m[1])}</a>` : `<span class="sess">⌘ ${esc(plain(v))}</span>`;
+};
+const taskRow = (t, meta) => cpRow({ id: t.c[0], idHref: srcLink(tFile, t.n), text: short(t.c[4]), meta: [...meta, sessHtml(t.c[9])], src: srcLink(tFile, t.n) });
 const decRow = ({ c, n }) => cpRow({
   id: c[0], idHref: `#dec-${c[0]}`, idTitle: "Răspunde în Decizii de luat", text: short(c[2]), dec: c[0], src: srcLink("docs/decizii.md", n),
   meta: [whoLink(c[4]), `din ${esc(c[1])}`, chip(c[5], /de luat/.test(c[5]) ? "warn" : "info"), cp.linked[c[0]] ? `și ${cp.linked[c[0]].map(esc).join(", ")}` : ""],
@@ -266,7 +272,7 @@ const qRow = (q) => cpRow({
 const resultLink = (r) => { const m = (r || "").match(/\[[^\]]+\]\(([^)]+)\)/); if (!m) return ""; return /^https?:/.test(m[1]) ? m[1] : GH + encodeURI(path.posix.normalize(path.posix.join("docs", m[1]))); };
 const doneRow = (t) => { const res = resultLink(t.c[8]); return cpRow({
   id: t.c[0], idHref: srcLink(tFile, t.n), text: short(t.c[4], 110), src: res || srcLink(tFile, t.n),
-  meta: [whoLink(t.c[3]), `gata ${esc(t.changed)}`],
+  meta: [whoLink(t.c[3]), `gata ${esc(t.changed)}`, sessHtml(t.c[9])],
 }); };
 const controlPanel = `
   <section aria-labelledby="cp-h" id="panou" class="cp">
@@ -283,7 +289,7 @@ const controlPanel = `
       </div>
       <div class="card cp-col now">
         <h2 class="cp-t">În lucru acum <b>${cp.working.length}</b></h2>
-        <p class="cp-sum">Taskurile cu status „în lucru”: cine lucrează și pentru cine.</p>
+        <p class="cp-sum">Taskurile cu status „în lucru”: cine lucrează, pentru cine și în ce sesiune (⌘ deschide sesiunea în aplicația Claude).</p>
         ${cp.working.length ? `<div class="cp-sub"><ul class="cp-list">${cp.working.map((t) => taskRow(t, [`${whoLink(t.c[3])} pentru ${whoLink(t.c[2])}`, `din ${esc(t.c[1])}`, `actualizat ${esc(t.changed)}`])).join("")}</ul></div>` : '<p class="cp-empty">Niciun task în lucru.</p>'}
         ${dirtyList.length ? `<div class="cp-sub"><h3>Necomis acum <b>${dirtyList.reduce((s, [, n]) => s + n, 0)}</b></h3><p class="cp-dirty">${dirtyList.map(([k, n]) => `<span>${esc(k)} <b>${n}</b></span>`).join("")}</p><p class="cp-note">Fișiere schimbate și încă necomise când s-a generat pagina: semn că o sesiune lucrează acolo.</p></div>` : ""}
       </div>
@@ -407,6 +413,8 @@ a.stat:hover{border-color:var(--accent)}
 .flt.on{background:var(--fg);color:var(--bg);border-color:var(--fg)}
 .flt.on b{color:var(--bg)}
 .flt:focus-visible,.vb:focus-visible,.save:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.sess{display:inline-flex;align-items:center;gap:4px;padding:1px 8px;border-radius:999px;border:1px solid var(--line);font-size:12.5px;color:var(--fg);text-decoration:none;max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+a.sess:hover{border-color:currentColor}
 .dec-status{margin:8px 0 12px;font-size:13px;color:var(--muted)}
 .decs{display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:14px}
 .dec{display:grid;gap:8px;align-content:start;min-width:0;background:var(--glass-solid);border:1px solid var(--line);border-left:4px solid var(--c);border-radius:16px;padding:16px 18px;box-shadow:var(--shadow)}

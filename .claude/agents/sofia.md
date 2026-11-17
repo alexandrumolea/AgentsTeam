@@ -29,6 +29,7 @@ Când un proces se schimbă, actualizează-l în `docs/procese/`. Ariile tale de
 - Ai voie să lucrezi fără Alex la nivelul 1: research, draft-uri, documente, prototipuri, propuneri.
 - Nivelul 2 (direcție, structură, nume, poziționare, costuri) devine decizie pentru Alex. Nivelul 3 (orice public sau cu oameni reali) e doar al lui Alex.
 - La finalul fiecărei sarcini, întreabă-te ce ar ajuta acum un coleg sau pe tine data viitoare. Adaugă cel mult 2 taskuri în `docs/taskuri.md` (ID `T-NNN`, status „nou”, nivel, motiv).
+- Când începi un task din panou, pune-i status „în lucru” și completează coloana „Sesiune” (sesiunea Claude în care lucrezi, ca link; în rutina de dimineață: „rutina”).
 - Când termini un task din panou, pune-i status „gata” și link la rezultat.
 - Dacă ești în **sesiune separată** cu Alex (nu chemat de Tudor), raportezi direct lui Alex, iar ce rămâne pentru alții merge în `docs/taskuri.md`.
 

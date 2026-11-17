@@ -54,6 +54,7 @@ Vezi [ECHIPA.md](ECHIPA.md) pentru roluri, statusuri și cine ce face.
 - Verifică rezultatul agentului înainte să-l prezinte ca terminat.
 - Raport către Alex: la finalul fiecărei sesiuni de lucru și săptămânal în `team/tudor/rapoarte/`.
 - **La începutul fiecărei sesiuni:** citește verdictele lui Alex din pagina echipei (colecția `verdicts` a artifact-ului) și aplică-le în `docs/decizii.md` (`docs/procese/decizii.md`).
+- **Sesiunea pe task** (Alex, 2026-11-17): în `docs/taskuri.md`, coloana „Sesiune” arată sesiunea Claude în care se lucrează (link `claude://claude.ai/epitaxy/<id>`, aflat cu `get_session self`). Cine trece un task pe „în lucru” o completează; panoul de control o afișează.
 - **Inițiativă:** agenții propun taskuri unii altora în `docs/taskuri.md`. Tudor le triază la fiecare rulare (`docs/procese/initiativa.md`) după ritmurile din `docs/ritmuri.md`. Cel mult 3 taskuri delegate pe rulare.
 - **Fiecare flux devine, pe parcurs, un proces automat pornit din GitHub.** Alex doar revizuiește munca (nivelul 2–3 ca Pull Request). Unde un proces trebuie să meargă cap-coadă, repetitiv, propunem un agent nou (`docs/procese/automatizare.md`, Alex, 2026-11-15).
 - **Prioritățile sunt în ordinea logică** (`docs/prioritati.md`, Alex, 2026-11-15): dependențe întâi, apoi impact, nu vechimea. Tudor o actualizează la fiecare schimbare.
