@@ -17,5 +17,7 @@ Adăugat: 2026-11-17
 
 2026-11-17 (v1.1): D-048–D-051 aprobate. Banca de exerciții (I-021, doar formatul): `exercitii/<id>.md`; modulul are `exercitii.implicite/alternative` și linia `::exercitii`; ediția are `agenda` (module, `pauza: N`, exerciții alese) = sursa agendei; `durata` modulului fără exerciții. Online = doar exercițiile ediției publicate. Drag and drop după 23.
 
+2026-11-17 (v1.2, propunere 1.9): piesa = unitatea de bază (tip: teorie/model/poveste · exercitiu/reflectie/energizant · deschidere/inchidere/mesaj). Piese locale `piese/` acum, `comun/<id>` din `privat/piese/` după 25. Modulul = secvență subțire (titlu, ancora, schita, `piese.implicite/alternative`, `::piese`). Agenda: modul, piesă singură sau pauză; id-uri unice în curs. Mike: 4–6 h, termen Mi 18 seara, altfel îngheț v1.1.
+
 **Why:** Alex (2026-11-17) vrea ca o modificare în materialul trainerului să schimbe și cursul participanților; GitHub Pages nu are parole; repo-ul e public.
 **How to apply:** Pentru 25.11 (Self-management cu AI) și orice curs nou: același format, folder nou, fără cod. Actualizează după deciziile lui Alex. Taskuri: T-022 (Mike), T-023 (Ioana). Vezi [[project-arhitectura-v2]].

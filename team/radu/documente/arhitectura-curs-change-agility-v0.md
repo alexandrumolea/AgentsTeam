@@ -1,6 +1,6 @@
-# Arhitectura unui curs: o sursă, trei ieșiri (v1.1)
+# Arhitectura unui curs: o sursă, trei ieșiri (v1.2)
 
-**Autor:** Radu. **Data:** 2026-11-17. **Versiune:** v1.1. Față de v0: materialul trainerului e și prezentarea din sală (v1); banca de exerciții și agenda din ediție (v1.1, secțiunea 1.8, I-021, doar formatul). **Status:** D-048–D-051 aprobate de Alex (2026-11-17); Mike construiește (T-022).
+**Autor:** Radu. **Data:** 2026-11-17. **Versiune:** v1.1. Față de v0: materialul trainerului e și prezentarea din sală (v1); banca de exerciții și agenda din ediție (v1.1, secțiunea 1.8, I-021, doar formatul); piesa de workshop ca unitate de bază (v1.2, secțiunea 1.9, propunere). **Status:** D-048–D-051 aprobate de Alex (2026-11-17); Mike construiește (T-022).
 **Pentru:** workshop-ul Change Agility (o zi, 23 noiembrie, D-044, parte din I-018). Același model trebuie să meargă fără cod nou și pentru 25 noiembrie (Self-management în relația cu AI).
 **Citit înainte:** `team/tudor/documente/echipa-workshopuri-v0.md`, `docs/procese/ce-iese-public.md`, `site/build.mjs`, `content/`, I-018, I-019, D-043–D-045, `arhitectura-v2.md`.
 
@@ -263,6 +263,97 @@ Cerința lui Alex (2026-11-17): „Aș vrea să avem un fel de bancă de exerci�
 
 Doar avertisment: un exercițiu ales la un modul care nu e în câmpul lui `module`, sau un modul de peste 90 de minute fără nicio pauză după.
 
+### 1.9 Totul modular: piesa de workshop (v1.2, propunere)
+Întrebarea lui Alex (2026-11-17): „Oare putem gândi cumva totul modular? Adică să zic piese de workshop pe care le-am putea pune? Uneori exerciții, uneori piese de conținut?”
+
+**Răspunsul scurt:** da, și suntem deja aproape. Banca din 1.8 e o bibliotecă de piese care știe doar un fel de piesă, exercițiul. O lărgim la orice fel de piesă și lăsăm agenda să pună o piesă oriunde, nu doar în interiorul unui modul.
+
+**Piesa** e unitatea de bază: un fișier, reutilizabil, cu durata lui și cu aceleași straturi ca până acum (`:::sala`, `:::sala-si-curs`, `:::trainer`, `:::participant`).
+
+| `tip` | Familia | Lumea Ive a ecranelor |
+|---|---|---|
+| `teorie` · `model` · `poveste` | conținut | întunecat |
+| `exercitiu` · `reflectie` · `energizant` | activitate | luminos |
+| `deschidere` · `inchidere` · `mesaj` | punte | accent |
+
+Antetul piesei e cel din 1.8, cu trei schimbări: `tip` are lista de mai sus; `format` și `energie` sunt obligatorii doar la activități; apare `ancora` opțional (o linie în schiță când piesa stă singură în agendă).
+
+#### Unde stau piesele
+| Varianta | Cum | Pentru | Contra |
+|---|---|---|---|
+| **A. Doar bibliotecă comună** (`privat/piese/`) | toate cursurile aleg din același loc | reutilizare maximă | piesele unui curs se amestecă cu ale altora; brandul și limba diferă între cursuri; o schimbare pentru un curs strică altul |
+| **B. Piese locale pe curs + bibliotecă comună** (recomandată) | `cursuri/<slug>/piese/` pentru ce ține de curs; `privat/piese/` pentru ce se refolosește. În agendă, `comun/<id>` trimite la biblioteca comună | cursul rămâne un folder complet; reutilizarea crește treptat, doar cu piesele care chiar s-au dovedit | o regulă în plus (prefixul `comun/`) |
+
+**Pentru 23: doar piesele locale** (`cursuri/change-agility/piese/`, folderul `exercitii/` se redenumește). Biblioteca comună vine după 25, când știm ce piese s-au refolosit de fapt între cele două workshop-uri. Prefixul `comun/` e rezervat de acum, deci formatul nu se mai schimbă.
+
+#### Mai e nevoie de modul?
+**Da, dar mai subțire: modulul devine o secvență cu titlu.** Ține ce nu aparține unei piese: `titlu`, `ancora`, `schita` (memoria lui Alex pentru o bucată din zi) și lista de piese.
+- `exercitii: { implicite, alternative }` devine **`piese: { implicite, alternative }`**, iar `::exercitii` devine **`::piese`**. Implicitele și alternativele rămân, doar că pot fi și piese de conținut (de exemplu două povești diferite pentru același model).
+- **Corpul modulului rămâne permis** pentru 23 (conținutul scris direct în modul merge mai departe). După 23, conținutul se mută treptat în piese, iar un modul ajunge doar antet.
+- `durata` modulului = doar ce e scris în corpul lui (poate fi 0). Durata rândului = modul + piesele alese.
+
+#### Agenda din ediție, cu piese
+Un rând din agendă poate fi un modul, o piesă singură sau o pauză:
+```yaml
+agenda:
+  - deschidere-o-intrebare            # piesă singură (tip: deschidere)
+  - modul: curba
+    piese: [model-curba, perechi-curba]   # înlocuiește implicitele, în ordinea din sală
+  - pauza: 15
+  - energizant-numaratoare            # piesă singură, pusă între module
+  - pasul-de-luni                     # modul, cu piesele implicite
+  - pauza: 60
+    titlu: "Prânz"
+  - inchidere-o-fraza
+```
+- Un id simplu se caută printre module și printre piese. **Id-urile sunt unice în tot cursul**, deci nu există ambiguitate.
+- Două niveluri, ambele liste simple. Drag and drop după 23 înseamnă: muți rânduri în `agenda` sau muți piese în lista `piese` a unui modul, ori dintr-un modul în altul. Formatul rămâne același.
+
+#### Exemplu de piesă de conținut
+`cursuri/change-agility/piese/model-curba.md` **[EXEMPLU]**:
+```markdown
+---
+titlu: "Curba schimbării"
+durata: 20
+tip: model
+ancora: "Curba, nu linia"
+module: [curba]
+materiale: ["flipchart cu curba desenată"]
+---
+
+Orice schimbare trece printr-o scădere înainte de o creștere. Nu e un semn că
+ceva merge prost. E drumul obișnuit.
+
+:::sala-si-curs
+![Curba schimbării](materiale/curba.png)
+:::
+
+:::trainer
+Desenează curba fără nume de etape. Cere grupului să le numească.
+Dacă grupul tace: un exemplu personal scurt, apoi întreabă din nou.
+:::
+```
+Modulul `curba` devine: antetul (titlu, ancora, schita, `piese: { implicite: [model-curba, perechi-curba], alternative: [plimbare-curba, poveste-fuziune] }`), întrebarea de deschidere, `::piese` și debrief-ul.
+
+#### Banca devine „Biblioteca de piese”
+Aceeași vedere refăcută de Ioana (listă compactă, căutare, filtre-chip), cu **un rând nou de chip-uri pe familie și tip** (conținut, activitate, punte), primul în ordine. Filtrele `format` și `energie` se aplică doar activităților. Numele afișat îl confirmă Maria; în cod rămâne `piese`.
+
+#### Ce verifică în plus build-ul
+Se oprește dacă:
+- un id e folosit și de un modul, și de o piesă;
+- `tip` e în afara listei;
+- o activitate nu are `format` sau `energie`;
+- un rând din agendă trimite la `comun/…` înainte să existe biblioteca comună;
+- un modul are și `exercitii`, și `piese` (rămas de la v1.1).
+
+#### Cât costă și ce recomand
+| | Ce înseamnă în generatorul lui Mike (`curs/lib/sursa.mjs`, `trainer.mjs`, `prezinta.js`) | Estimare |
+|---|---|---|
+| **Minim, pentru 23** | redenumirea `exercitii` → `piese` (folder, câmp, marcaj; există doar conținut de exemplu); lista nouă de `tip` și lumile Ive; rândul „piesă singură” în agendă (desfășurător, schiță, ecrane, export); filtrul pe tip în Bibliotecă; testele | 4–6 ore, risc mic: aceleași straturi, aceleași ecrane, aceeași agendă; codul are deja `desfasoara()` pentru piese în module |
+| **După 25** | biblioteca comună `privat/piese/` cu `comun/<id>`; mutarea conținutului din corpurile modulelor în piese; drag and drop; „folosită în cursurile…” | 1–2 zile, fără grabă |
+
+**Recomandarea mea:** facem varianta minimă acum, cu termen miercuri 18 seara. Conținutul real încă nu există, deci acum e momentul cel mai ieftin. Dacă până miercuri seara nu e gata și testată, înghețăm formatul v1.1 pentru 23 și facem schimbarea după 25. Conținutul scris între timp se mută cu o simplă redenumire.
+
 ---
 
 ## 2. Cum se leagă de ce există
@@ -429,3 +520,4 @@ Taste simple: săgeți sau telecomanda de prezentare pentru ecranul următor, `C
 | 2026-11-17 | Alex a cerut cele trei ieșiri. Radu a scris propunerea v0, fără nimic construit. |
 | 2026-11-17 | v1: Alex a precizat că materialul trainerului trebuie să poată fi prezentat (pe tot ecranul sau într-o fereastră), cu exercițiile pentru sală, care nu intră în cursul online. Am adăugat straturile `:::sala` și `:::sala-si-curs`, modul Prezintă (4.2), rolul nou al slide-urilor Ive (2.2), verificările noi (1.6), calendarul și deciziile actualizate. |
 | 2026-11-17 | v1.1: D-048–D-051 aprobate. Alex a aprobat formatul pentru banca de exerciții (I-021): secțiunea 1.8, agenda în ediție (înlocuiește `sari_peste`), `durata` modulului fără exerciții, exemplul cu exercițiu implicit și alternativ, verificările noi. Editorul cu drag and drop vine după 23. |
+| 2026-11-17 | v1.2: întrebarea lui Alex despre modularitate. Secțiunea 1.9 propune piesa de workshop ca unitate de bază (conținut, activitate, punte), modulul ca secvență subțire, piese locale pe curs acum și bibliotecă comună după 25, piese singure în agendă. De decis de Alex. |

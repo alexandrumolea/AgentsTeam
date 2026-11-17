@@ -25,6 +25,7 @@ Păstrează sub 150 de rânduri. Comprimă când crește. Fapte, nu povești.
 
 ## Ce a mers / ce nu
 - 2026-11-17: când Alex spune „material”, întreabă cum îl folosește în sală (citit, prezentat, pe hârtie). V0 a ratat prezentarea.
+- 2026-11-17: Alex gândește în piese reutilizabile (exerciții, conținut). Proiectează unitatea cea mai mică reutilizabilă de la început, nu doar pentru exerciții.
 - 2026-11-17: la cursuri, separă conținutul reutilizabil (curs) de livrare (ediție); clientul stă doar în ediție, privat.
 - 2026-11-15: cerințele lui Alex vin în rafale în aceeași sesiune. Scrie scheletul devreme, apoi integrează; verifică ID-urile libere chiar înainte de scriere (Maria a luat D-025, D-027).
 - 2026-11-15: împărțirea cu Maria merge: ea numele și textele, eu structura și adresele. Preiau formatele ei (Knowledge, povești) ca schelet, nu le dublez.
