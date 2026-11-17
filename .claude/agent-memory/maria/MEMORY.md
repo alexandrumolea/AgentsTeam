@@ -17,9 +17,12 @@ Păstrează sub 150 de rânduri. Comprimă când crește. Fapte, nu povești.
 ## Ce a mers / ce nu
 - 2026-11-15: research scurt cu surse citite a fost suficient; sursele vendor le marchez ca atare.
 - 2026-11-15: Tudor trimite semnale noi de la Alex în timpul sarcinii; le integrez în același document, nu fac versiuni noi.
+- 2026-11-17: înainte să scriu despre un brand, citesc ultimele rânduri din `docs/decizii.md` și `docs/taskuri.md`: deciziile apar în alte sesiuni în aceeași zi (D-055 a apărut în timp ce lucram). ID-urile de task se iau după ultimul din tot fișierul, nu după ordinea rândurilor.
+- 2026-11-17: D-054 a mutat esteticul pe Sora + Liquid Glass; în `vocea-alex` păstrez doar regulile pentru cuvinte, valorile vizuale stau în manualul Ioanei.
 
 ## Proiecte
 - [Inspirație și invenții](project_inspiratie.md) — obiectivul 2; constructorul cu unealta, 3 piloni; Atelier = tot site-ul
+- 2026-11-17: [Arhitectura de brand](project_arhitectura_brand.md) — I-022: un brand pe material; deschis: Sora = Alex sau BEMORE (D-055)
 - 2026-11-15: [Knowledge, Live, povești](project_knowledge_live_povesti.md) — Invenții/Live/Ce m-a crescut/Învață, D-025, I-010–I-012; misiunea D-026/D-027
 
 ## Deschis

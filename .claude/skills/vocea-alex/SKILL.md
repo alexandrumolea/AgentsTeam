@@ -20,7 +20,7 @@ description: Profilul, personalitatea și vocea publică a lui Alex. Folosește-
 - 2026-11-15: E sursa din care pornește tot: coaching, business-uri, invenții, Învață, poveștile. Orice text public trebuie să poată fi legat de ea.
 - 2026-11-15: Cuvintele lui se citează exact. Formulările scurte pentru site le propune Maria (taskul T-010), iar Alex le aprobă.
 - 2026-11-15: Imagini-cheie din cuvintele lui: **poduri** (educația), **monștri** (necunoscutul), **perspective** (ce nu putem vedea), **gap-uri** între oameni.
-- 2026-11-15: Reguli de folosire (propunere Maria, D-027, de confirmat): citatul intact în cel mult două locuri (intrarea în atelier și pagina Despre). „Poduri” nu apare niciodată fără „monștri”. Monștrii sunt ai necunoscutului, nu ai oamenilor; misiunea nu se folosește pe subiecte politice. Detalii: `team/maria/documente/misiunea-v0.md`.
+- 2026-11-15: Reguli de folosire (propunere Maria, D-027, de confirmat): citatul intact în cel mult două locuri (intrarea în atelier și pagina Despre). „Poduri” nu apare niciodată fără „monștri”. Monștrii sunt ai necunoscutului, nu ai oamenilor; misiunea nu se folosește pe subiecte politice. Detalii: `team/maria/documente/arhiva/misiunea-v0.md`.
 
 ## Cine e Alex (pe scurt)
 - 2026-11-15: **Alex e un „curious mind”** (cuvintele lui). Curiozitatea e o trăsătură de bază: explică invențiile, atelierul deschis și dorința de a vedea din alte perspective. Ideea lui: poate site-ul se adresează explicit „curious minds”. Decizia îi aparține Mariei (T-016).
@@ -49,17 +49,25 @@ description: Profilul, personalitatea și vocea publică a lui Alex. Folosește-
 - Cuvinte de evitat: jargon corporate gol („sinergie”, „holistic” fără conținut), superlative fără dovezi.
 
 ## Esteticul vizual (referință pentru Ioana)
-> Detaliile vizuale sunt ale Ioanei (`team/ioana/documente/directii-v1.md`). Aici e doar ce trebuie să știe oricine scrie sau decide în numele lui Alex.
+> Detaliile vizuale sunt ale Ioanei. Sursa unică de acum: manualul de brand, skill-ul `brand-alex` (în curs, I-022), din `team/ioana/documente/manual-brand-v1.md` (vizual) și `team/maria/documente/manual-brand-pozitionare-v1.md` (poziționare și arhitectura de brand). Valorile de culoare stau doar acolo. Aici e doar ce trebuie să știe oricine scrie sau decide în numele lui Alex.
 
-- 2026-11-15: **Direcția aprobată e Spațiu** (D-023). Site-ul e un atelier în spațiu: o scenă 3D în care invențiile lui Alex sunt obiecte de sticlă care se desfac strat cu strat, ca un desen tehnic în explozie. Ideea din spate: „Construiesc lucruri și îți arăt cum funcționează pe dinăuntru.” Alex: „Mă inspiră varianta spațială. Pe direcția aceea vom merge.”
-- 2026-11-15: **Regula lui Alex: inovație și viitor, nu banal.** A respins prima rundă („calm, premium”): „prea banale. Nu-mi transmite inovație. Nu-mi transmite viitor.” Testul pentru orice propunere: *ar putea face asta un template bun din 2024?* Dacă da, nu e destul.
-- 2026-11-15: **Ce înseamnă pentru cuvinte.** Textele pot fi mai îndrăznețe și mai precise, dar viitorul îl arată lucrul, nu adjectivele. Fără „futurist”, „next-level”, „revoluționar”. Cuvintele de spațiu („orbită”, „galaxie”, „univers”) intră în texte doar dacă explică ceva; altfel brandul devine un joc. Metafora de brand rămâne **atelierul**; spațiul e felul în care arată.
-- 2026-11-15: **Liquid Glass rămâne doar ca material** (panourile, sticla invențiilor), nu ca stil general. Textul stă pe suprafețe solide (D-004, D-011).
-- Business-urile au identități proprii (vezi skill-urile `innersis-ive` și `bemore-ls-ive`). Site-ul personal le prezintă, nu le copiază.
-- Înlocuit pe 2026-11-15 de D-023 (păstrat ca istoric): ~~„Site personal: Liquid Glass în stil Apple, calm, premium, multă respirație.”~~ (de la kickoff, 2026-11-15)
+- 2026-11-17: **Decis (D-054): fontul Sora, paleta Sora și stilul Liquid Glass**, pe tot site-ul. Prima pagină e **„Sticlă colorată”** (design v3.1): gradientul Sora trece din fundal în obiectele care se mișcă. Alex: „Scenă colorată ca design. Love it.” și „Sora îmi place ca font, e mai modern. Îmi place paleta sora.” Sage: doar în lecție, de confirmat. Detalii: `team/ioana/documente/design-v3.md`.
+- 2026-11-17: **De confirmat: al cui e sistemul Sora.** D-055: workshop-urile din 23 și 25 sunt în „noul Branding BEMORE” pe care îl definește Ioana. Nu e clar dacă Sora e brandul personal al lui Alex sau noul branding BEMORE, folosit și pe site. Variantele: `manual-brand-pozitionare-v1.md`, secțiunea 2. Până răspunde Alex, nu scrie public că Sora e „brandul BEMORE”.
+- 2026-11-17: **Liquid Glass e acum stilul site-ului**, nu doar un material: panouri de sticlă pe navigare și carduri. Textul nu stă niciodată direct pe gradient, ci pe sticlă aproape plină.
+- 2026-11-17: **Esență, nu elemente.** Alex: „Una e inspirat din esența unor ateliere și showroom-uri, alta e să pui elemente din ele.” Păstrăm lumina, spațiul, ordinea, un singur lucru important pe ecran; nu desenăm mobilier, rafturi sau plante. Metafora rămâne în obiectele-simbol (Innovations), nu în decor.
+- 2026-11-17: **Reperele lui Alex pentru cum se simte site-ul:** un **atelier de arhitect, schițat** (nu de artist), luminos, minimalist, ușor industrial; un **spațiu de wellness al minții**, unde omul „este pe mâini bune”; o **bibliotecă foarte modernă**; un **showroom**. Și: **„mai aerisit”** (mai puține lucruri deodată, mai mult spațiu), fără să piardă ce e compact, interactiv și dinamic. Citatele întregi: `team/ioana/documente/design-v2.md`.
+- 2026-11-17: **Ce înseamnă pentru cuvinte.** Textele urmează aceeași regulă: esența, nu decorul. Puține cuvinte pe ecran, o idee pe panou, ton liniștit („pe mâini bune”), fără urgență. Cuvintele „atelier”, „bibliotecă”, „showroom” nu se pun în texte ca să descrie designul; ele sunt repere pentru echipă.
+- 2026-11-15: **Regula lui Alex: inovație și viitor, nu banal.** A respins prima rundă („calm, premium”): „prea banale. Nu-mi transmite inovație. Nu-mi transmite viitor.” Testul pentru orice propunere: *ar putea face asta un template bun din 2024?* Dacă da, nu e destul. (Rămâne valabilă.)
+- 2026-11-15: **Ce înseamnă pentru cuvinte (inovație).** Viitorul îl arată lucrul, nu adjectivele. Fără „futurist”, „next-level”, „revoluționar”. Cuvintele de spațiu („orbită”, „galaxie”, „univers”) intră în texte doar dacă explică ceva. Metafora de brand rămâne **atelierul**. (Rămâne valabilă.)
+- Business-urile au identități proprii (`innersis-ive`, `bemore-ls-ive`, `wise-critical-path`). Site-ul personal le prezintă, nu le copiază. 2026-11-17: când un material poartă brandul lui Alex și când al unui business: `manual-brand-pozitionare-v1.md`, secțiunile 2 și 3.
+
+**Istoric (nu mai e valabil):**
+- ~~2026-11-15: „Direcția aprobată e Spațiu (D-023). Site-ul e un atelier în spațiu”, pe fond întunecat.~~ Aspectul e înlocuit pe 2026-11-17 de D-054: site luminos, sticlă colorată. Ce rămâne din D-023: scena cu obiectele-simbol care se desfac strat cu strat („Desfă inovația”) și ideea „Construiesc lucruri și îți arăt cum funcționează pe dinăuntru.”
+- ~~2026-11-15: „Liquid Glass rămâne doar ca material (panourile, sticla invențiilor), nu ca stil general.”~~ Înlocuit pe 2026-11-17 de D-054: Liquid Glass e stilul. Rămâne doar regula textului pe suprafață solidă.
+- ~~„Site personal: Liquid Glass în stil Apple, calm, premium, multă respirație.”~~ (de la kickoff, 2026-11-15; înlocuit pe 2026-11-15 de D-023)
 
 ## Intenția de a inspira (de confirmat)
-> Ipoteză propusă de Maria pe 2026-11-15. Detalii: `team/maria/documente/inspiratie-v0.md`. Nu o trata ca fapt până nu confirmă Alex.
+> Ipoteză propusă de Maria pe 2026-11-15. Detalii: `team/maria/documente/arhiva/inspiratie-v0.md`. Nu o trata ca fapt până nu confirmă Alex.
 - Alex inspiră ca **constructorul care îți pune unealta în mână**: intri prin întrebarea potrivită, pleci cu ceva ce poți încerca azi.
 - Inspirație = o posibilitate nouă + un pas concret. Fără pasul concret, e motivațional gol.
 - Testul oricărui text: „Și ce fac cu asta azi?”
@@ -94,3 +102,4 @@ description: Profilul, personalitatea și vocea publică a lui Alex. Folosește-
 - 2026-11-15: adăugată secțiunea „Knowledge, Live și poveștile” (de confirmat), din ideile I-010, I-011, I-012.
 - 2026-11-15: adăugate primele exemple aprobate de Alex: introducerea din prototipuri și metafora „atelierul meu de inovație, work & living”.
 - 2026-11-15: T-010: reguli de folosire a misiunii (de confirmat); completarea hero retrasă în favoarea misiunii.
+- 2026-11-17: I-022: „Esteticul vizual” actualizat cu D-054 (Sora, Liquid Glass, „Sticlă colorată”) și reperele lui Alex (esență, nu elemente; atelier de arhitect schițat; wellness al minții; bibliotecă modernă; showroom; mai aerisit). Aspectul Spațiu (fond întunecat) și „Liquid Glass doar ca material” trecute la istoric; scena cu obiectele-simbol rămâne. Trimitere la manualul de brand (`brand-alex`).

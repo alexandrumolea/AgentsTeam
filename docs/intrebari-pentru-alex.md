@@ -77,3 +77,10 @@
 
 ## Coaching (adăugat 2026-11-16)
 45. **Cum se programează prima conversație gratuită?** Un link de rezervare (de exemplu Cal.com, Calendly sau programările din Google Calendar). Fără el, pe site nu apare butonul de rezervare.
+
+## Brand (adăugat 2026-11-17, pentru Maria, manualul de brand I-022)
+46. **Designul Sora (D-054) e noul branding BEMORE sau doar brandul tău personal?** Maria recomandă: e noul branding BEMORE, folosit și pe site-ul tău, ca owner. Deblochează T-028 (ecranele din 23 și 25).
+47. **Ce se întâmplă cu BEMORE Learning Studio și cu skill-ul `bemore-ls-ive`?** Despre spune „Founder BEMORE LS 2013–2025”, iar D-047 „BEMORE owner”.
+48. **Cursurile tale (I-018, cursurile online I-020): sub BEMORE sau sub numele tău?**
+49. **Intro-ul spune „coach, fondator și inventator”, Despre spune „Systemic Coach & Team Coach”.** Le aliniem? Cum vrei să te prezinți în prima propoziție?
+50. **Logo-urile Innersis, Wise Teams și LIFT:** avem acordul lor să le arătăm pe site? Au un ghid de brand pe care să ni-l dea?
