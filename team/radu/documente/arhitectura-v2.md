@@ -209,7 +209,7 @@ Am cântărit trei variante:
 **Recomandarea: intrarea + firul, fără pagină proprie.**
 1. **La intrare (pagina principală):** inscripția propusă de Maria (D-027): „Necunoscutul creează monștri. Educația creează poduri.”, sub introducere. Nu e un pas: nu se dă click, nu ascunde nimic.
 2. **În Despre:** misiunea întreagă, ordonată pentru citit (D-027), ca secțiune. Despre e deja la o interacțiune de oriunde (numele din titlu). `/misiune` duce aici.
-3. **Firul prin camere:** fiecare cameră are, în antetul paginii și în panoul din spațiu, **o propoziție despre podul pe care îl construiește**. Maria le-a scris deja (`team/maria/documente/misiunea-v0.md`, secțiunea 3); ele sunt conținutul câmpului. Câmp în `categorii.yml`: `pod` (o propoziție, opțional pentru drumurile directe).
+3. **Firul prin camere:** fiecare cameră are, în antetul paginii și în panoul din spațiu, **o propoziție despre podul pe care îl construiește**. Maria le-a scris deja (`team/maria/documente/arhiva/misiunea-v0.md`, secțiunea 3); ele sunt conținutul câmpului. Câmp în `categorii.yml`: `pod` (o propoziție, opțional pentru drumurile directe).
 4. **Business-urile și coaching-ul:** fiecare fișier din `content/business/` (și `coaching.md`) primește câmpul `pod`. Rândurile Mariei sunt punctul de plecare, multe încă „de confirmat” de Alex: ce pod construiește business-ul (între cine și cine, ce perspectivă deschide). Se afișează pe pagina business-ului și în panoul „Compania mea”. Așa cele 4 business-uri se citesc ca un singur fir, nu ca 4 firme.
 
 **Câmpul opțional pentru invenții, lecții și povești: `pod`.** Trece testul de simplitate doar în forma asta:

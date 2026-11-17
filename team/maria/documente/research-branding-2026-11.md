@@ -1,6 +1,6 @@
 # Research branding — noiembrie 2026
 
-> Autor: Maria. Dată: 2026-11-15. Scop: input pentru `team/maria/documente/inspiratie-v0.md` (obiectivul 2 din charter: site care inspiră și ajută la descoperire).
+> Autor: Maria. Dată: 2026-11-15. Scop: input pentru `team/maria/documente/arhiva/inspiratie-v0.md` (obiectivul 2 din charter: site care inspiră și ajută la descoperire).
 > Research scurt, nu exhaustiv. Sursele sunt verificate (citite), dar sunt mai ales practicieni, nu studii.
 
 ## 1. Pagina „/now” (Derek Sivers)

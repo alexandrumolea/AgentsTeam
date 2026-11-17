@@ -322,4 +322,4 @@ Trei idei consacrate printre creatorii care învață și lucrează la vedere. S
 - **Grădina digitală** (Maggie Appleton): note legate între ele, organizate pe teme, nu pe dată, cu stadii de maturitate și fără pretenția că sunt terminate. Sursa pentru stadiile din Knowledge. [maggieappleton.com/garden-history](https://maggieappleton.com/garden-history)
 - **„Learn in public”** (swyx): să împărtășești constant ce înveți, ca să construiești o arhivă utilă și să atragi oameni care te ajută. Sursa pentru drumul Live → Învață. [swyx.io/learn-in-public](https://www.swyx.io/learn-in-public)
 - Pagina „/now” (Derek Sivers), din research-ul lunii: `team/maria/documente/research-branding-2026-11.md`. Relevantă pentru suprapunerea Live / Acum.
-- Context intern: `team/ioana/documente/directii-v1.md` și `prototip-v1-spatial.html` (D-023), `team/tudor/documente/idee-I-001-echipa-la-vedere.md`, `team/maria/documente/inspiratie-v0.md`.
+- Context intern: `team/ioana/documente/arhiva/directii-v1.md` și `prototip-v1-spatial.html` (D-023), `team/tudor/documente/idee-I-001-echipa-la-vedere.md`, `team/maria/documente/arhiva/inspiratie-v0.md`.

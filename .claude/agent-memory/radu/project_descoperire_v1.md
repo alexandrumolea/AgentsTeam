@@ -9,7 +9,7 @@ Adăugat: 2026-11-15
 
 Alex a cerut (2026-11-15) ca site-ul să inspire și să-i expună pe oameni la invențiile lui (cursuri, apps, tool-uri). Constrângerea de la Tudor: descoperirea vine în plus, nu ca ocol; orice intenție principală rămâne în max. 2 click-uri.
 
-Propunere v1 (`team/radu/documente/arhitectura-v1.md`, status: de aprobat de Alex):
+Propunere v1 (`team/radu/documente/arhiva/arhitectura-v1.md`, status: de aprobat de Alex):
 - 4 mecanisme: banda „Nou” sub cardurile de intenție, recomandări din etichete de nevoie după CTA, vitrina `/creatii`, abonare la lansări.
 - `content/lansari/` înlocuiește `content/tools/` din v0: un singur model pentru toate invențiile.
 - Taxonomie de 8 nevoi în `content/nevoi.yml`, toate ipoteze.

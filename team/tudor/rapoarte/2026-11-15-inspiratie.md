@@ -14,10 +14,10 @@
 - **Drumurile directe nu se lungesc.** Coaching, business, speaking, carte și despre rămân la 1–2 click-uri.
 
 ## Ce ai de ales
-1. **Direcția vizuală.** Deschide `team/ioana/documente/mock-descoperire.html` și folosește comutatorul din bara de sus.
+1. **Direcția vizuală.** Deschide `team/ioana/documente/arhiva/mock-descoperire.html` și folosește comutatorul din bara de sus.
    - **A. Galerie calmă:** liniște, imagini mari, puțină sticlă. Recomandarea Ioanei, cu statusurile și jurnalul de lansări luate din B.
    - **B. Laborator viu:** energie, procesul vizibil, jurnal de lansări. Potrivită dacă lansezi lunar sau mai des.
-2. **Numele.** „Atelier” și „Nou în atelier” (Maria), sau altele. Maria are 7 variante în `team/maria/documente/inspiratie-v0.md`.
+2. **Numele.** „Atelier” și „Nou în atelier” (Maria), sau altele. Maria are 7 variante în `team/maria/documente/arhiva/inspiratie-v0.md`.
 3. **Cele 8 nevoi** după care se filtrează totul: claritate, focus, obiceiuri, carieră, comunicare, leadership, echipă, dezvoltarea oamenilor. Ce lipsește? Ce nu ți se potrivește?
 
 ## Am nevoie de la tine

@@ -16,7 +16,7 @@
 
 **Riscul Netlify Free:** 300 de credite pe lună. Un deploy în producție costă 15 credite, iar traficul 20 de credite pe GB. Asta înseamnă cam 10–15 publicări pe lună plus traficul unui site mic. Ce se întâmplă când se termină creditele nu scrie pe pagina de prețuri (de verificat). Dacă Alex publică des, trecem pe Cloudflare Pages, nu pe un plan plătit.
 
-**Cum respectă stack-ul modelul lui Radu** (`team/radu/documente/arhitectura-v1.md`):
+**Cum respectă stack-ul modelul lui Radu** (`team/radu/documente/arhiva/arhitectura-v1.md`):
 - `content/nevoi.yml` devine o colecție Astro, încărcată cu `file()` (citește YAML).
 - `content/lansari/*.md` are o schemă: `tip` dintr-o listă fixă, `nevoi` = 1–3 referințe la `nevoi.yml`, `business` = referință la `content/business/`.
 - „Etichetă greșită = build oprit”: Astro dă eroare la un fișier care încalcă schema. Documentația nu spune explicit că o referință spre o etichetă inexistentă oprește build-ul. O testez la primul prototip; dacă nu, adaug o verificare de 10 rânduri în schemă.

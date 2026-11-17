@@ -7,7 +7,7 @@ metadata:
 Adăugat: 2026-11-15
 
 
-Livrat 2026-11-15: `team/ioana/documente/descoperire-v0.md` + `mock-descoperire.html`.
+Livrat 2026-11-15: `team/ioana/documente/arhiva/descoperire-v0.md` + `mock-descoperire.html`.
 **Ce rămâne valabil:** mecanismele UX: descoperirea stă după drumul direct, nevoia e titlul cardului, „Nou” calculat din `data_lansare`, recomandări cu motiv vizibil, diagnostic fără email.
 **Ce a fost respins:** direcțiile vizuale A („Galerie calmă”) și B („Laborator viu”). Alex: „prea banale, nu transmit inovație, nu transmit viitor”. Le-au înlocuit [[project-directii-v1]].
 

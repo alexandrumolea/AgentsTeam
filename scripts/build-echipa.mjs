@@ -135,7 +135,7 @@ const short = (s, max = 150) => {
 const warnings = [];
 
 const decRows = rowsAt("docs/decizii.md").filter((x) => /^D-\d+/.test(x.c[0]));
-decRows.forEach(({ c }) => { if (!isPending(c[5]) && !/activ|aprobat|respins/i.test(c[5])) warnings.push(`${c[0]}: status necunoscut „${c[5]}”`); });
+decRows.forEach(({ c }) => { if (!isPending(c[5]) && !/activ|aprobat|respins|înlocuit|amânat|anulat|închis/i.test(c[5])) warnings.push(`${c[0]}: status necunoscut „${c[5]}”`); });
 const pendingDec = decRows.filter(({ c }) => isPending(c[5])).sort((a, b) => b.c[0].localeCompare(a.c[0])); // cele mai noi întâi
 
 const qFile = "docs/intrebari-pentru-alex.md";

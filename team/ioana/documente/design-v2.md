@@ -2,7 +2,7 @@
 
 Autor: Ioana. Data: 2026-11-17. Status: propunere, Alex alege (nivel 2).
 Pagina de comparat: [design-v2.html](design-v2.html), cu designul, pagina (prima pagină, Compania mea, lecție), ecranul (desktop, telefon) și „Azi / Aerisit” pe prima pagină. Nimic din `site/` sau `content/` nu s-a schimbat.
-Înlocuiește variantele din [culori-v1.md](culori-v1.md); diagnosticul și regulile de sens pentru statusuri de acolo rămân valabile.
+Înlocuiește variantele din [culori-v1.md](arhiva/culori-v1.md); diagnosticul și regulile de sens pentru statusuri de acolo rămân valabile.
 
 ## Jurnal
 - **2026-11-17, v2.0:** trei design-uri (A Amalfi, B Planșa, C Lămâia).
@@ -243,4 +243,4 @@ Hârtia caldă de azi se potrivește cu travertinul: `warm-bg: "#EFEAE0"`, `warm
 - Inter Tight (SIL Open Font License): https://fonts.google.com/specimen/Inter+Tight
 - View Transitions API (pentru tranzițiile din C): https://developer.mozilla.org/en-US/docs/Web/API/View_Transition_API
 - Three.js `EdgesGeometry` (pentru scena-desen din B): https://threejs.org/docs/#api/en/geometries/EdgesGeometry
-- De ce lecțiile pe fundal deschis: sursele din [culori-v1.md](culori-v1.md).
+- De ce lecțiile pe fundal deschis: sursele din [culori-v1.md](arhiva/culori-v1.md).
