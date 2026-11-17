@@ -10,3 +10,5 @@ dist/
 
 # Conținutul real al cursurilor (D-050): doar local, până la repo-ul privat
 privat/
+# Copiile de siguranță ale editorului local de curs (1.11)
+.editor-istoric/
