@@ -40,6 +40,7 @@ Varianta text: **Diagnosticare** (la fiecare ediție) → [ **Research → Obiec
 ## Două piese pe care le are orice curs
 - **Contractul.** E o piesă `contract` (tip `deschidere`), făcută după un șablon comun: de ce suntem aici, cum lucrăm, ce rămâne în sală, ce ne cerem unii altora. Se personalizează pentru fiecare curs.
 - **Closing-ul.** Piesele de tip `inchidere` se aleg dintr-un set predefinit. Fiecare are ecranele gata, în `:::sala`, deci se pun direct în agendă.
+  Întrebările de closing nu sunt fixe: Daria le adaptează la curs și la grup, pentru că nu au mereu sens așa cum sunt (Alex, 2026-11-17). Structura piesei rămâne, întrebările se potrivesc.
 - Daria scrie acum primele piese: contractul și trei closing-uri. Ele sunt primii candidați pentru biblioteca comună `comun/`, după 25 noiembrie.
 
 ## Șablonul pentru feedbackul trainerului (`editii/<data>-trainer.md`)
