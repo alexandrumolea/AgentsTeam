@@ -8,7 +8,7 @@
     "build": "node build.mjs",
     "exemplu": "node build.mjs exemple/change-agility-exemplu --pdf",
     "test": "node --test teste/verificari.test.mjs teste/editor.test.mjs",
-    "test:chrome": "node teste/chrome-prezinta.mjs && node teste/chrome-imagini.mjs && node teste/chrome-ecrane.mjs && node teste/chrome-editor.mjs",
+    "test:chrome": "node teste/chrome-prezinta.mjs && node teste/chrome-imagini.mjs && node teste/chrome-ecrane.mjs && node teste/chrome-editor.mjs && node teste/chrome-live.mjs",
     "editor": "node editor.mjs"
   },
   "engines": {

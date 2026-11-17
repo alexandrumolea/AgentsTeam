@@ -15,12 +15,12 @@ const CHROME = ['/Applications/Google Chrome.app/Contents/MacOS/Google Chrome', 
 export function build(folder, { editie, out, pdf = false, log = console.log } = {}) {
   const c = citesteCurs(resolve(folder), { editie });
   const erori = [...c.erori];
-  let exp, html, ascunse = 0;
+  let exp, html, ascunse = 0, nrEcrane = 0;
   if (!erori.length) {
     exp = construiesteExport(c);
     erori.push(...verificaExport(exp, c));
     const ec = pregatesteEcrane(c); // ordinea și ascunderea din ediție (1.10); o greșeală oprește build-ul
-    erori.push(...ec.erori); c.avertismente.push(...ec.avertismente); ascunse = ec.ecrane.filter((x) => x.ascuns).length;
+    erori.push(...ec.erori); c.avertismente.push(...ec.avertismente); ascunse = ec.ecrane.filter((x) => x.ascuns).length; nrEcrane = ec.ecrane.length;
     html = construiesteTrainer(c, ec.ecrane);
   }
   for (const a of c.avertismente) log(`  atenție: ${a}`);
@@ -38,7 +38,7 @@ export function build(folder, { editie, out, pdf = false, log = console.log } = 
   writeFileSync(fHtml, html);
   const fisiere = [fJson, fHtml];
   if (pdf) fisiere.push(...pdfuri(fHtml, dir, slug, log));
-  const ecrane = (html.match(/"fel":"/g) || []).length;
+  const ecrane = nrEcrane;
   const n = (fel) => c.agenda.filter((r) => r.fel === fel).length;
   const t = c.total, ramas = t.ramas == null ? '' : t.ramas >= 0 ? `, rămân ${t.ramas} min` : `, depășire ${-t.ramas} min`;
   log(`\nGata: ${c.curs.titlu}${c.editie.data ? `, ediția ${c.editie.data}` : ''}. Agenda: ${n('modul')} module (din ${c.module.length}), ${n('piesa')} piese singure, ${n('pauza')} pauze; total ${t.agenda} min${ramas}. ${c.piese.size} piese în bibliotecă; ${ecrane} ecrane în sală${ascunse ? ` (${ascunse} ascunse)` : ''}; tema ${caleTema(c.curs.brand).split('/').pop()}.`);

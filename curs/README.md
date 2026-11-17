@@ -59,6 +59,15 @@ Doar în cursul online.
 
 Primul ecran al fiecărui modul (numărul și titlul) se face singur. O pauză primește automat un cronometru cât durata ei.
 
+### „Prezintă” din Bibliotecă (1.12, Alex, 2026-11-17)
+
+- Fiecare piesă din Biblioteca de piese are **Prezintă**, și alternativele care nu sunt în agendă. Ecranele piesei intră imediat după ecranul de acum, iar prezentarea sare la primul; după ultimul ecran al piesei, continuă de unde ai rămas. Dacă piesa e deja în prezentare (în agendă sau adăugată live), doar sare la ea.
+- Fără fereastra sălii deschisă, piesa e pregătită ca ecran următor, iar pagina propune „Deschide ecranul din sală” sau „Prezintă aici”.
+- Ecranele adăugate sunt marcate **„adăugat live”** în ecranul de comandă, în banda zilei și în vederea Ecrane (cu **Scoate**). Totalul zilei din Ziua și Schiță crește cu durata piesei și spune cât e adăugat live.
+- Se salvează în browser, cu ordinea și ascunderile (rezistă la refresh); fereastra sălii le primește pe același canal. „Resetează la ordinea din curs” le scoate.
+- **„Copiază pentru ediție”** dă, pe lângă `ecrane:`, toată `agenda:` cu piesele adăugate ca rânduri noi (piese singure), după rândul în care erai, de exemplu `- plimbare-curba   # adăugată live (în sală: după curba#1)`. Lipești blocul în locul agendei din ediție.
+- Build-ul pune în materialul trainerului ecranele tuturor pieselor (`biblioteca`, id-uri `<piesă>~live#n`), ca prezentarea live să meargă fără internet.
+
 ### Editorul local: editezi direct pe ecran (1.11, Alex, 2026-11-17)
 
 **Pornire:** dublu-click pe `curs/Editeaza curs.command` (deschide Terminal și browserul), sau `npm run editor -- <folderul cursului>`. Implicit: `privat/cursuri/change-agility`. Fereastra Terminal rămâne deschisă cât editezi; Ctrl+C sau închiderea ei oprește editorul.

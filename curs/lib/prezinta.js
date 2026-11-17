@@ -10,6 +10,9 @@
   // ECRANE: ce se prezintă acum, în ordinea locală (vederea Ecrane), fără cele ascunse. Toată prezentarea lucrează cu ECRANE.
   var TOATE = DATA.ecrane, ECRANE = TOATE.slice(), DUPA_ID = {};
   for (var ti = 0; ti < TOATE.length; ti++) DUPA_ID[TOATE[ti].id] = TOATE[ti];
+  // Biblioteca (1.12): ecranele fiecărei piese, ca să poată fi prezentată live chiar dacă nu e în agendă (id-uri <piesă>~live#n).
+  var BIB = DATA.biblioteca || {}, BIB_ID = {};
+  Object.keys(BIB).forEach(function (pid) { BIB[pid].ecrane.forEach(function (x) { BIB_ID[x.id] = x; }); });
   var $ = function (id) { return document.getElementById(id); };
   var NUME_SALA = 'sala-' + DATA.curs.slug;
   var CHEIE = 'curs:' + DATA.curs.slug + ':' + (DATA.editie.data || '');
@@ -171,6 +174,8 @@
       arataAscunseAici();
       var e = ECRANE[st.i], m = DATA.module[e.modul];
       $('pozitie').textContent = 'ecranul ' + (st.i + 1) + ' din ' + ECRANE.length;
+      if ($('live-acum')) $('live-acum').hidden = !e.live;
+      if ($('live-urm')) $('live-urm').hidden = !(ECRANE[st.i + 1] && ECRANE[st.i + 1].live);
       $('modul-acum').textContent = m.titlu + (m.start != null ? ' (' + oraDin(m.start) + '–' + oraDin(m.sfarsit) + ')' : '');
       var note = e.note.length ? e.note : [];
       if (!note.length) for (var j = st.i - 1; j >= 0 && ECRANE[j].modul === e.modul; j--) if (ECRANE[j].note.length) { note = ECRANE[j].note; break; }
@@ -220,7 +225,7 @@
       if (ev.source !== window.opener || !ev.data) return;
       var m = ev.data;
       if (m.tip === 'salut') catreComanda({ tip: 'gata' });
-      else if (m.tip === 'ecran') { puneEcran(cadru, DUPA_ID[m.id]); cadru.classList.toggle('negru', !!m.negru); if (cronText != null) arataCron(document, cronText, cronGata); }
+      else if (m.tip === 'ecran') { puneEcran(cadru, DUPA_ID[m.id] || BIB_ID[m.id]); cadru.classList.toggle('negru', !!m.negru); if (cronText != null) arataCron(document, cronText, cronGata); }
       else if (m.tip === 'cron') { cronText = m.text; cronGata = m.gata; arataCron(document, m.text, m.gata); }
     });
     document.addEventListener('keydown', function (ev) {
@@ -302,14 +307,32 @@
   if (MOD_SALA) { modSala(); return; }
 
   // ---------- ordinea și ascunderea ecranelor (vederea Ecrane, 1.10, Alex 2026-11-17) ----------
-  // Starea locală: { ordine: [toate id-urile], ascunse: [id-uri] }, în localStorage (slug + data ediției). Fără ea: ordinea ediției.
+  // Starea locală: { ordine: [toate id-urile], ascunse: [id-uri], live: [{ piesa, dupa }] }, în localStorage (slug + data ediției).
+  // Fără ea: ordinea ediției. `live` = piesele puse din Bibliotecă în timpul zilei (1.12), fiecare după ecranul pe care erai.
   var CHEIE_EC = CHEIE + ':ecrane';
-  var EDITIE_EC = { ordine: TOATE.map(function (x) { return x.id; }), ascunse: TOATE.filter(function (x) { return x.ascuns; }).map(function (x) { return x.id; }) };
+  var EDITIE_EC = { ordine: TOATE.map(function (x) { return x.id; }), ascunse: TOATE.filter(function (x) { return x.ascuns; }).map(function (x) { return x.id; }), live: [] };
+  var RANDURI_AGENDA = DATA.module.length; // rândurile de după acestea în DATA.module sunt piese adăugate live
+  // Ecranele unei piese adăugate live: copii ale ecranelor din Bibliotecă, legate de un rând nou (ora: necunoscută; durata: a piesei).
+  function puneLive(intrare) {
+    var b = BIB[intrare.piesa]; if (!b) return [];
+    var ri = DATA.module.length;
+    DATA.module.push({ id: intrare.piesa, titlu: b.titlu, tip: b.tip, durata: b.durata, start: null, sfarsit: null, live: true, alternative: '' });
+    return b.ecrane.map(function (x) {
+      var y = {}; for (var k in x) y[k] = x[k];
+      y.modul = ri; y.live = intrare; DUPA_ID[y.id] = y; return y;
+    });
+  }
   var ec = citesteEc();
   function citesteEc() {
     try {
       var v = JSON.parse(localStorage.getItem(CHEIE_EC));
       if (!v || !Array.isArray(v.ordine) || !Array.isArray(v.ascunse)) return null;
+      var live = (Array.isArray(v.live) ? v.live : []).filter(function (x) { return x && BIB[x.piesa]; });
+      live.forEach(function (x) {
+        var ids = puneLive(x).map(function (y) { return y.id; });
+        // dacă ordinea salvată nu le are (n-ar trebui), le punem după ecranul din „dupa”
+        if (ids.length && v.ordine.indexOf(ids[0]) < 0) { var k = v.ordine.indexOf(x.dupa); v.ordine.splice.apply(v.ordine, [k + 1, 0].concat(ids)); }
+      });
       // Ecranele care nu mai există dispar; cele noi (o piesă adăugată între timp) intră după vecinul lor din ordinea ediției.
       var ord = [], vazut = {};
       v.ordine.forEach(function (id) { if (DUPA_ID[id] && !vazut[id]) { vazut[id] = 1; ord.push(id); } });
@@ -318,7 +341,7 @@
         var inainte = k > 0 ? ord.indexOf(EDITIE_EC.ordine[k - 1]) : -1;
         ord.splice(inainte + 1, 0, id); vazut[id] = 1;
       });
-      return { ordine: ord, ascunse: v.ascunse.filter(function (id) { return DUPA_ID[id]; }) };
+      return { ordine: ord, ascunse: v.ascunse.filter(function (id) { return DUPA_ID[id]; }), live: live };
     } catch (e) { return null; }
   }
   function stareEc() { return ec || EDITIE_EC; }
@@ -337,14 +360,14 @@
     st.i = Math.max(0, Math.min(noi.length - 1, i < 0 ? st.i : i));
     st.id = ECRANE[st.i].id;
   }
-  function seteazaEc(ordine, ascunse) {
-    ec = { ordine: ordine, ascunse: ascunse };
+  function seteazaEc(ordine, ascunse, live) {
+    ec = { ordine: ordine, ascunse: ascunse, live: live || (stareEc().live || []).slice() };
     try { localStorage.setItem(CHEIE_EC, JSON.stringify(ec)); } catch (e) { /* fără stocare: ține până la închiderea paginii */ }
     dupaSchimbare();
   }
   function dupaSchimbare() {
     var inainte = st.id;
-    aplicaOrdinea(); salveaza(); construiesteBanda(); randeazaGrila();
+    aplicaOrdinea(); salveaza(); construiesteBanda(); randeazaGrila(); arataTotaluri();
     if (st.id !== inainte) mergiLa(st.i); else randeaza();
   }
   function ascunsComuta(id) {
@@ -366,12 +389,64 @@
   function reseteazaEc() {
     ec = null;
     try { localStorage.removeItem(CHEIE_EC); } catch (e) { /* nimic */ }
-    dupaSchimbare(); mesajEc('Ordinea și ecranele ascunse sunt din nou cele din ediție.');
+    dupaSchimbare(); mesajEc('Ordinea, ecranele ascunse și piesele adăugate live sunt din nou cele din ediție.');
   }
+
+  // ---------- „Prezintă” din Bibliotecă (1.12, Alex, 2026-11-17) ----------
+  // Piesa e deja în prezentare (în agendă sau adăugată live)? Sărim la primul ei ecran. Altfel îi punem ecranele imediat după
+  // ecranul de acum și sărim la primul; după ultimul ei ecran, prezentarea continuă de unde a rămas.
+  function prezintaPiesa(pid) {
+    var gasit = -1;
+    for (var k = 0; k < ECRANE.length && gasit < 0; k++) if (ECRANE[k].piesa === pid) gasit = k;
+    if (gasit < 0) {
+      if (!BIB[pid] || !BIB[pid].ecrane.length) return;
+      var s = stareEc(), dupa = (ECRANE[st.i] && ECRANE[st.i].id) || s.ordine[0];
+      var intrare = { piesa: pid, dupa: dupa }, noi = puneLive(intrare).map(function (y) { return y.id; });
+      var ord = s.ordine.slice(), poz = ord.indexOf(dupa);
+      ord.splice.apply(ord, [poz + 1, 0].concat(noi));
+      seteazaEc(ord, s.ascunse.slice(), (s.live || []).concat([intrare]));
+      for (var j = 0; j < ECRANE.length && gasit < 0; j++) if (ECRANE[j].id === noi[0]) gasit = j;
+    }
+    arata('prezinta');
+    mergiLa(gasit);
+    if (!salaDeschisa() && !aici) mesaj('„' + (BIB[pid] ? BIB[pid].titlu : pid) + '” e pregătită ca ecranul următor de prezentat. Deschide ecranul din sală sau alege „Prezintă aici”.', true);
+  }
+  function scoateLive(intrare) {
+    var s = stareEc(), live = (s.live || []).filter(function (x) { return x !== intrare && !(x.piesa === intrare.piesa && x.dupa === intrare.dupa); });
+    var ale = {}; Object.keys(DUPA_ID).forEach(function (id) { var x = DUPA_ID[id]; if (x.live && x.live.piesa === intrare.piesa && x.live.dupa === intrare.dupa) ale[id] = 1; });
+    // Dacă erai pe un ecran al piesei scoase, rămâi pe ecranul după care fusese pusă.
+    if (ale[st.id]) st.id = intrare.dupa;
+    seteazaEc(s.ordine.filter(function (id) { return !ale[id]; }), s.ascunse.filter(function (id) { return !ale[id]; }), live);
+  }
+  // Totalul zilei, cu piesele adăugate live (Ziua și Schița): același text ca la build, plus minutele adăugate.
+  function arataTotaluri() {
+    var T = DATA.total; if (!T) return;
+    var live = (stareEc().live || []).filter(function (x) { return BIB[x.piesa]; });
+    var min = live.reduce(function (a, x) { return a + BIB[x.piesa].durata; }, 0);
+    var l = document.querySelectorAll('.total-zi');
+    if (!min) { for (var u = 0; u < l.length; u++) { if (l[u]._original != null) { l[u].innerHTML = l[u]._original; l[u].className = l[u]._clasa; } } return; }
+    var ag = T.agenda + min, sf = T.sfarsit + min, ramas = T.ziSfarsit != null ? T.ziSfarsit - sf : null;
+    var timp = function (m) { var a = Math.abs(m); return a >= 60 ? Math.floor(a / 60) + ' h' + (a % 60 ? ' ' + (a % 60) + ' min' : '') : a + ' min'; };
+    var stare = ramas == null ? '' : ramas > 0 ? ' · rămân <b>' + timp(ramas) + '</b> până la ' + oraDin(T.ziSfarsit) : ramas === 0 ? ' · ziua e plină exact' : ' · <b>depășire ' + timp(ramas) + '</b>';
+    var html = '<b>Total: ' + timp(ag) + '</b>' + (T.zi != null ? ' din ' + timp(T.zi) + ' (' + T.durataZi + ')' : '') + stare + '. Se termină la ' + oraDin(sf) + '.' +
+      ' <span class="live-semn">din care ' + timp(min) + ' adăugate live: ' + live.map(function (x) { return BIB[x.piesa].titlu.replace(/</g, '&lt;'); }).join(', ') + '</span>';
+    for (var k = 0; k < l.length; k++) {
+      if (l[k]._original == null) { l[k]._original = l[k].innerHTML; l[k]._clasa = l[k].className; }
+      l[k].innerHTML = html;
+      l[k].className = 'total-zi live ' + (ramas == null || ramas > 0 ? 'ramas' : ramas === 0 ? 'plin' : 'depasire');
+    }
+  }
+  document.addEventListener('click', function (ev) {
+    var b = ev.target.closest ? ev.target.closest('[data-prezinta]') : null; if (!b) return;
+    ev.preventDefault(); ev.stopPropagation(); // nu deschide/închide rândul din Bibliotecă
+    prezintaPiesa(b.getAttribute('data-prezinta'));
+  }, true);
+  if ($('btn-scoate-live')) $('btn-scoate-live').addEventListener('click', function () { var x = ECRANE[st.i]; if (x && x.live) scoateLive(x.live); this.blur(); });
   // Blocul YAML pentru ediție: doar mutările (față de ordinea firească a agendei) și ecranele ascunse.
   // Mutările minime: ecranele care nu fac parte din cel mai lung șir păstrat în ordinea firească.
   function yamlEditie() {
-    var s = stareEc(), nat = s.ordine.map(function (id) { return DUPA_ID[id].nat; });
+    var s0 = stareEc(), fara = function (id) { return !DUPA_ID[id].live; };
+    var s = { ordine: s0.ordine.filter(fara), ascunse: s0.ascunse.filter(fara), live: s0.live || [] }, nat = s.ordine.map(function (id) { return DUPA_ID[id].nat; });
     var lung = [], prev = [], capete = [];
     for (var i = 0; i < nat.length; i++) {
       var lo = 0, hi = capete.length;
@@ -383,11 +458,33 @@
     var muta = [];
     for (var m = 0; m < s.ordine.length; m++) if (!pastrat[m]) muta.push(m === 0 ? s.ordine[m] + ' la început' : s.ordine[m] + ' după ' + s.ordine[m - 1]);
     var asc = s.ordine.filter(function (id) { return s.ascunse.indexOf(id) >= 0; });
-    if (!muta.length && !asc.length) return '# Ordinea din curs, nimic ascuns: în ediție nu trebuie scris nimic (sau șterge blocul „ecrane:”).\n';
     var q = function (x) { return '"' + x.replace(/"/g, '\\"') + '"'; };
-    return 'ecrane:\n' +
+    var ecrane = (!muta.length && !asc.length) ? '' : 'ecrane:\n' +
       (muta.length ? '  muta:\n' + muta.map(function (x) { return '    - ' + q(x) + '\n'; }).join('') : '') +
       (asc.length ? '  ascunse:\n' + asc.map(function (x) { return '    - ' + q(x) + '\n'; }).join('') : '');
+    var agenda = agendaCuLive(s0);
+    if (!ecrane && !agenda) return '# Ordinea din curs, nimic ascuns, nimic adăugat: în ediție nu trebuie scris nimic (sau șterge blocul „ecrane:”).\n';
+    return ecrane + agenda;
+  }
+  // Piesele adăugate live devin rânduri de agendă (piese singure), după rândul în care erai când le-ai pus.
+  // Se dă toată agenda, gata de lipit în locul blocului „agenda:” din ediție.
+  function agendaCuLive(s) {
+    var live = (s.live || []).filter(function (x) { return BIB[x.piesa]; });
+    if (!live.length || !DATA.agendaYaml) return '';
+    var rand = function (intrare) { // rândul din agendă după care stă intrarea (urmând lanțul dacă „dupa” e tot un ecran live)
+      var x = DUPA_ID[intrare.dupa], pas = 0;
+      while (x && x.live && pas++ < 50) x = DUPA_ID[x.live.dupa];
+      return x && x.modul < RANDURI_AGENDA ? x.modul : RANDURI_AGENDA - 1;
+    };
+    var primul = function (intrare) { for (var k = 0; k < s.ordine.length; k++) { var y = DUPA_ID[s.ordine[k]]; if (y.live && y.live.piesa === intrare.piesa && y.live.dupa === intrare.dupa) return k; } return 1e9; };
+    var linii = ['# Piesele adăugate live, ca rânduri în agendă. Înlocuiește tot blocul „agenda:” din ediție cu cel de mai jos.', 'agenda:'];
+    for (var r = 0; r < RANDURI_AGENDA; r++) {
+      linii.push('  ' + DATA.agendaYaml[r]);
+      live.filter(function (x) { return rand(x) === r; }).sort(function (a, b) { return primul(a) - primul(b); }).forEach(function (x) {
+        linii.push('  - ' + x.piesa + '   # adăugată live (în sală: după ' + x.dupa.replace(/~live/, '') + ')');
+      });
+    }
+    return linii.join('\n') + '\n';
   }
   function copiazaPentruEditie() {
     var t = $('ec-yaml'), text = yamlEditie();
@@ -412,9 +509,11 @@
       '<div class="cadru ec-mini">' + ecranHtml(x).replace(' data-cron>', '>') + '</div>' + // miniatura arată durata, nu cronometrul viu
       '<div class="ec-info"><span class="ec-nr"></span><span class="semn-mic fel-' + x.fel + '" aria-hidden="true"></span>' +
       '<span class="ec-sursa">' + (x.sursa || x.eticheta).replace(/</g, '&lt;') + '</span>' +
-      (m && m.start != null ? '<span class="ec-ora">' + oraDin(m.start) + '</span>' : '') + '<code class="ec-id">' + x.id + '</code></div>' +
+      (x.live ? '<span class="live-semn">adăugat live</span>' : m && m.start != null ? '<span class="ec-ora">' + oraDin(m.start) + '</span>' : '') + '<code class="ec-id">' + x.id + '</code></div>' +
       '<div class="ec-butoane"><button type="button" data-ec="sus" aria-label="Mută mai devreme">↑</button><button type="button" data-ec="jos" aria-label="Mută mai târziu">↓</button>' +
+      (x.live ? '<button type="button" data-ec="scoate" title="Scoate piesa adăugată live">Scoate</button>' : '') +
       '<button type="button" data-ec="ascunde" class="ec-ascunde"></button></div>';
+    if (x.live) li.classList.add('live');
     hidrateaza(li);
     CARTI[x.id] = li; return li;
   }
@@ -429,10 +528,11 @@
       li.querySelector('.ec-nr').textContent = ascuns ? 'ascuns' : String(++n);
       var b = li.querySelector('.ec-ascunde'); b.textContent = ascuns ? 'Arată' : 'Ascunde'; b.setAttribute('aria-pressed', ascuns ? 'true' : 'false');
       li.setAttribute('aria-label', (ascuns ? 'Ascuns' : 'Ecranul ' + n) + ': ' + DUPA_ID[id].eticheta + ' (' + id + ')');
-      if (k > 0 && DUPA_ID[s.ordine[k - 1]].nat > DUPA_ID[id].nat) mutate++;
+      if (k > 0 && !DUPA_ID[id].live && !DUPA_ID[s.ordine[k - 1]].live && DUPA_ID[s.ordine[k - 1]].nat > DUPA_ID[id].nat) mutate++;
     });
     var st2 = $('ec-stare');
-    if (st2) st2.textContent = n + ' în prezentare' + (s.ascunse.length ? ' · ' + s.ascunse.length + ' ascunse' : '') + (mutate ? ' · ordine schimbată' : '') + (ec ? ' · salvat în acest browser' : '');
+    var nLive = (s.live || []).length;
+    if (st2) st2.textContent = n + ' în prezentare' + (s.ascunse.length ? ' · ' + s.ascunse.length + ' ascunse' : '') + (mutate ? ' · ordine schimbată' : '') + (nLive ? ' · ' + nLive + (nLive === 1 ? ' piesă adăugată' : ' piese adăugate') + ' live' : '') + (ec ? ' · salvat în acest browser' : '');
     if ($('ec-reset')) $('ec-reset').disabled = !ec;
   }
   var gr = $('grila-ecrane');
@@ -440,6 +540,7 @@
     gr.addEventListener('click', function (ev) {
       var b = ev.target.closest('button[data-ec]'); if (!b) return;
       var id = b.closest('.ec-carte').getAttribute('data-id'), k = stareEc().ordine.indexOf(id), a = b.getAttribute('data-ec');
+      if (a === 'scoate') { scoateLive(DUPA_ID[id].live); return; }
       if (a === 'ascunde') ascunsComuta(id); else mutaLa(id, k + (a === 'sus' ? -1 : 1));
       var nou = CARTI[id].querySelector('button[data-ec="' + a + '"]'); if (nou) nou.focus();
     });
@@ -496,6 +597,7 @@
   if ($('btn-ascunde-acum')) $('btn-ascunde-acum').addEventListener('click', function () { ascunsComuta(st.id); this.blur(); });
   if ($('btn-ascunde-urm')) $('btn-ascunde-urm').addEventListener('click', function () { if (ECRANE[st.i + 1]) ascunsComuta(ECRANE[st.i + 1].id); this.blur(); });
   aplicaOrdinea();
+  arataTotaluri();
 
   // ---------- obiectivele zilei: bife locale, în Schiță și în schița ecranului de comandă (niciodată în sală) ----------
   // Cheia: slug + data ediției. Bifele se țin după text, ca o listă reordonată să nu mute bifele pe alt obiectiv.
@@ -543,7 +645,7 @@
     for (var k = 0; k < ECRANE.length; k++) {
       var x = ECRANE[k], nou = k > 0 && ECRANE[k - 1].modul !== x.modul;
       html += (nou ? '<span class="banda-sep" aria-hidden="true"></span>' : '') +
-        '<button type="button" class="banda-p" data-i="' + k + '" title="' + (k + 1) + ' · ' + x.eticheta.replace(/"/g, '&quot;') + '" aria-label="Ecranul ' + (k + 1) + ': ' + x.eticheta.replace(/"/g, '&quot;') + '"><span class="semn-mic fel-' + x.fel + '"></span></button>';
+        '<button type="button" class="banda-p" data-i="' + k + '" title="' + (k + 1) + ' · ' + x.eticheta.replace(/"/g, '&quot;') + '" aria-label="Ecranul ' + (k + 1) + ': ' + x.eticheta.replace(/"/g, '&quot;') + '"' + (x.live ? ' data-live="1"' : '') + '><span class="semn-mic fel-' + x.fel + '"></span></button>';
     }
     banda.innerHTML = html;
   }

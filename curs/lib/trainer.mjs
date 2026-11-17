@@ -37,7 +37,7 @@ export function caleTema(brand) {
 
 const ENERGIE = { calm: 'energie calmă', mediu: 'energie medie', activ: 'energie activă' };
 /** De unde vine un ecran: tipul, titlul și formatul piesei sau ale modulului. */
-const sursaPiesa = (x) => ({ tip: x.tip, titlu: x.titlu, format: x.format });
+const sursaPiesa = (x) => ({ tip: x.tip, titlu: x.titlu, format: x.format, pid: x.id });
 const sursaModul = (m) => ({ tip: m.tip, titlu: m.titlu });
 const sursaDe = (r, s) => (s && s.piesa ? sursaPiesa(s.piesa) : r.fel === 'piesa' ? sursaPiesa(r.piesa) : r.fel === 'pauza' ? { tip: 'pauza', titlu: r.titlu } : sursaModul(r.modul));
 
@@ -99,9 +99,10 @@ export function construiesteEcrane(c) {
   // O piesă folosită de două ori în agendă primește la a doua apariție <piesă>@2. Id-ul nu depinde de ordinea agendei.
   const pune = (ri, id, sursa, continut, cronometru = 0, titlu = false) => {
     const x = ecranul(sursa, continut, cronometru, titlu, c.curs.marca);
-    ecrane.push({ id, modul: ri, sursa: sursa.titlu ?? '', fel: x.fel, eticheta: x.eticheta, html: x.html, cronometru, note: [], ...(titlu ? { titlu: true } : {}) });
+    // piesa: id-ul piesei din care vine ecranul (1.12: „Prezintă” din Bibliotecă sare la ea dacă e deja în agendă)
+    ecrane.push({ id, modul: ri, sursa: sursa.titlu ?? '', fel: x.fel, eticheta: x.eticheta, html: x.html, cronometru, note: [], ...(sursa.pid ? { piesa: sursa.pid } : {}), ...(titlu ? { titlu: true } : {}) });
   };
-  const pauza = (ri, id, titlu, durata) => pune(ri, id, { tip: 'pauza', titlu }, `<h1>${e(titlu)}</h1><p class="ecran-sub">${durata} min</p>`, durata, true);
+  const pauza = (ri, id, titlu, durata, pid) => pune(ri, id, { tip: 'pauza', titlu, pid }, `<h1>${e(titlu)}</h1><p class="ecran-sub">${durata} min</p>`, durata, true);
   const aparitii = new Map();
   let nr = 0, pauze = 0;
   c.agenda.forEach((r, ri) => {
@@ -122,7 +123,7 @@ export function construiesteEcrane(c) {
       if (s.strat === 'sala' || s.strat === 'sala-si-curs') {
         pune(ri, urmatorul(s), sursaDe(r, s), randeaza(s.md), s.atribute.cronometru ?? 0);
       } else if (s.strat === 'piesa-inceput' && s.piesa.tip === 'pauza') {
-        pauza(ri, `${cheie(s)}#pauza`, s.piesa.titlu, s.piesa.durata);
+        pauza(ri, `${cheie(s)}#pauza`, s.piesa.titlu, s.piesa.durata, s.piesa.id);
       } else if (s.strat === 'piesa-inceput' && r.fel === 'piesa' && !s.piesa.segmente.some((x) => x.strat === 'sala' || x.strat === 'sala-si-curs')) {
         pune(ri, `${cheie(s)}#titlu`, sursaPiesa(s.piesa), `<h1>${e(s.piesa.titlu)}</h1>`, 0, true);
       } else if (s.strat === 'trainer') {
@@ -354,7 +355,7 @@ function vedereaBanca(c) {
     return `<details class="ex" id="ex-${e(x.id)}" data-familie="${e(x.familie ?? '')}" data-tip="${e(x.tip)}" data-format="${e(x.format ?? '')}" data-energie="${e(x.energie ?? '')}" data-durata="${x.durata}" data-folosit="${randuriAzi.length ? 1 : 0}" data-module="${mod.map((m) => e(m.id)).join(' ')}" data-etichete="|${x.etichete.map((t) => e(t.cheie)).join('|')}|" data-cauta="${e(cauta)}">
 <summary><span class="ex-rand"><span class="ex-durata"><b>${x.durata}</b> min</span>
 <span class="ex-cap"><span class="ex-titlu">${e(x.titlu)}</span>${x.obiectiv || x.ancora ? `<span class="ex-obiectiv">${e(x.obiectiv || x.ancora)}</span>` : ''}${badgeAzi}${x.etichete.length ? `<span class="ex-etichete">${x.etichete.map((t) => `<button type="button" class="et-chip" data-eticheta="${e(t.cheie)}" title="Arată toate piesele cu eticheta „${e(t.text)}”">${e(t.text)}</button>`).join('')}</span>` : ''}</span>
-<span class="ex-meta">${x.format ? `<span class="ex-format">${e(x.format)}</span>` : ''}${energie}${x.tip !== 'exercitiu' ? `<span class="ex-tip ex-tip-${e(x.familie ?? '')}">${TIP[x.tip] ?? e(x.tip)}</span>` : ''}</span><span class="ex-semn" aria-hidden="true"></span></span></summary>
+<span class="ex-meta">${x.format ? `<span class="ex-format">${e(x.format)}</span>` : ''}${energie}${x.tip !== 'exercitiu' ? `<span class="ex-tip ex-tip-${e(x.familie ?? '')}">${TIP[x.tip] ?? e(x.tip)}</span>` : ''}</span><button type="button" class="prezinta-piesa" data-prezinta="${e(x.id)}" aria-label="Prezintă piesa ${e(x.titlu)}" title="Pune ecranele piesei după ecranul de acum și sari la ele">Prezintă</button><span class="ex-semn" aria-hidden="true"></span></span></summary>
 <div class="ex-detalii">
 ${x.obiectiv ? `<p class="ex-obiectiv-tot">${e(x.obiectiv)}</p>` : ''}
 <div class="ex-fise">
@@ -397,6 +398,32 @@ ${grup(deAzi.length ? 'Restul bibliotecii' : 'Toate piesele', rest)}
 <p class="sters banca-nota">Ca să schimbi o piesă în agendă: editează „agenda” din ediție și rulează din nou build-ul. Orele se recalculează singure.</p>`;
 }
 
+/**
+ * „Prezintă” din Bibliotecă (1.12, Alex, 2026-11-17): ecranele fiecărei piese, gata de pus în prezentare chiar dacă piesa
+ * nu e în agenda de azi. Aceleași ecrane ca pentru o piesă singură în agendă; id-urile au „~live” (<piesă>~live#1), ca să nu
+ * se amestece cu ecranele din agendă.
+ */
+function bibliotecaPrezinta(c) {
+  const out = {};
+  for (const p of c.piese.values()) {
+    const ecrane = construiesteEcrane({ ...c, agenda: [{ fel: 'piesa', piesa: p, durata: p.durata, start: null, sfarsit: null }] })
+      .map(({ modul, nat, ...x }) => ({ ...x, id: x.id.replace('#', '~live#'), piesa: p.id }));
+    out[p.id] = { titlu: p.titlu, tip: p.tip, durata: p.durata, ecrane };
+  }
+  return out;
+}
+
+/** Rândurile agendei, scrise ca în ediție (pentru „Copiază pentru ediție” cu piesele adăugate live, 1.12). */
+function agendaYaml(c) {
+  const q = (t) => (/^[a-z0-9-]+$/.test(t) ? t : JSON.stringify(t));
+  return c.agenda.map((r) => {
+    if (r.fel === 'pauza') return `- pauza: ${r.durata}${r.titlu && r.titlu !== 'Pauză' ? `\n    titlu: ${JSON.stringify(r.titlu)}` : ''}`;
+    if (r.fel === 'piesa') return `- ${q(r.piesa.id)}`;
+    const ids = r.piese.map((x) => x.id), impl = r.modul.implicite;
+    return ids.length === impl.length && ids.every((x, i) => x === impl[i]) ? `- ${q(r.modul.id)}` : `- modul: ${q(r.modul.id)}\n    piese: [${ids.map(q).join(', ')}]`;
+  });
+}
+
 export function construiesteTrainer(c, ecrane = pregatesteEcrane(c).ecrane) {
   const css = readFileSync(caleTema(c.curs.brand), 'utf8') + '\n' + readFileSync(join(AICI, 'stil.css'), 'utf8');
   const script = readFileSync(join(AICI, 'prezinta.js'), 'utf8');
@@ -411,6 +438,9 @@ export function construiesteTrainer(c, ecrane = pregatesteEcrane(c).ecrane) {
       alternative: r.fel === 'modul' ? alternativeHtml(c, r.modul, r.piese) : '',
     })),
     ecrane,
+    biblioteca: bibliotecaPrezinta(c),
+    agendaYaml: agendaYaml(c),
+    total: { ...c.total, start: c.editie.start, ziSfarsit: c.curs.zi_sfarsit, durataZi: String(c.curs.durata_zi ?? '') },
   };
   const titlu = `${c.curs.titlu} · materialul trainerului${c.editie.data ? ' · ' + c.editie.data : ''}`;
   return `<!doctype html>
@@ -465,7 +495,7 @@ ${marcaHtml(c.curs.marca, 'tipar-marca')}
   </div>
   <div class="comanda" id="comanda" hidden>
     <div>
-      <p class="eticheta">Acum · <span id="pozitie"></span> · <span id="modul-acum"></span> <button type="button" class="ec-mic" id="btn-ascunde-acum">Ascunde ecranul</button></p>
+      <p class="eticheta">Acum · <span id="pozitie"></span> · <span id="modul-acum"></span> <span class="live-semn" id="live-acum" hidden>adăugat live <button type="button" class="ec-mic" id="btn-scoate-live">Scoate piesa</button></span> <button type="button" class="ec-mic" id="btn-ascunde-acum">Ascunde ecranul</button></p>
       <div class="cadru" id="cadru-acum"></div>
       <div class="banda-cutie"><div class="banda" id="banda" role="group" aria-label="Ecranele zilei, după fel"></div>
         <p class="banda-legenda" aria-hidden="true"><span><span class="semn-mic fel-teorie"></span>teorie</span><span><span class="semn-mic fel-exercitiu"></span>exercițiu</span><span><span class="semn-mic fel-reflectie"></span>reflecție</span><span><span class="semn-mic fel-mesaj"></span>mesaj cheie</span><span><span class="semn-mic fel-pauza"></span>pauză</span></p></div>
@@ -486,7 +516,7 @@ ${marcaHtml(c.curs.marca, 'tipar-marca')}
         <div><span class="eticheta">Față de plan</span><b id="abatere">–</b></div>
         <div><span class="eticheta">Cronometru</span><b id="cron">–</b></div>
       </div>
-      <div class="urmeaza"><p class="eticheta">Urmează <button type="button" class="ec-mic" id="btn-ascunde-urm">Ascunde-l</button></p><div class="cadru" id="cadru-urmeaza"></div><p class="ascunse-aici" id="ascunse-aici"></p></div>
+      <div class="urmeaza"><p class="eticheta">Urmează <span class="live-semn" id="live-urm" hidden>adăugat live</span> <button type="button" class="ec-mic" id="btn-ascunde-urm">Ascunde-l</button></p><div class="cadru" id="cadru-urmeaza"></div><p class="ascunse-aici" id="ascunse-aici"></p></div>
       <div class="schita-mica" id="schita-mica"><button type="button" class="inchide-schita" id="inchide-schita">Închide schița (S / Esc)</button><p class="eticheta">Schița zilei</p>${blocObiective(c)}${listaSchita(c)}</div>
     </div>
   </div>

@@ -403,6 +403,13 @@ Alex vrea să corecteze un ecran acolo unde îl vede, fără să caute fișierul
 - **Salvarea:** doar blocul acela se rescrie; verificare de concurență (fișierul schimbat pe disc nu se suprascrie); copie a versiunii vechi în `.editor-istoric/`; build-ul se reface, iar un build oprit readuce fișierul la ce era și arată eroarea.
 - **Git:** editorul nu face commit; arată doar câte fișiere sunt schimbate.
 
+### 1.12 „Prezintă” din Bibliotecă (Alex, 2026-11-17)
+Cererea lui Alex: „Aș vrea să pot da present și din bibliotecă.”
+- **Butonul „Prezintă”** stă pe fiecare piesă din Biblioteca de piese, inclusiv pe alternativele care nu sunt în agendă. Ecranele piesei intră imediat după ecranul de acum; prezentarea sare la primul, iar după ultimul continuă de unde a rămas. O piesă care e deja în prezentare nu se dublează: butonul doar sare la ea.
+- **Marcaj și timp:** ecranele adăugate apar „adăugat live” în ecranul de comandă, în banda zilei și în vederea Ecrane, de unde se pot scoate. Totalul zilei (și „rămân” / „depășire”) crește cu durata piesei, cu mențiunea „adăugate live”.
+- **Salvare:** local, împreună cu mutările și ascunderile din 1.10 (`live: [{ piesa, dupa }]`). „Resetează la ordinea din curs” le scoate și pe ele.
+- **Spre sursă, fără mecanism nou:** „Copiază pentru ediție” dă toată `agenda:`, cu fiecare piesă adăugată ca rând de piesă singură după rândul în care a fost pusă. Poziția exactă în interiorul rândului se poate ajusta apoi din vederea Ecrane (1.10).
+
 ## 2. Cum se leagă de ce există
 
 ```mermaid

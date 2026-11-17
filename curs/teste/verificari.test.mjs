@@ -358,3 +358,29 @@ test('marca: alt nume de studio din curs.yml, sau "" ca s-o scoți', () => {
   assert.ok(ecraneDin(fara).every((x) => !x.html.includes('ecran-marca')));
 });
 test('marca: un text prea lung oprește build-ul', () => opreste((e) => bemore(e, 'marca: "Un studio cu un nume mult prea lung ca să încapă în colț"\n'), /„marca” are peste 40/));
+
+// „Prezintă” din Bibliotecă (1.12, Alex, 2026-11-17)
+test('biblioteca are ecranele fiecărei piese, cu id-uri ~live, separate de agendă', () => {
+  const r = cu(() => {}); ok(r);
+  const d = date(r);
+  assert.deepEqual(Object.keys(d.biblioteca).sort(), ['apreciere-ceilalti', 'model-curba', 'pauza-cafea', 'perechi-curba', 'plimbare-curba', 'poveste-fuziune', 'ridica-te-daca']);
+  assert.deepEqual(d.biblioteca['plimbare-curba'].ecrane.map((x) => x.id), ['plimbare-curba~live#1']);
+  assert.equal(d.biblioteca['plimbare-curba'].durata, 20);
+  assert.equal(d.biblioteca['pauza-cafea'].ecrane[0].id, 'pauza-cafea~live#pauza');
+  assert.ok(d.biblioteca['plimbare-curba'].ecrane.every((x) => x.piesa === 'plimbare-curba' && x.modul === undefined));
+  assert.equal(d.ecrane.find((x) => x.id === 'perechi-curba#1').piesa, 'perechi-curba', 'ecranele din agendă știu din ce piesă vin');
+  assert.ok(!d.ecrane.some((x) => /~live/.test(x.id)), 'agenda nu are ecrane live');
+});
+test('formatul copiat: agenda ediției, rând cu rând, gata de lipit (și cu o piesă adăugată live)', () => {
+  const r = cu(() => {}); ok(r);
+  const d = date(r);
+  assert.deepEqual(d.agendaYaml, ['- deschidere', '- curba', '- pauza-cafea', '- ridica-te-daca', '- pasul-de-luni', '- pauza: 10', '- inchidere']);
+  const r2 = cu(AG('  - modul: curba\n    piese: [plimbare-curba]\n  - pauza: 30\n    titlu: "Prânz"')); ok(r2);
+  assert.deepEqual(date(r2).agendaYaml, ['- modul: curba\n    piese: [plimbare-curba]', '- pauza: 30\n    titlu: "Prânz"']);
+  // Ce scrie „Copiază pentru ediție” când adaugi live „plimbare-curba” în modulul curba: agenda întreagă, cu rândul nou după curba.
+  const bloc = ['agenda:', ...d.agendaYaml.flatMap((x) => [`  ${x}`, ...(x === '- curba' ? ['  - plimbare-curba   # adăugată live (în sală: după curba#1)'] : [])])].join('\n');
+  const r3 = cu((e) => e('editii/2026-11-23.yml', (s) => s.replace(/agenda:[\s\S]*?\n(?=ecrane:|nume_interzise)/, bloc + '\n'))); ok(r3);
+  const m = date(r3).module.map((x) => x.id);
+  assert.deepEqual(m.slice(0, 3), ['deschidere', 'curba', 'plimbare-curba']);
+  assert.match(html(r3), /Total: 2 h 55 min/, 'ziua crește cu cele 20 de minute ale piesei');
+});

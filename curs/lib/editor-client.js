@@ -7,7 +7,8 @@
   var IMG = {}; try { IMG = JSON.parse(document.getElementById('imagini').textContent); } catch (e) { /* fără imagini */ }
   var $ = function (id) { return document.getElementById(id); };
   var EDITABIL = /^[a-z0-9]+(-[a-z0-9]+)*(@\d+)?#(nota)?\d+$/;
-  var editabil = function (id) { return EDITABIL.test(id) && !/^pauza#\d+$/.test(id); }; // pauza#k e un rând „pauza: N” din agendă, fără fișier
+  // Ecranele adăugate live din Bibliotecă (<piesă>~live#n, 1.12) se editează în fișierul piesei, ca oricare altele.
+  var editabil = function (id) { id = String(id).replace('~live#', '#'); return EDITABIL.test(id) && !/^pauza#\d+$/.test(id); }; // pauza#k e un rând „pauza: N” din agendă, fără fișier
 
   function api(cale, metoda, corp) {
     return fetch(cale, {
@@ -46,7 +47,7 @@
     var c = document.querySelectorAll('.ec-carte[data-id]');
     for (var j = 0; j < c.length; j++) {
       var id = c[j].getAttribute('data-id'), bt = c[j].querySelector('.ec-butoane');
-      if (bt && editabil(id) && !bt.querySelector('.ed-btn')) bt.insertBefore(buton(id), bt.querySelector('.ec-ascunde'));
+      if (bt && editabil(id) && !bt.querySelector('.ed-btn')) bt.insertBefore(buton(id.replace('~live#', '#')), bt.querySelector('.ec-ascunde'));
     }
   }
   puneButoane();
@@ -57,7 +58,7 @@
   if (acum) {
     var ba = buton('', 'Editează'); ba.id = 'ed-acum'; ba.classList.add('ec-mic');
     acum.parentNode.insertBefore(ba, acum.nextSibling);
-    setInterval(function () { var id = window.__curs && window.__curs.stare().id; ba.hidden = !(id && editabil(id)); ba.setAttribute('data-ed-ref', id || ''); }, 400);
+    setInterval(function () { var id = window.__curs && window.__curs.stare().id; ba.hidden = !(id && editabil(id)); ba.setAttribute('data-ed-ref', (id || '').replace('~live#', '#')); }, 400);
   }
   document.addEventListener('click', function (ev) {
     var b = ev.target.closest ? ev.target.closest('.ed-btn') : null; if (!b) return;
