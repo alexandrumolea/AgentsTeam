@@ -28,9 +28,12 @@ Păstrează sub 150 de rânduri. Comprimă când crește. Fapte, nu povești.
 - 2026-11-15: Brief-ul s-a schimbat de 5 ori în timpul sarcinii (colegii lucrează în paralel). Construiește în straturi, iar ID-urile din `docs/taskuri.md` le verifici chiar înainte de scriere.
 - 2026-11-17: Browserul integrat nu deschide file://; pentru capturi locale merge Chrome headless (`--screenshot`), dar fereastra are minim 500px lățime: verifică overflow-ul cu JS, nu din captură.
 - Tranziția CSS a `clip-path` cu `var()` nu s-a desenat în Chromium; WAAPI cu valori explicite merge.
+- 2026-11-17: Mock-uri la proporții reale: o lățime fixă (1440 / 390) scalată cu `transform`, plus `@container` pe rădăcina mock-ului, ca telefonul să fie același markup. Chrome headless cu `--user-data-dir` nou la fiecare rulare (altfel se blochează); viewport-ul de telefon îl testezi în browserul integrat cu `resize_window mobile` + meta viewport adăugat din JS.
+- 2026-11-17: Alex: „mai aerisit”. Înseamnă mai puține lucruri vizibile deodată, nu mai puține drumuri; compactul și interactivitatea rămân.
 
 ## Proiecte și referințe
-- [Culori v1](project_culori-v1.md) — 2026-11-17: diagnostic + A/B/C; recomandat B hibrid; aștept alegerea (T-024)
+- [Design v2](project_design-v2.md) — 2026-11-17: 3 design-uri din paleta BEMORE LS Ive (Amalfi / Planșa / Lămâia); corecturi AA; aștept alegerea
+- [Culori v1](project_culori-v1.md) — 2026-11-17: diagnostic + A/B/C; înlocuit de design v2 (regulile de sens rămân)
 - [Spațiu v2](project_spatial-v2.md) — prototipul curent; deschise: rândurile din Live, propoziția „pod”, test pe telefon
 - [Direcții v1](project_directii-v1.md) — Dialog / Spațiu / Sistem viu; Alex a ales Spațiu
 - [Descoperire v0](project_descoperire-v0.md) — logica UX rămâne; stilul A/B respins
