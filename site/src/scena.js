@@ -178,14 +178,15 @@ function start(THREE, RoomEnvironment){
   /* --- materialele: sticlă colorată. Fiecare obiect are gradientul lui (culori pe vârfuri) --- */
   // gradientul merge pe diagonală, ca în mostră: sus-stânga → jos-dreapta. Pe un disc culcat, „jos” pe ecran e „în față” (z).
   const DIAG = new V3(1, -1.1, 0.9).normalize();
-  const paint = (geo, pair) => {
+  // k: cât de repede trece în a doua culoare (0,6: a doua acoperă ceva mai mult de jumătate; 1,6: a doua doar în colțul din dreapta jos)
+  const paint = (geo, pair, k = 0.6) => {
     const a = col(pair[0]), b = col(pair[1]), c = new THREE.Color(), p = new V3();
     const pos = geo.attributes.position, d = new Float32Array(pos.count);
     let lo = Infinity, hi = -Infinity;
     for (let i = 0; i < pos.count; i++){ d[i] = p.fromBufferAttribute(pos, i).dot(DIAG); lo = Math.min(lo, d[i]); hi = Math.max(hi, d[i]); }
     const out = new Float32Array(pos.count * 3);
     for (let i = 0; i < pos.count; i++){
-      const t = Math.pow((d[i] - lo) / ((hi - lo) || 1), 0.6); // capătul al doilea (cel mai închis) acoperă ceva mai mult de jumătate
+      const t = Math.pow((d[i] - lo) / ((hi - lo) || 1), k);
       c.copy(a).lerp(b, t); out[i * 3] = c.r; out[i * 3 + 1] = c.g; out[i * 3 + 2] = c.b;
     }
     geo.setAttribute('color', new THREE.BufferAttribute(out, 3));
@@ -207,7 +208,7 @@ function start(THREE, RoomEnvironment){
   };
   const edgeMat = new THREE.LineBasicMaterial({ color: SC.edge, transparent: true, opacity: 0.9, depthWrite: false });
   const withEdges = mesh => { mesh.add(new THREE.LineSegments(new THREE.EdgesGeometry(mesh.geometry, 28), edgeMat)); return mesh; };
-  const obj = (geo, pair, o) => new THREE.Mesh(paint(geo, pair), candy(o));
+  const obj = (geo, pair, o = {}) => new THREE.Mesh(paint(geo, pair, o.k), candy(o));
   // un disc (cilindru jos) cu muchiile desenate: cercul de sus și de jos, ca în planșă
   const disc = (r, h, pr, n = 64) => withEdges(obj(new THREE.CylinderGeometry(r, r, h, seg(n)), pr));
   // linia stinsă din mostră (umbra desenată, baza cupolei, cercul din nucleu): un cerc subțire, în culoarea orbitelor
@@ -289,7 +290,7 @@ function start(THREE, RoomEnvironment){
       return gr; },
     knowledge: () => { // patru plăci romboidale stivuite, care se desfac
       const gr = new THREE.Group();
-      for (let i = 0; i < 4; i++){ const geo = new THREE.BoxGeometry(0.66, 0.04, 0.66); geo.rotateY(Math.PI / 4);
+      for (let i = 0; i < 4; i++){ const geo = new THREE.BoxGeometry(0.5, 0.035, 0.5); geo.rotateY(Math.PI / 4);
         const p = withEdges(obj(geo, pair('knowledge'))); gr.add(p); plates.push({ p }); }
       return gr; },
     inventii: () => { // doar dacă Innovations e pe orbită, fără „Desfă inovația”: nucleul, mic
@@ -298,7 +299,7 @@ function start(THREE, RoomEnvironment){
       return gr; },
     despre: () => { // lentila (Ioana, manualul §7): disc biconvex vertical, întors pe jumătate spre dreapta, cu ramă și punct
       const gr = new THREE.Group(), D = LENS;
-      const body = obj(new THREE.SphereGeometry(D / 2, seg(48), seg(24)), pair('despre')); body.scale.set(1, 1, 0.3); gr.add(body);
+      const body = obj(new THREE.SphereGeometry(D / 2, seg(48), seg(24)), pair('despre'), { k: 1.6 }) /* ~60 % cer, piersica doar în colțul din dreapta jos (T-036) */; body.scale.set(1, 1, 0.3); gr.add(body);
       gr.add(new THREE.Mesh(new THREE.TorusGeometry(D / 2, D * 0.018, 10, seg(96)), new THREE.MeshStandardMaterial({ color: SC.edge, roughness: 0.3 })));
       lensDot = new THREE.Mesh(new THREE.SphereGeometry(D / 16, 24, 12), new THREE.MeshStandardMaterial({ color: COL.punct, emissive: COL.piersica, emissiveIntensity: 0.35, roughness: 0.4 }));
       gr.add(lensDot);
@@ -555,7 +556,7 @@ function start(THREE, RoomEnvironment){
       const a = o.a + ringA, rr = R * (1 + 0.45 * explode);
       const fl = reduce ? 0 : Math.sin(t * 0.7 + j * 1.3) * 0.09; // obiectele plutesc
       o.holder.position.set(Math.sin(a) * rr, -0.25 + fl, Math.cos(a) * rr);
-      const target = live ? 0.001 : open ? (narrow ? 0.001 : OBJ * 0.55) : OBJ * (i === selected ? 1.22 : i === hint ? 1.12 : 1);
+      const target = live ? 0.001 : open ? (narrow ? 0.001 : OBJ * 0.55) : OBJ * (i === selected ? (o.k === 'knowledge' ? 1 : 1.22) : i === hint ? 1.12 : 1); // plăcile se desfac, nu cresc (T-036)
       o.s = damp(o.s, target, 6, dt); o.holder.scale.setScalar(Math.max(0.001, o.s));
       o.glowK = damp(o.glowK, lit ? 1 : 0, reduce ? 60 : 8, dt);
       o.mats.forEach(m => { m.userData.rim.value = m.userData.rim0 + o.glowK * 0.9; });
@@ -605,9 +606,9 @@ function start(THREE, RoomEnvironment){
     liveInner.forEach(l => { const a = (reduce ? 0 : t * 0.45) + l.ph; l.s.position.set(Math.cos(a) * 0.42, Math.sin(a) * 0.42 + 0.08, 1).normalize().multiplyScalar(0.405); });
     const spread = know ? 1 : 0;
     plates.forEach((pl, i) => {
-      const y = (i - 1.5) * (0.075 + 0.1 * spread);
+      const y = (i - 1.5) * (0.07 + 0.06 * spread);
       pl.p.position.y = damp(pl.p.position.y, y, reduce ? 60 : 5, dt);
-      pl.p.rotation.y = damp(pl.p.rotation.y, i * 0.14 * spread, reduce ? 60 : 4, dt);
+      pl.p.rotation.y = damp(pl.p.rotation.y, i * 0.08 * spread, reduce ? 60 : 4, dt);
     });
     if (pebble){ const b = reduce ? 1 : 1 + Math.sin(t * 0.9) * 0.025; pebble.scale.set(b, 0.36 * b, b); pebbleHalo.material.opacity = 0.25 + warmK * 0.45; }
 
