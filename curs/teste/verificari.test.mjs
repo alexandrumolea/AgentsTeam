@@ -328,3 +328,33 @@ test('ecrane: cursul online nu se schimbă', () => {
   const a = exportul(cu(ECR(''))), b = exportul(cu(ECR('ecrane:\n  muta: ["inchidere#1 la început"]\n  ascunse: ["curba#1", "model-curba#1"]\n')));
   assert.equal(a, b);
 });
+
+// Marca „BEMORE Learning Studio” (D-061, Ioana, 2026-11-17): pe toate ecranele bemore, în bara și pe tiparul trainerului; nu pe innersis.
+const ecraneDin = (r) => JSON.parse(readFileSync(r.fisiere[1], 'utf8').match(/<script type="application\/json" id="date-curs">([\s\S]*?)<\/script>/)[1].replace(/\\u003c/g, '<')).ecrane;
+const bemore = (edit, extra = '') => edit('curs.yml', (s) => s.replace(/^brand: .*$/m, 'brand: bemore') + extra);
+test('marca: apare pe fiecare ecran bemore, mai mare pe titluri, în bara și la tipar', () => {
+  const r = cu((e) => bemore(e));
+  assert.equal(r.ok, true, r.erori?.join('\n'));
+  const html = readFileSync(r.fisiere[1], 'utf8'), ecrane = ecraneDin(r);
+  assert.ok(ecrane.length > 5 && ecrane.every((x) => x.html.includes('class="marca ecran-marca') && x.html.includes('aria-label="BEMORE Learning Studio"')), 'un ecran bemore fără marcă');
+  assert.ok(ecrane.filter((x) => x.titlu && x.fel !== 'pauza').every((x) => x.html.includes('ecran-marca mare')), 'titlurile de modul au marca mare');
+  assert.ok(ecrane.filter((x) => !x.titlu && x.fel !== 'reflectie').every((x) => !x.html.includes('ecran-marca mare')), 'ecranele obișnuite au marca mică');
+  assert.ok(html.includes('class="marca bara-marca"') && html.includes('class="marca tipar-marca"'), 'lipsește marca din bara sau de pe tipar');
+});
+test('marca: nu apare pe innersis (exemplul) și nici când e scrisă acolo', () => {
+  for (const extra of ['', 'marca: "BEMORE Learning Studio"\n']) {
+    const r = cu((e) => e('curs.yml', (s) => s + extra));
+    assert.equal(r.ok, true, r.erori?.join('\n'));
+    const html = readFileSync(r.fisiere[1], 'utf8');
+    assert.ok(!html.includes('class="marca ') && !html.includes('Learning Studio</span>'), 'innersis nu primește marca');
+    assert.ok(ecraneDin(r).every((x) => !x.html.includes('ecran-marca')));
+  }
+});
+test('marca: alt nume de studio din curs.yml, sau "" ca s-o scoți', () => {
+  const alt = cu((e) => bemore(e, 'marca: "BEMORE Kids Studio"\n'));
+  assert.ok(ecraneDin(alt).every((x) => x.html.includes('aria-label="BEMORE Kids Studio"')));
+  const fara = cu((e) => bemore(e, 'marca: ""\n'));
+  assert.equal(fara.ok, true, fara.erori?.join('\n'));
+  assert.ok(ecraneDin(fara).every((x) => !x.html.includes('ecran-marca')));
+});
+test('marca: un text prea lung oprește build-ul', () => opreste((e) => bemore(e, 'marca: "Un studio cu un nume mult prea lung ca să încapă în colț"\n'), /„marca” are peste 40/));

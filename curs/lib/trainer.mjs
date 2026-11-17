@@ -52,7 +52,18 @@ function lungime(fel, html) {
 
 /** Un ecran din sală: felul, eticheta și interiorul (eticheta cu semnul felului, conținutul, panoul sau cronometrul).
  *  Același HTML în sală, în previzualizări, în ecranul de comandă și la tipar. */
-export function ecranul(sursa, continut, cronometru = 0, titlu = false) {
+/** Marca studioului (D-061, Ioana, 2026-11-17): un wordmark tipografic, fără logo. Primul cuvânt în Sora (ca semnătura din manual,
+ *  secțiunea 4), restul în Inter Tight; amândouă cu majuscule spațiate, ca „INNERSIS” din colțul slide-urilor Ive.
+ *  Același HTML în colțul ecranelor, în bara trainerului și pe PDF. Fără marcă (alt brand sau `marca: ""`) nu se scrie nimic. */
+export function marcaHtml(marca, clasa) {
+  if (!marca) return '';
+  const [nume, ...rest] = String(marca).trim().split(/\s+/);
+  return `<p class="marca ${clasa}" aria-label="${e(marca)}"><span class="marca-nume" aria-hidden="true">${e(nume)}</span>${rest.length ? ` <span class="marca-rest" aria-hidden="true">${e(rest.join(' '))}</span>` : ''}</p>`;
+}
+/** Marca e mai vizibilă pe ecranele care deschid ceva: titlul unui modul sau al unei piese, deschiderea și închiderea zilei. */
+const MARCA_MARE = new Set(['deschidere', 'inchidere']);
+
+export function ecranul(sursa, continut, cronometru = 0, titlu = false, marca = '') {
   let fel = FEL[sursa.tip] ?? 'teorie';
   const activitate = cronometru > 0 && (fel === 'teorie' || fel === 'mesaj');
   if (activitate) fel = 'exercitiu';
@@ -65,7 +76,8 @@ export function ecranul(sursa, continut, cronometru = 0, titlu = false) {
     ? `<div class="ecran-panou">${cron || '<span class="panou-semn" aria-hidden="true"></span>'}${format ? `<p class="panou-format">${e(format)}</p>` : ''}</div>`
     : cron;
   const html = `<p class="ecran-eticheta"><span class="ecran-semn" aria-hidden="true"></span><span class="ecran-eticheta-text">${e(eticheta)}</span></p>`
-    + `<div class="ecran-continut${lungime(fel, continut)}">${continut}</div>${panou}`;
+    + `<div class="ecran-continut${lungime(fel, continut)}">${continut}</div>${panou}`
+    + marcaHtml(marca, `ecran-marca${(titlu && fel !== 'pauza') || MARCA_MARE.has(sursa.tip) ? ' mare' : ''}`);
   return { fel, eticheta, html };
 }
 /** Etichetele (Alex, 2026-11-17): organizare internă. Nu ajung în sală și nici în cursul participanților. */
@@ -86,7 +98,7 @@ export function construiesteEcrane(c) {
   // <modul>#titlu, <piesă>#titlu (piesa singură fără ecrane), <piesă>#pauza, pauza#<k> (al k-lea rând „pauza: N”).
   // O piesă folosită de două ori în agendă primește la a doua apariție <piesă>@2. Id-ul nu depinde de ordinea agendei.
   const pune = (ri, id, sursa, continut, cronometru = 0, titlu = false) => {
-    const x = ecranul(sursa, continut, cronometru, titlu);
+    const x = ecranul(sursa, continut, cronometru, titlu, c.curs.marca);
     ecrane.push({ id, modul: ri, sursa: sursa.titlu ?? '', fel: x.fel, eticheta: x.eticheta, html: x.html, cronometru, note: [], ...(titlu ? { titlu: true } : {}) });
   };
   const pauza = (ri, id, titlu, durata) => pune(ri, id, { tip: 'pauza', titlu }, `<h1>${e(titlu)}</h1><p class="ecran-sub">${durata} min</p>`, durata, true);
@@ -268,7 +280,7 @@ export function listaSchita(c) {
 
 /** Un segment, cum apare în vederile Modul și Bibliotecă. */
 // cheie: id-ul fișierului din care vine segmentul (modul sau piesă). Dă `data-sursa`, după care editorul local (1.11) găsește blocul.
-function piesa(s, sursa, randeaza, cheie) {
+function piesa(s, sursa, randeaza, cheie, marca = '') {
   const ref = (fel) => (cheie && s.nr ? ` data-sursa="${e(cheie)}#${fel}${s.nr}"` : '');
   if (s.strat === 'text') return `<div class="strat strat-text">${randeaza(s.md)}</div>`;
   if (s.strat === 'trainer') return `<div class="strat strat-trainer"${ref('nota')}><span class="eticheta">Trainer</span>${randeaza(s.md)}</div>`;
@@ -279,7 +291,7 @@ function piesa(s, sursa, randeaza, cheie) {
   const randeazaEcran = creeazaRandare({ atribut: 'data-img', randuriNoi: true });
   const eticheta = s.strat === 'sala' ? 'Ecran în sală' : 'Ecran în sală și în curs';
   const cron = s.atribute.cronometru ? ` · cronometru ${s.atribute.cronometru} min` : '';
-  return `<div class="strat strat-ecran"${ref('')}><span class="eticheta">${eticheta}${cron}</span>${ecranStatic(ecranul(sursa, randeazaEcran(s.md), s.atribute.cronometru ?? 0))}</div>`;
+  return `<div class="strat strat-ecran"${ref('')}><span class="eticheta">${eticheta}${cron}</span>${ecranStatic(ecranul(sursa, randeazaEcran(s.md), s.atribute.cronometru ?? 0, false, marca))}</div>`;
 }
 
 function alternativeHtml(c, m, alese) {
@@ -291,7 +303,7 @@ function vedereaModul(c) {
   const randeaza = creeazaRandare({ atribut: 'data-img' });
   const articol = (m, r) => {
     const piese = r ? desfasoara(r) : m.segmente;
-    const continut = piese.map((s) => piesa(s, r ? sursaDe(r, s) : sursaModul(m), randeaza, s.piesa ? s.piesa.id : m.id)).join('\n');
+    const continut = piese.map((s) => piesa(s, r ? sursaDe(r, s) : sursaModul(m), randeaza, s.piesa ? s.piesa.id : m.id, c.curs.marca)).join('\n');
     const durata = r ? `${r.durata} min${r.piese.length ? ` (modul ${r.durataModul} + piese ${r.durataPiese})` : ''}` : `${m.durata} min fără piese`;
     return `<article class="modul ${r ? '' : 'sarit'}" id="modul-${e(m.id)}">
 <header><span class="eticheta">${r ? oraR(r) + ' · ' : ''}${TIP[m.tip] ?? e(m.tip)} · ${durata}${r ? '' : ' · nu e în agenda acestei ediții'}</span>
@@ -300,7 +312,7 @@ ${continut}</article>`;
   };
   const singura = (r) => `<article class="modul piesa-singura" id="rand-${e(r.piesa.id)}">
 <header><span class="eticheta">${oraR(r)} · piesă singură · ${despre(r.piesa)}</span><h3>${e(r.piesa.titlu)}</h3>${r.piesa.etichete.length ? `<p>${eticheteMici(r.piesa)}</p>` : ''}${r.piesa.materiale.length ? `<p class="sters">Materiale: ${r.piesa.materiale.map(e).join(', ')}</p>` : ''}</header>
-${desfasoara(r).filter((s) => s.strat !== 'piesa-inceput' && s.strat !== 'piesa-sfarsit').map((s) => piesa(s, sursaDe(r, s), randeaza, r.piesa.id)).join('\n')}</article>`;
+${desfasoara(r).filter((s) => s.strat !== 'piesa-inceput' && s.strat !== 'piesa-sfarsit').map((s) => piesa(s, sursaDe(r, s), randeaza, r.piesa.id, c.curs.marca)).join('\n')}</article>`;
   const dinAgenda = c.agenda.filter((r) => r.fel === 'modul' || (r.fel === 'piesa' && r.piesa.tip !== 'pauza')).map((r) => (r.fel === 'modul' ? articol(r.modul, r) : singura(r))).join('\n');
   const afara = c.module.filter((m) => !m.inAgenda).map((m) => articol(m, null)).join('\n');
   return `<h2>Modulele</h2>${dinAgenda}${afara ? `<h2 class="sub">Nu sunt în agenda acestei ediții</h2>${afara}` : ''}`;
@@ -350,7 +362,7 @@ ${x.obiectiv ? `<p class="ex-obiectiv-tot">${e(x.obiectiv)}</p>` : ''}
 <div><p class="eticheta">Materiale</p><p>${x.materiale.length ? x.materiale.map(e).join(', ') : '<span class="sters">nimic special</span>'}</p></div>
 <div><p class="eticheta">Detalii</p><p>${detalii}${x.in_curs ? '' : '<br><b>Nu apare în cursul online</b>'}</p></div>
 </div>
-${x.segmente.map((s) => piesa(s, sursaPiesa(x), randeaza, x.id)).join('\n')}
+${x.segmente.map((s) => piesa(s, sursaPiesa(x), randeaza, x.id, c.curs.marca)).join('\n')}
 </div></details>`;
   };
   const primaAzi = (x) => c.agenda.indexOf(azi.get(x.id)[0]);
@@ -390,7 +402,7 @@ export function construiesteTrainer(c, ecrane = pregatesteEcrane(c).ecrane) {
   const script = readFileSync(join(AICI, 'prezinta.js'), 'utf8');
   const modul = vedereaModul(c);
   const date = {
-    curs: { titlu: c.curs.titlu, slug: c.curs.slug, brand: c.curs.brand, limba: c.curs.limba },
+    curs: { titlu: c.curs.titlu, slug: c.curs.slug, brand: c.curs.brand, marca: c.curs.marca, limba: c.curs.limba },
     editie: { data: c.editie.data, start: c.editie.start },
     // „module” = rândurile din agenda ediției (module, piese singure și pauze), în ordine, cu orele calculate.
     module: c.agenda.map((r) => ({
@@ -412,7 +424,7 @@ export function construiesteTrainer(c, ecrane = pregatesteEcrane(c).ecrane) {
 </head>
 <body>
 <header class="bara">
-  <h1>${e(c.curs.titlu)} <span class="sters">${c.editie.data ? e(c.editie.data) : ''}</span></h1>
+  <div class="bara-titlu">${marcaHtml(c.curs.marca, 'bara-marca')}<h1>${e(c.curs.titlu)} <span class="sters">${c.editie.data ? e(c.editie.data) : ''}</span></h1></div>
   <nav aria-label="Vederi">
     <button data-vedere="ziua">Ziua</button>
     <button data-vedere="modul">Modulul</button>
@@ -423,6 +435,7 @@ export function construiesteTrainer(c, ecrane = pregatesteEcrane(c).ecrane) {
   </nav>
 </header>
 <main>
+${marcaHtml(c.curs.marca, 'tipar-marca')}
 <section id="ziua">${vedereaZiua(c)}</section>
 <section id="schita" hidden><h2>Schița zilei</h2>${totalZi(c)}${blocObiective(c)}${listaSchita(c)}</section>
 <section id="modul" hidden>${modul}</section>

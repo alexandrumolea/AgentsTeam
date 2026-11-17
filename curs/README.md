@@ -130,6 +130,8 @@ Fiecare ecran are sus eticheta felului (de exemplu „Exercițiu · Unde sunt eu
 
 Culorile și litera stau doar în teme (tokeni): `tema/innersis.css` (Innersis Ive, Ioana) și `tema/sobru.css` (provizorie, pentru orice alt brand). Pentru BEMORE LS: copiezi `innersis.css` ca `tema/bemore-ls.css` și schimbi valorile `--fel-*` și `--t-*`. Generatorul o alege singur după `brand` din `curs.yml`. Structura (mărimi, așezare) e în `lib/stil.css`. Titlurile din sală, mesajul cheie, reflecția și cronometrele folosesc `--font-titlu` (T-031); o temă fără el le scrie cu `--font`. Pentru BEMORE: `--font-greutate-subtitlu` (h2, h3) și `--cronometru-panou-marime` / `-spatiere` (Sora e mai lată). **Imaginile** de pe ecrane (de exemplu schemele SVG 16:9) iau exact spațiul rămas sub titlu și text, fără să fie tăiate; o imagine scrisă imediat sub text primește paragraful ei. Cu titlu și două rânduri de text mare rămâne loc puțin: pe mesajul cheie, ~170 px din 900. Ecranul din sală are 1600×900 și se scalează la orice proiector.
 
+**Marca studioului (D-061, Ioana).** Pe `brand: bemore`, fiecare ecran din sală poartă jos, în stânga, wordmark-ul „BEMORE Learning Studio” (mai mare pe titlurile de modul, pe deschidere și pe închidere), iar bara și PDF-ul trainerului îl au sus. Numele vine din `curs.yml`: fără câmp, implicit „BEMORE Learning Studio”; `marca: "Alt nume"` îl schimbă (cel mult 40 de caractere; primul cuvânt se scrie în Sora, restul în Inter Tight); `marca: ""` îl scoate. Pe `innersis` și pe alte branduri nu apare (un `marca` scris acolo e ignorat, cu avertisment). Culorile, cu AA pe fiecare fel: `--fel-*-marca` în `tema/bemore.css`; structura: `.marca` în `lib/stil.css`. Regulile: manualul de brand, secțiunea 9.
+
 ## Fișierele
 
 | Fișier | Ce face |

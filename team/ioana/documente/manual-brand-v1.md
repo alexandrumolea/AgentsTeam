@@ -255,6 +255,16 @@ Pornesc din `slide-tipuri-v1.md`: cinci semnale deodată (fond, semn, așezare, 
 - **Greutăți pe proiector:** Sora 200 doar de la 48 px în sus; sub 48 px, Sora 300 sau Inter Tight 400 (liniile subțiri se spală pe proiector). Eticheta: Inter Tight 500, majuscule, +0,16 em, la 26 px pe un ecran de 1600 px.
 - Luminozitățile celor cinci fonduri sunt diferite (deschis, alb cu panou, foarte închis, mediu, deschis-verzui), iar așezările diferă. Pe un proiector spălat, felul se recunoaște după siluetă și semn.
 
+### Marca BEMORE Learning Studio pe materialele de curs (D-061, 2026-11-17)
+Cursurile BEMORE poartă numele studioului pe designul Sora. Fără logo inventat: marca e **text**, ca „INNERSIS” din colțul slide-urilor Ive.
+- **Forma:** `BEMORE` în Sora 400 (ca semnătura, secțiunea 4) + `LEARNING STUDIO` în Inter Tight 500; amândouă cu majuscule, spațiere +0,2 em și +0,24 em, despărțite de un spațiu de 0,75 em. Fără semn geometric lângă: pe proiector, semnele (■ ▶ ● ▬ ‖) spun felul ecranului, iar punctul portocaliu e deja semnul reflecției. Un al doilea semn recurent ar încurca citirea felului. (Semnul BEMORE cu punctul rămâne întrebarea 1 de la secțiunea 13, decizia lui Alex.)
+- **Unde, în sală:** jos în stânga, pe aceeași margine ca eticheta de sus (140 px din 1600) și cam pe linia de jos a cronometrului, care stă în dreapta. Așa nu se lovește niciodată de cronometru sau de panoul piersică al exercițiului. Am mutat-o din dreapta jos (unde stă „INNERSIS”) pentru că acolo e timpul.
+- **Mărimea:** 19 px pe ecranul de 1600 px, discretă. **Mai vizibilă** (26 px, `BEMORE` în culoarea textului) pe titlul fiecărui modul sau al fiecărei piese și pe ecranele modulelor de deschidere și de închidere. Pauza rămâne mică.
+- **Culoarea, cu AA la 19 px (≥ 4,5):** teorie `#5B5E70` (5,60) · exercițiu `#5B5E70` pe alb (6,40) · reflecție `#9AA2C6` pe Noapte (7,22) · mesaj cheie `#1B2550` (5,49 în cel mai rău punct al gradientului) · pauză `#55604F` (5,65). Valorile stau în `curs/tema/bemore.css` (`--fel-*-marca`).
+- **În materialul trainerului:** deasupra titlului cursului, în bara de sus, ca o etichetă (12 px, Grafit, `BEMORE` în Cerneală). Pe **PDF-ul trainerului**, sus pe prima pagină (9 pt). PDF-ul ecranelor o are pe fiecare ecran.
+- **Doar pe `brand: bemore`.** Innersis și alte branduri nu o primesc: un material poartă un singur brand.
+- **Alt studio, fără cod:** `marca: "Alt nume"` în `curs.yml` (cel mult 40 de caractere; primul cuvânt merge în Sora). `marca: ""` o scoate.
+
 ### Pe hârtie (fișe, scheme, grile de observație)
 - **A4, fond alb**, margini 18 mm. Fără sticlă, fără granulație, fără fond colorat pe toată pagina.
 - Gradientul doar ca **bandă de 6 mm** sus, fără text pe ea (sau deloc, la tipar alb-negru).
@@ -343,4 +353,5 @@ Pornesc din `slide-tipuri-v1.md`: cinci semnale deodată (fond, semn, așezare, 
 | 2026-11-17 | v1 | Prima versiune, din D-054, D-055, D-057 și din documentele de lucru v2, v3 și slide-tipuri v1. Manualul BEMORE; site-ul lui Alex îl folosește ca owner. |
 | 2026-11-17 | v1.1 | Secțiunea 7: obiectul „Despre mine” (lentila), cu gradientul cer → piersică și specificația 3D. |
 | 2026-11-17 | v1.3 | Secțiunea 7: lentila „Despre mine” fără punct pe față (Alex). |
+| 2026-11-17 | v1.4 | Secțiunea 9: marca BEMORE Learning Studio pe materialele de curs (D-061). |
 | 2026-11-17 | v1.2 | Secțiunea 8: portretul lui Alex devine lentilă (D-060): decupaj, ramă, halo, punct, așezare pe desktop și telefon. Pagina cu planșe (05, 06) e la zi. |

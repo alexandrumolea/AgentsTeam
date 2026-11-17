@@ -19,6 +19,7 @@ export const TIPURI_PIESA = Object.keys(FAMILIE);
 export const FAMILII = ['continut', 'activitate', 'punte'];
 export const FORMATE = ['individual', 'perechi', 'grup', 'plen'];
 export const ENERGII = ['calm', 'mediu', 'activ'];
+export const MARCA_IMPLICITA = 'BEMORE Learning Studio'; // pe brand: bemore, când curs.yml nu are „marca” (D-061)
 const BRANDURI = ['bemore', 'innersis', 'bemore-ls']; // bemore = noul branding BEMORE (Alex, 2026-11-17); până la curs/tema/bemore.css se folosește sobru.css
 const LIMBI = ['ro', 'en'];
 const PUBLIC = ['nu', 'link', 'da'];
@@ -307,6 +308,12 @@ export function citesteCurs(folder, { editie: numeEditie } = {}) {
   if (curs.limba) cere(LIMBI.includes(curs.limba), `limba „${curs.limba}” necunoscută (${LIMBI.join(' / ')})`);
   if (curs.public !== undefined) cere(PUBLIC.includes(String(curs.public)), `public „${curs.public}” necunoscut (${PUBLIC.join(' / ')})`);
   if (curs.slug) cere(ID_OK.test(curs.slug), `slug „${curs.slug}” poate avea doar litere mici, cifre și cratimă`);
+  // Marca studioului (D-061, Ioana, 2026-11-17): numele mic din colțul ecranelor și din antetul trainerului. Doar pe brand: bemore
+  // (Innersis și sobru nu o primesc). Implicit „BEMORE Learning Studio”; `marca: "Alt nume"` o schimbă, `marca: ""` o scoate.
+  if (curs.marca != null && curs.marca !== false && typeof curs.marca !== 'string') cere(false, `„marca” trebuie să fie un text, de exemplu "BEMORE Learning Studio"`);
+  else if (typeof curs.marca === 'string' && curs.marca.trim().length > 40) cere(false, `„marca” are peste 40 de caractere; e un nume scurt, nu o propoziție`);
+  if (curs.marca && curs.brand && curs.brand !== 'bemore') avertismente.push(`curs.yml: „marca” se folosește doar la brand: bemore; la „${curs.brand}” o ignor`);
+  const marca = curs.brand !== 'bemore' || curs.marca === false ? '' : typeof curs.marca === 'string' ? curs.marca.trim() : MARCA_IMPLICITA;
   const [ziStart, ziSfarsit] = String(curs.durata_zi ?? '').split(/\s*[–—-]\s*/).map(minute);
   if (curs.durata_zi) cere(ziStart != null && ziSfarsit != null && ziSfarsit > ziStart, `durata_zi „${curs.durata_zi}” trebuie să fie de forma 9:00–18:00`);
 
@@ -397,7 +404,7 @@ export function citesteCurs(folder, { editie: numeEditie } = {}) {
   }
 
   const total = { agenda: t - (oraStart ?? 0), zi: ziStart != null && ziSfarsit != null ? ziSfarsit - ziStart : null, ramas: ziSfarsit != null ? ziSfarsit - t : null, sfarsit: t };
-  return { folder, curs: { ...curs, zi_start: ziStart, zi_sfarsit: ziSfarsit }, editie: { ...editie, start: oraStart }, module, piese, agenda, total, obiective, etichete: [...etichete.values()].sort((a, b) => a.text.localeCompare(b.text, 'ro')), erori, avertismente };
+  return { folder, curs: { ...curs, marca, zi_start: ziStart, zi_sfarsit: ziSfarsit }, editie: { ...editie, start: oraStart }, module, piese, agenda, total, obiective, etichete: [...etichete.values()].sort((a, b) => a.text.localeCompare(b.text, 'ro')), erori, avertismente };
 }
 
 /**

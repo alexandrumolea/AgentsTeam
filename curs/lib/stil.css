@@ -151,6 +151,32 @@ article.modul.sarit { opacity: .5; }
 .ecran.fel-pauza .ecran-sub { display: none; }
 .ecran.fel-pauza .ecran-cronometru { position: static; order: 2; margin-top: 30px; font-size: 230px; line-height: 1; letter-spacing: -.02em; }
 
+/* Marca studioului (D-061, Ioana, 2026-11-17): wordmark tipografic, doar pe brand: bemore (trainer.mjs, marcaHtml).
+   În sală: jos în stânga, pe aceeași margine ca eticheta de sus și pe aceeași linie de jos ca cronometrul (care stă în dreapta),
+   deci nu se lovește niciodată de cronometru sau de panoul exercițiului. Mică și spațiată, ca „INNERSIS” pe slide-urile Ive;
+   mai mare și în două tonuri pe titlurile de modul, pe deschidere și pe închidere. Culoarea vine din --fel-*-marca (temă), cu AA. */
+.marca { margin: 0; display: flex; align-items: baseline; gap: .75em; white-space: nowrap; line-height: 1; text-transform: uppercase; }
+.marca-nume { font-family: var(--font-titlu, var(--font)); font-weight: 400; letter-spacing: .2em; }
+.marca-rest { font-family: var(--font); font-weight: var(--font-greutate-accent); letter-spacing: .24em; }
+.ecran.fel-teorie    { --ecran-marca: var(--fel-teorie-marca, var(--ecran-text)); }
+.ecran.fel-reflectie { --ecran-marca: var(--fel-reflectie-marca, var(--ecran-text)); }
+.ecran.fel-mesaj     { --ecran-marca: var(--fel-mesaj-marca, var(--ecran-text)); }
+.ecran.fel-exercitiu { --ecran-marca: var(--fel-exercitiu-marca, var(--ecran-text)); }
+.ecran.fel-pauza     { --ecran-marca: var(--fel-pauza-marca, var(--ecran-text)); }
+.ecran .ecran-marca { position: absolute; left: 140px; bottom: 52px; z-index: 1; margin: 0; font-size: 19px; color: var(--ecran-marca); }
+.ecran .ecran-marca.mare { bottom: 50px; font-size: 26px; }
+.ecran .ecran-marca.mare .marca-nume { color: var(--ecran-text); }
+/* Bara trainerului: marca deasupra titlului cursului, ca o etichetă. Pe PDF-ul trainerului: sus, pe prima pagină. */
+.bara-titlu { display: flex; flex-direction: column; gap: .3rem; }
+.bara-marca { font-size: .75rem; color: var(--t-sters); }
+.bara-marca .marca-nume { color: var(--t-text); }
+.tipar-marca { display: none; }
+@media print {
+  .tipar-marca { display: flex; font-size: 9pt; color: var(--t-sters); margin: 0 0 8mm; }
+  .tipar-marca .marca-nume { color: var(--t-text); }
+  body.tipar-ecrane .tipar-marca { display: none; }
+}
+
 .ecran-final { background: #000; color: #555; align-items: center; font-size: 32px; }
 
 /* Semnul felului, mic, în materialul trainerului (Ziua, banda din ecranul de comandă, legenda) */

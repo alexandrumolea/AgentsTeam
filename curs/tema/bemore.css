@@ -8,6 +8,8 @@
   Contrastul (WCAG 2.2) e notat lângă fiecare culoare; toate perechile de text trec AA, cele mai multe AAA.
   Fonturile sunt incluse aici (data:), ca materialul să meargă fără internet: Sora și Inter Tight, variabile, subseturile latin
   și latin-ext (ă, â, î, ș, ț), din @fontsource-variable 5.3.0. Licența: SIL Open Font License 1.1, în tema/fonturi/.
+  Marca „BEMORE Learning Studio” (D-061): text, nu imagine. Structura e în lib/stil.css (.marca), numele vine din curs.yml
+  („marca”, implicit pe brand: bemore). Aici stau doar culorile ei, --fel-*-marca, toate cu AA (≥ 4,5) la 19 px.
   Doar tokeni: Sora ajunge pe titlurile și cifrele mari din sală prin --font-titlu (stil.css, T-031).
 */
 @font-face { font-family: "Sora"; font-style: normal; font-display: block; font-weight: 100 800; unicode-range: U+0100-02BA,U+02BD-02C5,U+02C7-02CC,U+02CE-02D7,U+02DD-02FF,U+0304,U+0308,U+0329,U+1D00-1DBF,U+1E00-1E9F,U+1EF2-1EFF,U+2020,U+20A0-20AB,U+20AD-20C0,U+2113,U+2C60-2C7F,U+A720-A7FF;
@@ -36,6 +38,7 @@
   --fel-teorie-accent: #2B44B8;
   --fel-teorie-linie: #B7A6EA;     /* lavandă, doar linie (decor) */
   --fel-teorie-gata: #A63D2A;      /* 5,53 */
+  --fel-teorie-marca: #5B5E70;     /* marca din colț: 5,60 */
 
   /* Reflecție (reflecție, deschidere, închidere): Noapte, spațiu, un cerc. Text 16,53 · accent 10,39 · punctul portocaliu 7,42 */
   --fel-reflectie-fundal: #0D1333;
@@ -44,12 +47,14 @@
   --fel-reflectie-semn: #F28C3B;
   --fel-reflectie-cerc: rgba(169, 196, 255, .26);
   --fel-reflectie-gata: #FF9C7A;   /* 8,88 */
+  --fel-reflectie-marca: #9AA2C6;  /* 7,22 */
 
   /* Mesaj cheie: singurul gradient din sală, fără granulație. Text 6,72 în cel mai rău punct (cer), 11,02 pe cer deschis, 8,29 pe lavandă */
   --fel-mesaj-fundal: linear-gradient(135deg, #8FD3F7 0%, #4FA3F0 48%, #B7A6EA 100%);
   --fel-mesaj-text: #14161F;
   --fel-mesaj-accent: #14161F;
   --fel-mesaj-gata: #7A2E0E;       /* 3,52 pe cer: doar cronometrul mare (prag 3 la text mare) */
+  --fel-mesaj-marca: #1B2550;      /* 5,49 în cel mai rău punct (cer #4FA3F0) */
 
   /* Exercițiu (exercițiu, energizant): alb, pași numerotați, panoul piersică cu cronometrul. Text 18,04 · accent 8,01 · pe panou 10,47 */
   --fel-exercitiu-fundal: #FFFFFF;
@@ -60,12 +65,14 @@
   --fel-exercitiu-pe-panou: #14161F;
   --fel-exercitiu-semn: #C96A1E;   /* semnul triunghi pe alb: 3,77 (grafic: prag 3) */
   --fel-exercitiu-gata: #7A2E0E;   /* 5,48 pe panou */
+  --fel-exercitiu-marca: #5B5E70;  /* 6,40 pe alb; marca stă în stânga, niciodată pe panou */
 
   /* Pauză: masa sage, liniște, cronometrul în centru. Text 15,40 · accent 5,10 */
   --fel-pauza-fundal: #E9EFE4;
   --fel-pauza-text: #14161F;
   --fel-pauza-accent: #4E6B45;
   --fel-pauza-gata: #A63D2A;       /* 5,40 */
+  --fel-pauza-marca: #55604F;      /* 5,65 */
 
   /* Materialul trainerului (ecranul lui Alex). Text 16,52 pe fundal · șters 8,06 · accent 7,34 */
   --t-fundal: #F6F4FA;

@@ -68,7 +68,7 @@ export async function pornesteEditor({ folder = IMPLICIT, port = 4747, deschide 
     const seg = f.segmente.find((s) => s.nr === r.n && (r.fel === 'trainer' ? s.strat === 'trainer' : s.strat === 'sala' || s.strat === 'sala-si-curs'));
     if (r.fel === 'trainer') return { fel: 'nota', html: creeazaRandare({ atribut: 'data-img' })(md) };
     const sursa = piesa ? { tip: piesa.tip, titlu: piesa.titlu, format: piesa.format } : { tip: modul.tip, titlu: modul.titlu };
-    const x = ecranul(sursa, creeazaRandare({ atribut: 'data-img', randuriNoi: true })(md), seg?.atribute.cronometru ?? 0);
+    const x = ecranul(sursa, creeazaRandare({ atribut: 'data-img', randuriNoi: true })(md), seg?.atribute.cronometru ?? 0, false, c.curs.marca);
     return { fel: x.fel, html: x.html.replace(' data-cron>', '>') };
   }
 

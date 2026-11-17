@@ -60,4 +60,6 @@ Păstrează sub 150 de rânduri. Comprimă când crește. Fapte, nu povești.
 - 2026-11-17: Tokenii temei (`curs/tema/*.css`) nu se ating din stil; folosesc doar `--t-*` existente.
 - 2026-11-17: Ecranele din sală au 4 feluri + pauza (`slide-tipuri-v1.md`): teorie ■ hârtie, exercițiu ▶ alb + panou de aur cu cronometru, reflecție ● navy + cerc, mesaj ▬ câmp teal centrat, pauză ‖ salvie. Tema `curs/tema/innersis.css` e a mea; BEMORE LS = copie cu alte valori. Aștept reacția lui Alex la primul Prezintă.
 - 2026-11-17: Capcană: o clasă de fel pusă și pe ecran, și pe semnele mici (`fel-x`) cere selectori legați de `.ecran.fel-x`, altfel decorurile (::before/::after, padding) se scurg în UI.
+- 2026-11-17: Marca „BEMORE Learning Studio” (D-061): text, jos în stânga pe ecrane (dreapta jos e a cronometrului), mai mare pe titluri/deschidere/închidere; `marca` în curs.yml, doar brand: bemore. Regulile: manual §9. Fără semn lângă: semnele spun felul ecranului.
+- 2026-11-17: Înainte de capturi, verific cu un script coliziunile unui element fix pe TOATE ecranele cursului real (bounding boxes); ecranele prea pline (>30 cuvinte) ies din padding.
 - 2026-11-17: Slide-urile Ive ale lui Alex: Helvetica Neue subțire, etichetă mică spațiată în teal, punct de aur la reflecție, liste 01/02 cu linii fine. Pe proiector: fără sticlă, fonturi de sistem.
