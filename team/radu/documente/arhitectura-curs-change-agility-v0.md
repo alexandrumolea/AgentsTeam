@@ -1,6 +1,6 @@
-# Arhitectura unui curs: o sursă, trei ieșiri (v0)
+# Arhitectura unui curs: o sursă, trei ieșiri (v1)
 
-**Autor:** Radu. **Data:** 2026-11-17. **Status:** propunere, nimic construit. Alex decide la final (4 decizii).
+**Autor:** Radu. **Data:** 2026-11-17. **Versiune:** v1. Față de v0, materialul trainerului e și prezentarea din sală (precizarea lui Alex de mai jos). **Status:** propunere, nimic construit. Alex decide la final (D-048–D-051).
 **Pentru:** workshop-ul Change Agility (o zi, 23 noiembrie, D-044, parte din I-018). Același model trebuie să meargă fără cod nou și pentru 25 noiembrie (Self-management în relația cu AI).
 **Citit înainte:** `team/tudor/documente/echipa-workshopuri-v0.md`, `docs/procese/ce-iese-public.md`, `site/build.mjs`, `content/`, I-018, I-019, D-043–D-045, `arhitectura-v2.md`.
 
@@ -10,8 +10,11 @@
 > 2. Un material al trainerului care să fie bine legat de informația de pe site, dacă modific ceva în materialul trainerului, să se modifice și în cursul online al participanților.
 > 3. O schiță cu punctele cheie din curs, pe care să mă pot uita foarte ușor dacă vreau să las materialele deoparte […]. Asta ar trebui să fie tot în materialul trainerului.”
 
+Precizarea lui Alex (2026-11-17):
+> „Materialul trainerului ar trebui să fie ceva la care să pot să dau "present" pe tot ecranul sau într-o fereastră și să pot să am acolo și exercițiile pe care le arăt participanților, lucru de care ei nu au nevoie în cursul online pe care îl pot naviga, accesa după.”
+
 ## Ideea, într-o frază
-**Cursul e un folder cu câte un fișier text pe modul.** Din aceleași fișiere se generează cursul participanților, materialul trainerului și schița. Alex modifică un singur fișier, iar toate trei se schimbă la următorul build.
+**Cursul e un folder cu câte un fișier text pe modul.** Din aceleași fișiere se generează cursul participanților, materialul trainerului și schița. **Materialul trainerului e și prezentarea din sală:** un buton „Prezintă” arată ecranele pentru participanți, iar Alex își vede separat notele și schița. Alex modifică un singur fișier, iar toate se schimbă la următorul build.
 
 ---
 
@@ -53,13 +56,23 @@ cursuri/                         locul privat (vezi secțiunea 3)
 | `public` | da | `nu` / `link` / `da` (decizia 2, secțiunea 6) |
 | `slug` | da | `change-agility`, devine adresa: `alexandrumolea.com/cursuri/change-agility/` |
 
-### 1.4 Un modul: trei straturi în același fișier
-| Stratul | Cum îl marchezi | Unde apare |
-|---|---|---|
-| **Pentru toți** | textul obișnuit | cursul participanților **și** materialul trainerului |
-| **Doar trainerul** | între `:::trainer` și `:::` | doar materialul trainerului (ce spui, ce întrebi, timpii interni, ce faci dacă grupul tace) |
-| **Doar participanții** | între `:::participant` și `:::` | doar cursul online (de exemplu „Notează-ți aici răspunsul”, linkul spre worksheet) |
-| **Schița** | câmpurile `ancora` și `schita` din antet | schița din materialul trainerului |
+### 1.4 Un modul: straturile din același fișier
+Sunt trei locuri unde poate apărea ceva: **cursul online** (participanții, după), **ecranul din sală** (ce vede grupul când Alex dă „Prezintă”) și **vederea trainerului** (doar Alex). Fiecare strat spune unde apare:
+
+| Stratul | Cum îl marchezi | Curs online | Ecranul din sală | Vederea trainerului |
+|---|---|---|---|---|
+| **Textul de citit** | textul obișnuit | da | nu | da (vederea Modul) |
+| **Doar în sală** | `:::sala` … `:::` | nu | da, **un bloc = un ecran** | da, ca previzualizare |
+| **În sală și în curs** | `:::sala-si-curs` … `:::` | da | da, un bloc = un ecran | da |
+| **Doar trainerul** | `:::trainer` … `:::` | nu | nu | da: ce spui, ce întrebi, timpii interni, ce faci dacă grupul tace |
+| **Doar participanții** | `:::participant` … `:::` | da | nu | nu |
+| **Schița** | câmpurile `ancora` și `schita` din antet | nu | nu | da |
+
+De ce așa:
+- **Ecranele din sală se scriu separat de textul de citit.** Un text bun de citit acasă e prea lung pentru proiector. Pe ecran stau puține cuvinte (stilul Ive), iar acasă omul are nevoie de explicație. Exercițiile cu instrucțiuni și cronometru sunt `:::sala`: participanții nu au nevoie de ele în cursul online, cum spune Alex.
+- **`:::sala-si-curs` există ca să nu scriem de două ori** ce e bun în ambele locuri, de exemplu desenul unui model sau întrebarea mare a modulului.
+- **Primul ecran al fiecărui modul se face singur,** din `titlu` și `tip`, deci nu se scrie.
+- **Cronometrul** se cere pe bloc: `:::sala cronometru=10` pornește un cronometru de 10 minute pe ecranul din sală, cu o tastă.
 
 Antetul modulului:
 | Câmp | Obligatoriu | Ce e |
@@ -91,12 +104,17 @@ schita:
 materiale: ["flipchart cu curba desenată", "post-it-uri în 3 culori"]
 ---
 
-## Întrebarea
+:::sala-si-curs
 Ce simți în prima săptămână după o schimbare pe care n-ai ales-o?
+:::
 
 ## Ideea
 Orice schimbare trece printr-o scădere înainte de o creștere. Nu e un semn că
 ceva merge prost. E drumul obișnuit.
+
+:::sala-si-curs
+![Curba schimbării](materiale/curba.png)
+:::
 
 :::trainer
 **Deschidere (5 min).** Întreabă: „Cine a trecut anul ăsta printr-o schimbare
@@ -113,6 +131,13 @@ Cere grupului să numească etapele.
 ## Exercițiul
 Unde ești tu acum pe curbă, pentru schimbarea cea mai mare din viața ta de lucru?
 
+:::sala cronometru=10
+**În perechi, 10 minute**
+1. Pune un post-it pe curbă, unde ești azi.
+2. Spune-i colegului de ce acolo.
+3. Ascultă. Nu dai sfaturi.
+:::
+
 :::participant
 Scrie în worksheet-ul „Curba mea” (pagina 2) unde erai acum o lună și unde ești azi.
 :::
@@ -122,17 +147,22 @@ O schimbare nu se judecă după prima lună.
 ```
 
 Ce iese din acest fișier:
-- **Cursul participanților:** Întrebarea, Ideea, Exercițiul, nota despre worksheet, Ce iei cu tine. Fără nota trainerului.
-- **Materialul trainerului:** tot, mai puțin nota pentru participanți, plus ora (de exemplu 10:10–11:00), materialele și ancora.
+- **Cursul online:** întrebarea, ideea cu desenul curbei, exercițiul (întrebarea), nota despre worksheet, „Ce iei cu tine”. Fără nota trainerului și fără instrucțiunile pentru perechi.
+- **Ecranul din sală, 4 ecrane:** titlul modulului (făcut singur), întrebarea, curba, instrucțiunile pentru perechi cu cronometrul de 10 minute.
+- **Vederea trainerului:** ecranul curent și pe cel următor, nota trainerului pentru momentul ăsta, ora (de exemplu 10:10–11:00), timpul rămas din modul, materialele și schița.
 - **Schița:** „Curba, nu linia” și cele trei puncte, la ora 10:10.
 
 ### 1.6 Siguranța: notele trainerului nu scapă niciodată
 Build-ul se oprește (nu publică nimic) dacă:
-- un bloc `:::` nu e închis;
-- apare un bloc necunoscut (de exemplu `:::traner`, scris greșit). Mai bine un build oprit decât o notă de trainer ajunsă la participanți;
+- un bloc `:::` nu e închis sau e pus în alt bloc;
+- apare un bloc necunoscut (de exemplu `:::traner` sau `:::sal`, scrise greșit). Mai bine un build oprit decât o notă de trainer ajunsă la participanți sau un exercițiu de sală ajuns în cursul online;
+- exportul pentru cursul online conține ceva din `:::trainer` sau `:::sala` (verificare făcută pe rezultat, nu doar pe sursă);
 - schița are peste 3 puncte sau un punct are peste 8 cuvinte;
-- modulele nu încap în `durata_zi`;
+- modulele nu încap în `durata_zi`, sau un `cronometru` e mai lung decât `durata` modulului;
+- un ecran din sală trimite la o imagine care nu e în `materiale/` sau la o adresă de pe internet (prezentarea trebuie să meargă fără internet);
 - în cursul participanților apare un cuvânt din `nume_interzise` al ediției (numele clientului, al oamenilor). Lista stă doar în fișierul privat al ediției.
+
+Doar avertisment, fără oprire: un ecran din sală cu peste 30 de cuvinte. Pe proiector, mai puțin e mai bine.
 
 ### 1.7 Ediția: `editii/2026-11-23.yml`
 ```yaml
@@ -153,10 +183,11 @@ flowchart LR
   F -->|Alex aprobă flow-ul| I[Import, o singură dată]
   I --> S[(Sursa: cursuri/change-agility/<br/>un fișier pe modul)]
   A[Alex modifică un fișier] --> S
-  S --> P[1. Cursul participanților<br/>pagini web]
-  S --> T[2. Materialul trainerului<br/>HTML offline + PDF]
-  T --- K[3. Schița<br/>vedere în materialul trainerului]
-  S -.->|la cerere| D[Slide-uri<br/>innersis-ive / bemore-ls-ive]
+  S --> P[1. Cursul participanților<br/>pagini web, fără :::sala]
+  S --> T[2. Materialul trainerului<br/>HTML offline + PDF<br/>cu modul Prezintă]
+  T --- E[Ecranul din sală<br/>:::sala, stil Ive]
+  T --- K[3. Schița<br/>în vederea trainerului]
+  S -.->|doar dacă cere clientul| D[PPTX<br/>innersis-ive / bemore-ls-ive]
   S -.->|după 25| X[Flow Excel regenerat]
   P -->|PR, Alex aprobă| W[alexandrumolea.com/cursuri/change-agility/]
 ```
@@ -170,8 +201,12 @@ Răspunsul clar: **sursa e folderul cursului. Flow-ul Excel e o ieșire.**
 
 De ce nu Excelul ca sursă: un Excel nu se poate transforma curat în pagini web, nu se vede ce s-a schimbat (în git) și nu are loc bun pentru texte lungi de facilitare.
 
-### 2.2 Slide-urile: ieșire la cerere
-innersis-ive sau bemore-ls-ive citesc fișierele de modul: textul pentru toți devine slide-urile, `tip` dă lumea (întunecat, luminos, accent), iar blocurile `:::trainer` devin notele vorbitorului. **Nu se sincronizează singure.** După o schimbare, cineva îi spune lui Matei „regenerează deck-ul”. E normal: un deck se verifică vizual de un om înainte de sală.
+### 2.2 Slide-urile Ive: stilul trece în prezentare, PPTX-ul devine opțional
+**Recomandarea mea:** aplicăm stilul Ive direct în modul Prezintă, iar PPTX-ul rămâne o ieșire opțională.
+- **Stilul.** Regulile din innersis-ive și bemore-ls-ive (culorile, tipografia Helvetica Neue subțire, cele trei lumi, spațiul gol, zero ornamente) devin o temă pentru ecranele din sală, câte una pe brand. Ioana le transcrie din skill-uri, Matei verifică. `tip` alege lumea (teorie = întunecat, exercițiu și reflecție = luminos, mesaj = accent), exact ca în deck-uri.
+- **De ce nu PPTX ca prezentare principală.** Un deck e a doua sursă: o corectură făcută în PowerPoint nu ajunge în curs, iar una făcută în fișierul de modul nu ajunge în deck până nu-l regenerează cineva. Asta e exact ce Alex vrea să evite.
+- **Când facem totuși PPTX:** când clientul cere materialele în PowerPoint sau când Alex trebuie să prezinte de pe laptopul clientului. Atunci innersis-ive sau bemore-ls-ive citesc aceleași fișiere: `:::sala` și `:::sala-si-curs` devin slide-urile, iar `:::trainer` devine notele vorbitorului. Se regenerează la cerere și se verifică de un om.
+- **Plasa de siguranță pentru 23:** un PDF cu toate ecranele din sală, câte unul pe pagină. Se deschide pe orice laptop, fără nimic instalat.
 
 ### 2.3 Site-ul
 - **`site/build.mjs` nu citește sursa.** Sursa e privată, iar build-ul site-ului rulează în repo-ul public. Primește doar **exportul pentru participanți**: un fișier `content/cursuri/change-agility.json`, fără note de trainer, fără ediții, fără client. Exportul ajunge în repo-ul public printr-un Pull Request pe care Alex îl aprobă (D-029; publicarea e nivelul 3).
@@ -201,58 +236,88 @@ Dacă un modul are nevoie de un exemplu din compania clientului, exemplul stă �
 
 ---
 
-## 4. Materialul trainerului și schița
+## 4. Materialul trainerului, prezentarea și schița
 
 ### 4.1 Unde trăiește
-**Un singur fișier HTML, care merge fără internet,** plus un **PDF** tipărit din el. Ambele generate din aceeași sursă, la fiecare build.
-- **HTML pe tabletă sau telefon:** Wi-Fi-ul din sălile de training nu e de încredere, deci fișierul are totul înăuntru (fără fonturi sau scripturi de pe net). Se deschide din Drive sau din Fișiere, merge și în modul avion.
-- **PDF pe Drive și pe hârtie:** aceeași pagină, cu stil de tipar. Pentru cine vrea foaia pe masă.
+**Un singur fișier HTML, care merge fără internet,** plus PDF-uri tipărite din el. Toate generate din aceeași sursă, la fiecare build.
+- **Fără internet, complet:** fonturile, tema Ive, imaginile și scriptul sunt în fișier. Nimic nu se încarcă de pe net. Se deschide dublu-click de pe laptop, din Drive sincronizat local sau de pe un stick, și merge în modul avion. Wi-Fi-ul din sălile de training nu e de încredere.
+- **Două PDF-uri:** materialul trainerului (pentru masă sau hârtie) și ecranele din sală (plasa de siguranță, vezi 2.2).
 - **Nu se publică pe site.** Stă pe Drive-ul lui Alex, lângă celelalte materiale de training.
 
-Trei vederi în același fișier, cu un buton sus:
+Patru vederi în același fișier, cu butoane sus:
 1. **Ziua:** desfășurătorul, cu ora fiecărui modul, durata, tipul și materialele. Ce e acum se vede imediat.
-2. **Modulul:** tot conținutul, cu notele trainerului evidențiate.
+2. **Modulul:** tot conținutul, cu notele trainerului evidențiate. Pentru pregătire.
 3. **Schița:** doar ancorele și punctele cheie. Asta e vederea „las materialele deoparte”.
+4. **Prezintă:** deschide ecranul din sală. Vederea lui Alex devine ecranul de comandă (4.2).
 
-### 4.2 Trei direcții pentru schiță (punct de pornire pentru Ioana și Alex)
+### 4.2 Modul Prezintă: cum merge în sală
+Seamănă cu „Presenter View” din PowerPoint sau Keynote: **două ferestre din același fișier.** Fereastra lui Alex o deschide pe a participanților și o comandă direct, fără internet și fără server.
+
+**Fereastra participanților** (ecranul din sală): doar blocurile `:::sala` și `:::sala-si-curs`, câte un ecran, în stilul Ive, plus cronometrul când e cerut.
+
+**Fereastra lui Alex** (ecranul de comandă):
+- ecranul curent și cel următor, mici;
+- nota trainerului pentru momentul ăsta;
+- ora, timpul rămas din modul, cât e de la începutul zilei față de plan (de exemplu „+8 min”);
+- schița zilei, cu modulul curent evidențiat.
+
+Taste simple: săgeți sau telecomanda de prezentare pentru ecranul următor, `C` pornește cronometrul, `N` înnegrește ecranul din sală (pentru discuții), `S` deschide schița.
+
+| Situația | Cum merge |
+|---|---|
+| **Proiector sau al doilea ecran** (laptop + proiector, cazul obișnuit în sală) | Afișaj extins, nu oglindit. Fereastra participanților merge pe proiector, pe tot ecranul. Fereastra de comandă rămâne pe laptop, la Alex |
+| **Un singur ecran, sala vede același ecran** (oglindit, sau un TV mare fără laptop separat) | „Prezintă” deschide ecranul din sală pe tot ecranul, fără ecran de comandă vizibil. Notele și schița le vede Alex pe al doilea dispozitiv: același fișier deschis pe tabletă sau telefon, în vederea Schiță sau Modul. Cele două nu se sincronizează (ar cere internet); Alex avansează pe tabletă când schimbă modulul. Schița e făcută tocmai ca să nu ai nevoie de mai mult |
+| **Online** (Zoom, Teams, Meet) | „Într-o fereastră”: ecranul din sală se deschide ca fereastră separată, iar Alex o partajează doar pe ea. Fereastra de comandă rămâne nevăzută lângă |
+
+**Ce rămâne de verificat tehnic (Mike):** deschiderea și comanda celei de-a doua ferestre direct din fișier (fără server), în Chrome și Safari pe Mac, plus telecomanda de prezentare a lui Alex. Mike alege dacă scrie codul sau folosește o bibliotecă deschisă care are deja „speaker view” și merge fără internet (de exemplu reveal.js). Criteriul: merge dublu-click, în modul avion, pe laptopul lui Alex.
+
+### 4.3 Trei direcții pentru schiță (punct de pornire pentru Ioana și Alex)
 | Direcția | Cum arată | Când e bună | Ce riscă |
 |---|---|---|---|
 | **1. O pagină** | toată ziua pe o foaie A4 sau pe un ecran de tabletă: o linie verticală a timpului, la fiecare oră ancora mare și cele 3 puncte mici | Alex vrea să vadă toată ziua dintr-o privire, să știe unde e și ce urmează | la 10–12 module devine aglomerată |
 | **2. Câte o carte** | un modul pe ecran: ancora uriașă, trei puncte, timpul rămas. Glisezi la următorul | Alex ține telefonul în mână sau tableta pe masă și vrea un singur lucru în față | nu vezi ziua întreagă |
 | **3. Harta zilei** | ziua desenată ca un drum (de exemplu chiar curba schimbării), cu modulele ca opriri și o linie a energiei grupului | Alex gândește vizual; harta poate fi și pentru participanți, la început și la final | cel mai greu de făcut; cere design adevărat |
 
-**Recomandarea mea pentru 23:** direcția 1, pentru că se face simplu și merge și pe hârtie. Pe 23 Alex o folosește, iar după aceea, cu Ioana, decidem forma finală din ce a lipsit în sală. Toate trei citesc aceleași câmpuri (`ancora`, `schita`, `durata`, `tip`), deci schimbarea designului nu schimbă conținutul.
+**Recomandarea mea pentru 23:** direcția 1, pentru că se face simplu și merge și pe hârtie. În ecranul de comandă apare aceeași schiță, cu modulul curent evidențiat. Direcția 2 (câte o carte) seamănă cu ecranul de comandă, deci o putem testa gratis în sală. Pe 23 Alex le folosește, iar după aceea, cu Ioana, decidem forma finală din ce a lipsit în sală. Toate citesc aceleași câmpuri (`ancora`, `schita`, `durata`, `tip`), deci schimbarea designului nu schimbă conținutul.
 
 ---
 
 ## 5. Calendarul: ce e realist până pe 23
 
 **Ce depinde de ce:**
-- **Conținutul** depinde de brief (întrebările 40–44). Fără el nu avem module. Brandul (41) decide culorile și skill-ul de slide-uri; limba (42) decide textele fixe.
-- **Cine scrie modulele** depinde de D-045 (Studio). Dacă nu e aprobată, Tudor coordonează și fac munca agenții CORE, mai încet.
+- **Conținutul** depinde de brief (întrebările 40–44). Fără el nu avem module. Brandul (41) decide tema Ive a ecranelor din sală; limba (42) decide textele fixe.
+- **Cine scrie modulele** depinde de D-045 (Studio). Dacă nu e aprobată, Tudor coordonează și fac munca agenții CORE, mai încet. Matei scrie ecranele din sală (`:::sala`) în locul deck-ului.
 - **Unde stă sursa** depinde de D-043. Dacă nu e luată, folosim rezerva (secțiunea 3).
-- **Generatorul** (Mike) nu depinde de conținut. Poate porni imediat ce Alex aprobă direcția.
+- **Generatorul și modul Prezintă** (Mike) nu depind de conținut. Pot porni imediat ce Alex aprobă direcția.
+- **Repetiția** depinde de Alex: cel puțin 30 de minute cu laptopul lui, proiector sau monitor extern și telecomanda, înainte de 23.
+
+**Ce se schimbă față de v0:** Mike are mai mult de lucru (modul Prezintă, cu două ferestre, cronometru și tema Ive), Ioana intră acum, nu după 23 (tema Ive pentru ecrane), iar deck-ul PPTX iese din drumul principal. De aceea plasa de siguranță contează mai mult.
 
 | Zi | Ce se face | Cine |
 |---|---|---|
 | Ma 17 | Alex aprobă direcția și răspunde la brief | Alex |
-| Mi 18 | flow-ul cu training-flow-design → Alex verifică. În paralel: generatorul (sursă → cele trei ieșiri), pe modulul-exemplu | Daria / Tudor; Mike |
-| Jo 19 | importul flow-ului în fișiere de modul; textele pentru participanți și notele trainerului | Daria; Maria pentru voce |
-| Vi 20 | **Alex citește materialul trainerului pe tabletă** și corectează direct în fișiere. Slide-urile, din sursă | Alex; Matei |
-| Sâ–Du 21–22 | corecturi, PDF-ul, lista de print, PR-ul cu cursul participanților (`public: link`), codul QR | Mike; Alex aprobă PR-ul |
+| Mi 18 | flow-ul cu training-flow-design → Alex verifică. În paralel: generatorul și modul Prezintă, pe modulul-exemplu; verificarea tehnică din 4.2 (două ferestre, fără internet, Chrome și Safari) | Daria / Tudor; Mike |
+| Jo 19 | importul flow-ului în fișiere de modul; textele de citit, ecranele din sală, notele trainerului. Tema Ive pentru ecrane, din skill-ul brandului ales | Daria, Matei; Maria pentru voce; Ioana |
+| Vi 20 | **Alex parcurge ziua în modul Prezintă** și corectează direct în fișiere. **Punct de decizie:** dacă modul Prezintă nu merge sigur, Matei face PPTX-ul din aceeași sursă (2.2) | Alex; Mike; Matei |
+| Sâ–Du 21–22 | corecturi, cele două PDF-uri, lista de print, **repetiția cu proiectorul**, PR-ul cu cursul participanților (`public: link`), codul QR | Alex; Mike; Alex aprobă PR-ul |
 | Lu 23 | **livrare** | Alex |
 | Ma 24 | ce a lipsit în sală; aceleași fișiere pentru Self-management (25) | Tudor, Elena |
 
 **v1 minim pentru 23 (ce promitem):**
-- sursa în formatul de mai sus;
-- materialul trainerului: HTML offline și PDF, cu vederile Ziua, Modulul și Schița (direcția 1, simplă);
-- cursul participanților pe `alexandrumolea.com/cursuri/change-agility/`, nelistat, accesibil prin QR;
-- slide-urile, generate o dată din sursă.
+- sursa în formatul de mai sus, cu straturile `:::sala` și `:::sala-si-curs`;
+- materialul trainerului: HTML care merge fără internet, cu vederile Ziua, Modul, Schiță (direcția 1, simplă) și **Prezintă** (două ferestre, cronometru, tema Ive a brandului);
+- PDF-ul ecranelor din sală și PDF-ul materialului trainerului, ca plasă de siguranță;
+- cursul participanților pe `alexandrumolea.com/cursuri/change-agility/`, fără ecranele din sală, nelistat, accesibil prin QR.
 
-**Planul B, dacă pe joi seara conținutul nu e gata:** prioritatea e materialul trainerului (fără el nu se ține workshop-ul). Cursul participanților devine follow-up-ul de după workshop, cu linkul trimis de Alex. Generatorul e același, doar publicarea se mută.
+**Nu promitem pentru 23:** sincronizarea dintre laptop și tabletă, telefonul ca telecomandă, animații între ecrane, PPTX (doar dacă vineri modul Prezintă nu e sigur).
+
+**Planul B, în două trepte:**
+- **Dacă vineri modul Prezintă nu merge sigur:** prezentăm din PPTX generat din aceeași sursă (sau din PDF-ul ecranelor), iar notele și schița le are Alex pe tabletă. Sursa rămâne una; doar ieșirea e alta.
+- **Dacă joi seara conținutul nu e gata:** prioritatea e ce se folosește în sală (ecranele, notele, schița). Cursul participanților devine follow-up-ul de după workshop, cu linkul trimis de Alex.
 
 **După 25:**
-- designul schiței, cu Ioana și Alex, din ce s-a folosit în sală;
+- designul schiței și al ecranului de comandă, cu Ioana și Alex, din ce s-a folosit în sală;
+- tableta sincronizată cu laptopul (cere o rețea locală; de cântărit dacă merită);
 - Excelul regenerat din sursă;
 - skill-ul „curs-din-sursă” (cu `skill-creator`), ca orice curs nou să fie doar un folder nou;
 - pre-work, follow-up și formularul de feedback (golurile din `echipa-workshopuri-v0.md`);
@@ -261,13 +326,14 @@ Trei vederi în același fișier, cu un buton sus:
 
 ---
 
-## 6. Deciziile pentru Alex
-1. **O sursă, trei ieșiri.** Cursul e un folder cu un fișier pe modul; flow-ul Excel e punctul de plecare, apoi devine o ieșire, iar modificările se fac doar în fișierele de modul. *Recomandare: da.*
-2. **Cursul participanților e public, dar generic.** Fără client, fără notele trainerului, la un link nelistat pentru 23; după workshop decizi dacă intră în Innovations. *Recomandare: da (varianta B). Alternativă: doar ca follow-up după workshop.*
-3. **Sursa stă privat.** Aplicăm D-043 acum, doar pentru cursuri: un repo privat pentru Studio. Până îl ai, un folder local cu copie pe Drive. *Recomandare: da.*
-4. **Schița pentru 23 e simplă: toată ziua pe o pagină.** Designul final îl facem cu Ioana după ce o folosești în sală. *Recomandare: da.*
+## 6. Deciziile pentru Alex (D-048–D-051 în `docs/decizii.md`)
+1. **D-048. O sursă, trei ieșiri, iar materialul trainerului e și prezentarea.** Cursul e un folder cu un fișier pe modul. Din el ies cursul online, materialul trainerului (cu modul Prezintă, ecranele din sală în stilul Ive și vederea separată a trainerului) și schița. Flow-ul Excel e punctul de plecare, apoi devine o ieșire; PPTX-ul se face doar la cerere. Modificările se fac doar în fișierele de modul. *Recomandare: da.*
+2. **D-049. Cursul participanților e public, dar generic.** Fără client, fără notele trainerului și fără exercițiile din sală, la un link nelistat pentru 23; după workshop decizi dacă intră în Innovations. *Recomandare: da (varianta B). Alternativă: doar ca follow-up după workshop.*
+3. **D-050. Sursa stă privat.** Aplicăm D-043 acum, doar pentru cursuri: un repo privat pentru Studio. Până îl ai, un folder local cu copie pe Drive. *Recomandare: da.*
+4. **D-051. Schița pentru 23 e simplă: toată ziua pe o pagină,** pe hârtie și în ecranul de comandă. Designul final îl facem cu Ioana după ce o folosești în sală. *Recomandare: da.*
 
 ## Jurnal
 | Dată | Ce s-a întâmplat |
 |---|---|
 | 2026-11-17 | Alex a cerut cele trei ieșiri. Radu a scris propunerea v0, fără nimic construit. |
+| 2026-11-17 | v1: Alex a precizat că materialul trainerului trebuie să poată fi prezentat (pe tot ecranul sau într-o fereastră), cu exercițiile pentru sală, care nu intră în cursul online. Am adăugat straturile `:::sala` și `:::sala-si-curs`, modul Prezintă (4.2), rolul nou al slide-urilor Ive (2.2), verificările noi (1.6), calendarul și deciziile actualizate. |
