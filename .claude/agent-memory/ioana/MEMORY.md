@@ -16,6 +16,7 @@ Păstrează sub 150 de rânduri. Comprimă când crește. Fapte, nu povești.
 - [Inovație, nu calm](feedback_inovatie-nu-calm.md) — „prea banale” (2026-11-15); vrea viitor, un wow clar; a11y și viteza sunt limite
 - 2026-11-15: Alex a ales **Spațiu** (D-023): „Ioana a făcut treabă bună acum.”
 - 2026-11-17: Îi place **Planșa** (luminos, desen tehnic, aerisit). Întrebările le vrea ca să descopăr un stil nou pentru el, nu ca să aleagă între variantele mele.
+- 2026-11-17: Spațiile care îi plac: atelier de arhitect schițat, birouri minimaliste ușor industriale cu lemn și multă lumină, Apple Park, plante, balcon în NY la ultimul etaj, munte. Vrea ca vizitatorul să simtă „wellness al minții”, „pe mâini bune”, ca într-o bibliotecă modernă sau un showroom.
 - 2026-11-17: Site-ul e „foarte închis”, neplăcut pentru cursuri online; vrea pagini de citit luminoase. Îi plac: compact, interactiv, dinamic (nu le pierde).
 - 2026-11-15: I-au plăcut: feed-ul cu taskurile dintre agenți (din Sistem viu), introducerea scrisă din mock (păstreaz-o exact), metafora „acces în atelierul meu de inovație, work & living”.
 
@@ -31,10 +32,11 @@ Păstrează sub 150 de rânduri. Comprimă când crește. Fapte, nu povești.
 - 2026-11-17: Browserul integrat nu deschide file://; pentru capturi locale merge Chrome headless (`--screenshot`), dar fereastra are minim 500px lățime: verifică overflow-ul cu JS, nu din captură.
 - Tranziția CSS a `clip-path` cu `var()` nu s-a desenat în Chromium; WAAPI cu valori explicite merge.
 - 2026-11-17: Mock-uri la proporții reale: o lățime fixă (1440 / 390) scalată cu `transform`, plus `@container` pe rădăcina mock-ului, ca telefonul să fie același markup. Chrome headless cu `--user-data-dir` nou la fiecare rulare (altfel se blochează); viewport-ul de telefon îl testezi în browserul integrat cu `resize_window mobile` + meta viewport adăugat din JS.
+- 2026-11-17: Întrebările deschise despre locuri care îi plac (nu despre site-uri) au dat cel mai mult material de design.
 - 2026-11-17: Alex: „mai aerisit”. Înseamnă mai puține lucruri vizibile deodată, nu mai puține drumuri; compactul și interactivitatea rămân.
 
 ## Proiecte și referințe
-- [Design v2](project_design-v2.md) — 2026-11-17: Alex preferă B Planșa; urmează un stil nou după 2 întrebări; schița D e în agent-memory-local
+- [Design v2](project_design-v2.md) — 2026-11-17: B Planșa plăcută; D · Studio construit din răspunsurile lui; aștept reacția
 - [Culori v1](project_culori-v1.md) — 2026-11-17: diagnostic + A/B/C; înlocuit de design v2 (regulile de sens rămân)
 - [Spațiu v2](project_spatial-v2.md) — prototipul curent; deschise: rândurile din Live, propoziția „pod”, test pe telefon
 - [Direcții v1](project_directii-v1.md) — Dialog / Spațiu / Sistem viu; Alex a ales Spațiu

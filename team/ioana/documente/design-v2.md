@@ -13,6 +13,64 @@ Pagina de comparat: [design-v2.html](design-v2.html), cu designul, pagina (prima
   - Pagina pornește acum pe B.
 - **Regula, de acum (Alex observă scrisul mic):** sub 16 px doar etichete (litere mari spațiate, cum ar fi „LEGENDĂ” sau „COMPANIA MEA”), niciodată lucruri pe care dai click. Textul de citit are cel puțin 17 px, iar lecțiile 19–20 px.
 - **Ce urmează:** Alex vrea un stil nou, propus de mine, care să i se potrivească. Întâi răspunde la două întrebări (le pune Tudor în chat), apoi fac propunerea.
+- **2026-11-17, v2.2:** Alex a răspuns la cele două întrebări (citate mai jos). Am construit **D · Studio** în aceeași pagină, pe prima pagină, Compania mea și lecție, la 1440, 1280 și pe telefon. Pagina pornește pe D. B rămâne reper, A și C rămân doar ca istoric.
+
+## D · Studio (v2.2)
+*Un studio de arhitect, luminos, la ultimul etaj: lucrurile tale pe o masă lungă de stejar, orașul și muntele în fereastră.*
+
+### Ce a spus Alex (2026-11-17)
+1. „Îmi place ideea de atelier al unui artist. Dar îmi place mai schițat, că arată ca un atelier al unui arhitect de fapt. Îmi plac spațiile de birou foarte moderne și minimaliste. Ușor industriale, cu lemn și foarte luminoase. Un loc care îmi place este magazinul apple, sediul lor central. Dar îmi plac și plantele într-un loc. Și îmi place și un balcon în new york la ultimul etaj al unui bloc cu privire asupra orașului și îmi place și o priveliște de munte.”
+2. „Să simtă că a întrat într-un spațiu de wellness al minții. Unde este pe mâini bune. Unde se simte inspirat de ceea ce vede în jur. Ca într-o bibliotecă foarte modernă, ca într-un showroom.”
+
+### Cum am tradus fiecare reper
+| Reper | Decizie |
+|---|---|
+| Atelier de arhitect, schițat | Totul e desenat cu linie de creion (grafit `#5E574B`). Liniile trec puțin de colțuri, liniile de construcție rămân la vedere. Nimic lucios, nimic randat. |
+| Birou minimalist, ușor industrial, cu lemn | Pereți de travertin, masă și podea de stejar deschis, cadre subțiri ca de oțel. Lemnul e material, nu culoare de text. |
+| Foarte luminos | Fundal deschis peste tot. Lumina din fereastră cade pe podea și „respiră” încet (9 s). |
+| Apple Park, magazinul Apple | O fereastră uriașă și o singură masă lungă pe care stau lucrurile lui Alex, cu spațiu între ele, sub trei lumini suspendate. |
+| Plante | O plantă desenată în colțul atelierului, una în panorama lecției și o crenguță lângă ideea de reținut. Verdele e doar linie. |
+| Balcon în New York, ultimul etaj | În fereastră e orașul văzut de sus. Seara i se aprind ferestrele (citron). Lumina urmează ora vizitatorului: dimineață, zi, seară. |
+| Priveliște de munte | Dincolo de oraș e linia munților. În lecții, panorama de munte e capul paginii; în Compania mea, orașul și muntele închid pagina. |
+| Wellness al minții, „pe mâini bune” | Ritm lent, un singur pas pe ecran, fără nimic care clipește. Cronometrul din exercițiu respiră cu tine: 4 s inspiri, 4 s expiri. |
+| Bibliotecă foarte modernă | Drumurile stau pe un raft de stejar, scrise la 20 px. Lecția are cuprinsul cursului lângă text, ca într-o sală de lectură. |
+| Showroom | Compania mea e o galerie: fiecare business pe soclul lui, cu lumină de sus și inițiala mare, subțire (tiparul „big-letter” din deck-urile BEMORE). |
+
+Ce am păstrat din Planșa: desenul în loc de efect, luminozitatea, aerul, liniile albastre ale obiectelor, legenda scrisă mare (acum raftul).
+
+### Tokenii D
+Baza e paleta BEMORE LS Ive de pe paginile deschise (`page-*` din tabelul de mai sus). În plus:
+
+| Rol nou | Valoare | Ce colorează | Contrast |
+|---|---|---|---|
+| `sketch` | `#5E574B` | liniile de creion ale camerei (pereți, fereastră, lămpi) | 5,96 pe travertin (nu e text) |
+| `oak` | `#C9A57A` | raftul, masa, scândurile, linia de sub cuprinsul lecției | 1,91: doar material, niciodată text sau singurul semn al unei stări |
+| `oak-light` | `#EDE2CF` | blatul mesei și „masa de lucru” din lecție (fundal) | text `#2A2620` 11,73; secundar `#66604F` 4,89 |
+| `oak-dark` | `#8C6A43` | muchiile lemnului | 4,11 (nu e text) |
+| `plant` / `plant-light` | `#4F6B3D` / `#E3E8D8` | linia și umplutura frunzelor | 5,00 pe travertin, ar trece și ca text |
+| `sky-*` | dimineață `#F6F2EA`→`#F7E3A6`; zi `#DCE5F3`→`#F6F2EA`; seară `#C8D2E8`→`#F2D49E` | cerul din fereastră | fără text pe cer |
+| `city-light` | `#F1C436` | ferestrele aprinse seara | semn, nu text |
+
+Regulă nouă: pe „masa de lucru” (`oak-light`) accentul de text devine Amalfi `#2E5AA7` (5,22), pentru că `#3E66A8` dă acolo doar 4,46.
+Restul regulilor rămân: sub 16 px doar etichete; tot ce se apasă are cel puțin 16 px; raftul 20 px; textul lecției 20 px.
+
+### Fezabilitatea D
+- **Doar din `content/tema.yml`:** nimic din ce e nou. D cere rolurile `page-*` (ca B) și rolurile de mai sus (`sketch`, `oak*`, `plant*`, `sky-*`, `city-light`), adică încă o secțiune în `tema.yml`.
+- **CSS (Mike):** pagini luminoase, un singur font, raftul (linia de stejar sub drumuri), galeria din Compania mea (4 coloane, 2 pe telefon), sala de lectură (cuprinsul cursului lângă text), masa de lucru, cronometrul care respiră. Cam 2 zile.
+- **`scena.js`: refacere, nu recolorare.** Scena devine un interior desenat:
+  - camera ca linii (`LineSegments`): colțul, podeaua cu scânduri, fereastra cu montanți, lămpile;
+  - cerul ca un plan cu gradient care se schimbă după ora locală (sau după `prefers-color-scheme`, de discutat);
+  - orașul și munții ca siluete plate (două planuri cu contur), la distanță, cu o mică paralaxă când tragi de scenă;
+  - obiectele de azi (aceleași geometrii) stau pe masă, cu contur `EdgesGeometry` albastru și umplutură mată; fără sticlă și fără strălucire;
+  - pata de soare pe podea: un plan transparent, cu opacitatea animată lent.
+  Estimare: 3–4 zile, plus test pe telefon real. E mai ușor de randat decât sticla de azi (bine pentru telefoane vechi).
+- **Varianta fără 3D:** desenul SVG din mostră e chiar fallback-ul. Se poate folosi direct și ca primă versiune, înainte de 3D.
+
+### Riscuri D
+- **„Trage de spațiu”** are sens doar dacă scena 3D se mișcă la tras. În desenul 2D nu se mișcă; dacă rămânem fără 3D, propoziția trebuie schimbată (o decide Alex).
+- **Ora vizitatorului:** seara cerul e cald și orașul aprins. E frumos, dar cine intră seara vede altă pagină decât cine intră la prânz. Textul nu stă niciodată pe cer, deci contrastul nu se schimbă.
+- **Lemnul și verdele** sunt în afara paletei BEMORE. Le-am ținut doar ca material (linii, blat), nu ca text sau accent, ca să nu concureze cu cornflower și citron.
+- Mostrele sunt desen 2D; perspectiva reală și mișcarea se văd doar după `scena.js`.
 
 ## Cererea
 Alex, 2026-11-17:
