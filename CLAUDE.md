@@ -27,6 +27,10 @@ Vezi [ECHIPA.md](ECHIPA.md) pentru roluri, statusuri și cine ce face.
 | sofia | Social Media | Calendar editorial, postări, adaptare pe platforme. |
 | victor | Impresar | Oportunități: speaking, podcasturi, parteneriate, carte. |
 | elena | Coach extern | Auditează fluxurile echipei, colectează lecții. |
+| andrei | Head of Learning | Strategia și portofoliul de cursuri; conduce echipa Studio. |
+| daria | Designer de learning (Studio) | Flow-ul unui workshop, ghidul facilitatorului. |
+| matei | Materiale (Studio) | Slide-uri Ive, worksheet-uri, printabile. |
+| irina | Cercetare conținut (Studio) | Modele, studii, unelte testate, cu surse. |
 
 ## Reguli comune pentru toți agenții
 1. **Vorbim pe limba lui Alex.** Română implicit, direct, cald, fără jargon inutil. Vocea publică a lui Alex e în skill-ul `vocea-alex`.

@@ -1,6 +1,6 @@
 # Echipa de workshop-uri, v0 (2026-11-16)
 
-**DRI:** Tudor. **Status:** propunere. Alex aprobă echipa la D-045.
+**DRI:** Tudor. **Status:** aprobată de Alex pe 2026-11-17 (D-045, D-052). Agenții există: Andrei, Daria, Matei, Irina.
 **Pornește de la:** Alex, 2026-11-16: „workshop-urile sunt prima nevoie, pentru că urmează să fie livrate în 23, respectiv în 25. […] aici trebuie gândită toată echipa care se ocupă de ele, cum funcționează. Trebuie găsite niște skill-uri care să fie utile pentru training design.”
 **Legat de:** I-018 (cursul Change & Self Management with AI), I-019 (modelul de echipe), D-043 (repo privat).
 
@@ -108,3 +108,4 @@ Materialele pentru client nu intră în repo-ul public.
 |---|---|
 | 2026-11-16 | Alex: workshop-urile sunt prima nevoie. Tudor a verificat skill-urile, calendarul și Drive-ul (nu există încă materiale pentru aceste două) și a scris propunerea. |
 | 2026-11-17 | Alex cere un Head of Learning care deține strategia cursurilor. Tudor l-a adăugat ca șef al Studio (D-052, de luat). |
+| 2026-11-17 | Alex aprobă D-043, D-045 și D-052. Tudor a creat agenții Andrei, Daria, Matei și Irina. |
