@@ -1,0 +1,96 @@
+# Culorile site-ului. Singurul loc în care se schimbă paleta.
+#
+# Din acest fișier pleacă tot: CSS-ul (variabilele din :root), scena 3D,
+# culoarea barei de adrese pe telefon (theme-color), favicon-ul și imaginea
+# de previzualizare (og.png). Ghidul: site/README.md, „Cum schimbi culorile”.
+#
+# Cum se scrie o valoare:
+#   "#7CF5C8"          un cod hex (merge și scurt: "#FFF")
+#   accent             numele altui rol: culoarea urmează rolul de care ține
+#   "#FFFFFF / .14"    o culoare cu transparență (0 = invizibil, 1 = plin)
+#   surface / .94      un rol, cu transparență
+# Numele sunt roluri, nu culori: „accent” poate fi verde azi și albastru mâine.
+# Sunt numele propuse de Ioana în team/ioana/documente/culori-v1.md.
+# O greșeală (cod invalid, nume care nu există) oprește build-ul, cu mesaj clar.
+#
+# Valorile de mai jos sunt exact paleta de acum (direcția Spațiu, varianta A din culori-v1).
+
+culori:
+  # --- scena și navigarea (noaptea atelierului) ---
+  bg: "#070910"                  # fundalul paginii și al scenei 3D; și theme-color
+  bg-glow: "#121833"             # lumina difuză din spatele scenei
+  surface: "#10131E"             # panouri, carduri, dock (plin)
+  glass: surface / .94           # panourile cu sticlă (fundalul de sub text)
+  line: "#FFFFFF / .14"          # liniile subțiri și contururile; aceeași bază, mai stinsă, la hover
+  text: "#F3F1EC"                # textul principal
+  muted: "#AEB3C4"               # explicații, date, etichete mici
+  accent: "#7CF5C8"              # aici apeși / se lucrează acum: butonul, focusul, agenții AI, „în lucru”
+  on-accent: "#06110C"           # textul de pe butonul de acțiune
+  human: "#FFC37A"               # oamenii din Live și „așteaptă decizia lui Alex”
+  alert: "#FF8A65"               # „blocat”
+  pressed-bg: text               # butonul apăsat din dock, pagina curentă din meniu, butoanele deschise
+  pressed-fg: "#0A0C14"          # textul de pe ele
+  pressed-muted: "#4A4F5E"       # cifra mică de pe butonul apăsat din dock
+  label-bg: "#0A0C14"            # etichetele straturilor când desfaci inovația
+
+  # --- My Journey ---
+  warm-glow: "#FFC37A"           # accentul modului cald, peste scenă (marca, linia misiunii, lumina pietrei)
+  warm-bg: "#F3EBDF"             # hârtia: fundalul panoului My Journey
+  warm-text: "#2A1F17"           # textul de pe hârtie
+  warm-muted: "#6B5646"          # textul mic de pe hârtie
+  warm-accent: "#8A4F27"         # titlurile mișcărilor din poveste
+  warm-line: "#C98B5E"           # linia din stânga a fiecărei mișcări
+  warm-divider: warm-text / .16  # liniile subțiri de pe hârtie
+
+  # --- varianta fără 3D (telefoane vechi, economisire de date) ---
+  fallback-glow: accent          # lumina rece din spatele desenului
+  fallback-glow-2: alert         # a doua lumină, caldă
+  fallback-warm-bg: "#140C08"    # fundalul modului cald
+  fallback-warm-glow: "#FFAA64"  # lumina modului cald
+
+# Scena 3D (doar pagina principală): lumini, materiale, nuanțele de sticlă.
+# Aici nu se folosește transparența. Multe valori trimit la un rol de sus.
+# Nuanțele deschise (sticla, cristalul, semnele) sunt variante ale accentului,
+# alese de mână: dacă schimbi `accent`, schimbă-le și pe ele.
+scena:
+  bg-warm: "#160D08"             # fundalul și ceața în My Journey (cel normal e `bg`)
+  sky: "#9FB4FF"                 # lumina de sus
+  sky-warm: "#FFB37A"
+  ground: "#120C08"              # lumina de jos
+  key: "#FFFFFF"                 # lumina principală
+  key-warm: "#FFD2A8"
+  glow: accent                   # lumina din centrul atelierului
+  glow-warm: "#FF9A4A"
+  floor: "#FFFFFF"               # nuanța planșei (alb = planșa cum e desenată)
+  floor-warm: "#E0B48E"
+  grid-bg: "#0A0D17"             # desenul planșei: fundal, margine, grilă
+  grid-edge: "#1F3B44"
+  grid-line: "#141F2E"
+  metal: "#161A28"               # baza inovației din centru
+  ring: accent                   # inelul inovației
+  ticks: "#E8FFF6"               # semnele de pe inel și inelul cristalului
+  core: "#C9FFF0"                # cristalul
+  core-emissive: "#2FD69C"       # strălucirea inelului și a cristalului
+  agent: accent                  # luminițele agenților și lumina camerelor
+  alex: text                     # punctul solid al lui Alex în Live
+  network: accent                # firele rețelei în Live
+  pulse: "#E6FFF6"               # impulsurile dintre agenți și firele care se aprind
+  bridge: "#F3FFFA"              # podurile dintre camerele vizitate
+  bridge-warm: "#FFE7C5"         # podurile în My Journey
+  door: accent                   # pragul de la intrare
+  marker: "#FFFFFF"              # punctul de pe obiectele „drum direct”
+  journey-glow: warm-glow        # lumina camerei My Journey
+  innovations-glow: "#FFF4E6"    # lumina camerei Innovations
+  pebble: "#D9A273"              # piatra din My Journey (singurul obiect mat)
+  pebble-glow: "#FF8A3D"
+  glass-disc: "#BFEFFF"          # nuanțele de sticlă, pe obiecte
+  glass-dome: "#D8CCFF"
+  glass-coaching: "#FFD2C2"
+  glass-innovations: core
+  glass-live: "#D6FFF1"
+  glass-knowledge-1: core
+  glass-knowledge-2: "#D8D2FF"
+  glass-knowledge-3: "#FFE9C2"
+  glass-knowledge-4: "#C9E4FF"
+  glass-speaking: "#FFF3C2"
+  glass-company: "#D8D2FF"

@@ -19,9 +19,12 @@ Păstrează sub 150 de rânduri. Comprimă când crește. Fapte, nu povești.
 - 2026-11-15: Browserul integrat randează 3D la câteva cadre/s; screenshot-urile rămân în urmă. Verifică starea cu JS (clase, opacitate, dreptunghiuri), nu doar din imagine. `qlmanage -t` + `sips` fac PNG din SVG (imaginea OG), fără dependențe.
 - 2026-11-15: pagina oficială a prețurilor tace despre uz comercial; textul decisiv e în acordurile de abonare (Netlify = PDF ilegibil prin WebFetch). Marchează „neverificat”, nu presupune. Verificarea generatorului propusă ca modul separat, testat pe copie în /tmp (scripts/ interzis în rutină).
 
+- 2026-11-17: când un coleg lucrează în paralel la nume (Ioana, culori-v1.md), verifică-i fișierul înainte de primul nume ales; altfel redenumești de două ori.
+
 ## Fișiere de memorie
 - [Stack și găzduire](project_stack-hosting.md) — GitHub Pages (D-036–D-038), CNAME ignorat la Actions; fapte Netlify/Cloudflare/Vercel
 - [Generatorul paginii echipei](generator-echipa.md) — Mike îl deține; puncte fragile tăcute
+- [Tema: culorile dintr-un loc](project_tema-culori.md) — 2026-11-17: content/tema.yml → CSS, scenă, OG; nume de la Ioana; cum verific „identic”
 
 ## Deschis
 - Vezi `docs/intrebari-pentru-alex.md`.

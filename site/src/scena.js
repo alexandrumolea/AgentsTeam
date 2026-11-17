@@ -14,6 +14,8 @@ let selected = -1, open = false;
 const INTENTS = D.categorii;
 const IDX = Object.fromEntries(INTENTS.map((it, i) => [it.k, i]));
 const KIND = Object.fromEntries(D.echipa.map(n => [n.slug, n.tip]));
+// Culorile vin din content/tema.yml, prin build: COL = rolurile site-ului (COL.bg), SC = luminile și materialele 3D (SC['bg-warm']).
+const COL = D.culori, SC = D.scena;
 
 /* ---------- pauza actualizărilor (WCAG 2.2.2) ---------- */
 let paused = reduce, hold = 0;
@@ -149,7 +151,7 @@ function start(THREE, RoomEnvironment){
   const seg = n => coarse ? Math.max(8, Math.round(n * 0.5)) : n;
   const V3 = THREE.Vector3;
 
-  const BG = new THREE.Color('#070910'), WARM = new THREE.Color('#160D08');
+  const BG = new THREE.Color(COL.bg), WARM = new THREE.Color(SC['bg-warm']);
   const scene = new THREE.Scene();
   scene.background = BG.clone();
   scene.fog = new THREE.Fog(BG.clone(), 9, 22);
@@ -158,53 +160,57 @@ function start(THREE, RoomEnvironment){
 
   const camera = new THREE.PerspectiveCamera(35, 1, 0.1, 60);
   const world = new THREE.Group(); scene.add(world);
-  const hemi = new THREE.HemisphereLight('#9fb4ff', '#120c08', 0.5); scene.add(hemi);
-  const key = new THREE.DirectionalLight('#ffffff', 1.6); key.position.set(3, 5, 4); scene.add(key);
-  const glow = new THREE.PointLight('#7CF5C8', 6, 8, 2); glow.position.set(0, 0.6, 0.8); world.add(glow);
-  const C = { hemi: new THREE.Color('#9fb4ff'), hemiW: new THREE.Color('#ffb37a'), key: new THREE.Color('#ffffff'), keyW: new THREE.Color('#ffd2a8'),
-              glow: new THREE.Color('#7CF5C8'), glowW: new THREE.Color('#ff9a4a'), floor: new THREE.Color('#ffffff'), floorW: new THREE.Color('#e0b48e') };
+  const hemi = new THREE.HemisphereLight(SC.sky, SC.ground, 0.5); scene.add(hemi);
+  const key = new THREE.DirectionalLight(SC.key, 1.6); key.position.set(3, 5, 4); scene.add(key);
+  const glow = new THREE.PointLight(SC.glow, 6, 8, 2); glow.position.set(0, 0.6, 0.8); world.add(glow);
+  const col = c => new THREE.Color(c);
+  const C = { hemi: col(SC.sky), hemiW: col(SC['sky-warm']), key: col(SC.key), keyW: col(SC['key-warm']),
+              glow: col(SC.glow), glowW: col(SC['glow-warm']), floor: col(SC.floor), floorW: col(SC['floor-warm']),
+              pod: col(SC.bridge), podW: col(SC['bridge-warm']) };
 
   // planșa de atelier
   const gc = document.createElement('canvas'); gc.width = gc.height = 256;
-  const g = gc.getContext('2d'); g.fillStyle = '#0a0d17'; g.fillRect(0, 0, 256, 256);
-  g.strokeStyle = '#1f3b44'; g.lineWidth = 2; g.strokeRect(0, 0, 256, 256);
-  g.strokeStyle = '#141f2e'; g.lineWidth = 1; for (let i = 64; i < 256; i += 64){ g.beginPath(); g.moveTo(i, 0); g.lineTo(i, 256); g.moveTo(0, i); g.lineTo(256, i); g.stroke(); }
+  const g = gc.getContext('2d'); g.fillStyle = SC['grid-bg']; g.fillRect(0, 0, 256, 256);
+  g.strokeStyle = SC['grid-edge']; g.lineWidth = 2; g.strokeRect(0, 0, 256, 256);
+  g.strokeStyle = SC['grid-line']; g.lineWidth = 1; for (let i = 64; i < 256; i += 64){ g.beginPath(); g.moveTo(i, 0); g.lineTo(i, 256); g.moveTo(0, i); g.lineTo(256, i); g.stroke(); }
   const gridTex = new THREE.CanvasTexture(gc); gridTex.wrapS = gridTex.wrapT = THREE.RepeatWrapping; gridTex.repeat.set(24, 24); gridTex.colorSpace = THREE.SRGBColorSpace;
   gridTex.anisotropy = Math.min(8, renderer.capabilities.getMaxAnisotropy());
   const floorMat = new THREE.MeshBasicMaterial({ map: gridTex });
   const floor = new THREE.Mesh(new THREE.PlaneGeometry(60, 60), floorMat);
   floor.rotation.x = -Math.PI / 2; floor.position.y = -1.5; world.add(floor);
 
-  const glass = (tint = '#ffffff', rough = 0.08, op = 0.6) => coarse
+  const glass = (tint, rough = 0.08, op = 0.6) => coarse
     ? new THREE.MeshPhysicalMaterial({ color: new THREE.Color(tint).multiplyScalar(0.35), metalness: 0.1, roughness: 0.08, clearcoat: 1, iridescence: low ? 0 : 0.5, transparent: true, opacity: op, depthWrite: op > 0.5, envMapIntensity: 1.8 })
-    : new THREE.MeshPhysicalMaterial({ color: '#ffffff', transmission: 1, thickness: 0.6, roughness: rough, ior: 1.45, iridescence: 0.55, iridescenceIOR: 1.3, attenuationColor: new THREE.Color(tint), attenuationDistance: 2.5, envMapIntensity: 1.2, specularIntensity: 1 });
+    // sticla clară are baza albă (fizică, nu paletă); nuanța vine din attenuationColor
+    : new THREE.MeshPhysicalMaterial({ color: 0xffffff, transmission: 1, thickness: 0.6, roughness: rough, ior: 1.45, iridescence: 0.55, iridescenceIOR: 1.3, attenuationColor: new THREE.Color(tint), attenuationDistance: 2.5, envMapIntensity: 1.2, specularIntensity: 1 });
 
-  const halo = (r, g2, b) => {
+  const halo = hex => {
+    const [r, g2, b] = [1, 3, 5].map(i => parseInt(hex.slice(i, i + 2), 16));
     const c = document.createElement('canvas'); c.width = c.height = 64; const x = c.getContext('2d');
     const rg = x.createRadialGradient(32, 32, 0, 32, 32, 32);
     rg.addColorStop(0, `rgba(${r},${g2},${b},1)`); rg.addColorStop(.25, `rgba(${r},${g2},${b},.45)`); rg.addColorStop(1, `rgba(${r},${g2},${b},0)`);
     x.fillStyle = rg; x.fillRect(0, 0, 64, 64); return new THREE.CanvasTexture(c);
   };
-  const TEX = { agent: halo(124, 245, 200), om: halo(255, 195, 122), alex: halo(255, 244, 230), pulse: halo(230, 255, 246) };
+  const TEX = { agent: halo(SC.agent), om: halo(SC['journey-glow']), alex: halo(SC['innovations-glow']), pulse: halo(SC.pulse) };
   const sprite = (tex, s = 0.32) => { const sp = new THREE.Sprite(new THREE.SpriteMaterial({ map: tex, depthWrite: false, blending: THREE.AdditiveBlending, transparent: true })); sp.scale.setScalar(s); return sp; };
 
   /* --- obiectul din centru: o invenție în 5 straturi (acum: chiar site-ul) --- */
   const inv = new THREE.Group(); inv.position.y = 0.15; inv.visible = D.centru; world.add(inv);
   const L = [];
-  const base = new THREE.Mesh(new THREE.CylinderGeometry(1.32, 1.4, 0.14, seg(72)), new THREE.MeshStandardMaterial({ color: '#161a28', metalness: 0.85, roughness: 0.32 }));
-  const disc = new THREE.Mesh(new THREE.CylinderGeometry(1.26, 1.26, 0.16, seg(72)), glass('#bfefff', 0.06, 0.45));
+  const base = new THREE.Mesh(new THREE.CylinderGeometry(1.32, 1.4, 0.14, seg(72)), new THREE.MeshStandardMaterial({ color: SC.metal, metalness: 0.85, roughness: 0.32 }));
+  const disc = new THREE.Mesh(new THREE.CylinderGeometry(1.26, 1.26, 0.16, seg(72)), glass(SC['glass-disc'], 0.06, 0.45));
   const ring = new THREE.Group();
-  ring.add(new THREE.Mesh(new THREE.TorusGeometry(1.0, 0.024, 12, seg(120)), new THREE.MeshStandardMaterial({ color: '#7CF5C8', emissive: '#2fd69c', emissiveIntensity: 1.4, roughness: .3 })));
+  ring.add(new THREE.Mesh(new THREE.TorusGeometry(1.0, 0.024, 12, seg(120)), new THREE.MeshStandardMaterial({ color: SC.ring, emissive: SC['core-emissive'], emissiveIntensity: 1.4, roughness: .3 })));
   ring.children[0].rotation.x = Math.PI / 2;
-  for (let i = 0; i < 8; i++){ const t = new THREE.Mesh(new THREE.BoxGeometry(0.05, 0.05, 0.16), new THREE.MeshStandardMaterial({ color: '#e8fff6', emissive: '#7CF5C8', emissiveIntensity: .8 }));
+  for (let i = 0; i < 8; i++){ const t = new THREE.Mesh(new THREE.BoxGeometry(0.05, 0.05, 0.16), new THREE.MeshStandardMaterial({ color: SC.ticks, emissive: SC.ring, emissiveIntensity: .8 }));
     const a = i * Math.PI / 4; t.position.set(Math.sin(a), 0, Math.cos(a)); t.rotation.y = a; ring.add(t); }
   // miezul: un cristal care lucrează (în prototip era acul busolei, invenția fictivă)
   const core = new THREE.Group();
-  const crystal = new THREE.Mesh(new THREE.OctahedronGeometry(0.34, 0), new THREE.MeshStandardMaterial({ color: '#c9fff0', emissive: '#2fd69c', emissiveIntensity: .55, metalness: .2, roughness: .25, flatShading: true }));
+  const crystal = new THREE.Mesh(new THREE.OctahedronGeometry(0.34, 0), new THREE.MeshStandardMaterial({ color: SC.core, emissive: SC['core-emissive'], emissiveIntensity: .55, metalness: .2, roughness: .25, flatShading: true }));
   crystal.scale.y = 1.25;
-  core.add(crystal, new THREE.Mesh(new THREE.TorusGeometry(0.5, 0.012, 8, seg(64)), new THREE.MeshStandardMaterial({ color: '#e8fff6', emissive: '#7CF5C8', emissiveIntensity: .6 })));
+  core.add(crystal, new THREE.Mesh(new THREE.TorusGeometry(0.5, 0.012, 8, seg(64)), new THREE.MeshStandardMaterial({ color: SC.ticks, emissive: SC.ring, emissiveIntensity: .6 })));
   core.children[1].rotation.x = Math.PI / 2;
-  const dome = new THREE.Mesh(new THREE.SphereGeometry(1.24, seg(64), seg(24), 0, Math.PI * 2, 0, Math.PI / 2), glass('#d8ccff', 0.04, 0.28));
+  const dome = new THREE.Mesh(new THREE.SphereGeometry(1.24, seg(64), seg(24), 0, Math.PI * 2, 0, Math.PI / 2), glass(SC['glass-dome'], 0.04, 0.28));
   dome.scale.y = 0.32;
   [[base, 0, -2.1], [disc, 0.13, -1.05], [ring, 0.24, 0.0], [core, 0.36, 1.05], [dome, 0.3, 2.1]].forEach(([m, y0, y1]) => { inv.add(m); L.push({ m, y0: y0 - 0.15, y1 }); });
 
@@ -214,25 +220,25 @@ function start(THREE, RoomEnvironment){
   const liveInner = [], plates = [];
   let pebble = null, pebbleHalo = null;
   const build = {
-    coaching: () => new THREE.Mesh(new THREE.TorusGeometry(0.34, 0.12, seg(24), seg(64)), glass('#ffd2c2', .18)),
-    inventii: () => new THREE.Mesh(new THREE.IcosahedronGeometry(0.46, 0), glass('#c9fff0', .18)),
+    coaching: () => new THREE.Mesh(new THREE.TorusGeometry(0.34, 0.12, seg(24), seg(64)), glass(SC['glass-coaching'], .18)),
+    inventii: () => new THREE.Mesh(new THREE.IcosahedronGeometry(0.46, 0), glass(SC['glass-innovations'], .18)),
     live: () => { // lanternă de sticlă cu lumini care lucrează înăuntru
-      const gr = new THREE.Group(); gr.add(new THREE.Mesh(new THREE.SphereGeometry(0.42, seg(40), seg(20)), glass('#d6fff1', .12)));
+      const gr = new THREE.Group(); gr.add(new THREE.Mesh(new THREE.SphereGeometry(0.42, seg(40), seg(20)), glass(SC['glass-live'], .12)));
       [0, 2.1, 4.2].forEach(ph => { const s = sprite(TEX.agent, 0.2); gr.add(s); liveInner.push({ s, ph }); });
       return gr; },
     knowledge: () => { // straturi de cunoaștere: plăci care se desfac
-      const gr = new THREE.Group(); ['#c9fff0', '#d8d2ff', '#ffe9c2', '#c9e4ff'].forEach(t => {
-        const m = glass(t, .12); m.emissive = new THREE.Color('#7CF5C8'); m.emissiveIntensity = 0;
+      const gr = new THREE.Group(); [SC['glass-knowledge-1'], SC['glass-knowledge-2'], SC['glass-knowledge-3'], SC['glass-knowledge-4']].forEach(t => {
+        const m = glass(t, .12); m.emissive = new THREE.Color(COL.accent); m.emissiveIntensity = 0;
         const p = new THREE.Mesh(new THREE.BoxGeometry(0.74, 0.045, 0.52), m); gr.add(p); plates.push({ p }); });
       return gr; },
     povesti: () => { // piatră caldă, mată: singurul obiect care nu e din sticlă
       const gr = new THREE.Group();
-      pebble = new THREE.Mesh(new THREE.SphereGeometry(0.36, seg(40), seg(20)), new THREE.MeshStandardMaterial({ color: '#d9a273', emissive: '#ff8a3d', emissiveIntensity: .35, roughness: .85, metalness: 0 }));
+      pebble = new THREE.Mesh(new THREE.SphereGeometry(0.36, seg(40), seg(20)), new THREE.MeshStandardMaterial({ color: SC.pebble, emissive: SC['pebble-glow'], emissiveIntensity: .35, roughness: .85, metalness: 0 }));
       pebble.scale.set(1.15, 0.72, 1); gr.add(pebble);
       pebbleHalo = sprite(TEX.om, 1.5); pebbleHalo.material.opacity = .45; gr.add(pebbleHalo);
       return gr; },
-    speaking: () => new THREE.Mesh(new THREE.CapsuleGeometry(0.22, 0.5, 8, seg(24)), glass('#fff3c2', .18)),
-    companie: () => new THREE.Mesh(new THREE.BoxGeometry(0.62, 0.62, 0.62), glass('#d8d2ff', .18))
+    speaking: () => new THREE.Mesh(new THREE.CapsuleGeometry(0.22, 0.5, 8, seg(24)), glass(SC['glass-speaking'], .18)),
+    companie: () => new THREE.Mesh(new THREE.BoxGeometry(0.62, 0.62, 0.62), glass(SC['glass-company'], .18))
   };
   const tagsEl = $('#tags');
   const ON = INTENTS.map((it, i) => [it, i]).filter(([it]) => it.orbit && build[it.k]);
@@ -240,7 +246,7 @@ function start(THREE, RoomEnvironment){
   const items = ON.map(([it, i], j) => {
     const m = build[it.k]();
     const holder = new THREE.Group(); holder.add(m); holder.userData.i = i; orbit.add(holder);
-    if (it.fam === 'direct') holder.add(new THREE.Mesh(new THREE.SphereGeometry(0.06, 12, 6), new THREE.MeshBasicMaterial({ color: '#ffffff' })));
+    if (it.fam === 'direct') holder.add(new THREE.Mesh(new THREE.SphereGeometry(0.06, 12, 6), new THREE.MeshBasicMaterial({ color: SC.marker })));
     if (it.room){ // fiecare cameră își aruncă lumina pe planșă: semn că e un loc, nu un buton
       const pool = new THREE.Mesh(new THREE.PlaneGeometry(1.9, 1.9), new THREE.MeshBasicMaterial({ map: it.k === 'povesti' ? TEX.om : it.k === 'inventii' ? TEX.alex : TEX.agent, transparent: true, opacity: .42, depthWrite: false, blending: THREE.AdditiveBlending }));
       pool.rotation.x = -Math.PI / 2; pool.position.y = -1.23; holder.add(pool);
@@ -261,7 +267,7 @@ function start(THREE, RoomEnvironment){
     NET[id] = new V3(Math.cos(a) * r, 0.25 + Math.sin(a) * r * 0.72, Math.sin(i * 1.7) * 0.35); });
   const nodeTagsEl = $('#nodeTags');
   const team = NODES.map((n, i) => {
-    const sp = n.tip === 'alex' ? new THREE.Mesh(new THREE.SphereGeometry(0.16, 24, 12), new THREE.MeshStandardMaterial({ color: '#F3F1EC', roughness: .55, metalness: .1 })) : sprite(TEX.agent, 0.32);
+    const sp = n.tip === 'alex' ? new THREE.Mesh(new THREE.SphereGeometry(0.16, 24, 12), new THREE.MeshStandardMaterial({ color: SC.alex, roughness: .55, metalness: .1 })) : sprite(TEX.agent, 0.32);
     world.add(sp);
     const tg = document.createElement('div'); tg.className = 'ntag ' + n.tip; tg.textContent = n.nume; nodeTagsEl.appendChild(tg);
     // luminiță stinsă = agentul nu are niciun rând în jurnal în ultimele 24 de ore (arhitectura v2, 1.6)
@@ -275,11 +281,11 @@ function start(THREE, RoomEnvironment){
   const EDGES = [...(hub !== 'alex' ? [['alex', hub]] : []), ...ringIds.map(a => [hub, a])];
   const ePos = new Float32Array(Math.max(1, EDGES.length) * 6);
   const eGeo = new THREE.BufferGeometry(); eGeo.setAttribute('position', new THREE.BufferAttribute(ePos, 3));
-  const eMat = new THREE.LineBasicMaterial({ color: '#7CF5C8', transparent: true, opacity: 0, depthWrite: false });
+  const eMat = new THREE.LineBasicMaterial({ color: SC.network, transparent: true, opacity: 0, depthWrite: false });
   const edges = new THREE.LineSegments(eGeo, eMat); edges.frustumCulled = false; world.add(edges);
   const aPos = new Float32Array(3 * 6);
   const aGeo = new THREE.BufferGeometry(); aGeo.setAttribute('position', new THREE.BufferAttribute(aPos, 3));
-  const aMat = new THREE.LineBasicMaterial({ color: '#E6FFF6', transparent: true, opacity: 0, depthWrite: false });
+  const aMat = new THREE.LineBasicMaterial({ color: SC.pulse, transparent: true, opacity: 0, depthWrite: false });
   const aLines = new THREE.LineSegments(aGeo, aMat); aLines.frustumCulled = false; world.add(aLines);
   const pool = [0, 1, 2].map(() => { const s = sprite(TEX.pulse, 0.26); s.visible = false; world.add(s); return { s, a: null, b: null, t: 1 }; });
 
@@ -297,7 +303,7 @@ function start(THREE, RoomEnvironment){
 
   /* --- pragul: intri în atelier, nu deschizi un site --- */
   const door = new THREE.Group(); scene.add(door);
-  const dMat = new THREE.MeshBasicMaterial({ color: '#7CF5C8', transparent: true, opacity: .6, fog: false });
+  const dMat = new THREE.MeshBasicMaterial({ color: SC.door, transparent: true, opacity: .6, fog: false });
   [[6, .035, 0, 3.3], [6, .035, 0, -1.5], [.035, 4.8, -3, 0.9], [.035, 4.8, 3, 0.9]].forEach(([w, h, x, y]) => { const b = new THREE.Mesh(new THREE.BoxGeometry(w, h, .035), dMat); b.position.set(x, y, 0); door.add(b); });
   door.position.z = 15;
   let entry = reduce ? 1 : 0;
@@ -305,7 +311,7 @@ function start(THREE, RoomEnvironment){
 
   /* --- poduri: ce explorezi se leagă. Misiunea (D-026) ca gest, nu ca text --- */
   const visited = [], bridges = [];
-  const bMat = new THREE.LineBasicMaterial({ color: '#E6FFF6', transparent: true, opacity: .75, depthWrite: false });
+  const bMat = new THREE.LineBasicMaterial({ color: SC.bridge, transparent: true, opacity: .75, depthWrite: false });
   const NB = 16, bA = new V3(), bB = new V3();
   window.__bridge = i => {
     if (!byI[i]) return;
@@ -434,7 +440,7 @@ function start(THREE, RoomEnvironment){
       br.geo.attributes.position.needsUpdate = true;
       br.line.visible = hide < 0.1;
     });
-    bMat.color.setRGB(0.9 + warmK * 0.1, 1 - warmK * 0.2, 0.96 - warmK * 0.4);
+    bMat.color.lerpColors(C.pod, C.podW, warmK);
     liveInner.forEach(l => { const a = (reduce ? 0 : t * 1.4) + l.ph; l.s.position.set(Math.cos(a) * 0.2, Math.sin(a * 1.3) * 0.14, Math.sin(a) * 0.2); });
     const spread = know ? 1 : 0;
     plates.forEach((pl, i) => {

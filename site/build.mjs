@@ -13,6 +13,7 @@ import { execFileSync } from 'node:child_process';
 import { createHash } from 'node:crypto';
 import { parse as parseYaml } from 'yaml';
 import { marked } from 'marked';
+import { loadTema, checkUsage } from './tema.mjs';
 
 const HERE = dirname(fileURLToPath(import.meta.url));
 const ROOT = resolve(HERE, '..');
@@ -37,6 +38,9 @@ const site = yamlFile('content/site.yml');
 const cat = yamlFile('content/categorii.yml');
 const nevoi = (yamlFile('content/nevoi.yml').nevoi || []);
 const despre = mdFile('content/despre.md');
+// Culorile: un singur loc, content/tema.yml (vezi site/README.md, „Cum schimbi culorile”).
+let TEMA; try { TEMA = loadTema(ROOT); } catch (e) { fail(e.message); }
+const rgba = (name, a) => TEMA.rgba(name, a);
 
 /* ---------- adrese ---------- */
 let BASE = process.env.SITE_BASE || '/';
@@ -307,7 +311,7 @@ ${SITE_URL ? `<meta property="og:url" content="${esc(abs(path))}">` : ''}
 <meta property="og:image:height" content="630">
 <meta property="og:image:alt" content="Atelierul lui Alex: obiecte de sticlă pe orbită, pe o planșă întunecată.">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="theme-color" content="#070910">
+<meta name="theme-color" content="${TEMA.get('bg')}">
 <meta name="color-scheme" content="dark">
 <link rel="icon" href="${u('favicon.svg')}" type="image/svg+xml">
 <link rel="apple-touch-icon" href="${u('apple-touch-icon.png')}">
@@ -394,7 +398,8 @@ function indexHtml(importmap){
     echipa: [{ slug: 'alex', nume: 'Alex', tip: 'alex', aprins: true }, ...AGENTS.map(a => ({ slug: a.slug, nume: a.nume, tip: 'agent', aprins: lit.has(a.slug) }))],
     puls: pulses,
     ticker: tickerEvents.map(e => ({ t: tickText(e), id: e.id })),
-    centru: !!centru
+    centru: !!centru,
+    culori: TEMA.culori, scena: TEMA.scena // scena 3D își ia culorile de aici (content/tema.yml)
   };
   const json = JSON.stringify(data).replace(/</g, '\\u003c');
   const ticker = tickerEvents.length ? `<div class="ticker" id="ticker">
@@ -418,9 +423,9 @@ function indexHtml(importmap){
 <body class="home no-js${rezervare ? ' has-book' : ''}">
 <div class="fallback" aria-hidden="true">
   <svg viewBox="0 0 800 600" fill="none">
-    <g stroke="rgba(124,245,200,.22)"><ellipse cx="400" cy="320" rx="330" ry="110"/><ellipse cx="400" cy="320" rx="250" ry="80"/><ellipse cx="400" cy="300" rx="380" ry="150" stroke="rgba(255,255,255,.08)"/></g>
-    <g><circle cx="400" cy="300" r="78" fill="rgba(191,239,255,.06)" stroke="rgba(191,239,255,.5)"/><circle cx="400" cy="300" r="56" stroke="#7CF5C8" stroke-width="2"/><path d="M400 262 L428 300 L400 338 L372 300 Z" fill="rgba(124,245,200,.35)" stroke="#7CF5C8"/></g>
-    <g fill="#7CF5C8"><circle cx="90" cy="300" r="5"/><circle cx="185" cy="390" r="4"/><circle cx="640" cy="230" r="5"/><circle cx="730" cy="330" r="4"/><circle cx="520" cy="410" r="4"/><circle cx="270" cy="225" r="4"/><circle cx="560" cy="200" r="3"/><circle cx="330" cy="420" r="3"/></g>
+    <g stroke="${rgba('accent', '.22')}"><ellipse cx="400" cy="320" rx="330" ry="110"/><ellipse cx="400" cy="320" rx="250" ry="80"/><ellipse cx="400" cy="300" rx="380" ry="150" stroke="${rgba('line', '.08')}"/></g>
+    <g><circle cx="400" cy="300" r="78" fill="${rgba('scena.glass-disc', '.06')}" stroke="${rgba('scena.glass-disc', '.5')}"/><circle cx="400" cy="300" r="56" stroke="${TEMA.get('accent')}" stroke-width="2"/><path d="M400 262 L428 300 L400 338 L372 300 Z" fill="${rgba('accent', '.35')}" stroke="${TEMA.get('accent')}"/></g>
+    <g fill="${TEMA.get('accent')}"><circle cx="90" cy="300" r="5"/><circle cx="185" cy="390" r="4"/><circle cx="640" cy="230" r="5"/><circle cx="730" cy="330" r="4"/><circle cx="520" cy="410" r="4"/><circle cx="270" cy="225" r="4"/><circle cx="560" cy="200" r="3"/><circle cx="330" cy="420" r="3"/></g>
   </svg>
 </div>
 <canvas id="gl" aria-hidden="true"></canvas>
@@ -507,8 +512,10 @@ rmSync(OUT, { recursive: true, force: true });
 const write = (p, s) => { const f = join(OUT, p); mkdirSync(dirname(f), { recursive: true }); writeFileSync(f, s); };
 
 // resurse: CSS, JS, three.js și fonturile, toate găzduite aici (fără cereri către terți din browser)
-const css = readFileSync(join(HERE, 'src/site.css'), 'utf8');
 const js = readFileSync(join(HERE, 'src/scena.js'), 'utf8');
+const cssSrc = readFileSync(join(HERE, 'src/site.css'), 'utf8');
+try { checkUsage(TEMA, { css: cssSrc, js }); } catch (e) { fail(e.message); }
+const css = TEMA.css() + cssSrc; // :root cu culorile din content/tema.yml, apoi restul stilului
 cssV = createHash('sha256').update(css + js).digest('hex').slice(0, 10);
 write('assets/site.css', css);
 write('assets/scena.js', js);
@@ -524,6 +531,7 @@ for (const [pkg, pat] of FONTS) for (const s of ['latin', 'latin-ext']){
 }
 for (const f of ['onest', 'unbounded', 'jetbrains-mono', 'fraunces']) cpSync(join(NM, '@fontsource-variable', f, 'LICENSE'), join(OUT, 'assets/fonts', `LICENSE-${f}.txt`));
 cpSync(join(HERE, 'static'), OUT, { recursive: true });
+write('favicon.svg', TEMA.fill(readFileSync(join(HERE, 'src/favicon.svg'), 'utf8'), 'site/src/favicon.svg'));
 
 const importmap = JSON.stringify({ imports: { three: u('assets/three/three.module.min.js'), 'three/addons/': u('assets/three/addons/') } });
 write('index.html', indexHtml(importmap));
