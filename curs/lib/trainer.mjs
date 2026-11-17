@@ -41,11 +41,13 @@ const sursaPiesa = (x) => ({ tip: x.tip, titlu: x.titlu, format: x.format });
 const sursaModul = (m) => ({ tip: m.tip, titlu: m.titlu });
 const sursaDe = (r, s) => (s && s.piesa ? sursaPiesa(s.piesa) : r.fel === 'piesa' ? sursaPiesa(r.piesa) : r.fel === 'pauza' ? { tip: 'pauza', titlu: r.titlu } : sursaModul(r.modul));
 
-/** Mesajele cheie lungi se micșorează ca să încapă: peste 14 cuvinte „lung”, peste 22 „foarte-lung” (Tudor, 2026-11-17). */
+/** Textul mare (mesaj cheie, reflecție/deschidere/închidere) se micșorează după lungime, ca să încapă
+ *  și să nu pară strigat (Alex, 2026-11-17: „prea mare textul” la deschidere și închidere). */
+const PRAGURI = { mesaj: [14, 22], reflectie: [10, 22] };
 function lungime(fel, html) {
-  if (fel !== 'mesaj') return '';
+  const p = PRAGURI[fel]; if (!p) return '';
   const n = html.replace(/<[^>]+>/g, ' ').split(/\s+/).filter(Boolean).length;
-  return n > 22 ? ' foarte-lung' : n > 14 ? ' lung' : '';
+  return n > p[1] ? ' foarte-lung' : n > p[0] ? ' lung' : '';
 }
 
 /** Un ecran din sală: felul, eticheta și interiorul (eticheta cu semnul felului, conținutul, panoul sau cronometrul).
