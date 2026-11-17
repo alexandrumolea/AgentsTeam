@@ -113,12 +113,28 @@ ${randuri}</tbody><tfoot><tr><td class="ora">${ora(c.editie.start ?? 0)}–${ora
 ${afara.length ? `<p class="sters">Nu sunt în agenda acestei ediții: ${afara.map((m) => e(m.titlu)).join(', ')}.</p>` : ''}`;
 }
 
+/** Obiectivele zilei cu bife (Alex, 2026-11-17). Apar în Schiță și în schița din ecranul de comandă, niciodată în sală.
+ *  Bifele trăiesc doar în browser (prezinta.js); la tipar, căsuțele ies goale. */
+export function blocObiective(c) {
+  if (!c.obiective.length) return '';
+  return `<section class="obiective" aria-label="Obiectivele zilei">
+<div class="obiective-cap"><h3 class="eticheta">Obiectivele zilei</h3><span class="obiective-nr sters" data-obiective-nr>0 din ${c.obiective.length}</span><button type="button" class="obiective-reset ascuns-la-tipar" data-obiective-reset>Debifează tot</button></div>
+<ol class="obiective-lista">${c.obiective.map((o, i) => `<li><label><input type="checkbox" data-obiectiv="${i}" data-text="${e(o)}"><span class="ob-cutie" aria-hidden="true"></span><span class="ob-nr">${i + 1}</span><span class="ob-text">${e(o)}</span></label></li>`).join('')}</ol>
+</section>`;
+}
+/** „→ ob. 1, 3”: obiectivele servite de un rând din agendă (modulul și piesele lui). */
+function legendaObiective(c, r) {
+  const surse = r.fel === 'modul' ? [r.modul, ...r.piese] : r.fel === 'piesa' ? [r.piesa] : [];
+  const n = [...new Set(surse.flatMap((x) => x.obiective))].filter((k) => k <= c.obiective.length).sort((a, b) => a - b);
+  return n.length ? ` <span class="ob-leg" title="${n.map((k) => e(c.obiective[k - 1])).join(' · ')}">→ ob. ${n.join(', ')}</span>` : '';
+}
+
 export function listaSchita(c) {
   return `<ol class="schita">${c.agenda.map((r, i) => {
     if (ePauza(r)) return `<li data-modul="${i}" class="pauza"><span class="ora">${ora(r.start)}</span><div class="ancora">${e(titluR(r))}</div><div class="titlu-mic">${r.durata} min</div></li>`;
-    if (r.fel === 'piesa') return `<li data-modul="${i}" class="piesa-singura"><span class="ora">${ora(r.start)}</span><div class="ancora">${e(r.piesa.ancora || r.piesa.titlu)}</div><div class="titlu-mic">${e(r.piesa.titlu)} · ${TIP[r.piesa.tip] ?? e(r.piesa.tip)} · ${r.durata} min</div></li>`;
+    if (r.fel === 'piesa') return `<li data-modul="${i}" class="piesa-singura"><span class="ora">${ora(r.start)}</span><div class="ancora">${e(r.piesa.ancora || r.piesa.titlu)}</div><div class="titlu-mic">${e(r.piesa.titlu)} · ${TIP[r.piesa.tip] ?? e(r.piesa.tip)} · ${r.durata} min${legendaObiective(c, r)}</div></li>`;
     return `<li data-modul="${i}"><span class="ora">${ora(r.start)}</span>
-  <div class="ancora">${e(r.modul.ancora)}</div><div class="titlu-mic">${e(r.modul.titlu)} · ${r.durata} min${r.piese.length ? ` (${r.durataModul} + ${r.piese.map((x) => x.durata).join(' + ')})` : ''}</div>
+  <div class="ancora">${e(r.modul.ancora)}</div><div class="titlu-mic">${e(r.modul.titlu)} · ${r.durata} min${r.piese.length ? ` (${r.durataModul} + ${r.piese.map((x) => x.durata).join(' + ')})` : ''}${legendaObiective(c, r)}</div>
   <ul>${r.modul.schita.map((p) => `<li>${e(p)}</li>`).join('')}</ul>${r.piese.length ? `<div class="titlu-mic">Piese: ${r.piese.map((x) => e(x.titlu)).join(', ')}</div>` : ''}</li>`;
   }).join('\n')}</ol>`;
 }
@@ -277,7 +293,7 @@ export function construiesteTrainer(c) {
 </header>
 <main>
 <section id="ziua">${vedereaZiua(c)}</section>
-<section id="schita" hidden><h2>Schița zilei</h2>${totalZi(c)}${listaSchita(c)}</section>
+<section id="schita" hidden><h2>Schița zilei</h2>${totalZi(c)}${blocObiective(c)}${listaSchita(c)}</section>
 <section id="modul" hidden>${modul}</section>
 <section id="banca" hidden>${vedereaBanca(c)}</section>
 <section id="prezinta" hidden>
@@ -315,7 +331,7 @@ export function construiesteTrainer(c) {
         <div><span class="eticheta">Cronometru</span><b id="cron">–</b></div>
       </div>
       <div class="urmeaza"><p class="eticheta">Urmează</p><div class="cadru" id="cadru-urmeaza"></div></div>
-      <div class="schita-mica" id="schita-mica"><button type="button" class="inchide-schita" id="inchide-schita">Închide schița (S / Esc)</button><p class="eticheta">Schița zilei</p>${listaSchita(c)}</div>
+      <div class="schita-mica" id="schita-mica"><button type="button" class="inchide-schita" id="inchide-schita">Închide schița (S / Esc)</button><p class="eticheta">Schița zilei</p>${blocObiective(c)}${listaSchita(c)}</div>
     </div>
   </div>
 </section>

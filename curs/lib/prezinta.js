@@ -132,7 +132,11 @@
   var INAPOI = ['ArrowLeft', 'ArrowUp', 'PageUp'];
   function tasta(ev) {
     if (ev.metaKey || ev.ctrlKey || ev.altKey) return;
-    var t = ev.target; if (t && t.tagName && /^(INPUT|TEXTAREA|SELECT)$/.test(t.tagName)) return;
+    var t = ev.target;
+    // O bifă din schiță are focusul după click: Spațiu/Enter o bifează, dar telecomanda (săgeți, PageDown) merge mai departe.
+    var bifa = t && t.tagName === 'INPUT' && t.type === 'checkbox';
+    if (bifa && (ev.key === ' ' || ev.key === 'Enter')) return;
+    if (t && t.tagName && /^(INPUT|TEXTAREA|SELECT)$/.test(t.tagName) && !bifa) return;
     var dinSala = !!ev.dinSala;
     if (!dinSala && !aici && vedere !== 'prezinta') return; // în Ziua, Modulul și Schița tastele fac ce fac de obicei
     var k = ev.key, oprit = true;
@@ -288,6 +292,30 @@
   }
 
   if (MOD_SALA) { modSala(); return; }
+
+  // ---------- obiectivele zilei: bife locale, în Schiță și în schița ecranului de comandă (niciodată în sală) ----------
+  // Cheia: slug + data ediției. Bifele se țin după text, ca o listă reordonată să nu mute bifele pe alt obiectiv.
+  var CHEIE_OB = CHEIE + ':obiective';
+  function bifeCitite() { try { var v = JSON.parse(localStorage.getItem(CHEIE_OB)); return v && typeof v === 'object' ? v : {}; } catch (e) { return {}; } }
+  var bife = bifeCitite();
+  function bifeSalvate() { try { localStorage.setItem(CHEIE_OB, JSON.stringify(bife)); } catch (e) { /* fără stocare: bifele țin până la închiderea paginii */ } }
+  function bifeArata() {
+    var l = document.querySelectorAll('input[data-obiectiv]'), total = {}, bifate = {};
+    for (var k = 0; k < l.length; k++) { var tx = l[k].getAttribute('data-text'); l[k].checked = !!bife[tx]; total[tx] = 1; if (bife[tx]) bifate[tx] = 1; }
+    var n = Object.keys(total).length, b = Object.keys(bifate).length;
+    var c = document.querySelectorAll('[data-obiective-nr]');
+    for (var j = 0; j < c.length; j++) c[j].textContent = b + ' din ' + n;
+  }
+  var bifeInputuri = document.querySelectorAll('input[data-obiectiv]');
+  for (var bi = 0; bi < bifeInputuri.length; bi++) bifeInputuri[bi].addEventListener('change', function () {
+    var tx = this.getAttribute('data-text'); if (this.checked) bife[tx] = true; else delete bife[tx];
+    bifeSalvate(); bifeArata();
+    // Focusul pleacă de pe bifă: altfel Spațiul de la telecomandă sau tastatură ar debifa în loc să treacă la ecranul următor.
+    this.blur();
+  });
+  var bifeReset = document.querySelectorAll('[data-obiective-reset]');
+  for (var br = 0; br < bifeReset.length; br++) bifeReset[br].addEventListener('click', function () { bife = {}; bifeSalvate(); bifeArata(); });
+  bifeArata();
 
   var butoane = document.querySelectorAll('[data-vedere]');
   for (var b = 0; b < butoane.length; b++) butoane[b].addEventListener('click', function () { arata(this.getAttribute('data-vedere')); try { history.replaceState(null, '', '#' + vedere); } catch (e) { /* file:// în Safari */ } });

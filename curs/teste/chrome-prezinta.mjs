@@ -79,6 +79,21 @@ try {
   ok(await b.evaluate(ctrl, '!document.getElementById("banca").hidden && !document.getElementById("ex-plimbare-curba").hidden && document.getElementById("ex-plimbare-curba").open'), 'linkul spre alternativă din Modul deschide Banca la exercițiu, deschis, chiar dacă un filtru îl ascundea');
   await b.click(ctrl, '#banca-sterge');
 
+  // Obiectivele zilei (Alex, 2026-11-17): bife în Schiță, salvate local, sincronizate cu schița din ecranul de comandă.
+  await b.click(ctrl, '[data-vedere="schita"]');
+  const bife = () => b.evaluate(ctrl, '[...document.querySelectorAll("input[data-obiectiv]")].map(i => i.checked ? 1 : 0).join("")');
+  const contor = () => b.evaluate(ctrl, 'document.querySelector("#schita [data-obiective-nr]").textContent');
+  ok((await contor()) === '0 din 4', 'Schița arată 4 obiective, „0 din 4”');
+  await b.click(ctrl, '#schita input[data-obiectiv="0"] + .ob-cutie');
+  await b.click(ctrl, '#schita input[data-obiectiv="2"] + .ob-cutie');
+  ok((await bife()) === '10101010' && (await contor()) === '2 din 4', 'bifa (click pe căsuță) apare și în schița din ecranul de comandă; contorul: „2 din 4”');
+  await b.send('Page.reload', {}, ctrl.sessionId); await pauza(1000);
+  ok((await bife()) === '10101010', 'bifele rezistă la refresh');
+  await b.click(ctrl, '[data-vedere="schita"]');
+  await b.click(ctrl, '#schita [data-obiective-reset]');
+  ok((await bife()) === '00000000' && (await contor()) === '0 din 4', '„Debifează tot” le golește');
+  await b.click(ctrl, '#schita input[data-obiectiv="3"] + .ob-cutie');
+
   // Tastele nu schimbă ecranul în afara modului Prezintă.
   await b.click(ctrl, '[data-vedere="ziua"]');
   await b.key(ctrl, 'ArrowRight');
@@ -92,6 +107,14 @@ try {
   ok((await stare()).salaDeschisa, 'fereastra sălii (același fișier, #sala) răspunde ecranului de comandă prin postMessage, din file://');
 
   const textSala = () => b.evaluate(sala, 'document.getElementById("sala-cadru").innerText.trim()');
+  ok(await b.evaluate(sala, '!document.querySelector("[data-obiectiv], .obiective") && !/Obiectivele zilei|EXEMPLU\\] Un cuvânt/.test(document.body.innerText)'), 'obiectivele și bifele nu ajung în fereastra sălii');
+  await b.click(ctrl, '#schita-mica input[data-obiectiv="1"] + .ob-cutie');
+  ok((await b.evaluate(ctrl, 'document.querySelector("#schita-mica [data-obiective-nr]").textContent')) === '2 din 4', 'bifa din schița ecranului de comandă: „2 din 4”');
+  const iBifa = (await stare()).i;
+  await b.key(ctrl, 'PageDown');
+  ok((await stare()).i === iBifa + 1, 'după o bifă în schița de comandă, telecomanda (PageDown) merge mai departe');
+  await b.key(ctrl, 'PageUp');
+  ok(await b.evaluate(sala, '!document.querySelector("[data-obiectiv], .obiective")'), 'nici după o bifă din ecranul de comandă');
   for (const k of ['ArrowRight', 'PageDown']) await b.key(sala, k);
   ok((await stare()).i === 2, 'săgeată + PageDown trimise ÎN fereastra sălii avansează (telecomanda, când sala are focus)');
   for (const k of ['PageUp']) await b.key(sala, k);

@@ -58,6 +58,7 @@ cursuri/                         locul privat (vezi secțiunea 3)
 | `durata_zi` | da | `9:00–18:00`, ca build-ul să verifice că modulele încap |
 | `public` | da | `nu` / `link` / `da` (decizia 2, secțiunea 6) |
 | `slug` | da | `change-agility`, devine adresa: `alexandrumolea.com/cursuri/change-agility/` |
+| `obiective` | nu | listă de texte scurte (cel mult ~12 cuvinte; peste, doar avertisment). Apar în Schiță ca checklist cu bife salvate local (nu se proiectează; la tipar, căsuțe goale) și în cursul participanților ca listă simplă. Ediția poate avea propriul `obiective`, care o înlocuiește pe a cursului. Un modul sau o piesă poate spune `obiective: [1, 3]` (indexuri de la 1), iar Schița arată „→ ob. 1, 3” **(Alex, 2026-11-17)** |
 
 ### 1.4 Un modul: straturile din același fișier
 Sunt trei locuri unde poate apărea ceva: **cursul online** (participanții, după), **ecranul din sală** (ce vede grupul când Alex dă „Prezintă”) și **vederea trainerului** (doar Alex). Fiecare strat spune unde apare:

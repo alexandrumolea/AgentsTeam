@@ -59,6 +59,13 @@ Doar în cursul online.
 
 Primul ecran al fiecărui modul (numărul și titlul) se face singur. O pauză primește automat un cronometru cât durata ei.
 
+### Obiectivele zilei (Alex, 2026-11-17)
+
+- `obiective` în `curs.yml`: o listă de texte scurte (peste ~12 cuvinte, doar avertisment). Ediția poate avea propriul `obiective`, care o înlocuiește pe a cursului.
+- Un modul sau o piesă poate avea `obiective: [1, 3]` (indexuri de la 1); Schița arată discret „→ ob. 1, 3” lângă rând.
+- **În Schiță** (vederea Schița și schița din ecranul de comandă, inclusiv cea mare): „Obiectivele zilei”, cu bife, contor („2 din 4”) și „Debifează tot”. Bifele se salvează doar în browser (cheie: slug + data ediției), rezistă la refresh și nu ajung niciodată în fereastra sălii. La tipar, căsuțele ies goale.
+- **În cursul participanților:** `obiective`, ca listă simplă (sunt publice). Numele interzise sunt verificate și aici.
+
 ### Piesele și agenda (v1.2, 1.7–1.9 la Radu, D-053)
 
 - **O piesă** = `piese/<id>.md` (id-ul e numele fișierului, unic în tot cursul, și printre module). Antet: `titlu`, `durata` (obligatorie, la orice piesă), `tip`; opțional `ancora`, `module`, `materiale`, `in_curs` (da/nu). Corpul are aceleași straturi ca un modul.

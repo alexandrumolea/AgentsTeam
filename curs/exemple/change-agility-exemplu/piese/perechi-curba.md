@@ -6,6 +6,7 @@ tip: exercitiu
 energie: mediu
 obiectiv: "[EXEMPLU] Fiecare își vede locul pe curbă și îl spune cu voce tare"
 module: [curba]
+obiective: [1]
 materiale: ["post-it-uri în 3 culori", "worksheet Curba mea"]
 in_curs: da
 ---

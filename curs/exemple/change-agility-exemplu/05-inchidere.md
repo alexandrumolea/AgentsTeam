@@ -4,6 +4,7 @@ titlu: "Ce iei cu tine"
 durata: 20
 tip: reflectie
 ancora: "Un cuvânt"
+obiective: [4]
 schita:
   - "Runda finală: un cuvânt fiecare"
   - "Linkul cursului, prin QR"

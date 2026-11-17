@@ -33,6 +33,7 @@ export function construiesteExport(c) {
     format: 'curs-participanti/3',
     sursa: 'generat de curs/build.mjs; nu edita de mână',
     curs: { slug: x.slug, titlu: x.titlu, promisiune: x.promisiune, limba: x.limba, brand: x.brand, public: String(x.public) },
+    obiective: c.obiective, // publice: „ce iei cu tine”, ca listă simplă (fără bife)
     module,
     imagini: [...imagini].sort(),
   };
@@ -62,7 +63,7 @@ function fragmenteInterzise(c) {
 export function verificaExport(json, c) {
   const erori = [];
   const brut = JSON.stringify(json);
-  const tot = normal(text([json.curs.titlu, json.curs.promisiune, ...json.module.flatMap((m) => [m.titlu, m.html])].join('\n')));
+  const tot = normal(text([json.curs.titlu, json.curs.promisiune, ...(json.obiective ?? []), ...json.module.flatMap((m) => [m.titlu, m.html])].join('\n')));
   const totCuSpatii = ` ${tot} `;
 
   if (brut.includes(':::')) erori.push('exportul conține „:::”: un bloc a scăpat netransformat');

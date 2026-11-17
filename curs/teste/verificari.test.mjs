@@ -195,3 +195,48 @@ test('un ecran lung dă doar avertisment', () => {
   assert.equal(r.ok, true);
   assert.ok(r.avertismente.some((a) => /sub 30/.test(a)));
 });
+
+// Obiectivele zilei (Alex, 2026-11-17)
+const blocSchita = (h) => h.match(/<section id="schita"[\s\S]*?<\/section>\s*<\/section>|<section id="schita"[\s\S]*?<ol class="schita">/)[0];
+test('obiectivele: din curs.yml, în Schiță și în schița de comandă, cu bife nebifate în fișier', () => {
+  const r = cu(() => {}); ok(r);
+  const h = html(r);
+  assert.equal((h.match(/<section class="obiective"/g) || []).length, 2, 'Schița + schița din ecranul de comandă');
+  assert.equal((h.match(/data-obiectiv="\d"/g) || []).length, 8);
+  assert.ok(!/data-obiectiv="\d"[^>]*checked/.test(h), 'în fișier nicio bifă nu e pusă');
+  assert.match(blocSchita(h), /0 din 4/);
+});
+test('obiectivele: legenda „→ ob.” la module și piese (modulul + piesele alese)', () => {
+  const r = cu(() => {}); ok(r);
+  const h = html(r);
+  assert.match(h, /Ce se întâmplă cu noi când se schimbă ceva · 45 min \(10 \+ 20 \+ 15\) <span class="ob-leg"[^>]*>→ ob\. 1, 2<\/span>/);
+  assert.match(h, /Pasul de luni · 40 min <span class="ob-leg"[^>]*>→ ob\. 3<\/span>/);
+});
+test('obiectivele: ediția le înlocuiește pe cele ale cursului', () => {
+  const r = cu((e) => e('editii/2026-11-23.yml', (s) => s + 'obiective: ["Ce a cerut clientul"]\n')); ok(r);
+  assert.deepEqual(JSON.parse(exportul(r)).obiective, ['Ce a cerut clientul']);
+  assert.ok(r.avertismente.some((a) => /obiective conține 2, dar ziua are 1 obiectiv/.test(a)), 'indexurile peste listă dau avertisment');
+});
+test('obiectivele: în cursul participanților, ca listă simplă', () => {
+  const r = cu(() => {}); ok(r);
+  const j = JSON.parse(exportul(r));
+  assert.equal(j.obiective.length, 4);
+  assert.ok(j.obiective.every((o) => typeof o === 'string'));
+});
+test('obiectivele: un nume interzis în ele oprește cursul public', () => opreste((e) => e('curs.yml', (s) => s.replace('"[EXEMPLU] Un cuvânt pentru felul în care pleacă"', '"Echipa Firma Exemplu pleacă cu un plan"')), /nume interzis/));
+test('obiectivele: un obiectiv lung dă doar avertisment', () => {
+  const r = cu((e) => e('curs.yml', (s) => s.replace('"[EXEMPLU] Un cuvânt pentru felul în care pleacă"', '"unu doi trei patru cinci șase șapte opt nouă zece unsprezece doisprezece treisprezece"'))); ok(r);
+  assert.ok(r.avertismente.some((a) => /sub 12/.test(a)));
+});
+test('obiectivele: format greșit oprește build-ul', () => opreste((e) => e('curs.yml', (s) => s.replace(/obiective:\n(  - .*\n)+/, 'obiective: "unul singur"\n')), /listă de texte scurte/));
+test('obiectivele: „obiective” la modul trebuie să fie numere', () => opreste((e) => e('04-pasul-de-luni.md', (s) => s.replace('obiective: [3]', 'obiective: [trei]')), /listă de numere/));
+test('obiectivele la tipar: căsuțe goale (bifele nu se tipăresc)', () => {
+  const r = cu(() => {}); ok(r);
+  const css = html(r).match(/@media print \{\s*\.obiective-lista input:checked \+ \.ob-cutie \{[^}]*\}\s*\.obiective-lista input:checked \+ \.ob-cutie::after \{ content: none; \}/);
+  assert.ok(css, 'regula de tipar care golește căsuțele lipsește');
+});
+test('fără obiective: nicio secțiune goală', () => {
+  const r = cu((e) => e('curs.yml', (s) => s.replace(/# Obiectivele zilei[\s\S]*$/, ''))); ok(r);
+  assert.ok(!html(r).includes('<section class="obiective"'));
+  assert.deepEqual(JSON.parse(exportul(r)).obiective, []);
+});

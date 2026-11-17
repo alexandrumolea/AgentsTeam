@@ -225,3 +225,29 @@ details.ex[open] .ex-obiectiv { display: none; }
 .filtre-nota { margin: 0; font-size: .8rem; }
 .ex-tip-continut { border-color: var(--lume-intunecat-fundal); }
 .ex-tip-punte { border-color: var(--t-accent); }
+
+/* Obiectivele zilei (Alex, 2026-11-17): bife în schiță, compacte; ținte mari pe tabletă; la tipar, căsuțe goale */
+.obiective { margin: 0 0 1.25rem; padding: .5rem .8rem .6rem; background: var(--t-suprafata); border: 1px solid var(--t-linie); border-radius: 6px; }
+.obiective-cap { display: flex; flex-wrap: wrap; align-items: baseline; gap: .25rem .75rem; }
+.obiective-cap h3 { margin: 0; }
+.obiective-nr { font-size: .85rem; font-variant-numeric: tabular-nums; }
+.obiective-reset { margin-left: auto; font-size: .8rem; padding: .2rem .6rem; }
+.obiective-lista { list-style: none; margin: .3rem 0 0; padding: 0; }
+.obiective-lista label { display: flex; align-items: center; gap: .6rem; min-height: 40px; padding: .15rem 0; cursor: pointer; }
+.obiective-lista input { position: absolute; opacity: 0; width: 1px; height: 1px; }
+.ob-cutie { flex: none; width: 22px; height: 22px; border: 1.5px solid var(--t-sters); border-radius: 5px; display: inline-grid; place-items: center; background: var(--t-suprafata); }
+.obiective-lista input:checked + .ob-cutie { background: var(--t-accent); border-color: var(--t-accent); }
+.obiective-lista input:checked + .ob-cutie::after { content: "✓"; color: var(--t-pe-accent); font-size: 15px; line-height: 1; }
+.obiective-lista input:focus-visible + .ob-cutie { outline: 2px solid var(--t-accent); outline-offset: 2px; }
+.obiective-lista input:checked ~ .ob-text { color: var(--t-sters); }
+.ob-nr { flex: none; width: 1.2rem; font-size: .8rem; color: var(--t-sters); font-variant-numeric: tabular-nums; }
+.ob-leg { white-space: nowrap; color: var(--t-accent); }
+.schita-mica .obiective { margin: .3rem 0 .8rem; }
+@media (pointer: coarse) { .obiective-lista label { min-height: 48px; } .ob-cutie { width: 28px; height: 28px; } .obiective-reset { min-height: 44px; } }
+@media print {
+  .obiective-lista input:checked + .ob-cutie { background: none; border-color: #000; }
+  .obiective-lista input:checked + .ob-cutie::after { content: none; }
+  .obiective-lista input:checked ~ .ob-text { color: inherit; }
+  .ob-cutie { border-color: #000; }
+  .obiective-nr { display: none; }
+}

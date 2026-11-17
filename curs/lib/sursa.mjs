@@ -33,6 +33,12 @@ export function minute(ora) {
   return +m[1] * 60 + +m[2];
 }
 export const ora = (min) => `${Math.floor(min / 60)}:${String(min % 60).padStart(2, '0')}`;
+/** `obiective: [1, 3]` la un modul sau o piesă: indexuri (de la 1) în lista de obiective a zilei. */
+function indexuriObiective(v, nume, erori) {
+  if (v === undefined || v === null) return [];
+  if (!Array.isArray(v) || !v.every((n) => Number.isInteger(n) && n > 0)) { erori.push(`${nume}: „obiective” e o listă de numere (indexurile obiectivelor din curs.yml, de la 1), de exemplu [1, 3]`); return []; }
+  return v;
+}
 const lista = (x) => (x === undefined || x === null ? [] : Array.isArray(x) ? x : [x]);
 
 function citesteYaml(fisier, erori) {
@@ -167,7 +173,9 @@ function citesteModule(folder, erori, avertismente) {
     if (typeof ex !== 'object' || Array.isArray(ex)) e('„piese” trebuie să aibă forma { implicite: [...], alternative: [...] }');
     for (const k of Object.keys(typeof ex === 'object' && !Array.isArray(ex) ? ex : {})) if (!['implicite', 'alternative'].includes(k)) e(`„piese.${k}” necunoscut (se pot: implicite, alternative)`);
     verificaSegmente(folder, f, mod.segmente, a.durata, erori, avertismente);
+    const obiective = indexuriObiective(a.obiective, f, erori);
     module.push({
+      obiective,
       fisier: f, id: a.id, titlu: a.titlu, durata: a.durata, tip: a.tip, ancora: a.ancora ?? '',
       schita: Array.isArray(a.schita) ? a.schita : [], materiale: Array.isArray(a.materiale) ? a.materiale : [],
       implicite: lista(ex.implicite).map(String), alternative: lista(ex.alternative).map(String),
@@ -209,7 +217,9 @@ function citestePiese(folder, erori, avertismente) {
     if (!['da', 'nu'].includes(inCurs)) e(`in_curs „${a.in_curs}” trebuie să fie da sau nu`);
     verificaSegmente(folder, nume, x.segmente, a.durata, erori, avertismente);
     const activitate = familie === 'activitate';
+    const obiective = indexuriObiective(a.obiective, nume, erori);
     piese.set(id, {
+      obiective,
       id, fisier: nume, titlu: a.titlu, durata: a.durata, tip: a.tip, familie: familie ?? null,
       format: activitate ? a.format : null, energie: activitate ? a.energie : null, obiectiv: a.obiectiv ?? '', ancora: a.ancora ?? '',
       module: Array.isArray(a.module) ? a.module.map(String) : [], materiale: Array.isArray(a.materiale) ? a.materiale : [],
@@ -343,8 +353,22 @@ export function citesteCurs(folder, { editie: numeEditie } = {}) {
   for (const m of module) m.inAgenda = inAgenda.has(m.id);
 
   // Totalurile zilei (D-053): suma agendei și cât rămâne până la sfârșitul zilei (negativ = depășire, arătată în material și ca avertisment).
+  // Obiectivele zilei (Alex, 2026-11-17): lista din curs.yml; ediția o poate înlocui (de exemplu, ce a cerut clientul).
+  const obiective = [];
+  const citesteObiective = (v, unde) => {
+    if (!Array.isArray(v) || !v.every((x) => typeof x === 'string' && x.trim())) { erori.push(`${unde}: „obiective” e o listă de texte scurte`); return null; }
+    return v.map((x) => x.trim());
+  };
+  let sursaOb = null;
+  if (editie.obiective !== undefined && editie.obiective !== null) { sursaOb = `ediția ${aleasa}`; obiective.push(...(citesteObiective(editie.obiective, sursaOb) ?? [])); }
+  else if (curs.obiective !== undefined && curs.obiective !== null) { sursaOb = 'curs.yml'; obiective.push(...(citesteObiective(curs.obiective, sursaOb) ?? [])); }
+  for (const o of obiective) if (cuvinte(o) > 12) avertismente.push(`${sursaOb}: obiectivul „${o}” are ${cuvinte(o)} cuvinte; în schiță merge mai bine sub 12`);
+  for (const f of [...module, ...piese.values()]) for (const n of f.obiective) {
+    if (n > obiective.length) avertismente.push(`${f.fisier}: obiective conține ${n}, dar ziua are ${obiective.length} ${obiective.length === 1 ? 'obiectiv' : 'obiective'}; îl ignor`);
+  }
+
   const total = { agenda: t - (oraStart ?? 0), zi: ziStart != null && ziSfarsit != null ? ziSfarsit - ziStart : null, ramas: ziSfarsit != null ? ziSfarsit - t : null, sfarsit: t };
-  return { folder, curs: { ...curs, zi_start: ziStart, zi_sfarsit: ziSfarsit }, editie: { ...editie, start: oraStart }, module, piese, agenda, total, erori, avertismente };
+  return { folder, curs: { ...curs, zi_start: ziStart, zi_sfarsit: ziSfarsit }, editie: { ...editie, start: oraStart }, module, piese, agenda, total, obiective, erori, avertismente };
 }
 
 /**

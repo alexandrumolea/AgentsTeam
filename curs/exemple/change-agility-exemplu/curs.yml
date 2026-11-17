@@ -6,3 +6,9 @@ limba: ro
 durata_zi: "9:00–12:30"
 public: link
 slug: change-agility-exemplu
+# Obiectivele zilei (Alex, 2026-11-17): în Schiță, cu bife; în cursul participanților, ca listă simplă. Cel mult ~12 cuvinte fiecare.
+obiective:
+  - "[EXEMPLU] Fiecare își știe locul pe curba schimbării"
+  - "[EXEMPLU] Grupul vede că oamenii sunt în puncte diferite"
+  - "[EXEMPLU] Fiecare pleacă cu un pas mic, cu zi și oră"
+  - "[EXEMPLU] Un cuvânt pentru felul în care pleacă"

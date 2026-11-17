@@ -4,6 +4,7 @@ titlu: "Pasul de luni"
 durata: 40
 tip: exercitiu
 ancora: "Un pas mic"
+obiective: [3]
 schita:
   - "Alege o singură schimbare"
   - "Un pas mic, cu dată"
