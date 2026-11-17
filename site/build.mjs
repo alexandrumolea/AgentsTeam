@@ -480,7 +480,8 @@ ${events.length ? [...days].map(([, list]) => `<h3 class="day">${esc(fLongDay(li
 </section>
 <p class="actions"><a class="btn" href="${u('live/echipa/')}">Echipa de agenți →</a><a class="btn ghost" href="${u('api/live.json')}">Datele, ca JSON</a></p>`;
   } else if (c.cheie === 'despre'){
-    inner = `<div class="prose">${despreHtml}</div>
+    const poza = despre.data.poza ? `<figure class="me"><img src="${u(despre.data.poza)}" alt="${esc(despre.data.poza_alt || 'Alex')}" width="900" height="1200" loading="eager" decoding="async"><figcaption>${esc(despre.data.rol || '')}</figcaption></figure>` : '';
+    inner = `${poza}<div class="prose">${despreHtml}</div>
 <h2>${esc(C.companie ? C.companie.eticheta : 'Business')}</h2>${businessList()}
 <h2>Atelierul, la vedere</h2>
 <p>Lucrez cu o echipă de agenți AI, iar munca noastră e publică. <a href="${u('live/echipa/')}">Vezi echipa și procesele</a> sau <a href="${pageUrl(C.live)}">ce construim acum</a>.</p>

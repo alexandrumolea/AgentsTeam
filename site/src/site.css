@@ -381,3 +381,11 @@ ul.list.biz li small{flex-basis:100%;color:var(--muted);font-size:13px}
 }
 .st:empty{display:none}
 @media (max-width:760px){ body.nogl .dock > p{display:none} }
+
+/* Despre: poza lui Alex (content/despre.md → poza) */
+.me{float:right;width:min(300px,38%);margin:4px 0 20px 32px}
+.me img{display:block;width:100%;height:auto;border-radius:18px;border:1px solid var(--line)}
+.me figcaption{margin-top:10px;font:500 12px/1.4 var(--mono);letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+@media (max-width:640px){.me{float:none;width:min(260px,70%);margin:0 0 20px}}
+.wrap h2{clear:both}
+.prose ul li+li{margin-top:12px}
