@@ -175,7 +175,7 @@ Obiectul nou pentru al treilea drum vizibil (D-056). Mostra 2D, cu hover: [poza-
 
 - **Ideea, pentru echipă (nu se scrie pe site):** o lentilă e felul în care vezi din altă perspectivă. Punctul portocaliu din centru e semnătura lui Alex, același ca lângă nume, în meniu. E singurul obiect vertical din scenă și singurul care poartă punctul.
 - **Forma:** un disc biconvex de sticlă (o sferă turtită), ținut vertical și întors pe jumătate spre dreapta. Pe margine, o ramă albă subțire. În centru, un punct portocaliu cu inelul lui.
-- **Gradientul:** cer `#4FA3F0` → piersică `#F7B79A`, diagonal, 92 %, ca toate obiectele. Înlocuiește cer → lavandă, care e al Companiei mele (în `content/tema.yml`: `obj-despre: [cer, piersica]`).
+- **Gradientul:** cer `#4FA3F0` → piersică `#F7B79A`, diagonal, 92 %, ca toate obiectele. **Cerul e culoarea principală:** cam 60 % din lentilă e cer, iar piersica stă doar în colțul din dreapta jos. În 3D, exponentul de amestec e 1,6 pentru lentilă (celelalte obiecte au 0,6). Înlocuiește cer → lavandă, care e al Companiei mele (în `content/tema.yml`: `obj-despre: [cer, piersica]`).
 - **Proporțiile față de celelalte** (W = lățimea elipsei Coaching):
   | Obiect | Lățime | Înălțime |
   |---|---|---|
@@ -186,10 +186,10 @@ Obiectul nou pentru al treilea drum vizibil (D-056). Mostra 2D, cu hover: [poza-
 - **În 3D (Three.js), pentru Mike.** D = diametrul lentilei = 0,65 W:
   - **Corpul:** `SphereGeometry(D/2, seg(48), seg(24))` cu `scale.set(1, 1, 0.3)`. Grosimea e 0,3 D. Materialul de sticlă al celorlalte obiecte, `pair('despre')`.
   - **Rama:** `TorusGeometry(D/2, D × 0.018, 10, seg(96))` în planul discului, culoarea `edge` (alb), `roughness 0.3`.
-  - **Punctul:** `SphereGeometry(D/16, 24, 12)`, culoarea `punct` (`#F28C3B`), `emissive` piersică la 0,35 (ca cristalul din centru). În repaus stă chiar sub suprafața din față (`z = 0.1 D`), ca să se vadă prin sticlă.
+  - **Punctul:** `SphereGeometry(D/16, 24, 12)`, culoarea `punct` (`#F28C3B`), `emissive` piersică la 0,35 (ca cristalul din centru). Sticla de pe site nu are transmisie, deci în repaus punctul stă chiar pe fața lentilei (`z = 0.16 D`).
   - **Orientarea în repaus:** `rotation.y = -0.6` (cam 34°, întoarsă spre dreapta), `rotation.x = 0.08`.
   - **Mișcarea:** plutește ca celelalte (7 px, 14 s). Nu se rotește complet: se leagănă pe `y` cu ±0,15 rad, în 14 s, `ease-in-out`.
-  - **Hover și focus:** în 0,45 s, `cubic-bezier(.2,.7,.2,1)`, lentila se întoarce cu fața spre vizitator (`rotation.y → 0`), iar punctul iese în fața suprafeței (`z → 0.18 D`) și crește de 1,5 ori. Rama se îngroașă ca la celelalte obiecte.
+  - **Hover și focus:** în 0,45 s, `cubic-bezier(.2,.7,.2,1)`, lentila se întoarce cu fața spre vizitator (`rotation.y → 0`), iar punctul iese în fața suprafeței (`z → 0.22 D`) și crește de 1,5 ori. Rama se îngroașă ca la celelalte obiecte.
   - **`prefers-reduced-motion`:** lentila stă întoarsă pe jumătate, cu punctul deja în față, mărimea 1. Fără legănare.
 - **În 2D** (desenul fără WebGL din `build.mjs`, coordonate centrate):
   `<ellipse class="s" cx="8" rx="34" ry="46" opacity=".55"/><ellipse class="s" rx="34" ry="46"/><ellipse class="f" rx="27.5" ry="39"/><circle class="m" r="6"/>`
@@ -217,9 +217,18 @@ Obiectul nou pentru al treilea drum vizibil (D-056). Mostra 2D, cu hover: [poza-
 ---
 
 ## 8. Fotografie
-- **Poza de acum:** `site/static/alex.jpg` (900 × 1200, 3 : 4): Alex zâmbind, pe o alee cu copaci de toamnă, lumină naturală, fundal estompat. Folosește-o până aprobă Alex altele.
-- **Încadrare:** 3 : 4 pe desktop, 4 : 5 pe telefon, colțuri 28 px (ca sticla). Avatar rotund doar sub 64 px, tăiat deasupra textului de pe tricou.
-- **Poza stă pe o suprafață plină sau pe sticlă de citit**, nu peste gradient. Fără text, gradient sau sticlă peste față.
+- **Poza de acum:** `site/static/alex.jpg` (900 × 1200): Alex zâmbind, pe o alee cu copaci de toamnă, lumină naturală, fundal estompat. Folosește-o până aprobă Alex altele.
+- **Portretul lui Alex e o lentilă (D-060, Alex, 2026-11-17).** E poza în cerc, într-o ramă de sticlă, cu lumina Sora în spate și punctul-semnătură pe ramă. Repetă obiectul „Despre mine” de pe prima pagină (secțiunea 7). Mostra: [poza-forme-v1.html](poza-forme-v1.html), varianta C.
+  - **Decupajul:** un pătrat din original, x 60, y 250, latura 560 px (pe 900 × 1200). Fața e sus-centru, iar tăietura cade deasupra textului de pe tricou (care începe pe la y 815). Se exportă la 560 × 560 (2× pentru 280 px).
+  - **Rama:** 12 px (8 px pe telefon), alb la 42 %, `blur(16px) saturate(150%)`, margine 1 px alb 75 %, lumina marginii ca la sticlă, umbră `0 24px 50px -26px rgba(43,68,184,.6)`. Poza are un fir alb de 1 px pe margine.
+  - **Haloul:** în spatele ramei, `linear-gradient(135deg, cer 0 %, lavandă 52 %, piersică 82 %, portocaliu 100 %)`, `blur(16px)` (10 px pe telefon), opacitate 0,78, cu 6 px peste marginea ramei (4 px pe telefon). Respiră lent: 8 s, crește la 1,035. Cu mișcare redusă stă.
+  - **Punctul-semnătură:** 12 px (10 px pe telefon), portocaliu cu inel `#C96A1E`, pe ramă, la ora 4–5 (45° în dreapta jos).
+  - **Rezerva:** fără `backdrop-filter`, rama e alb 82 %. Cu `prefers-reduced-transparency`, rama e albă plină, iar haloul scade la 0,5.
+- **Așezarea pe pagina Despre:**
+  - **Desktop:** 280 px, în dreapta textului (float), cu 40 px de spațiu față de text, ca haloul să nu ajungă sub litere. Rolul (legendă mică, 13 px, majuscule) stă centrat dedesubt, la 16 px.
+  - **Telefon (sub 760 px):** 152 px, în stânga, sub titlu. Rolul stă în dreapta pozei, pe 2–3 rânduri, iar textul începe imediat dedesubt.
+- **Alte încadrări:** pozele care nu sunt portretul (Alex lucrând, sala, spații) rămân 3 : 4 pe desktop și 4 : 5 pe telefon, cu colțuri de 28 px (24 px pe telefon). Avatarul sub 64 px e cerc simplu, fără ramă și fără halo, din același decupaj.
+- **Poza stă pe o suprafață plină sau pe sticlă de citit**, nu peste gradient. Excepția e haloul lentilei: e în spatele ramei, nu sub față și nu sub text. Fără text, gradient sau sticlă peste față.
 - **Fără filtre:** fără duotone, fără alb-negru, fără „grading”. Doar expunere și decupaj.
 - **Ce fel de poze se potrivesc:** reale, cu lumină naturală, la nivelul ochilor; Alex lucrând (la tablă, în sală, construind, explicând), spații luminoase, mâini și unelte. Ce se potrivește cu paleta: cer, lumină caldă de după-amiază, alb.
 - **Ce nu:** poze de stoc, oameni inventați sau generați, poze în care apar clienți sau participanți fără acordul lor (Maria, secțiunea 4).
@@ -319,7 +328,7 @@ Pornesc din `slide-tipuri-v1.md`: cinci semnale deodată (fond, semn, așezare, 
 ---
 
 ## Surse
-- Decizii: D-004 (sticla doar pe navigare și carduri), D-011 (sticla trece AA fără rezervă), D-054 (paleta Sora, Liquid Glass, prima pagină „Sticlă colorată”), D-055 (workshop-urile în noul branding BEMORE), D-057 (Sora e noul branding BEMORE, cu două fonturi), în `docs/decizii.md`.
+- Decizii: D-004 (sticla doar pe navigare și carduri), D-011 (sticla trece AA fără rezervă), D-054 (paleta Sora, Liquid Glass, prima pagină „Sticlă colorată”), D-055 (workshop-urile în noul branding BEMORE), D-057 (Sora e noul branding BEMORE, cu două fonturi), D-060 (portretul lui Alex e lentila), în `docs/decizii.md`.
 - Documentele de lucru: `design-v2.md` (aerisirea, scrisul mic), `design-v3.md` (paleta, sticla, gradientul, contrastul), `slide-tipuri-v1.md` (cele patru feluri de ecran).
 - WCAG 2.2, 1.4.3, 1.4.6 și 1.4.11 (contrast pentru text, sporit și pentru elemente care nu sunt text): https://www.w3.org/TR/WCAG22/#contrast-minimum, https://www.w3.org/TR/WCAG22/#contrast-enhanced, https://www.w3.org/TR/WCAG22/#non-text-contrast
 - `backdrop-filter`: https://developer.mozilla.org/en-US/docs/Web/CSS/backdrop-filter
@@ -333,4 +342,5 @@ Pornesc din `slide-tipuri-v1.md`: cinci semnale deodată (fond, semn, așezare, 
 | Dată | Versiune | Ce |
 |---|---|---|
 | 2026-11-17 | v1 | Prima versiune, din D-054, D-055, D-057 și din documentele de lucru v2, v3 și slide-tipuri v1. Manualul BEMORE; site-ul lui Alex îl folosește ca owner. |
-| 2026-11-17 | v1.1 | Secțiunea 7: obiectul „Despre mine” (lentila), cu gradientul cer → piersică și specificația 3D. Secțiunea 8 se schimbă după ce Alex alege forma pozei (`poza-forme-v1.html`). |
+| 2026-11-17 | v1.1 | Secțiunea 7: obiectul „Despre mine” (lentila), cu gradientul cer → piersică și specificația 3D. |
+| 2026-11-17 | v1.2 | Secțiunea 8: portretul lui Alex devine lentilă (D-060): decupaj, ramă, halo, punct, așezare pe desktop și telefon. Pagina cu planșe (05, 06) e la zi. |
