@@ -36,14 +36,23 @@ Skill-uri generale utile, tot active:
 Le facem întâi de mână, la aceste două workshop-uri. După 25, din ce a mers, le transformăm în skill-uri noi cu `skill-creator`. Un skill scris după o livrare reală e mai bun decât unul ghicit.
 
 ## Echipa propusă: Studio
-Trei roluri noi, plus Tudor ca coordonator până se așază echipa. Numele sunt propuneri; Alex le poate schimba.
+Patru roluri noi. Numele sunt propuneri; Alex le poate schimba.
+
+**Head of Learning (D-052, cerut de Alex pe 2026-11-17)** conduce Studio și ține strategia cursurilor pe termen lung:
+- **cursuri noi, constant:** un calendar de lansări, nu doar livrări la cerere;
+- **cursurile vechi devin moștenire:** după fiecare livrare, materialul se transformă într-un format care rămâne (curs online, ghid, carte de lucru) și care, eventual, se vinde (legat de I-020);
+- **inovație:** cel puțin o idee nouă de curs pe trimestru, testată mic;
+- **portofoliul la vedere:** fiecare curs are o etichetă, *inovație*, *util* sau *de retras*, revăzută trimestrial după trenduri (cu Irina pentru cercetare și Maria pentru poziționare).
+
+Până aprobă Alex D-052, Tudor ține coordonarea.
 
 | Rol | Ce face | Skill-uri | Livrabil |
 |---|---|---|---|
 | **Daria, designer de learning** | Transformă brief-ul în obiective, flow și ghidul facilitatorului. Păzește timpii și energia grupului | training-flow-design, xlsx, vocea-alex | flow-ul Excel, ghidul facilitatorului |
 | **Matei, producător de materiale** | Slide-uri, worksheet-uri, handout-uri, printabile, toate în brandul ales | innersis-ive sau bemore-ls-ive, pptx, docx, pdf, canvas-design | deck-ul, worksheet-urile, lista de print |
 | **Irina, cercetare de conținut** | Modele, studii, exemple și date recente, cu surse. Pentru Self-management cu AI: unelte și exerciții concrete, testate | deep-research, WebSearch | nota de conținut cu surse |
-| **Tudor, coordonator** (temporar) | Calendarul până la livrare, punctele de verificare cu Alex, legătura cu CORE | – | planul săptămânii, raportul |
+| **Andrei, Head of Learning** | Strategia și portofoliul de cursuri, calendarul de lansări, prioritățile echipei, legătura cu CORE și cu Alex | deep-research, training-flow-design, vocea-alex | harta cursurilor (inovație / util / de retras), planul trimestrial, raportul către Tudor |
+| **Tudor** (temporar, până la D-052) | Calendarul până la livrare, punctele de verificare cu Alex | – | planul săptămânii, raportul |
 
 **Ce face CORE pentru Studio:**
 - Maria: vocea și coerența mesajelor.
@@ -98,3 +107,4 @@ Materialele pentru client nu intră în repo-ul public.
 | Dată | Ce s-a întâmplat |
 |---|---|
 | 2026-11-16 | Alex: workshop-urile sunt prima nevoie. Tudor a verificat skill-urile, calendarul și Drive-ul (nu există încă materiale pentru aceste două) și a scris propunerea. |
+| 2026-11-17 | Alex cere un Head of Learning care deține strategia cursurilor. Tudor l-a adăugat ca șef al Studio (D-052, de luat). |
