@@ -59,6 +59,16 @@ Doar în cursul online.
 
 Primul ecran al fiecărui modul (numărul și titlul) se face singur. O pauză primește automat un cronometru cât durata ei.
 
+### Editorul local: editezi direct pe ecran (1.11, Alex, 2026-11-17)
+
+**Pornire:** dublu-click pe `curs/Editeaza curs.command` (deschide Terminal și browserul), sau `npm run editor -- <folderul cursului>`. Implicit: `privat/cursuri/change-agility`. Fereastra Terminal rămâne deschisă cât editezi; Ctrl+C sau închiderea ei oprește editorul.
+
+- Serverul (`editor.mjs`, doar `node:http`) ascultă **doar pe 127.0.0.1** (portul 4747, sau altul liber), servește materialul trainerului cu modul de editare și cere un **token aleator** din linkul deschis la pornire. Verifică și gazda cererii (fără DNS rebinding). Fișierul HTML offline din `dist/` rămâne exact cum e: editorul se adaugă doar în pagina servită și niciodată în fereastra sălii.
+- **„Editează”** apare pe ecrane în vederea Ecrane, în Modul (și pe notele trainerului) și în ecranul de comandă (ecranul de acum). Se deschide sursa blocului (`:::sala` / `:::sala-si-curs` / `:::trainer`), cu un mini-ajutor (`## titlu`, `- punct`, `1. pas`, `**îngroșat**`) și previzualizare live la mărimea ecranului. Titlurile de modul și pauzele nu se editează aici (sunt în antet / în agendă).
+- **Salvarea** rescrie doar blocul acela, găsit după id (`piesa#n`, `modul#nota1`); restul fișierului rămâne identic. Dacă fișierul s-a schimbat pe disc între timp, nu suprascrie. Versiunea veche merge în `.editor-istoric/` (cu `.gitignore` propriu). Apoi build-ul se reface și pagina se reîncarcă la aceeași vedere și același ecran. Dacă build-ul refuză textul (de exemplu un nume interzis), fișierul revine la ce era, iar eroarea apare lângă ecran, cu textul păstrat.
+- Textul nu poate conține rânduri care încep cu `::` (ar strica structura fișierului) și un ecran nu poate rămâne gol.
+- **Commit-ul nu îl face editorul.** Bara de jos arată câte fișiere sunt schimbate față de ultimul commit al repo-ului cursului.
+
 ### Ecranele din sală: mută și ascunde (1.10, Alex, 2026-11-17)
 
 - Fiecare ecran are un id stabil: `curba#1` (al n-lea bloc din sală al fișierului), `curba#titlu`, `pauza-cafea#pauza`, `pauza#1`; a doua apariție a unei piese: `<piesă>@2#1`. Id-urile se văd în vederea **Ecrane**.

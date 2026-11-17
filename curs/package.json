@@ -7,10 +7,13 @@
   "scripts": {
     "build": "node build.mjs",
     "exemplu": "node build.mjs exemple/change-agility-exemplu --pdf",
-    "test": "node --test teste/verificari.test.mjs",
-    "test:chrome": "node teste/chrome-prezinta.mjs && node teste/chrome-imagini.mjs && node teste/chrome-ecrane.mjs"
+    "test": "node --test teste/verificari.test.mjs teste/editor.test.mjs",
+    "test:chrome": "node teste/chrome-prezinta.mjs && node teste/chrome-imagini.mjs && node teste/chrome-ecrane.mjs && node teste/chrome-editor.mjs",
+    "editor": "node editor.mjs"
   },
-  "engines": { "node": ">=20" },
+  "engines": {
+    "node": ">=20"
+  },
   "dependencies": {
     "marked": "18.1.2",
     "yaml": "2.9.1"

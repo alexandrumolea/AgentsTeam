@@ -1,0 +1,31 @@
+/* Editorul local (1.11): doar în paginile servite de curs/editor.mjs. Aceiași tokeni ca materialul trainerului. */
+.ed-bara { position: fixed; left: .75rem; bottom: .75rem; z-index: 40; max-width: calc(100% - 1.5rem); padding: .4rem .8rem; border-radius: 999px; background: var(--t-text); color: var(--t-suprafata); font-size: .8rem; box-shadow: 0 2px 10px rgba(0,0,0,.15); }
+.ed-bara .ed-mesaj { opacity: .85; }
+.ed-btn { font-size: .78rem; padding: .15rem .6rem; border-color: var(--t-accent); color: var(--t-accent); background: var(--t-suprafata); }
+.ed-btn:hover { background: var(--t-accent); color: var(--t-pe-accent); }
+[data-sursa] { position: relative; }
+[data-sursa] > .ed-btn { position: absolute; top: 0; right: 0; }
+.strat-trainer[data-sursa] > .ed-btn { top: .4rem; right: .5rem; }
+.ed-proaspat { outline: 3px solid var(--t-accent); outline-offset: 3px; transition: outline-color 1s; }
+@media (pointer: coarse) { .ed-btn { min-height: 44px; padding: .3rem .8rem; } }
+
+.ed-dialog { width: min(1200px, calc(100vw - 2rem)); max-height: calc(100vh - 2rem); padding: 0; border: 1px solid var(--t-linie); border-radius: 10px; background: var(--t-fundal); color: var(--t-text); font-family: var(--font); }
+.ed-dialog::backdrop { background: rgba(0,0,0,.35); }
+.ed-form { display: flex; flex-direction: column; max-height: calc(100vh - 2rem); }
+.ed-cap { display: flex; justify-content: space-between; align-items: flex-start; gap: 1rem; padding: .8rem 1rem .4rem; }
+.ed-cap h2 { font-size: 1.3rem; margin: 0; }
+.ed-cap .eticheta { margin: 0; }
+.ed-inchide { font-size: 1.4rem; line-height: 1; padding: .1rem .55rem; }
+.ed-corp { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.2fr); gap: 1rem; padding: 0 1rem; overflow: auto; }
+.ed-stanga { display: flex; flex-direction: column; gap: .35rem; }
+#ed-text { min-height: 16rem; flex: 1; resize: vertical; padding: .6rem .7rem; font: 1rem/1.5 ui-monospace, Menlo, monospace; border: 1px solid var(--t-linie); border-radius: 6px; background: var(--t-suprafata); color: var(--t-text); }
+#ed-text:focus { outline: 2px solid var(--t-accent); outline-offset: 1px; }
+.ed-ajutor { margin: 0; font-size: .8rem; color: var(--t-sters); line-height: 1.6; }
+.ed-ajutor code { background: var(--t-suprafata); border: 1px solid var(--t-linie); border-radius: 4px; padding: 0 .3em; }
+.ed-previz { width: 100%; }
+.ed-nota { background: var(--t-nota-fundal); border-left: 3px solid var(--t-nota-linie); padding: .6rem .9rem; }
+.ed-eroare { margin: .6rem 1rem 0; padding: .5rem .8rem; border: 1px solid var(--cronometru-gata); border-radius: 6px; color: var(--cronometru-gata); background: var(--t-suprafata); }
+.ed-eroare ul { margin: .3rem 0 0; padding-left: 1.2rem; }
+.ed-subsol { display: flex; flex-wrap: wrap; align-items: center; gap: .5rem 1rem; padding: .8rem 1rem; }
+.ed-subsol .ed-taste { margin-right: auto; font-size: .8rem; }
+@media (max-width: 760px) { .ed-corp { grid-template-columns: 1fr; } }

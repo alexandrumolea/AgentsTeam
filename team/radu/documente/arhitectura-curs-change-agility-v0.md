@@ -396,6 +396,13 @@ ecrane:
 
 ---
 
+### 1.11 Editorul local: editare direct pe ecran (Alex, 2026-11-17)
+Alex vrea să corecteze un ecran acolo unde îl vede, fără să caute fișierul.
+- **Pornire:** dublu-click pe `curs/Editeaza curs.command` (sau `npm run editor -- <folder>`). Pornește un server local (doar `127.0.0.1`, cu token aleator în link) și deschide browserul pe vederea Ecrane. Fișierul HTML offline rămâne neschimbat.
+- **Ce se editează:** blocurile din sală (`:::sala`, `:::sala-si-curs`) și notele trainerului (`:::trainer`, din vederea Modul), după id-ul stabil din 1.10: `piesa#n`, `modul#n`, `piesa#nota1`. Imaginile rămân referințe. Titlurile de modul, pauzele și antetul nu se editează aici.
+- **Salvarea:** doar blocul acela se rescrie; verificare de concurență (fișierul schimbat pe disc nu se suprascrie); copie a versiunii vechi în `.editor-istoric/`; build-ul se reface, iar un build oprit readuce fișierul la ce era și arată eroarea.
+- **Git:** editorul nu face commit; arată doar câte fișiere sunt schimbate.
+
 ## 2. Cum se leagă de ce există
 
 ```mermaid

@@ -267,9 +267,11 @@ export function listaSchita(c) {
 }
 
 /** Un segment, cum apare în vederile Modul și Bibliotecă. */
-function piesa(s, sursa, randeaza) {
+// cheie: id-ul fișierului din care vine segmentul (modul sau piesă). Dă `data-sursa`, după care editorul local (1.11) găsește blocul.
+function piesa(s, sursa, randeaza, cheie) {
+  const ref = (fel) => (cheie && s.nr ? ` data-sursa="${e(cheie)}#${fel}${s.nr}"` : '');
   if (s.strat === 'text') return `<div class="strat strat-text">${randeaza(s.md)}</div>`;
-  if (s.strat === 'trainer') return `<div class="strat strat-trainer"><span class="eticheta">Trainer</span>${randeaza(s.md)}</div>`;
+  if (s.strat === 'trainer') return `<div class="strat strat-trainer"${ref('nota')}><span class="eticheta">Trainer</span>${randeaza(s.md)}</div>`;
   if (s.strat === 'participant') return `<div class="strat strat-participant"><span class="eticheta">Doar în cursul online</span>${randeaza(s.md)}</div>`;
   if (s.strat === 'piese') return `<p class="strat sters">Aici intră piesele alese în agendă.</p>`;
   if (s.strat === 'piesa-inceput') { const x = s.piesa; return `<div class="exercitiu-incadrat"><p class="eticheta">Piesă · ${e(x.titlu)} · ${despre(x)}${x.in_curs ? '' : ' · nu apare în cursul online'}</p>${x.etichete.length ? `<p>${eticheteMici(x)}</p>` : ''}${x.obiectiv ? `<p>${e(x.obiectiv)}</p>` : ''}`; }
@@ -277,7 +279,7 @@ function piesa(s, sursa, randeaza) {
   const randeazaEcran = creeazaRandare({ atribut: 'data-img', randuriNoi: true });
   const eticheta = s.strat === 'sala' ? 'Ecran în sală' : 'Ecran în sală și în curs';
   const cron = s.atribute.cronometru ? ` · cronometru ${s.atribute.cronometru} min` : '';
-  return `<div class="strat strat-ecran"><span class="eticheta">${eticheta}${cron}</span>${ecranStatic(ecranul(sursa, randeazaEcran(s.md), s.atribute.cronometru ?? 0))}</div>`;
+  return `<div class="strat strat-ecran"${ref('')}><span class="eticheta">${eticheta}${cron}</span>${ecranStatic(ecranul(sursa, randeazaEcran(s.md), s.atribute.cronometru ?? 0))}</div>`;
 }
 
 function alternativeHtml(c, m, alese) {
@@ -289,7 +291,7 @@ function vedereaModul(c) {
   const randeaza = creeazaRandare({ atribut: 'data-img' });
   const articol = (m, r) => {
     const piese = r ? desfasoara(r) : m.segmente;
-    const continut = piese.map((s) => piesa(s, r ? sursaDe(r, s) : sursaModul(m), randeaza)).join('\n');
+    const continut = piese.map((s) => piesa(s, r ? sursaDe(r, s) : sursaModul(m), randeaza, s.piesa ? s.piesa.id : m.id)).join('\n');
     const durata = r ? `${r.durata} min${r.piese.length ? ` (modul ${r.durataModul} + piese ${r.durataPiese})` : ''}` : `${m.durata} min fără piese`;
     return `<article class="modul ${r ? '' : 'sarit'}" id="modul-${e(m.id)}">
 <header><span class="eticheta">${r ? oraR(r) + ' · ' : ''}${TIP[m.tip] ?? e(m.tip)} · ${durata}${r ? '' : ' · nu e în agenda acestei ediții'}</span>
@@ -298,7 +300,7 @@ ${continut}</article>`;
   };
   const singura = (r) => `<article class="modul piesa-singura" id="rand-${e(r.piesa.id)}">
 <header><span class="eticheta">${oraR(r)} · piesă singură · ${despre(r.piesa)}</span><h3>${e(r.piesa.titlu)}</h3>${r.piesa.etichete.length ? `<p>${eticheteMici(r.piesa)}</p>` : ''}${r.piesa.materiale.length ? `<p class="sters">Materiale: ${r.piesa.materiale.map(e).join(', ')}</p>` : ''}</header>
-${desfasoara(r).filter((s) => s.strat !== 'piesa-inceput' && s.strat !== 'piesa-sfarsit').map((s) => piesa(s, sursaDe(r, s), randeaza)).join('\n')}</article>`;
+${desfasoara(r).filter((s) => s.strat !== 'piesa-inceput' && s.strat !== 'piesa-sfarsit').map((s) => piesa(s, sursaDe(r, s), randeaza, r.piesa.id)).join('\n')}</article>`;
   const dinAgenda = c.agenda.filter((r) => r.fel === 'modul' || (r.fel === 'piesa' && r.piesa.tip !== 'pauza')).map((r) => (r.fel === 'modul' ? articol(r.modul, r) : singura(r))).join('\n');
   const afara = c.module.filter((m) => !m.inAgenda).map((m) => articol(m, null)).join('\n');
   return `<h2>Modulele</h2>${dinAgenda}${afara ? `<h2 class="sub">Nu sunt în agenda acestei ediții</h2>${afara}` : ''}`;
@@ -348,7 +350,7 @@ ${x.obiectiv ? `<p class="ex-obiectiv-tot">${e(x.obiectiv)}</p>` : ''}
 <div><p class="eticheta">Materiale</p><p>${x.materiale.length ? x.materiale.map(e).join(', ') : '<span class="sters">nimic special</span>'}</p></div>
 <div><p class="eticheta">Detalii</p><p>${detalii}${x.in_curs ? '' : '<br><b>Nu apare în cursul online</b>'}</p></div>
 </div>
-${x.segmente.map((s) => piesa(s, sursaPiesa(x), randeaza)).join('\n')}
+${x.segmente.map((s) => piesa(s, sursaPiesa(x), randeaza, x.id)).join('\n')}
 </div></details>`;
   };
   const primaAzi = (x) => c.agenda.indexOf(azi.get(x.id)[0]);

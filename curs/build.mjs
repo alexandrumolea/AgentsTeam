@@ -64,7 +64,7 @@ function pdfuri(fHtml, dir, slug, log) {
 }
 
 // Linia de comandă
-if (import.meta.url === pathToFileURL(process.argv[1]).href) {
+if (process.argv[1] && import.meta.url === pathToFileURL(process.argv[1]).href) {
   const args = process.argv.slice(2);
   const opt = { pdf: args.includes('--pdf') };
   const val = (n) => { const i = args.indexOf(n); return i >= 0 ? args[i + 1] : undefined; };

@@ -67,10 +67,12 @@ function citesteYaml(fisier, erori) {
 export function imparteInStraturi(corp, fisier, liniaStart, erori, { marcaj = true } = {}) {
   const segmente = [];
   let curent = { strat: 'text', linii: [], linia: liniaStart, atribute: {} };
-  let deschis = null, marcaje = 0;
+  let deschis = null, marcaje = 0, nrSala = 0, nrNota = 0;
   const inchide = () => {
     const md = curent.linii.join('\n').trim();
-    if (md || curent.strat !== 'text') segmente.push({ strat: curent.strat, md, atribute: curent.atribute, linia: curent.linia, fisier });
+    // nr: al câtelea bloc din sală (:::sala / :::sala-si-curs) sau al câtelea :::trainer din fișier. E și id-ul de editare (1.11).
+    const nr = curent.strat === 'sala' || curent.strat === 'sala-si-curs' ? ++nrSala : curent.strat === 'trainer' ? ++nrNota : undefined;
+    if (md || curent.strat !== 'text') segmente.push({ strat: curent.strat, md, atribute: curent.atribute, linia: curent.linia, fisier, ...(nr ? { nr } : {}) });
   };
   corp.split('\n').forEach((rand, i) => {
     const nr = liniaStart + i;
