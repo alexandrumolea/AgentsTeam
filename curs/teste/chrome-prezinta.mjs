@@ -29,19 +29,49 @@ try {
   ok(ecrane.length === 13, `materialul are ${ecrane.length} ecrane în sală (aștept 13)`);
   if (poze) for (const v of ['ziua', 'schita', 'modul', 'banca']) { await b.click(ctrl, `[data-vedere="${v}"]`); await b.screenshot(ctrl, join(poze, `vedere-${v}.png`)); }
 
-  // Banca: toate exercițiile, cu filtre.
+  // Banca (v2): listă compactă cu rânduri care se deschid, căutare și filtre-chip.
   await b.click(ctrl, '[data-vedere="banca"]');
-  const vizibile = () => b.evaluate(ctrl, '[...document.querySelectorAll("article.exercitiu")].filter(a => !a.hidden).length');
+  const vizibile = () => b.evaluate(ctrl, '[...document.querySelectorAll("details.ex")].filter(a => !a.hidden).length');
+  const chip = (f, v) => b.click(ctrl, `.chip[data-filtru="${f}"][data-valoare="${v}"]`);
   ok((await vizibile()) === 3, 'Banca arată toate cele 3 exerciții');
-  await b.evaluate(ctrl, '{ const s=document.querySelector("[data-filtru=energie]"); s.value="activ"; s.dispatchEvent(new Event("change")); }');
-  ok((await vizibile()) === 2, 'filtrul „energie activă” lasă 2 exerciții');
-  await b.evaluate(ctrl, '{ const s=document.querySelector("[data-filtru=durata]"); s.value="10"; s.dispatchEvent(new Event("change")); }');
-  ok((await vizibile()) === 1, '+ „până la 10 min” lasă 1');
-  await b.evaluate(ctrl, 'document.querySelectorAll("[data-filtru]").forEach(s => { if (s.type === "checkbox") s.checked = true; else s.value = ""; s.dispatchEvent(new Event("change")); })');
-  ok((await vizibile()) === 1, '„doar din agenda de azi” lasă exercițiul ales (perechi-curba)');
+  ok(await b.evaluate(ctrl, '[...document.querySelectorAll("details.ex")].every(d => !d.open)'), 'exercițiile pornesc închise (lista se scanează dintr-o privire)');
+  ok(await b.evaluate(ctrl, 'document.querySelector(".banca-grup details.ex").id === "ex-perechi-curba" && !!document.querySelector("#ex-perechi-curba .azi")'), 'exercițiul din agenda de azi e primul, cu eticheta „Azi”');
+  await chip('energie', 'activ');
+  ok((await vizibile()) === 2, 'chipul „activ” lasă 2 exerciții');
+  ok(!(await b.evaluate(ctrl, 'document.getElementById("banca-sterge").hidden')), 'apare „Șterge filtrele”');
+  await chip('durata', '10');
+  ok((await vizibile()) === 1, '+ „≤ 10 min” lasă 1');
+  await chip('durata', '20');
+  ok((await vizibile()) === 2 && (await b.evaluate(ctrl, 'document.querySelectorAll(".chip[data-filtru=durata][aria-pressed=true]").length')) === 1, 'durata e un singur prag: „≤ 20 min” îl înlocuiește pe „≤ 10 min”');
+  await b.click(ctrl, '#banca-sterge');
+  ok((await vizibile()) === 3, '„Șterge filtrele” le arată din nou pe toate');
+  await chip('format', 'perechi'); await chip('format', 'grup');
+  ok((await vizibile()) === 2, 'două chipuri din același grup se adună (perechi sau grup)');
+  await b.click(ctrl, '#banca-sterge');
+  await chip('modul', 'curba');
+  ok((await vizibile()) === 3, 'filtrul pe modul: cele 2 potrivite la „curba” + cel bun oriunde');
+  await b.click(ctrl, '#banca-sterge');
+  await b.evaluate(ctrl, 'document.activeElement.blur()');
+  await b.key(ctrl, '/');
+  ok(await b.evaluate(ctrl, 'document.activeElement.id === "banca-cauta"'), 'tasta „/” duce în căutare');
+  await b.evaluate(ctrl, '{ const c=document.getElementById("banca-cauta"); c.value="banda podea"; c.dispatchEvent(new Event("input")); }');
+  ok((await vizibile()) === 1 && !(await b.evaluate(ctrl, 'document.getElementById("ex-plimbare-curba").hidden')), 'căutarea găsește după materiale, fără diacritice („banda podea”)');
+  await b.evaluate(ctrl, '{ const c=document.getElementById("banca-cauta"); c.value="nu exista nicaieri"; c.dispatchEvent(new Event("input")); }');
+  ok((await vizibile()) === 0 && !(await b.evaluate(ctrl, 'document.getElementById("banca-gol").hidden')), 'fără rezultate: mesaj și buton de ștergere');
+  await b.key(ctrl, 'Escape');
+  ok((await vizibile()) === 3, 'Esc golește căutarea');
+  await b.key(ctrl, 'ArrowDown');
+  ok(await b.evaluate(ctrl, 'document.activeElement === document.querySelector("#ex-perechi-curba > summary")'), 'săgeata jos din căutare duce la primul exercițiu (Enter îl deschide, nativ)');
+  await b.key(ctrl, 'ArrowDown');
+  ok(await b.evaluate(ctrl, 'document.activeElement === document.querySelectorAll("details.ex > summary")[1]'), 'săgeata jos trece la exercițiul următor');
+  await b.click(ctrl, '#ex-perechi-curba > summary');
+  ok(await b.evaluate(ctrl, 'document.getElementById("ex-perechi-curba").open'), 'un click pe rând deschide exercițiul');
+  await b.evaluate(ctrl, 'document.getElementById("ex-perechi-curba").open = false');
+  await chip('format', 'individual');
   await b.click(ctrl, '[data-vedere="modul"]');
   await b.evaluate(ctrl, 'document.querySelector("a[data-banca]").click()');
-  ok(await b.evaluate(ctrl, '!document.getElementById("banca").hidden && !document.getElementById("ex-plimbare-curba").hidden'), 'linkul spre alternativă din Modul deschide Banca la exercițiu');
+  ok(await b.evaluate(ctrl, '!document.getElementById("banca").hidden && !document.getElementById("ex-plimbare-curba").hidden && document.getElementById("ex-plimbare-curba").open'), 'linkul spre alternativă din Modul deschide Banca la exercițiu, deschis, chiar dacă un filtru îl ascundea');
+  await b.click(ctrl, '#banca-sterge');
 
   // Tastele nu schimbă ecranul în afara modului Prezintă.
   await b.click(ctrl, '[data-vedere="ziua"]');

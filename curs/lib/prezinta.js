@@ -240,17 +240,42 @@
     if (v === 'prezinta') randeaza();
     marcheazaAcum();
   }
-  // Banca: filtre pe format, energie, durată și „doar din agenda de azi”.
+  // Banca: căutare + filtre-chip. În același grup chipurile se adună (perechi SAU grup); între grupuri se cer toate.
+  // Durata e un prag: un singur chip apăsat odată.
+  function normal(s) { return String(s).normalize('NFD').replace(/[̀-ͯ]/g, '').toLowerCase().replace(/[^a-z0-9]+/g, ' ').trim(); }
   function filtreaza() {
-    var f = {}, l = document.querySelectorAll('[data-filtru]');
-    for (var k = 0; k < l.length; k++) f[l[k].getAttribute('data-filtru')] = l[k].type === 'checkbox' ? l[k].checked : l[k].value;
-    var ex = document.querySelectorAll('article.exercitiu'), n = 0;
+    var f = { format: [], energie: [], durata: [], modul: [] }, l = document.querySelectorAll('.chip[aria-pressed="true"]');
+    for (var k = 0; k < l.length; k++) f[l[k].getAttribute('data-filtru')].push(l[k].getAttribute('data-valoare'));
+    var c = $('banca-cauta'), q = c ? normal(c.value) : '', cuvinte = q ? q.split(' ') : [];
+    var ex = document.querySelectorAll('details.ex'), n = 0;
     for (var j = 0; j < ex.length; j++) {
-      var a = ex[j], ok = (!f.format || a.getAttribute('data-format') === f.format) && (!f.energie || a.getAttribute('data-energie') === f.energie) &&
-        (!f.durata || +a.getAttribute('data-durata') <= +f.durata) && (!f.folosit || a.getAttribute('data-folosit') === '1');
+      var a = ex[j], mod = a.getAttribute('data-module'), text = a.getAttribute('data-cauta'), ok =
+        (!f.format.length || f.format.indexOf(a.getAttribute('data-format')) >= 0) &&
+        (!f.energie.length || f.energie.indexOf(a.getAttribute('data-energie')) >= 0) &&
+        (!f.durata.length || +a.getAttribute('data-durata') <= +f.durata[0]) &&
+        (!f.modul.length || !mod || f.modul.some(function (m) { return (' ' + mod + ' ').indexOf(' ' + m + ' ') >= 0; }));
+      for (var w = 0; ok && w < cuvinte.length; w++) if (text.indexOf(cuvinte[w]) < 0) ok = false;
       a.hidden = !ok; if (ok) n++;
     }
-    var nr = $('banca-numar'); if (nr) nr.textContent = n + ' din ' + ex.length;
+    var g = document.querySelectorAll('.banca-grup');
+    for (var gi = 0; gi < g.length; gi++) { var v = g[gi].querySelectorAll('details.ex:not([hidden])').length; g[gi].hidden = !v; g[gi].querySelector('.banca-grup-nr').textContent = v; }
+    var activ = !!(l.length || q);
+    var nr = $('banca-numar'); if (nr) nr.textContent = activ ? n + ' din ' + ex.length + ' exerciții' : ex.length + (ex.length === 1 ? ' exercițiu' : ' exerciții');
+    if ($('banca-gol')) $('banca-gol').hidden = n > 0;
+    if ($('banca-sterge')) $('banca-sterge').hidden = !activ;
+  }
+  function stergeFiltrele() {
+    var l = document.querySelectorAll('.chip[aria-pressed="true"]'); for (var k = 0; k < l.length; k++) l[k].setAttribute('aria-pressed', 'false');
+    if ($('banca-cauta')) $('banca-cauta').value = '';
+    filtreaza();
+  }
+  // Deschide un exercițiu din bancă (din Modul sau din ecranul de comandă). Dacă filtrele îl ascund, le șterge.
+  function deschideExercitiu(id) {
+    arata('banca');
+    var t = document.getElementById(id); if (!t) return;
+    if (t.hidden) stergeFiltrele();
+    t.open = true; t.scrollIntoView({ block: 'start' });
+    var s = t.querySelector('summary'); if (s) s.focus({ preventScroll: true });
   }
   // În ziua ediției, Ziua și Schița arată modulul de acum.
   function marcheazaAcum() {
@@ -283,14 +308,39 @@
   });
   $('inchide-schita').addEventListener('click', function () { schitaSeteaza(false); });
   window.addEventListener('resize', function () { ['cadru-acum', 'cadru-urmeaza', 'aici-cadru'].forEach(function (id) { var c = $(id); if (c) potriveste(c); }); });
-  var filtre = document.querySelectorAll('[data-filtru]');
-  for (var fi = 0; fi < filtre.length; fi++) filtre[fi].addEventListener('change', filtreaza);
+  var chipuri = document.querySelectorAll('.chip[data-filtru]');
+  for (var fi = 0; fi < chipuri.length; fi++) chipuri[fi].addEventListener('click', function () {
+    var pornit = this.getAttribute('aria-pressed') !== 'true';
+    if (this.getAttribute('data-filtru') === 'durata') { var d = document.querySelectorAll('.chip[data-filtru="durata"]'); for (var k = 0; k < d.length; k++) d[k].setAttribute('aria-pressed', 'false'); }
+    this.setAttribute('aria-pressed', pornit ? 'true' : 'false');
+    filtreaza();
+  });
+  if ($('banca-cauta')) $('banca-cauta').addEventListener('input', filtreaza);
+  if ($('banca-sterge')) $('banca-sterge').addEventListener('click', stergeFiltrele);
+  if ($('banca-gol-sterge')) $('banca-gol-sterge').addEventListener('click', function () { stergeFiltrele(); $('banca-cauta').focus(); });
   filtreaza();
+  // Banca din tastatură: „/” caută, Esc golește căutarea, săgețile sus/jos trec de la un exercițiu la altul.
+  document.addEventListener('keydown', function (ev) {
+    if (vedere !== 'banca' || ev.metaKey || ev.ctrlKey || ev.altKey) return;
+    var t = ev.target, cauta = $('banca-cauta'); if (!cauta) return;
+    var vizibile = [].slice.call(document.querySelectorAll('details.ex:not([hidden]) > summary'));
+    if (ev.key === '/' && t !== cauta && !/^(INPUT|TEXTAREA|SELECT)$/.test(t.tagName)) { ev.preventDefault(); cauta.focus(); cauta.select(); return; }
+    if (t === cauta) {
+      if (ev.key === 'Escape') { if (cauta.value) { cauta.value = ''; filtreaza(); } else cauta.blur(); ev.preventDefault(); }
+      else if ((ev.key === 'ArrowDown' || ev.key === 'Enter') && vizibile.length) { ev.preventDefault(); vizibile[0].focus(); }
+      return;
+    }
+    var i = vizibile.indexOf(t); if (i < 0) return;
+    if (ev.key === 'ArrowDown' && i < vizibile.length - 1) { ev.preventDefault(); vizibile[i + 1].focus(); }
+    else if (ev.key === 'ArrowUp') { ev.preventDefault(); (i > 0 ? vizibile[i - 1] : cauta).focus(); }
+    else if (ev.key === 'Escape' && t.parentNode.open) { ev.preventDefault(); t.parentNode.open = false; }
+  });
+  // La tipar, exercițiile din bancă apar deschise.
+  window.addEventListener('beforeprint', function () { var d = document.querySelectorAll('details.ex'); for (var k = 0; k < d.length; k++) d[k].open = true; });
   // Linkurile spre bancă (din Modul și din ecranul de comandă) deschid vederea Banca la exercițiul ales.
   document.addEventListener('click', function (ev) {
     var a = ev.target.closest ? ev.target.closest('a[data-banca]') : null; if (!a) return;
-    ev.preventDefault(); arata('banca');
-    var t = document.getElementById(a.getAttribute('href').slice(1)); if (t) { t.hidden = false; t.scrollIntoView(); }
+    ev.preventDefault(); deschideExercitiu(a.getAttribute('href').slice(1));
   });
   // Dacă fereastra sălii s-a închis sau s-a golit, ecranul de comandă o spune.
   var eraDeschisa = false;
@@ -313,6 +363,7 @@
   } else if (h === 'tipar-trainer') {
     var st3 = document.createElement('style'); st3.textContent = '@page { size: A4; margin: 14mm; }'; document.head.appendChild(st3);
     var sec = document.querySelectorAll('main > section'); for (var y = 0; y < sec.length; y++) sec[y].hidden = sec[y].id === 'prezinta';
+    var dex = document.querySelectorAll('details.ex'); for (var z = 0; z < dex.length; z++) dex[z].open = true;
     hidrateaza(document);
   } else {
     arata(['ziua', 'modul', 'schita', 'banca', 'prezinta'].indexOf(h) >= 0 ? h : 'ziua');

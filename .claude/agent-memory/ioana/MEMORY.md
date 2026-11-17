@@ -44,3 +44,8 @@ Păstrează sub 150 de rânduri. Comprimă când crește. Fapte, nu povești.
 ## Deschis
 - Vezi `docs/intrebari-pentru-alex.md`.
 - Profilul meu (`team/ioana/profil.md`, „calm”) și estetica din `vocea-alex` trebuie actualizate după feedback (T-006 la Maria; profilul, semnalat lui Tudor).
+
+## Curs (materialul trainerului)
+- 2026-11-17: Banca v2 (cerută de Alex: „UX mai bun, s-o navighez mai ușor”): listă compactă `<details>`, chipuri, căutare, „Azi în agendă” sus. Alex o folosește din timp (agenda) și live, în pauză, pe tabletă. Aștept reacția lui.
+- 2026-11-17: Pentru capturi cu clicuri și viewport de tabletă/telefon din file://: `curs/teste/cdp.mjs` + `Emulation.setDeviceMetricsOverride`. Enter pe `<summary>` nu se simulează cu CDP fără `text`; testează cu click.
+- 2026-11-17: Tokenii temei (`curs/tema/*.css`) nu se ating din stil; folosesc doar `--t-*` existente.

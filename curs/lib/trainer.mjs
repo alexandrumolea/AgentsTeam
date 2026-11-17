@@ -3,7 +3,7 @@
 import { readFileSync, existsSync } from 'node:fs';
 import { join, extname, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { creeazaRandare, escapeHtml as e } from './randare.mjs';
+import { creeazaRandare, escapeHtml as e, normal } from './randare.mjs';
 import { imaginiDin, ora, desfasoara, FORMATE, ENERGII } from './sursa.mjs';
 
 const AICI = dirname(fileURLToPath(import.meta.url));
@@ -127,29 +127,67 @@ ${continut}</article>`;
   return `<h2>Modulele</h2>${dinAgenda}${afara ? `<h2 class="sub">Nu sunt în agenda acestei ediții</h2>${afara}` : ''}`;
 }
 
+/** Banca de exerciții (v2, Ioana 2026-11-17): o listă compactă de rânduri care se deschid la cerere (<details>),
+ *  cu căutare și filtre ca butoane-chip. Sus stau exercițiile din agenda de azi, dedesubt restul, de la cele scurte la cele lungi.
+ *  Filtrele lucrează în prezinta.js (filtreaza), pe atributele data-* de pe fiecare rând. */
 function vedereaBanca(c) {
   const randeaza = creeazaRandare({ atribut: 'data-img' });
-  const folosit = new Map();
-  c.agenda.forEach((r) => { if (r.fel === 'modul') r.exercitii.forEach((x) => folosit.set(x.id, r.modul)); });
   const toate = [...c.exercitii.values()];
   if (!toate.length) return '<h2>Banca de exerciții</h2><p class="sters">Cursul nu are încă exerciții în exercitii/.</p>';
-  const rol = (x) => {
-    const m = folosit.get(x.id);
-    const unde = c.module.filter((mm) => mm.implicite.includes(x.id)).map((mm) => `implicit la „${e(mm.titlu)}”`)
-      .concat(c.module.filter((mm) => mm.alternative.includes(x.id)).map((mm) => `alternativă la „${e(mm.titlu)}”`));
-    return (m ? `<b>În agenda de azi, la „${e(m.titlu)}”.</b> ` : 'Nu e în agenda de azi. ') + unde.join(', ');
+  // Unde e folosit azi: rândul din agendă (pentru oră și titlul modulului), în ordinea agendei.
+  const azi = new Map();
+  c.agenda.forEach((r) => { if (r.fel === 'modul') r.exercitii.forEach((x) => { if (!azi.has(x.id)) azi.set(x.id, r); }); });
+  // La ce module se potrivește: câmpul „module” din exercițiu + implicite/alternative din module. Gol = oriunde.
+  const rolLa = (x, m) => (m.implicite.includes(x.id) ? 'implicit' : m.alternative.includes(x.id) ? 'alternativă' : x.module.includes(m.id) ? 'se potrivește' : null);
+  const moduleDe = (x) => c.module.filter((m) => rolLa(x, m));
+  const ordine = new Map(c.agenda.filter((r) => r.fel === 'modul').map((r, i) => [r.modul.id, i]));
+  const moduleChip = c.module.filter((m) => toate.some((x) => rolLa(x, m)))
+    .sort((a, b) => (ordine.get(a.id) ?? 99) - (ordine.get(b.id) ?? 99));
+  const N_ENERGIE = { calm: 1, mediu: 2, activ: 3 };
+
+  const rand = (x) => {
+    const r = azi.get(x.id), mod = moduleDe(x);
+    const cauta = normal([x.titlu, x.obiectiv, x.format, TIP_EX[x.tip] ?? x.tip, x.energie, ...x.materiale, ...mod.map((m) => m.titlu), ...x.segmente.map((s) => s.md)].join(' '));
+    const energie = `<span class="energie" data-n="${N_ENERGIE[x.energie] ?? 0}" title="${ENERGIE[x.energie] ?? e(x.energie)}"><i></i><i></i><i></i> ${e(x.energie)}</span>`;
+    const badgeAzi = r ? `<span class="azi">Azi · ${r.start == null ? '' : ora(r.start) + ' · '}${e(r.modul.titlu)}</span>` : '';
+    const unde = mod.length
+      ? `<ul class="unde">${mod.map((m) => `<li>${e(m.titlu)} <span class="sters">· ${rolLa(x, m)}${azi.get(x.id)?.modul === m ? ', ales azi' : ''}</span></li>`).join('')}</ul>`
+      : '<p>Oriunde în zi.</p>';
+    return `<details class="ex" id="ex-${e(x.id)}" data-format="${e(x.format)}" data-energie="${e(x.energie)}" data-durata="${x.durata}" data-folosit="${r ? 1 : 0}" data-module="${mod.map((m) => e(m.id)).join(' ')}" data-cauta="${e(cauta)}">
+<summary><span class="ex-rand"><span class="ex-durata"><b>${x.durata}</b> min</span>
+<span class="ex-cap"><span class="ex-titlu">${e(x.titlu)}</span><span class="ex-obiectiv">${e(x.obiectiv)}</span>${badgeAzi}</span>
+<span class="ex-meta"><span class="ex-format">${e(x.format)}</span>${energie}${x.tip !== 'exercitiu' ? `<span class="ex-tip">${TIP_EX[x.tip] ?? e(x.tip)}</span>` : ''}</span><span class="ex-semn" aria-hidden="true"></span></span></summary>
+<div class="ex-detalii">
+<p class="ex-obiectiv-tot">${e(x.obiectiv)}</p>
+<div class="ex-fise">
+<div><p class="eticheta">Se potrivește la</p>${unde}</div>
+<div><p class="eticheta">Materiale</p><p>${x.materiale.length ? x.materiale.map(e).join(', ') : '<span class="sters">nimic special</span>'}</p></div>
+<div><p class="eticheta">Detalii</p><p>${TIP_EX[x.tip] ?? e(x.tip)} · ${despreEx(x)}${x.in_curs ? '' : '<br><b>Nu apare în cursul online</b>'}</p></div>
+</div>
+${x.segmente.map((s) => piesa(s, LUME_EX[x.tip] ?? 'luminos', randeaza)).join('\n')}
+</div></details>`;
   };
-  const optiuni = (nume, valori) => `<label>${nume} <select data-filtru="${nume === 'Format' ? 'format' : 'energie'}"><option value="">toate</option>${valori.map((v) => `<option>${v}</option>`).join('')}</select></label>`;
-  const articole = toate.map((x) => `<article class="exercitiu" id="ex-${e(x.id)}" data-format="${e(x.format)}" data-energie="${e(x.energie)}" data-durata="${x.durata}" data-folosit="${folosit.has(x.id) ? 1 : 0}">
-<header><span class="eticheta">${TIP_EX[x.tip] ?? e(x.tip)} · ${despreEx(x)}${x.in_curs ? '' : ' · nu apare în cursul online'}</span>
-<h3>${e(x.titlu)}</h3><p>${e(x.obiectiv)}</p><p class="sters">${rol(x)}${x.materiale.length ? `<br>Materiale: ${x.materiale.map(e).join(', ')}` : ''}</p></header>
-${x.segmente.map((s) => piesa(s, LUME_EX[x.tip] ?? 'luminos', randeaza)).join('\n')}</article>`).join('\n');
-  return `<h2>Banca de exerciții</h2>
-<form class="filtre" onsubmit="return false">${optiuni('Format', FORMATE)} ${optiuni('Energie', ENERGII)}
-<label>Durata <select data-filtru="durata"><option value="">oricât</option><option value="10">până la 10 min</option><option value="15">până la 15 min</option><option value="20">până la 20 min</option><option value="30">până la 30 min</option></select></label>
-<label><input type="checkbox" data-filtru="folosit"> doar cele din agenda de azi</label> <span class="sters" id="banca-numar"></span></form>
-<p class="sters">Ca să schimbi un exercițiu: editează „agenda” din ediție și rulează din nou build-ul. Orele se recalculează singure.</p>
-${articole}`;
+  const deAzi = toate.filter((x) => azi.has(x.id)).sort((a, b) => c.agenda.indexOf(azi.get(a.id)) - c.agenda.indexOf(azi.get(b.id)));
+  const rest = toate.filter((x) => !azi.has(x.id)).sort((a, b) => a.durata - b.durata || a.titlu.localeCompare(b.titlu, 'ro'));
+  const grup = (titlu, lista) => (lista.length ? `<div class="banca-grup"><h3 class="eticheta">${titlu} <span class="banca-grup-nr">${lista.length}</span></h3>${lista.map(rand).join('\n')}</div>` : '');
+  const chip = (filtru, valoare, eticheta, extra = '') => `<button type="button" class="chip" data-filtru="${filtru}" data-valoare="${e(valoare)}" aria-pressed="false"${extra}>${eticheta}</button>`;
+  const rand_filtre = (eticheta, chipuri) => `<div class="filtre-rand" role="group" aria-label="${eticheta}"><span class="filtre-eticheta">${eticheta}</span><div class="chipuri">${chipuri}</div></div>`;
+
+  return `<div class="banca-cap"><h2>Banca de exerciții</h2><p class="sters banca-numar" id="banca-numar" role="status"></p></div>
+<div class="banca-filtre">
+<div class="cautare"><input type="search" id="banca-cauta" placeholder="Caută: titlu, obiectiv, materiale…" aria-label="Caută în bancă" autocomplete="off" enterkeyhint="search"><kbd aria-hidden="true">/</kbd></div>
+${rand_filtre('Format', FORMATE.map((v) => chip('format', v, e(v))).join(''))}
+${rand_filtre('Energie', ENERGII.map((v) => chip('energie', v, `<span class="energie" data-n="${N_ENERGIE[v]}"><i></i><i></i><i></i></span> ${e(v)}`)).join(''))}
+${rand_filtre('Durata', [10, 15, 20, 30].map((v) => chip('durata', v, `≤ ${v} min`)).join(''))}
+${moduleChip.length ? rand_filtre('Modulul', moduleChip.map((m) => chip('modul', m.id, e(m.titlu), ` title="${e(m.titlu)}"`)).join('')) : ''}
+<button type="button" class="sterge-filtre" id="banca-sterge" hidden>Șterge filtrele</button>
+</div>
+<div class="banca-lista">
+${grup('Azi în agendă', deAzi)}
+${grup(deAzi.length ? 'Restul băncii' : 'Toate exercițiile', rest)}
+<p class="banca-gol" id="banca-gol" hidden>Niciun exercițiu nu se potrivește. <button type="button" id="banca-gol-sterge">Șterge filtrele</button></p>
+</div>
+<p class="sters banca-nota">Ca să schimbi un exercițiu în agendă: editează „agenda” din ediție și rulează din nou build-ul. Orele se recalculează singure.</p>`;
 }
 
 export function construiesteTrainer(c) {
