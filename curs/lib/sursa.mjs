@@ -1,20 +1,28 @@
-// Citește folderul unui curs și verifică tot ce cere arhitectura (Radu, v1.1: 1.3–1.8).
-// Nu scrie nimic. Întoarce { curs, editie, module, exercitii, agenda, erori, avertismente }.
-// Agenda (ordinea zilei, exercițiile alese, pauzele) vine din ediție; restul codului lucrează doar cu `agenda`.
+// Citește folderul unui curs și verifică tot ce cere arhitectura (Radu, v1.2: 1.3–1.9, D-053).
+// Nu scrie nimic. Întoarce { curs, editie, module, piese, agenda, erori, avertismente }.
+// Piesa de workshop (piese/<id>.md) e unitatea de bază; modulul e o secvență cu titlu care propune piese.
+// Agenda (ordinea zilei: module, piese singure, pauze) vine din ediție; restul codului lucrează doar cu `agenda`.
 import { readFileSync, readdirSync, existsSync, statSync } from 'node:fs';
 import { join, normalize } from 'node:path';
 import { parse as parseYaml } from 'yaml';
 
 export const STRATURI = ['sala', 'sala-si-curs', 'trainer', 'participant'];
 export const TIPURI = ['teorie', 'exercitiu', 'reflectie', 'mesaj', 'pauza'];
-export const TIPURI_EX = ['exercitiu', 'reflectie', 'energizant'];
+// Piesele: tipul alege familia, iar familia alege lumea Ive a ecranelor (1.9). Pauza e o piesă din familia punte.
+export const FAMILIE = {
+  teorie: 'continut', model: 'continut', poveste: 'continut',
+  exercitiu: 'activitate', reflectie: 'activitate', energizant: 'activitate',
+  deschidere: 'punte', inchidere: 'punte', mesaj: 'punte', pauza: 'punte',
+};
+export const TIPURI_PIESA = Object.keys(FAMILIE);
+export const FAMILII = ['continut', 'activitate', 'punte'];
 export const FORMATE = ['individual', 'perechi', 'grup', 'plen'];
 export const ENERGII = ['calm', 'mediu', 'activ'];
 const BRANDURI = ['innersis', 'bemore-ls'];
 const LIMBI = ['ro', 'en'];
 const PUBLIC = ['nu', 'link', 'da'];
 const ID_OK = /^[a-z0-9]+(-[a-z0-9]+)*$/;
-const MARCAJ = '::exercitii';
+const MARCAJ = '::piese';
 
 export const cuvinte = (s) => String(s).replace(/[*_`#>\[\]()!]/g, ' ').split(/\s+/).filter(Boolean).length;
 
@@ -39,7 +47,7 @@ function citesteYaml(fisier, erori) {
 
 /**
  * Împarte corpul unui fișier în segmente pe straturi. Orice bloc greșit devine eroare.
- * Linia „::exercitii” (doar în module) devine segmentul { strat: 'exercitii' }: locul exercițiilor alese.
+ * Linia „::piese” (doar în module) devine segmentul { strat: 'piese' }: locul pieselor alese.
  */
 export function imparteInStraturi(corp, fisier, liniaStart, erori, { marcaj = true } = {}) {
   const segmente = [];
@@ -55,13 +63,13 @@ export function imparteInStraturi(corp, fisier, liniaStart, erori, { marcaj = tr
     if (t === MARCAJ) {
       if (!marcaj) { erori.push(`${fisier}:${nr}: „${MARCAJ}” se poate pune doar într-un modul`); return; }
       if (deschis) { erori.push(`${fisier}:${nr}: „${MARCAJ}” e în interiorul blocului „:::${deschis.strat}” (linia ${deschis.linia})`); return; }
-      if (++marcaje > 1) { erori.push(`${fisier}:${nr}: „${MARCAJ}” apare de două ori; exercițiile intră într-un singur loc`); return; }
+      if (++marcaje > 1) { erori.push(`${fisier}:${nr}: „${MARCAJ}” apare de două ori; piesele intră într-un singur loc`); return; }
       inchide();
-      segmente.push({ strat: 'exercitii', md: '', atribute: {}, linia: nr, fisier });
+      segmente.push({ strat: 'piese', md: '', atribute: {}, linia: nr, fisier });
       curent = { strat: 'text', linii: [], linia: nr + 1, atribute: {} };
       return;
     }
-    if (/^::[A-Za-z]/.test(t)) { erori.push(`${fisier}:${nr}: „${t}” nu e cunoscut. Se poate doar „${MARCAJ}”`); return; }
+    if (/^::[A-Za-z]/.test(t)) { erori.push(`${fisier}:${nr}: „${t}” nu e cunoscut. Se poate doar „${MARCAJ}”${t === '::exercitii' ? ' (v1.2: „::exercitii” a devenit „::piese”)' : ''}`); return; }
     if (!t.startsWith(':::')) { curent.linii.push(rand); return; }
     if (/^:::\s*$/.test(t)) {
       if (!deschis) { erori.push(`${fisier}:${nr}: „:::” închide un bloc care nu e deschis`); return; }
@@ -142,7 +150,8 @@ function citesteModule(folder, erori, avertismente) {
       if (iduri.has(a.id)) e(`id „${a.id}” mai e folosit de alt modul`);
       iduri.add(a.id);
     }
-    if (a.durata !== undefined && !(Number.isInteger(a.durata) && a.durata > 0)) e(`durata „${a.durata}” trebuie să fie un număr de minute`);
+    // Durata modulului = doar ce e scris în corpul lui; poate fi 0 când modulul e doar o listă de piese.
+    if (a.durata !== undefined && !(Number.isInteger(a.durata) && a.durata >= 0)) e(`durata „${a.durata}” trebuie să fie un număr de minute (0 dacă modulul are doar piese)`);
     if (a.tip !== undefined && !TIPURI.includes(a.tip)) e(`tip „${a.tip}” necunoscut (${TIPURI.join(' / ')})`);
     if (a.schita !== undefined) {
       if (!Array.isArray(a.schita)) e('„schita” trebuie să fie o listă de puncte');
@@ -153,9 +162,10 @@ function citesteModule(folder, erori, avertismente) {
     }
     if (a.ancora && cuvinte(a.ancora) > 3) avertismente.push(`${f}: ancora „${a.ancora}” are peste 3 cuvinte`);
     if (a.materiale !== undefined && !Array.isArray(a.materiale)) e('„materiale” trebuie să fie o listă');
-    const ex = a.exercitii ?? {};
-    if (typeof ex !== 'object' || Array.isArray(ex)) e('„exercitii” trebuie să aibă forma { implicite: [...], alternative: [...] }');
-    for (const k of Object.keys(typeof ex === 'object' && !Array.isArray(ex) ? ex : {})) if (!['implicite', 'alternative'].includes(k)) e(`„exercitii.${k}” necunoscut (se pot: implicite, alternative)`);
+    if (a.exercitii !== undefined) e(a.piese !== undefined ? 'are și „exercitii”, și „piese”; „exercitii” a rămas de la v1.1, șterge-l' : '„exercitii” a devenit „piese” (v1.2): redenumește câmpul');
+    const ex = a.piese ?? {};
+    if (typeof ex !== 'object' || Array.isArray(ex)) e('„piese” trebuie să aibă forma { implicite: [...], alternative: [...] }');
+    for (const k of Object.keys(typeof ex === 'object' && !Array.isArray(ex) ? ex : {})) if (!['implicite', 'alternative'].includes(k)) e(`„piese.${k}” necunoscut (se pot: implicite, alternative)`);
     verificaSegmente(folder, f, mod.segmente, a.durata, erori, avertismente);
     module.push({
       fisier: f, id: a.id, titlu: a.titlu, durata: a.durata, tip: a.tip, ancora: a.ancora ?? '',
@@ -167,82 +177,99 @@ function citesteModule(folder, erori, avertismente) {
   return module;
 }
 
-function citesteBanca(folder, erori, avertismente) {
-  const dir = join(folder, 'exercitii');
-  const exercitii = new Map();
-  if (!existsSync(dir)) return exercitii;
+function citestePiese(folder, erori, avertismente) {
+  const piese = new Map();
+  if (existsSync(join(folder, 'exercitii'))) erori.push(`exercitii/: v1.2 a redenumit folderul în piese/ (D-053). Mută fișierele în piese/`);
+  const dir = join(folder, 'piese');
+  if (!existsSync(dir)) return piese;
   const vazute = new Map();
   for (const f of readdirSync(dir).filter((x) => x.endsWith('.md')).sort()) {
     const id = f.replace(/\.md$/, '');
-    const nume = `exercitii/${f}`;
+    const nume = `piese/${f}`;
     const e = (msg) => erori.push(`${nume}: ${msg}`);
-    if (!ID_OK.test(id)) { e(`numele fișierului e id-ul exercițiului și poate avea doar litere mici, cifre și cratimă`); continue; }
-    const cheie = id.toLowerCase();
-    if (vazute.has(cheie)) { e(`id „${id}” mai e folosit de ${vazute.get(cheie)}`); continue; }
-    vazute.set(cheie, nume);
+    if (!ID_OK.test(id)) { e('numele fișierului e id-ul piesei și poate avea doar litere mici, cifre și cratimă'); continue; }
+    if (vazute.has(id)) { e(`id „${id}” mai e folosit de ${vazute.get(id)}`); continue; }
+    vazute.set(id, nume);
     const x = citesteFisier(join(dir, f), nume, erori, { marcaj: false });
     if (!x) continue;
     const a = x.antet;
-    for (const c of ['titlu', 'durata', 'format', 'tip', 'energie', 'obiectiv']) if (a[c] === undefined || a[c] === null || a[c] === '') e(`lipsește „${c}” din antet`);
+    const familie = FAMILIE[a.tip];
+    const obligatorii = ['titlu', 'durata', 'tip', ...(familie === 'activitate' ? ['format', 'energie', 'obiectiv'] : [])];
+    for (const c of obligatorii) if (a[c] === undefined || a[c] === null || a[c] === '') e(`lipsește „${c}” din antet${['format', 'energie', 'obiectiv'].includes(c) ? ' (obligatoriu la activități)' : ''}`);
     if (a.durata !== undefined && !(Number.isInteger(a.durata) && a.durata > 0)) e(`durata „${a.durata}” trebuie să fie un număr de minute`);
+    if (a.tip !== undefined && !familie) e(`tip „${a.tip}” necunoscut (${TIPURI_PIESA.join(' / ')})`);
     if (a.format !== undefined && !FORMATE.includes(a.format)) e(`format „${a.format}” necunoscut (${FORMATE.join(' / ')})`);
-    if (a.tip !== undefined && !TIPURI_EX.includes(a.tip)) e(`tip „${a.tip}” necunoscut (${TIPURI_EX.join(' / ')})`);
     if (a.energie !== undefined && !ENERGII.includes(a.energie)) e(`energie „${a.energie}” necunoscută (${ENERGII.join(' / ')})`);
+    if (a.tip === 'pauza' && (a.format !== undefined || a.energie !== undefined)) avertismente.push(`${nume}: o pauză nu are format sau energie; le ignor`);
     if (a.id !== undefined && String(a.id) !== id) e(`antetul spune id „${a.id}”, dar id-ul e numele fișierului („${id}”). Scoate „id” din antet`);
     if (a.materiale !== undefined && !Array.isArray(a.materiale)) e('„materiale” trebuie să fie o listă');
     if (a.module !== undefined && !Array.isArray(a.module)) e('„module” trebuie să fie o listă de id-uri');
+    if (a.ancora && cuvinte(a.ancora) > 3) avertismente.push(`${nume}: ancora „${a.ancora}” are peste 3 cuvinte`);
     const inCurs = a.in_curs === undefined ? 'da' : a.in_curs === true ? 'da' : a.in_curs === false ? 'nu' : String(a.in_curs);
     if (!['da', 'nu'].includes(inCurs)) e(`in_curs „${a.in_curs}” trebuie să fie da sau nu`);
     verificaSegmente(folder, nume, x.segmente, a.durata, erori, avertismente);
-    exercitii.set(id, {
-      id, fisier: nume, titlu: a.titlu, durata: a.durata, format: a.format, tip: a.tip, energie: a.energie, obiectiv: a.obiectiv ?? '',
+    const activitate = familie === 'activitate';
+    piese.set(id, {
+      id, fisier: nume, titlu: a.titlu, durata: a.durata, tip: a.tip, familie: familie ?? null,
+      format: activitate ? a.format : null, energie: activitate ? a.energie : null, obiectiv: a.obiectiv ?? '', ancora: a.ancora ?? '',
       module: Array.isArray(a.module) ? a.module.map(String) : [], materiale: Array.isArray(a.materiale) ? a.materiale : [],
-      in_curs: inCurs === 'da', segmente: x.segmente,
+      in_curs: inCurs === 'da' && a.tip !== 'pauza', segmente: x.segmente,
     });
   }
-  return exercitii;
+  return piese;
 }
 
-/** Agenda ediției → listă de rânduri { fel: 'modul', modul, exercitii } | { fel: 'pauza', titlu, durata }. */
-function citesteAgenda(editie, module, exercitii, erori) {
+/** Agenda ediției → rânduri { fel: 'modul', modul, piese } | { fel: 'piesa', piesa } | { fel: 'pauza', titlu, durata }. */
+function citesteAgenda(editie, module, piese, erori) {
   const dupaId = new Map(module.map((m) => [m.id, m]));
   const loc = `ediția ${editie.fisier ?? ''}`.trim();
-  const alege = (m, ids, unde) => ids.map((id) => {
-    const ex = exercitii.get(String(id));
-    if (!ex) erori.push(`${unde}: exercițiul „${id}” nu există în exercitii/`);
-    return ex;
+  const alege = (ids, unde) => ids.map((id) => {
+    const p = piese.get(String(id));
+    if (!p) erori.push(`${unde}: piesa „${id}” nu există în piese/`);
+    return p;
   }).filter(Boolean);
   if (editie.agenda === undefined || editie.agenda === null) {
-    return module.map((m) => ({ fel: 'modul', modul: m, exercitii: alege(m, m.implicite, m.fisier) }));
+    return module.map((m) => ({ fel: 'modul', modul: m, piese: alege(m.implicite, `${m.fisier} (implicite)`) }));
   }
   if (!Array.isArray(editie.agenda)) { erori.push(`${loc}: „agenda” trebuie să fie o listă`); return []; }
   const folosite = new Set();
   const randuri = [];
+  const comun = (id, unde) => { if (String(id).startsWith('comun/')) { erori.push(`${unde}: „${id}” trimite la biblioteca comună, care nu există încă (vine după 25). Pune piesa în piese/ a cursului`); return true; } return false; };
   editie.agenda.forEach((r, i) => {
     const unde = `${loc}, agenda, rândul ${i + 1}`;
-    let id, ids;
-    if (typeof r === 'string') id = r;
-    else if (r && typeof r === 'object' && !Array.isArray(r) && 'pauza' in r && !('modul' in r)) {
+    const obiect = r && typeof r === 'object' && !Array.isArray(r);
+    if (obiect && 'pauza' in r && !('modul' in r)) {
       const necunoscute = Object.keys(r).filter((k) => !['pauza', 'titlu'].includes(k));
       if (necunoscute.length) erori.push(`${unde}: câmp necunoscut la pauză („${necunoscute.join('”, „')}”)`);
       if (!(Number.isInteger(r.pauza) && r.pauza > 0)) { erori.push(`${unde}: „pauza” trebuie să fie un număr de minute`); return; }
       randuri.push({ fel: 'pauza', titlu: r.titlu ? String(r.titlu) : 'Pauză', durata: r.pauza });
       return;
-    } else if (r && typeof r === 'object' && !Array.isArray(r) && 'modul' in r && !('pauza' in r)) {
+    }
+    let id, ids;
+    if (typeof r === 'string') id = r;
+    else if (obiect && 'modul' in r && !('pauza' in r)) {
       id = r.modul;
-      const necunoscute = Object.keys(r).filter((k) => !['modul', 'exercitii'].includes(k));
+      if ('exercitii' in r) erori.push(`${unde}: „exercitii” a devenit „piese” (v1.2)`);
+      const necunoscute = Object.keys(r).filter((k) => !['modul', 'piese', 'exercitii'].includes(k));
       if (necunoscute.length) erori.push(`${unde}: câmp necunoscut („${necunoscute.join('”, „')}”)`);
-      if ('exercitii' in r) {
-        if (r.exercitii !== null && !Array.isArray(r.exercitii)) { erori.push(`${unde}: „exercitii” trebuie să fie o listă (sau [] pentru niciunul)`); return; }
-        ids = (r.exercitii ?? []).map(String);
+      if ('piese' in r) {
+        if (r.piese !== null && !Array.isArray(r.piese)) { erori.push(`${unde}: „piese” trebuie să fie o listă (sau [] pentru niciuna)`); return; }
+        ids = (r.piese ?? []).map(String);
       }
-    } else { erori.push(`${unde}: un rând din agendă e fie un id de modul, fie „modul: …”, fie „pauza: <minute>”`); return; }
+    } else { erori.push(`${unde}: un rând din agendă e un id (modul sau piesă), „modul: …” sau „pauza: <minute>”`); return; }
+    if (comun(id, unde)) return;
     const m = dupaId.get(String(id));
-    if (!m) { erori.push(`${unde}: modulul „${id}” nu există`); return; }
+    if (!m) {
+      // Un id simplu poate fi și o piesă singură (id-urile sunt unice în tot cursul).
+      const p = typeof r === 'string' ? piese.get(String(id)) : null;
+      if (p) { randuri.push({ fel: 'piesa', piesa: p }); return; }
+      erori.push(`${unde}: „${id}” nu e nici modul, nici piesă`); return;
+    }
     if (folosite.has(m.id)) { erori.push(`${unde}: modulul „${m.id}” apare de două ori în agendă`); return; }
     folosite.add(m.id);
-    if (ids && new Set(ids).size !== ids.length) erori.push(`${unde}: un exercițiu apare de două ori la modulul „${m.id}”`);
-    randuri.push({ fel: 'modul', modul: m, exercitii: alege(m, ids ?? m.implicite, ids ? unde : `${m.fisier} (implicite)`) });
+    if (ids) { ids.filter((x) => comun(x, unde)); ids = ids.filter((x) => !String(x).startsWith('comun/')); }
+    if (ids && new Set(ids).size !== ids.length) erori.push(`${unde}: o piesă apare de două ori la modulul „${m.id}”`);
+    randuri.push({ fel: 'modul', modul: m, piese: alege(ids ?? m.implicite, ids ? unde : `${m.fisier} (implicite)`) });
   });
   return randuri;
 }
@@ -277,29 +304,35 @@ export function citesteCurs(folder, { editie: numeEditie } = {}) {
   if (editie.ora_start != null && oraStart == null) erori.push(`ediția ${aleasa}: ora_start „${editie.ora_start}” nu e o oră (9:00)`);
 
   const module = citesteModule(folder, erori, avertismente);
-  const exercitii = citesteBanca(folder, erori, avertismente);
+  const piese = citestePiese(folder, erori, avertismente);
   const iduriModule = new Set(module.map((m) => m.id));
 
-  // Legăturile din bancă: modulele propun exerciții care trebuie să existe; un exercițiu nu e și implicit, și alternativă.
+  // Id-urile sunt unice în tot cursul: un id simplu din agendă e fie modul, fie piesă.
+  for (const m of module) if (piese.has(m.id)) erori.push(`${m.fisier}: id „${m.id}” e folosit și de piesa piese/${m.id}.md; id-urile sunt unice în tot cursul`);
+  // Legăturile: modulele propun piese care trebuie să existe; o piesă nu e și implicită, și alternativă.
   for (const m of module) {
-    for (const id of [...m.implicite, ...m.alternative]) if (!exercitii.has(id)) erori.push(`${m.fisier}: exercițiul „${id}” (din exercitii) nu există în exercitii/`);
-    for (const id of m.implicite) if (m.alternative.includes(id)) erori.push(`${m.fisier}: exercițiul „${id}” e și în implicite, și în alternative`);
+    for (const id of [...m.implicite, ...m.alternative]) if (!piese.has(id)) erori.push(`${m.fisier}: piesa „${id}” (din piese) nu există în piese/`);
+    for (const id of m.implicite) if (m.alternative.includes(id)) erori.push(`${m.fisier}: piesa „${id}” e și în implicite, și în alternative`);
   }
-  for (const x of exercitii.values()) for (const id of x.module) if (!iduriModule.has(id)) erori.push(`${x.fisier}: modulul „${id}” (din module) nu există`);
+  for (const x of piese.values()) for (const id of x.module) if (!iduriModule.has(id)) erori.push(`${x.fisier}: modulul „${id}” (din module) nu există`);
 
-  // Agenda și orele: ora_start + duratele, în ordinea din agendă. Un modul durează cât el plus exercițiile alese.
-  const agenda = citesteAgenda(editie, module, exercitii, erori);
+  // Agenda și orele: ora_start + duratele, în ordinea din agendă. Un modul durează cât el plus piesele alese.
+  const agenda = citesteAgenda(editie, module, piese, erori);
+  const nr = (x) => (Number.isInteger(x) ? x : 0);
   let t = oraStart ?? 0;
   for (const r of agenda) {
     if (r.fel === 'modul') {
-      for (const x of r.exercitii) if (x.module.length && !x.module.includes(r.modul.id)) avertismente.push(`${x.fisier}: e ales la modulul „${r.modul.id}”, care nu e în lista lui „module”`);
-      r.durata = (Number.isInteger(r.modul.durata) ? r.modul.durata : 0) + r.exercitii.reduce((s, x) => s + (Number.isInteger(x.durata) ? x.durata : 0), 0);
-    }
+      for (const x of r.piese) if (x.module.length && !x.module.includes(r.modul.id)) avertismente.push(`${x.fisier}: e aleasă la modulul „${r.modul.id}”, care nu e în lista ei „module”`);
+      r.durataModul = nr(r.modul.durata);
+      r.durataPiese = r.piese.reduce((s, x) => s + nr(x.durata), 0);
+      r.durata = r.durataModul + r.durataPiese;
+    } else if (r.fel === 'piesa') r.durata = nr(r.piesa.durata);
     r.start = t; r.sfarsit = t + r.durata; t = r.sfarsit;
   }
+  const ePauza = (r) => r && (r.fel === 'pauza' || (r.fel === 'piesa' && r.piesa.tip === 'pauza') || (r.fel === 'modul' && r.modul.tip === 'pauza'));
   agenda.forEach((r, i) => {
     const urm = agenda[i + 1];
-    if (r.fel === 'modul' && r.durata > 90 && urm && urm.fel !== 'pauza' && r.modul.tip !== 'pauza') avertismente.push(`agenda: „${r.modul.id}” ține ${r.durata} min și nu are o pauză după`);
+    if (r.fel === 'modul' && r.durata > 90 && urm && !ePauza(urm) && !ePauza(r)) avertismente.push(`agenda: „${r.modul.id}” ține ${r.durata} min și nu are o pauză după`);
   });
   if (ziStart != null && ziSfarsit != null && oraStart != null && t > ziSfarsit) {
     erori.push(`agenda nu încape în ziua cursului: începe la ${ora(oraStart)}, se termină la ${ora(t)}, iar ziua (durata_zi) se termină la ${ora(ziSfarsit)}. Scurtează, scoate un modul din agendă sau alege un exercițiu mai scurt`);
@@ -308,26 +341,31 @@ export function citesteCurs(folder, { editie: numeEditie } = {}) {
   const inAgenda = new Set(agenda.filter((r) => r.fel === 'modul').map((r) => r.modul.id));
   for (const m of module) m.inAgenda = inAgenda.has(m.id);
 
-  return { folder, curs: { ...curs, zi_start: ziStart, zi_sfarsit: ziSfarsit }, editie: { ...editie, start: oraStart }, module, exercitii, agenda, erori, avertismente };
+  // Totalurile zilei (D-053): suma agendei și cât rămâne până la sfârșitul zilei (negativ = depășire, care oprește build-ul).
+  const total = { agenda: t - (oraStart ?? 0), zi: ziStart != null && ziSfarsit != null ? ziSfarsit - ziStart : null, ramas: ziSfarsit != null ? ziSfarsit - t : null, sfarsit: t };
+  return { folder, curs: { ...curs, zi_start: ziStart, zi_sfarsit: ziSfarsit }, editie: { ...editie, start: oraStart }, module, piese, agenda, total, erori, avertismente };
 }
 
 /**
- * Conținutul unui rând de agendă, în ordine: segmentele modulului, cu exercițiile alese puse în locul lui „::exercitii”
- * (sau la final, dacă linia lipsește). Fiecare exercițiu e încadrat de { strat: 'exercitiu-inceput' / 'exercitiu-sfarsit', exercitiu }.
+ * Conținutul unui rând de agendă, în ordine. Pentru un modul: segmentele lui, cu piesele alese puse în locul lui „::piese”
+ * (sau la final, dacă linia lipsește). Pentru o piesă singură: doar piesa. Fiecare piesă e încadrată de
+ * { strat: 'piesa-inceput' / 'piesa-sfarsit', piesa }, iar segmentele ei au câmpul `piesa`.
  */
 export function desfasoara(r) {
-  const piese = [];
-  const puneExercitii = () => {
-    for (const x of r.exercitii) {
-      piese.push({ strat: 'exercitiu-inceput', exercitiu: x });
-      for (const s of x.segmente) piese.push({ ...s, exercitiu: x });
-      piese.push({ strat: 'exercitiu-sfarsit', exercitiu: x });
+  const out = [];
+  const pune = (lista) => {
+    for (const x of lista) {
+      out.push({ strat: 'piesa-inceput', piesa: x });
+      for (const s of x.segmente) out.push({ ...s, piesa: x });
+      out.push({ strat: 'piesa-sfarsit', piesa: x });
     }
   };
+  if (r.fel === 'piesa') { pune([r.piesa]); return out; }
+  if (r.fel !== 'modul') return out;
   let pus = false;
   for (const s of r.modul.segmente) {
-    if (s.strat === 'exercitii') { puneExercitii(); pus = true; } else piese.push(s);
+    if (s.strat === 'piese') { pune(r.piese); pus = true; } else out.push(s);
   }
-  if (!pus) puneExercitii();
-  return piese;
+  if (!pus) pune(r.piese);
+  return out;
 }

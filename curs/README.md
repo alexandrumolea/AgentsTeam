@@ -1,12 +1,12 @@
 # Generatorul de curs
 
-O sursă, trei ieșiri (Radu, `team/radu/documente/arhitectura-curs-change-agility-v0.md`, v1.1; D-048–D-051, I-021).
-Folderul unui curs (un fișier `.md` pe modul, banca de exerciții în `exercitii/`, agenda în ediție) devine:
+O sursă, trei ieșiri (Radu, `team/radu/documente/arhitectura-curs-change-agility-v0.md`, v1.2; D-048–D-051, D-053).
+Folderul unui curs (un fișier `.md` pe modul, piesele de workshop în `piese/`, agenda în ediție) devine:
 
 | Ieșirea | Fișierul | Pentru cine |
 |---|---|---|
-| Cursul participanților | `<slug>-participanti.json` | site-ul, mai târziu, prin PR aprobat de Alex. Se face **dintr-o ediție**: modulele din agendă, în ordinea ei, cu exercițiile folosite care au `in_curs: da`. Fără `:::trainer`, `:::sala`, schiță, banca nefolosită |
-| Materialul trainerului | `<slug>-trainer.html` | Alex. Un singur fișier, merge fără internet: vederile Ziua, Modulul, Schița, **Banca** (toate exercițiile, cu filtre) și **Prezintă** |
+| Cursul participanților | `<slug>-participanti.json` | site-ul, mai târziu, prin PR aprobat de Alex. Se face **dintr-o ediție**: modulele și piesele singure din agendă, în ordinea ei, doar cu piesele folosite care au `in_curs: da`. Fără `:::trainer`, `:::sala`, schiță, pauze, biblioteca nefolosită |
+| Materialul trainerului | `<slug>-trainer.html` | Alex. Un singur fișier, merge fără internet: vederile Ziua, Modulul, Schița, **Biblioteca de piese** (toate piesele, cu căutare și filtre) și **Prezintă**. Ziua și Schița arată totalul zilei și cât rămâne din `durata_zi` |
 | PDF-uri (cu `--pdf`) | `<slug>-trainer.pdf`, `<slug>-ecrane.pdf` | plasa de siguranță: hârtie și ecranele din sală, câte unul pe pagină |
 
 ## Cum rulezi
@@ -59,16 +59,18 @@ Doar în cursul online.
 
 Primul ecran al fiecărui modul (numărul și titlul) se face singur. O pauză primește automat un cronometru cât durata ei.
 
-### Banca de exerciții și agenda (v1.1, 1.7–1.8 la Radu)
+### Piesele și agenda (v1.2, 1.7–1.9 la Radu, D-053)
 
-- **Un exercițiu** = `exercitii/<id>.md` (id-ul e numele fișierului). Antet: `titlu`, `durata`, `format` (individual · perechi · grup · plen), `tip` (exercitiu · reflectie · energizant), `energie` (calm · mediu · activ), `obiectiv`; opțional `module`, `materiale`, `in_curs` (da/nu). Corpul are aceleași straturi ca un modul.
-- **Modulul propune:** `exercitii: { implicite: [...], alternative: [...] }`. Linia `::exercitii` arată unde intră exercițiile alese (fără ea, la final). `durata` modulului nu include exercițiile.
-- **Ediția decide:** `agenda` e lista zilei: `- curba` (cu implicitele), `- modul: curba` + `exercitii: [plimbare-curba]` (`[]` = fără), `- pauza: 15` (+ `titlu: "Prânz"`). Un modul care lipsește din agendă nu se face. Fără `agenda`: toate modulele, cu implicitele. Orele se recalculează la fiecare build.
-- **Schimbi un exercițiu:** editezi agenda din ediție și rulezi build-ul (o secundă). În sală nu există încă un meniu „schimbă exercițiul”: alegerea live vine după 23, împreună cu drag and drop.
+- **O piesă** = `piese/<id>.md` (id-ul e numele fișierului, unic în tot cursul, și printre module). Antet: `titlu`, `durata` (obligatorie, la orice piesă), `tip`; opțional `ancora`, `module`, `materiale`, `in_curs` (da/nu). Corpul are aceleași straturi ca un modul.
+- **Tipul alege familia și culoarea ecranelor:** conținut (`teorie`, `model`, `poveste`: întunecat), activitate (`exercitiu`, `reflectie`, `energizant`: luminos), punte (`deschidere`, `inchidere`, `mesaj`: accent; `pauza`: ecran cu cronometru). **Activitățile** cer și `format` (individual · perechi · grup · plen), `energie` (calm · mediu · activ) și `obiectiv`.
+- **Modulul propune:** `piese: { implicite: [...], alternative: [...] }`. Linia `::piese` arată unde intră piesele alese (fără ea, la final). `durata` modulului = doar corpul lui (poate fi 0).
+- **Ediția decide:** `agenda` e lista zilei: `- curba` (modul cu implicitele), `- modul: curba` + `piese: [model-curba, plimbare-curba]` (`[]` = fără), `- ridica-te-daca` (piesă singură), `- pauza-cafea` (piesă de tip pauză), `- pauza: 10` (scurtătură, cu `titlu` opțional). Fără `agenda`: toate modulele, cu implicitele. `comun/<id>` e rezervat pentru biblioteca comună de după 25.
+- **Totalurile:** fiecare modul arată „modul + piese” (de exemplu 45 min = 10 + 20 + 15); ziua arată totalul agendei, cât rămâne până la sfârșitul din `durata_zi` și ora de final. În Bibliotecă, piesele de azi arată cât din zi ocupă.
+- **Schimbi o piesă:** editezi agenda din ediție și rulezi build-ul (o secundă). Alegerea live în sală și drag and drop vin după 23.
 
 ## Ce oprește build-ul (nu scrie nimic)
 
-Agenda: modul sau exercițiu inexistent, modul de două ori, rând care nu e nici modul, nici pauză, pauză care nu e număr, agenda nu încape în `durata_zi`, `sari_peste` (vechi). Banca: id-uri inexistente în `implicite`/`alternative`/`module`, același exercițiu și implicit, și alternativă, câmpuri lipsă sau valori din afara listei, `::exercitii` greșit scris, de două ori sau într-un exercițiu. Apoi, ca în v1: bloc neînchis, bloc în bloc, bloc necunoscut (`:::traner`), atribut necunoscut; text din `:::trainer`, `:::sala` sau `nota_trainer` găsit în exportul pentru participanți (verificat pe rezultat, fragmente de minimum 4 cuvinte); un nume din `nume_interzise` în export (fără diacritice și majuscule); schiță cu peste 3 puncte sau un punct cu peste 8 cuvinte; module care nu încap în `durata_zi`; `cronometru` mai lung decât modulul; imagine de pe internet sau care nu e în `materiale/`; câmpuri lipsă, `id` dublat, `sari_peste` cu un id greșit. **Avertisment:** ecran din sală cu peste 30 de cuvinte, ancoră cu peste 3 cuvinte, exercițiu ales la un modul care nu e în `module` lui, modul de peste 90 de minute fără pauză după. Verificarea notelor trainerului se face pe toată banca, nu doar pe ce e în agendă.
+Agenda: id inexistent (nici modul, nici piesă), modul de două ori, rând care nu e modul, piesă sau pauză, pauză care nu e număr, agenda nu încape în `durata_zi`, `comun/…` (încă nu există), `sari_peste` și `exercitii` (vechi). Piese: `durata` lipsă (la orice piesă și la module), tip din afara listei, activitate fără `format`/`energie`/`obiectiv`, id folosit și de un modul, și de o piesă, id-uri inexistente în `implicite`/`alternative`/`module`, aceeași piesă și implicită, și alternativă, folderul vechi `exercitii/`, modul cu și `exercitii`, și `piese`, `::piese` greșit scris, de două ori sau într-o piesă. Apoi, ca în v1: bloc neînchis, bloc în bloc, bloc necunoscut (`:::traner`), atribut necunoscut; text din `:::trainer`, `:::sala` sau `nota_trainer` găsit în exportul pentru participanți (verificat pe rezultat, fragmente de minimum 4 cuvinte); un nume din `nume_interzise` în export (fără diacritice și majuscule); schiță cu peste 3 puncte sau un punct cu peste 8 cuvinte; module care nu încap în `durata_zi`; `cronometru` mai lung decât modulul; imagine de pe internet sau care nu e în `materiale/`; câmpuri lipsă, `id` dublat, `sari_peste` cu un id greșit. **Avertisment:** ecran din sală cu peste 30 de cuvinte, ancoră cu peste 3 cuvinte, piesă aleasă la un modul care nu e în `module` ei, modul de peste 90 de minute fără pauză după. Verificarea notelor trainerului se face pe toată biblioteca, nu doar pe ce e în agendă; titlurile modulelor și ale pieselor pot apărea în note (sunt publice).
 
 ## Modul Prezintă: cum merge
 
@@ -87,7 +89,7 @@ Culorile și litera stau doar în `tema/sobru.css` (tokeni). Pentru tema Ive a u
 | Fișier | Ce face |
 |---|---|
 | `build.mjs` | linia de comandă: citește, verifică, scrie, face PDF-urile |
-| `lib/sursa.mjs` | citește `curs.yml`, ediția, modulele și banca; agenda și orele; verificările pe sursă; `desfasoara()` pune exercițiile în modul |
+| `lib/sursa.mjs` | citește `curs.yml`, ediția, modulele și piesele; agenda, orele și totalurile; verificările pe sursă; `desfasoara()` pune piesele în modul |
 | `lib/export.mjs` | cursul participanților și verificarea pe rezultat |
 | `lib/trainer.mjs` | materialul trainerului (HTML), ecranele din sală |
 | `lib/prezinta.js` | partea care rulează în browser (vederi, Prezintă, cronometru, tipar) |

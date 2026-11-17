@@ -240,16 +240,19 @@
     if (v === 'prezinta') randeaza();
     marcheazaAcum();
   }
-  // Banca: căutare + filtre-chip. În același grup chipurile se adună (perechi SAU grup); între grupuri se cer toate.
+  // Biblioteca de piese: căutare + filtre-chip. În același grup chipurile se adună (perechi SAU grup); între grupuri se cer toate.
   // Durata e un prag: un singur chip apăsat odată.
   function normal(s) { return String(s).normalize('NFD').replace(/[̀-ͯ]/g, '').toLowerCase().replace(/[^a-z0-9]+/g, ' ').trim(); }
   function filtreaza() {
-    var f = { format: [], energie: [], durata: [], modul: [] }, l = document.querySelectorAll('.chip[aria-pressed="true"]');
+    var f = { familie: [], tip: [], format: [], energie: [], durata: [], modul: [] }, l = document.querySelectorAll('.chip[aria-pressed="true"]');
     for (var k = 0; k < l.length; k++) f[l[k].getAttribute('data-filtru')].push(l[k].getAttribute('data-valoare'));
     var c = $('banca-cauta'), q = c ? normal(c.value) : '', cuvinte = q ? q.split(' ') : [];
     var ex = document.querySelectorAll('details.ex'), n = 0;
     for (var j = 0; j < ex.length; j++) {
+      // Familia și tipul stau pe același rând de chip-uri, deci se adună între ele (conținut SAU energizant).
+      // Format și energie există doar la activități: când sunt cerute, celelalte piese ies din listă.
       var a = ex[j], mod = a.getAttribute('data-module'), text = a.getAttribute('data-cauta'), ok =
+        ((!f.familie.length && !f.tip.length) || f.familie.indexOf(a.getAttribute('data-familie')) >= 0 || f.tip.indexOf(a.getAttribute('data-tip')) >= 0) &&
         (!f.format.length || f.format.indexOf(a.getAttribute('data-format')) >= 0) &&
         (!f.energie.length || f.energie.indexOf(a.getAttribute('data-energie')) >= 0) &&
         (!f.durata.length || +a.getAttribute('data-durata') <= +f.durata[0]) &&
@@ -260,7 +263,7 @@
     var g = document.querySelectorAll('.banca-grup');
     for (var gi = 0; gi < g.length; gi++) { var v = g[gi].querySelectorAll('details.ex:not([hidden])').length; g[gi].hidden = !v; g[gi].querySelector('.banca-grup-nr').textContent = v; }
     var activ = !!(l.length || q);
-    var nr = $('banca-numar'); if (nr) nr.textContent = activ ? n + ' din ' + ex.length + ' exerciții' : ex.length + (ex.length === 1 ? ' exercițiu' : ' exerciții');
+    var nr = $('banca-numar'); if (nr) nr.textContent = activ ? n + ' din ' + ex.length + ' piese' : ex.length + (ex.length === 1 ? ' piesă' : ' piese');
     if ($('banca-gol')) $('banca-gol').hidden = n > 0;
     if ($('banca-sterge')) $('banca-sterge').hidden = !activ;
   }

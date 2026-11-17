@@ -26,7 +26,7 @@ Păstrează sub 150 de rânduri. Comprimă când crește. Fapte, nu povești.
 ## Fișiere de memorie
 - [Stack și găzduire](project_stack-hosting.md) — GitHub Pages (D-036–D-038), CNAME ignorat la Actions; fapte Netlify/Cloudflare/Vercel
 - [Generatorul paginii echipei](generator-echipa.md) — Mike îl deține; puncte fragile tăcute; 2026-11-17: panoul de control, maparea statusurilor
-- [Generatorul de curs](project_generator-curs.md) — 2026-11-17: curs/, Prezintă prin #sala + postMessage din file://; Safari la Alex; I-021 în așteptare
+- [Generatorul de curs](project_generator-curs.md) — 2026-11-17: curs/ v1.2 (piese, agenda, totaluri); Prezintă prin #sala + postMessage; Safari la Alex
 - [Tema: culorile dintr-un loc](project_tema-culori.md) — 2026-11-17: content/tema.yml → CSS, scenă, OG; nume de la Ioana; cum verific „identic”
 
 ## Deschis

@@ -37,8 +37,9 @@ export function build(folder, { editie, out, pdf = false, log = console.log } = 
   const fisiere = [fJson, fHtml];
   if (pdf) fisiere.push(...pdfuri(fHtml, dir, slug, log));
   const ecrane = (html.match(/"lume":/g) || []).length;
-  const inAgenda = c.agenda.filter((r) => r.fel === 'modul').length;
-  log(`\nGata: ${c.curs.titlu}${c.editie.data ? `, ediția ${c.editie.data}` : ''}. Agenda: ${inAgenda} module (din ${c.module.length}), ${c.agenda.length - inAgenda} pauze; ${c.exercitii.size} exerciții în bancă; ${ecrane} ecrane în sală; tema ${caleTema(c.curs.brand).split('/').pop()}.`);
+  const n = (fel) => c.agenda.filter((r) => r.fel === fel).length;
+  const t = c.total, ramas = t.ramas == null ? '' : t.ramas >= 0 ? `, rămân ${t.ramas} min` : `, depășire ${-t.ramas} min`;
+  log(`\nGata: ${c.curs.titlu}${c.editie.data ? `, ediția ${c.editie.data}` : ''}. Agenda: ${n('modul')} module (din ${c.module.length}), ${n('piesa')} piese singure, ${n('pauza')} pauze; total ${t.agenda} min${ramas}. ${c.piese.size} piese în bibliotecă; ${ecrane} ecrane în sală; tema ${caleTema(c.curs.brand).split('/').pop()}.`);
   for (const f of fisiere) log(`  ${f}`);
   return { ok: true, fisiere, export: exp, avertismente: c.avertismente };
 }

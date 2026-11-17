@@ -210,3 +210,18 @@ details.ex[open] .ex-obiectiv { display: none; }
   details.ex, details.ex[hidden] { display: block; break-inside: avoid-page; }
   .ex-semn { display: none; }
 }
+
+/* v1.2 (D-053): piese, totaluri */
+.total-zi { margin: 0 0 1rem; padding: .55rem .9rem; border-radius: 6px; border: 1px solid var(--t-linie); background: var(--t-suprafata); }
+.total-zi.ramas { border-left: 4px solid var(--t-accent); }
+.total-zi.plin { border-left: 4px solid var(--t-nota-linie); }
+.total-zi.depasire { border-left: 4px solid var(--cronometru-gata); color: var(--cronometru-gata); }
+.ziua tfoot td { border-top: 2px solid var(--t-text); border-bottom: 0; font-variant-numeric: tabular-nums; }
+.ziua .calcul { display: block; font-size: .78rem; color: var(--t-sters); font-variant-numeric: tabular-nums; }
+.ziua td a[data-banca] { color: inherit; }
+.banca-grup-timp { font-weight: 400; text-transform: none; letter-spacing: 0; }
+.schita li.piesa-singura .ancora { font-size: 1.25rem; }
+.chip-sep { display: inline-block; width: 1px; align-self: stretch; background: var(--t-linie); margin: 0 .25rem; }
+.filtre-nota { margin: 0; font-size: .8rem; }
+.ex-tip-continut { border-color: var(--lume-intunecat-fundal); }
+.ex-tip-punte { border-color: var(--t-accent); }

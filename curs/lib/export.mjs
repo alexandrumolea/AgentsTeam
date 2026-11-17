@@ -9,25 +9,28 @@ const CLASA = { 'sala-si-curs': 'curs-cheie', participant: 'curs-tu' };
 export function construiesteExport(c) {
   const randeaza = creeazaRandare();
   const imagini = new Set();
-  // Din ediție: doar modulele din agendă, în ordinea ei, cu exercițiile folosite care au in_curs: da.
+  // Din ediție: modulele și piesele singure din agendă, în ordinea ei, doar cu piesele folosite care au in_curs: da.
+  // O pauză nu e o pagină de citit.
   const module = c.agenda
-    .filter((r) => r.fel === 'modul' && r.modul.tip !== 'pauza') // o pauză nu e o pagină de citit
+    .filter((r) => (r.fel === 'modul' && r.modul.tip !== 'pauza') || (r.fel === 'piesa' && r.piesa.in_curs))
     .map((r) => {
       let html = '';
       for (const s of desfasoara(r)) {
-        if (s.exercitiu && !s.exercitiu.in_curs) continue;
-        if (s.strat === 'exercitiu-inceput') { html += `<section class="curs-exercitiu">\n<h3>${escapeHtml(s.exercitiu.titlu)}</h3>\n`; continue; }
-        if (s.strat === 'exercitiu-sfarsit') { html += '</section>\n'; continue; }
+        if (s.piesa && !s.piesa.in_curs) continue;
+        if (r.fel === 'piesa' && (s.strat === 'piesa-inceput' || s.strat === 'piesa-sfarsit')) continue; // titlul paginii e chiar piesa
+        if (s.strat === 'piesa-inceput') { html += `<section class="curs-piesa">\n<h3>${escapeHtml(s.piesa.titlu)}</h3>\n`; continue; }
+        if (s.strat === 'piesa-sfarsit') { html += '</section>\n'; continue; }
         if (!IN_CURS.has(s.strat)) continue;
         imaginiDin(s.md).forEach((i) => imagini.add(i));
         const h = randeaza(s.md);
         html += CLASA[s.strat] ? `<div class="${CLASA[s.strat]}">\n${h}</div>\n` : h;
       }
-      return { id: r.modul.id, titlu: r.modul.titlu, tip: r.modul.tip, durata: r.durata, html };
+      const sursa = r.fel === 'modul' ? r.modul : r.piesa;
+      return { id: sursa.id, titlu: sursa.titlu, tip: sursa.tip, durata: r.durata, html };
     });
   const x = c.curs;
   return {
-    format: 'curs-participanti/2',
+    format: 'curs-participanti/3',
     sursa: 'generat de curs/build.mjs; nu edita de mână',
     curs: { slug: x.slug, titlu: x.titlu, promisiune: x.promisiune, limba: x.limba, brand: x.brand, public: String(x.public) },
     module,
@@ -39,14 +42,16 @@ export function construiesteExport(c) {
 function fragmenteInterzise(c) {
   const randeaza = creeazaRandare({ randuriNoi: true });
   const out = [];
+  // Titlurile modulelor și ale pieselor sunt publice: o notă de trainer care le pomenește („treci la «Curba de pe podea»”) nu e o scurgere.
+  const titluri = new Set([...c.module, ...c.piese.values()].map((x) => normal(x.titlu ?? '')));
   const adauga = (sursa, html) => {
     for (const bucata of text(html).split(/[\n.!?;:„”"«»]+/)) {
       const n = normal(bucata);
-      if (n.split(' ').length >= 4) out.push({ sursa, n, original: bucata.trim() });
+      if (n.split(' ').length >= 4 && !titluri.has(n)) out.push({ sursa, n, original: bucata.trim() });
     }
   };
   // Toată banca, nu doar ce e în agendă: o notă nu are voie să scape nici prin alt exercițiu.
-  for (const f of [...c.module, ...c.exercitii.values()]) for (const s of f.segmente) {
+  for (const f of [...c.module, ...c.piese.values()]) for (const s of f.segmente) {
     if (s.strat === 'trainer' || s.strat === 'sala') adauga(`${s.fisier}:${s.linia} (:::${s.strat})`, randeaza(s.md));
   }
   if (c.editie.nota_trainer) adauga(`ediția ${c.editie.fisier} (nota_trainer)`, escapeHtml(c.editie.nota_trainer));
@@ -68,7 +73,7 @@ export function verificaExport(json, c) {
     const n = normal(nume);
     if (n && totCuSpatii.includes(` ${n} `)) erori.push(`exportul conține un nume interzis de ediție („${nume}”). Scoate-l din textul cursului (poate sta în :::trainer)`);
   }
-  for (const cheie of ['ancora', 'schita', 'materiale', 'nota_trainer', 'nume_interzise', 'agenda', 'obiectiv', 'energie']) {
+  for (const cheie of ['ancora', 'schita', 'materiale', 'nota_trainer', 'nume_interzise', 'agenda', 'obiectiv', 'energie', 'familie']) {
     if (brut.includes(`"${cheie}"`)) erori.push(`exportul conține câmpul „${cheie}”, care e doar pentru trainer`);
   }
   return erori;

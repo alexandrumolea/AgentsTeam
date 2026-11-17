@@ -4,7 +4,8 @@ durata: 5
 format: plen
 tip: energizant
 energie: activ
-obiectiv: "[EXEMPLU] Grupul se trezește după prânz și vede ce are în comun"
+obiectiv: "[EXEMPLU] Grupul se trezește după pauză și vede ce are în comun"
+ancora: "În picioare"
 materiale: []
 in_curs: nu
 ---
