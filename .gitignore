@@ -7,3 +7,6 @@ dist/
 .claude/agent-memory-local/
 .claude/settings.local.json
 .rutina/
+
+# Conținutul real al cursurilor (D-050): doar local, până la repo-ul privat
+privat/

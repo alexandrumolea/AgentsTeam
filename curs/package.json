@@ -1,0 +1,18 @@
+{
+  "name": "generator-curs",
+  "private": true,
+  "version": "0.1.0",
+  "description": "Generatorul de curs: folderul cursului -> cursul participanților (JSON), materialul trainerului (HTML offline, cu Prezintă) și PDF-urile.",
+  "type": "module",
+  "scripts": {
+    "build": "node build.mjs",
+    "exemplu": "node build.mjs exemple/change-agility-exemplu --pdf",
+    "test": "node --test teste/verificari.test.mjs",
+    "test:chrome": "node teste/chrome-prezinta.mjs"
+  },
+  "engines": { "node": ">=20" },
+  "dependencies": {
+    "marked": "18.1.2",
+    "yaml": "2.9.1"
+  }
+}

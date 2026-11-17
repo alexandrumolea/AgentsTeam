@@ -1,0 +1,133 @@
+/* Structura materialului trainerului. Culorile și litera vin din tema/<brand>.css. */
+* { box-sizing: border-box; }
+html, body { margin: 0; }
+body { font: 16px/1.5 var(--font); font-weight: 400; background: var(--t-fundal); color: var(--t-text); }
+button { font: inherit; cursor: pointer; border: 1px solid var(--t-linie); background: var(--t-suprafata); color: var(--t-text); border-radius: 6px; padding: .45em .9em; }
+button:hover { border-color: var(--t-accent); }
+button:focus-visible, a:focus-visible { outline: 2px solid var(--t-accent); outline-offset: 2px; }
+button.principal { background: var(--t-accent); color: var(--t-pe-accent); border-color: var(--t-accent); }
+.sters { color: var(--t-sters); }
+.eticheta { font-size: .75rem; letter-spacing: .06em; text-transform: uppercase; color: var(--t-sters); }
+
+/* Bara de sus */
+.bara { position: sticky; top: 0; z-index: 5; display: flex; flex-wrap: wrap; gap: .5rem 1.5rem; align-items: center; justify-content: space-between; padding: .75rem 1.25rem; background: var(--t-suprafata); border-bottom: 1px solid var(--t-linie); }
+.bara h1 { font-size: 1.05rem; font-weight: var(--font-greutate-accent); margin: 0; }
+.bara nav { display: flex; gap: .4rem; flex-wrap: wrap; }
+.bara nav button[aria-current="page"] { background: var(--t-text); color: var(--t-suprafata); border-color: var(--t-text); }
+main > section { padding: 1.5rem 1.25rem 4rem; max-width: 1100px; margin: 0 auto; }
+main > section[hidden] { display: none; }
+h2 { font-weight: var(--font-greutate-titlu); font-size: 2rem; margin: 0 0 1rem; }
+
+/* Ziua */
+.nota-editie { background: var(--t-nota-fundal); border-left: 3px solid var(--t-nota-linie); padding: .6rem .9rem; margin: 0 0 1.25rem; }
+table.ziua { width: 100%; border-collapse: collapse; }
+.ziua th, .ziua td { text-align: left; vertical-align: top; padding: .6rem .5rem; border-bottom: 1px solid var(--t-linie); }
+.ziua th { font-weight: 500; font-size: .8rem; color: var(--t-sters); }
+.ziua td.ora { white-space: nowrap; font-variant-numeric: tabular-nums; }
+.ziua tr.acum td { background: var(--t-acum); }
+.ziua tr.sarit td { color: var(--t-sters); text-decoration: line-through; }
+.tip { display: inline-block; font-size: .75rem; padding: .05em .5em; border-radius: 99px; border: 1px solid var(--t-linie); }
+
+/* Schița, direcția 1: toată ziua pe o pagină */
+ol.schita { list-style: none; margin: 0; padding: 0; border-left: 1px solid var(--t-linie); margin-left: 4.5rem; }
+.schita > li { position: relative; padding: 0 0 1.4rem 1.25rem; }
+.schita > li::before { content: ""; position: absolute; left: -5px; top: .55rem; width: 9px; height: 9px; border-radius: 50%; background: var(--t-text); }
+.schita > li.pauza::before { background: var(--t-linie); }
+.schita .ora { position: absolute; left: -4.5rem; top: .2rem; width: 3.8rem; text-align: right; font-variant-numeric: tabular-nums; color: var(--t-sters); }
+.schita .ancora { font-size: 1.6rem; font-weight: var(--font-greutate-titlu); line-height: 1.2; }
+.schita .titlu-mic { font-size: .85rem; color: var(--t-sters); }
+.schita ul { margin: .3rem 0 0; padding-left: 1.1rem; }
+.schita li.acum .ancora { font-weight: var(--font-greutate-accent); color: var(--t-accent); }
+.schita li.pauza .ancora { font-size: 1.1rem; color: var(--t-sters); }
+.schita li.sarit { opacity: .4; }
+
+/* Modulul */
+article.modul { border-top: 1px solid var(--t-linie); padding: 1.5rem 0; }
+article.modul header h3 { font-size: 1.5rem; font-weight: var(--font-greutate-titlu); margin: .2rem 0 .4rem; }
+article.modul.sarit { opacity: .5; }
+.strat { margin: 1rem 0; }
+.strat > .eticheta { display: block; margin-bottom: .3rem; }
+.strat-trainer { background: var(--t-nota-fundal); border-left: 3px solid var(--t-nota-linie); padding: .6rem .9rem; }
+.strat-participant { border-left: 3px solid var(--t-linie); padding: .2rem .9rem; color: var(--t-sters); }
+/* Previzualizările din vederea Modul au mărime fixă (480 = 1600 × 0,3), ca să arate la fel pe ecran și la tipar */
+.strat-ecran .cadru { width: 480px; height: 270px; aspect-ratio: auto; }
+.strat-ecran .cadru > .ecran { transform: none !important; zoom: .3; } /* zoom, nu transform: Chrome taie straturile transformate la tipar */
+.strat img { max-width: 100%; height: auto; }
+
+/* Cadrul unui ecran: ecranul are 1600×900 și se scalează să încapă */
+.cadru { position: relative; overflow: hidden; aspect-ratio: 16 / 9; background: #000; border-radius: 4px; }
+.cadru > .ecran { position: absolute; left: 0; top: 0; transform-origin: 0 0; }
+
+/* Ecranul din sală */
+.ecran { width: 1600px; height: 900px; padding: 110px 140px; display: flex; flex-direction: column; justify-content: center; font-family: var(--font); font-weight: var(--font-greutate-text); font-size: 64px; line-height: 1.25; overflow: hidden; }
+.ecran.lume-intunecat { background: var(--lume-intunecat-fundal); color: var(--lume-intunecat-text); --ecran-accent: var(--lume-intunecat-accent); }
+.ecran.lume-luminos { background: var(--lume-luminos-fundal); color: var(--lume-luminos-text); --ecran-accent: var(--lume-luminos-accent); }
+.ecran.lume-accent { background: var(--lume-accent-fundal); color: var(--lume-accent-text); --ecran-accent: var(--lume-accent-accent); }
+.ecran-continut > :first-child { margin-top: 0; }
+.ecran-continut > :last-child { margin-bottom: 0; }
+.ecran h1, .ecran h2, .ecran h3 { font-weight: var(--font-greutate-titlu); line-height: 1.1; margin: 0 0 .4em; }
+.ecran h1 { font-size: 104px; }
+.ecran h2 { font-size: 72px; }
+.ecran p { margin: 0 0 .5em; }
+.ecran strong { font-weight: var(--font-greutate-accent); }
+.ecran ol, .ecran ul { margin: .3em 0 0; padding-left: 1.2em; font-size: 54px; }
+.ecran li { margin: .25em 0; }
+.ecran li::marker { color: var(--ecran-accent); }
+.ecran img { display: block; max-width: 100%; max-height: 680px; margin: 0 auto; object-fit: contain; }
+.ecran .ecran-numar { font-size: 34px; letter-spacing: .12em; color: var(--ecran-accent); margin-bottom: 28px; }
+.ecran .ecran-sub { font-size: 36px; opacity: .7; margin-top: 24px; }
+.ecran-cronometru { position: absolute; right: 80px; bottom: 56px; font-size: 64px; font-weight: var(--font-greutate-titlu); font-variant-numeric: tabular-nums; color: var(--ecran-accent); }
+.ecran-cronometru.gata { color: var(--cronometru-gata); font-weight: var(--font-greutate-accent); }
+.ecran-final { background: #000; color: #555; align-items: center; font-size: 32px; }
+
+/* Fereastra sălii și „Prezintă aici” */
+body.sala { background: #000; overflow: hidden; height: 100vh; }
+.cadru-plin { position: fixed; inset: 0; aspect-ratio: auto; border-radius: 0; background: #000; cursor: none; }
+.negru-strat { position: absolute; inset: 0; background: #000; display: none; z-index: 2; }
+.negru .negru-strat { display: block; }
+.sala-ajutor { position: fixed; left: 0; right: 0; bottom: 0; margin: 0; padding: 8px; text-align: center; font: 14px var(--font); color: #888; background: rgba(0,0,0,.6); z-index: 3; }
+#aici { position: fixed; inset: 0; z-index: 50; background: #000; }
+#aici[hidden] { display: none; }
+
+/* Prezintă: ecranul de comandă */
+.comanda-start { max-width: 640px; }
+.comanda-start ol { padding-left: 1.2rem; }
+.comanda { display: grid; grid-template-columns: minmax(0, 3fr) minmax(260px, 2fr); gap: 1.25rem; align-items: start; }
+.comanda[hidden] { display: none; }
+.comanda .butoane { display: flex; flex-wrap: wrap; gap: .4rem; margin: .75rem 0; }
+.comanda .stare { display: grid; grid-template-columns: repeat(2, 1fr); gap: .5rem; margin-bottom: 1rem; }
+.comanda .stare div { background: var(--t-suprafata); border: 1px solid var(--t-linie); border-radius: 6px; padding: .5rem .7rem; }
+.comanda .stare b { display: block; font-size: 1.5rem; font-weight: 300; font-variant-numeric: tabular-nums; }
+.comanda .note { background: var(--t-nota-fundal); border-left: 3px solid var(--t-nota-linie); padding: .6rem .9rem; min-height: 4rem; }
+.comanda .note:empty::before { content: "Nicio notă pentru acest ecran."; color: var(--t-sters); }
+.comanda .urmeaza .cadru { width: 100%; }
+.comanda .schita-mica { position: relative; max-height: 40vh; overflow: auto; margin-top: 1rem; }
+.comanda .schita-mica ol.schita { margin-left: 3.8rem; }
+.comanda .schita-mica .ancora { font-size: 1.1rem; }
+.comanda .schita-mica li { padding-bottom: .7rem; cursor: pointer; }
+.comanda .schita-mica .ora { left: -3.8rem; width: 3.2rem; font-size: .85rem; }
+.comanda.schita-mare .schita-mica { position: fixed; inset: 4rem 1rem 1rem; max-height: none; background: var(--t-suprafata); border: 1px solid var(--t-linie); padding: 1.5rem 1.5rem 1.5rem 5rem; z-index: 20; }
+.comanda.schita-mare .schita-mica .ancora { font-size: 1.6rem; }
+.mesaj { padding: .6rem .9rem; border: 1px solid var(--t-nota-linie); background: var(--t-nota-fundal); border-radius: 6px; }
+.mesaj:empty { display: none; }
+.taste { font-size: .85rem; color: var(--t-sters); }
+kbd { font: .8rem var(--font); border: 1px solid var(--t-linie); border-bottom-width: 2px; border-radius: 4px; padding: 0 .35em; background: var(--t-suprafata); }
+@media (max-width: 760px) { .comanda { grid-template-columns: 1fr; } }
+
+/* Tipar: #tipar-trainer (Ziua + Schița + Modul) și #tipar-ecrane (un ecran pe pagină) */
+@media print {
+  .bara, #prezinta, #aici, .ascuns-la-tipar { display: none !important; }
+  body { background: #fff; }
+  main > section { max-width: none; padding: 0; }
+  main > section[hidden] { display: block; }
+  section + section { break-before: page; }
+  article.modul { break-inside: auto; }
+  .strat-trainer, .strat-ecran { break-inside: avoid; }
+  .strat-ecran .ecran-cronometru { display: none; } /* eticheta spune deja câte minute */
+  body.tipar-ecrane main { display: none; }
+}
+#tipar-ecrane-lista { display: none; }
+body.tipar-ecrane #tipar-ecrane-lista { display: block; }
+body.tipar-ecrane .bara, body.tipar-ecrane main { display: none; }
+#tipar-ecrane-lista .ecran { position: relative; break-after: page; print-color-adjust: exact; -webkit-print-color-adjust: exact; }
+@media print { * { print-color-adjust: exact; -webkit-print-color-adjust: exact; } }

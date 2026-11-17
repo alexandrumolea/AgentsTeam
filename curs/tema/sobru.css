@@ -1,0 +1,36 @@
+/*
+  Tema provizorie, sobră (T-022). Ioana o înlocuiește cu tema Ive a brandului (T-023):
+  copiezi acest fișier ca tema/<brand>.css (innersis.css sau bemore-ls.css) și schimbi doar valorile.
+  Generatorul alege tema/<brand>.css dacă există, altfel pe aceasta. Aici stau DOAR tokeni.
+*/
+:root {
+  /* Litera: pe Mac, Helvetica Neue e deja instalată, deci nu se încarcă nimic de pe internet. */
+  --font: "Helvetica Neue", Helvetica, Arial, system-ui, sans-serif;
+  --font-greutate-titlu: 200;
+  --font-greutate-text: 300;
+  --font-greutate-accent: 500;
+
+  /* Ecranul din sală: cele trei lumi (tip: teorie = întunecat; exercitiu, reflectie, pauza = luminos; mesaj = accent) */
+  --lume-intunecat-fundal: #16181d;
+  --lume-intunecat-text: #f2f0eb;
+  --lume-intunecat-accent: #9fb8c8;
+  --lume-luminos-fundal: #f4f2ee;
+  --lume-luminos-text: #1b1d22;
+  --lume-luminos-accent: #4f6f86;
+  --lume-accent-fundal: #4f6f86;
+  --lume-accent-text: #ffffff;
+  --lume-accent-accent: #ffffff;
+  --cronometru-gata: #c0563f;
+
+  /* Materialul trainerului (ecranul lui Alex) */
+  --t-fundal: #fbfaf8;
+  --t-suprafata: #ffffff;
+  --t-text: #1b1d22;
+  --t-sters: #6b6e75;
+  --t-linie: #e3e0da;
+  --t-accent: #4f6f86;
+  --t-pe-accent: #ffffff;
+  --t-nota-fundal: #fff6e0;
+  --t-nota-linie: #e0b84f;
+  --t-acum: #e8f0f5;
+}
