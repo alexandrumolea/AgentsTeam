@@ -14,6 +14,7 @@ Păstrează sub 150 de rânduri. Comprimă când crește. Fapte, nu povești.
 ## Preferințe confirmate
 - [Inovație, nu calm](feedback_inovatie-nu-calm.md) — „prea banale” (2026-11-15); vrea viitor, un wow clar; a11y și viteza sunt limite
 - 2026-11-15: Alex a ales **Spațiu** (D-023): „Ioana a făcut treabă bună acum.”
+- 2026-11-17: Site-ul e „foarte închis”, neplăcut pentru cursuri online; vrea pagini de citit luminoase. Îi plac: compact, interactiv, dinamic (nu le pierde).
 - 2026-11-15: I-au plăcut: feed-ul cu taskurile dintre agenți (din Sistem viu), introducerea scrisă din mock (păstreaz-o exact), metafora „acces în atelierul meu de inovație, work & living”.
 
 ## Ce a mers / ce nu
@@ -25,9 +26,11 @@ Păstrează sub 150 de rânduri. Comprimă când crește. Fapte, nu povești.
 - 2026-11-15: Elementele ascunse cu `opacity:0` rămân în ordinea de Tab. Adaugă `visibility:hidden` cu tranziție întârziată.
 - 2026-11-15: Pe mobil, cu panou deschis, ascunde titlul și ridică obiectul ales deasupra panoului (altfel scena dispare sub panou).
 - 2026-11-15: Brief-ul s-a schimbat de 5 ori în timpul sarcinii (colegii lucrează în paralel). Construiește în straturi, iar ID-urile din `docs/taskuri.md` le verifici chiar înainte de scriere.
+- 2026-11-17: Browserul integrat nu deschide file://; pentru capturi locale merge Chrome headless (`--screenshot`), dar fereastra are minim 500px lățime: verifică overflow-ul cu JS, nu din captură.
 - Tranziția CSS a `clip-path` cu `var()` nu s-a desenat în Chromium; WAAPI cu valori explicite merge.
 
 ## Proiecte și referințe
+- [Culori v1](project_culori-v1.md) — 2026-11-17: diagnostic + A/B/C; recomandat B hibrid; aștept alegerea (T-024)
 - [Spațiu v2](project_spatial-v2.md) — prototipul curent; deschise: rândurile din Live, propoziția „pod”, test pe telefon
 - [Direcții v1](project_directii-v1.md) — Dialog / Spațiu / Sistem viu; Alex a ales Spațiu
 - [Descoperire v0](project_descoperire-v0.md) — logica UX rămâne; stilul A/B respins
