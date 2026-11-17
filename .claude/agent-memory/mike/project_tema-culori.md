@@ -1,16 +1,17 @@
 ---
 name: project-tema-culori
-description: Paleta site-ului stă într-un singur fișier (content/tema.yml) din 2026-11-17; cum e legată, de ce așa, ce rămâne de făcut la alegerea paletei
+description: Tema site-ului (culori, gradient, fonturi, contrast) stă în content/tema.yml; din D-057 e și brandingul BEMORE pentru cursuri; ce e fragil
 metadata:
   type: project
 ---
 Adăugat: 2026-11-17
 
-2026-11-17: Alex a cerut ca o schimbare de design să fie ușoară. Toate culorile pleacă din `content/tema.yml`: CSS (`:root` generat de build), scena 3D (prin JSON-ul din pagină), theme-color, favicon (șablon), og.png și apple-touch-icon.png (`npm run imagini`, doar macOS, qlmanage + sips; reproduce PNG-urile octet cu octet).
-**Why:** regula 7 (o schimbare = un fișier). Am ales generare la build, nu `getComputedStyle` în scenă, pentru că theme-color, favicon și OG nu pot citi CSS-ul la rulare, iar build-ul poate valida (o greșeală oprește build-ul).
-**How to apply:** numele rolurilor sunt ale Ioanei (`bg`, `surface`, `muted`, `accent`, `human`, `alert`, `warm-*`, scena fără prefixul `scene-`). Valoare = hex, nume de rol sau oricare cu „/ alfa”. Transparențele din CSS: `rgb(var(--x-rgb) / .45)` (Safari 12.1+), nu color-mix. Excepții: `0xffffff` la sticla clară, `#000` în masca dock-ului.
+2026-11-17: Toate culorile pleacă din `content/tema.yml`: CSS (`:root`), scena 3D (JSON în pagină), theme-color, favicon și og.png (șabloane SVG, `npm run imagini`, doar macOS).
+**Why:** regula 7 (o schimbare = un fișier); build-ul poate valida, iar theme-color/favicon/OG nu pot citi CSS la rulare.
+**How to apply:** roluri pe sens, nu pe nuanță. Transparențe: `rgb(var(--x-rgb) / .45)`, nu color-mix.
 
-2026-11-17: Verificare care a mers: în aceeași pagină, schimb `<link>` între CSS-ul nou și cel vechi (copiat în dist) și compar stilul calculat pe toate elementele și pseudo-elementele, plus regulă cu regulă (hover, media, keyframes) pe un element-sondă cu variabilele vechi. Diferențele care apar sunt tranziții în curs (`.mark` are tranziție de culoare): aștept 1,5 s.
-Podurile din scenă foloseau `setRGB` în spațiu liniar; acum sunt hex sRGB echivalente (sub 0,5/255 diferență).
+2026-11-17 (T-024): tema.yml are acum `fonturi` (titluri Sora, text Inter Tight → `--font-*`), `mesh` (gradientul → `--mesh-*`), `contrast` (perechi verificate la build peste fiecare culoare din fiecare gradient; sub prag = build oprit) și perechi `[sus, jos]` în `scena` (gradientul obiectelor).
+**Why:** Alex a ales paleta Sora (D-054), iar D-057 a făcut-o brandingul BEMORE; aceiași tokeni îi folosește `curs/tema/bemore.css`.
+**How to apply:** valorile din tema.yml câștigă în fața manualului (`team/ioana/documente/manual-brand-v1.md`), dar înainte de a alege o valoare, citește manualul. Sora nu coboară sub 26 px, cu excepția semnăturii. Semnătura („Alex · Atelier”) e în discuție (D-058): o schimbi doar în `content/site.yml`.
 
-Deschis: T-024 (Ioana → Mike) aplică varianta pe care o alege Alex. Varianta B cere roluri noi `page-*` / `bar-*` pentru paginile interioare deschise; C cere refacerea scenei (vezi `culori-v1.md`) și schimbarea `color-scheme` din build. Vezi [[project-stack-hosting]].
+Fragil: qlmanage (imagini.mjs) nu înțelege `gradientTransform` pe radialGradient: folosește `gradientUnits="userSpaceOnUse"` cu cx/cy/r. Inline `<style>` în HTML e blocat de CSP: stilurile merg în site.css. Vezi [[project-stack-hosting]].

@@ -8,7 +8,7 @@
     "build": "node build.mjs",
     "exemplu": "node build.mjs exemple/change-agility-exemplu --pdf",
     "test": "node --test teste/verificari.test.mjs",
-    "test:chrome": "node teste/chrome-prezinta.mjs"
+    "test:chrome": "node teste/chrome-prezinta.mjs && node teste/chrome-imagini.mjs"
   },
   "engines": { "node": ">=20" },
   "dependencies": {

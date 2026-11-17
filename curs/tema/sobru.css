@@ -6,6 +6,7 @@
 :root {
   /* Litera: pe Mac, Helvetica Neue e deja instalată, deci nu se încarcă nimic de pe internet. */
   --font: "Helvetica Neue", Helvetica, Arial, system-ui, sans-serif;
+  --font-titlu: var(--font);   /* titlurile din sală: același font ca textul (bemore.css are Sora) */
   --font-greutate-titlu: 200;
   --font-greutate-text: 300;
   --font-greutate-accent: 500;

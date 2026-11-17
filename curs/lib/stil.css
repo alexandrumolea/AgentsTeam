@@ -79,9 +79,18 @@ article.modul.sarit { opacity: .5; }
 .ecran.fel-pauza .ecran-semn { width: 22px; height: 26px; background: linear-gradient(to right, var(--ecran-semn) 0 34%, transparent 34% 66%, var(--ecran-semn) 66%); }
 
 .ecran-continut { position: relative; z-index: 1; }
+/* Imaginile (schemele 16:9 ale lui Matei): ocupă exact spațiul rămas sub titlu și text, fără să fie tăiate.
+   .ecran are 900 px fix; conținutul devine o coloană flexibilă care se poate strânge (min-height: 0), iar paragraful
+   cu imaginea (p.doar-imagine, din randare.mjs) ia ce rămâne. Doar pe ecranele cu imagine, ca spațierea textului de pe celelalte să rămână neschimbată. */
+.ecran-continut:has(img) { display: flex; flex-direction: column; flex: 0 1 auto; min-height: 0; }
+.ecran-continut:has(img) > * { flex: none; }
+.ecran-continut:has(img) > p.doar-imagine { flex: 0 1 auto; min-height: 0; display: flex; justify-content: center; }
+.ecran.fel-mesaj .ecran-continut:has(img)::before { flex: none; }
 .ecran-continut > :first-child { margin-top: 0; }
 .ecran-continut > :last-child { margin-bottom: 0; }
-.ecran h1, .ecran h2, .ecran h3 { font-weight: var(--font-greutate-titlu); line-height: 1.1; margin: 0 0 .4em; }
+/* Titlurile și cifrele mari din sală au fontul lor (T-031): --font-titlu, din temă; fără el, fontul de text. */
+.ecran h1, .ecran h2, .ecran h3 { font-family: var(--font-titlu, var(--font)); font-weight: var(--font-greutate-titlu); line-height: 1.1; margin: 0 0 .4em; }
+.ecran h2, .ecran h3 { font-weight: var(--font-greutate-subtitlu, var(--font-greutate-titlu)); }
 .ecran h1 { font-size: 104px; letter-spacing: -.01em; }
 .ecran h2 { font-size: 72px; }
 .ecran p { margin: 0 0 .5em; }
@@ -94,10 +103,10 @@ article.modul.sarit { opacity: .5; }
 .ecran ol > li { counter-increment: pas; display: grid; grid-template-columns: 2.1em 1fr; margin: 0; padding: .3em 0; border-top: 2px solid var(--ecran-linie); }
 .ecran ol > li:first-child { border-top: 0; }
 .ecran ol > li::before { content: counter(pas, decimal-leading-zero); color: var(--ecran-accent); font-weight: var(--font-greutate-text); }
-.ecran img { display: block; max-width: 100%; max-height: 600px; margin: 0 auto; object-fit: contain; }
+.ecran img { display: block; width: auto; height: auto; max-width: 100%; max-height: 100%; min-height: 0; margin: 0 auto; object-fit: contain; }
 .ecran .ecran-numar { font-size: 40px; font-weight: var(--font-greutate-accent); letter-spacing: .2em; color: var(--ecran-accent); margin-bottom: 28px; }
 .ecran .ecran-sub { font-size: 36px; opacity: .75; margin-top: 24px; }
-.ecran-cronometru { position: absolute; right: 80px; bottom: 56px; font-size: 64px; font-weight: var(--font-greutate-titlu); font-variant-numeric: tabular-nums; color: var(--ecran-accent); z-index: 1; }
+.ecran-cronometru { position: absolute; right: 80px; bottom: 56px; font-family: var(--font-titlu, var(--font)); font-size: 64px; font-weight: var(--font-greutate-titlu); font-variant-numeric: tabular-nums; color: var(--ecran-accent); z-index: 1; }
 .ecran-cronometru.gata { color: var(--ecran-gata); font-weight: var(--font-greutate-accent); }
 
 /* Teorie: o pagină. Textul pornește de sus, sub o linie subțire, aliniat la stânga; titlul de modul stă jos, ca un capitol. */
@@ -107,14 +116,14 @@ article.modul.sarit { opacity: .5; }
 
 /* Reflecție: navy, text mare și rar, la stânga, cu un cerc larg și subțire în dreapta (loc de gândit) */
 .ecran.fel-reflectie { font-size: 74px; line-height: 1.22; }
-.ecran.fel-reflectie .ecran-continut { max-width: 1180px; }
+.ecran.fel-reflectie .ecran-continut { max-width: 1180px; font-family: var(--font-titlu, var(--font)); }
 .ecran.fel-reflectie::after { content: ""; position: absolute; width: 860px; height: 860px; right: -300px; top: 20px; border-radius: 50%; border: 2px solid var(--fel-reflectie-cerc); }
 .ecran.fel-reflectie ol { font-size: .72em; }
 
 /* Mesaj cheie: câmp de culoare, o singură idee, foarte mare, în centru, sub o linie groasă */
 .ecran.fel-mesaj { align-items: center; text-align: center; font-size: 92px; font-weight: var(--font-greutate-titlu); line-height: 1.15; }
 .ecran.fel-mesaj .ecran-eticheta { justify-content: center; }
-.ecran.fel-mesaj .ecran-continut { max-width: 1260px; }
+.ecran.fel-mesaj .ecran-continut { max-width: 1260px; font-family: var(--font-titlu, var(--font)); }
 .ecran.fel-mesaj .ecran-continut::before { content: ""; display: block; width: 120px; height: 8px; margin: 0 auto 60px; background: var(--ecran-accent); }
 .ecran.fel-mesaj strong { font-weight: var(--font-greutate-text); }
 .ecran.fel-mesaj ol, .ecran.fel-mesaj ul { text-align: left; font-size: .6em; }
@@ -124,7 +133,7 @@ article.modul.sarit { opacity: .5; }
 .ecran.fel-exercitiu .ecran-eticheta { right: 560px; }
 .ecran.fel-exercitiu h1 { font-size: 88px; }
 .ecran-panou { position: absolute; top: 0; right: 0; bottom: 0; width: 440px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 24px; background: var(--fel-exercitiu-panou); color: var(--fel-exercitiu-pe-panou); }
-.ecran-panou .ecran-cronometru { position: static; font-size: 150px; line-height: 1; color: var(--fel-exercitiu-pe-panou); letter-spacing: -.02em; }
+.ecran-panou .ecran-cronometru { position: static; font-size: var(--cronometru-panou-marime, 150px); line-height: 1; color: var(--fel-exercitiu-pe-panou); letter-spacing: var(--cronometru-panou-spatiere, -.02em); }
 .ecran-panou .ecran-cronometru.gata { color: var(--fel-exercitiu-gata); }
 .panou-semn { width: 120px; height: 140px; clip-path: polygon(0 0, 100% 50%, 0 100%); background: var(--fel-exercitiu-pe-panou); }
 .panou-format { margin: 0 !important; font-size: 28px; font-weight: 600; letter-spacing: .24em; text-transform: uppercase; }

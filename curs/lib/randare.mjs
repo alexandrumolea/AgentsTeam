@@ -17,6 +17,21 @@ export function creeazaRandare({ imagine = (s) => s, atribut = 'src', randuriNoi
       // Linkurile javascript:/data:/vbscript: devin text simplu (cursul ajunge pe site-ul public).
       link: (tok) => (/^\s*(javascript|data|vbscript):/i.test(tok.href) ? escapeHtml(tok.text) : false),
       image: (tok) => `<img ${atribut}="${escapeHtml(imagine(tok.href))}" alt="${escapeHtml(tok.text)}">`,
+      // Pe ecranele din sală, o imagine stă în paragraful ei (<p class="doar-imagine">), chiar dacă e scrisă imediat sub text:
+      // așa poate lua exact spațiul rămas pe ecran (stil.css). În rest, paragrafele rămân cum le face marked.
+      paragraph(tok) {
+        if (!randuriNoi || !tok.tokens?.some((t) => t.type === 'image')) return false;
+        const grupuri = [];
+        for (const t of tok.tokens) {
+          const img = t.type === 'image';
+          if (!img && (t.type === 'br' || (t.type === 'text' && !t.text.trim())) && (!grupuri.length || grupuri.at(-1).img)) continue;
+          if (!grupuri.length || grupuri.at(-1).img !== img || img) grupuri.push({ img, tokens: [] });
+          grupuri.at(-1).tokens.push(t);
+        }
+        for (const g of grupuri) while (!g.img && g.tokens.length && (g.tokens.at(-1).type === 'br' || (g.tokens.at(-1).type === 'text' && !g.tokens.at(-1).text.trim()))) g.tokens.pop();
+        return grupuri.filter((g) => g.tokens.length)
+          .map((g) => `<p${g.img ? ' class="doar-imagine"' : ''}>${this.parser.parseInline(g.tokens)}</p>\n`).join('');
+      },
     },
   });
   return (md) => m.parse(md ?? '');

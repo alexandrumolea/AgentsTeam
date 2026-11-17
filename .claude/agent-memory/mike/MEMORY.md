@@ -21,13 +21,15 @@ Păstrează sub 150 de rânduri. Comprimă când crește. Fapte, nu povești.
 
 - 2026-11-17: când un coleg lucrează în paralel la nume (Ioana, culori-v1.md), verifică-i fișierul înainte de primul nume ales; altfel redenumești de două ori.
 - 2026-11-17: în file:// fiecare încărcare are altă origine (Chrome). Testează mereu și refresh-ul, nu doar drumul fericit. Chrome se poate comanda prin DevTools cu Node 24 (WebSocket global), fără dependențe: `curs/teste/cdp.mjs`.
+- 2026-11-17: T-024: capturile WebGL din browserul integrat sunt nesigure; Chrome headless prin `curs/teste/cdp.mjs` (Emulation.setDeviceMetricsOverride, setScriptExecutionDisabled, setEmulatedMedia) dă capturi și verificări corecte la orice lățime. Pe fundal luminos: fără AdditiveBlending, fără transmission, NoToneMapping (ACES spală pastelurile).
+- 2026-11-17: Alex extinde cerințele în timpul lucrului (D-056, D-057, D-058 în aceeași sarcină). Fă configurabil ce e probabil să se schimbe (vizibil, fonturi, semnătură), nu valori fixe.
 - 2026-11-17: panoul de control: cere „mapează statusurile, nu inventa” → clasific doar după coloana Status, iar ce scrie în textul taskului („după ce Alex…”) îl raportez lui Tudor, nu-l parsez.
 
 ## Fișiere de memorie
 - [Stack și găzduire](project_stack-hosting.md) — GitHub Pages (D-036–D-038), CNAME ignorat la Actions; fapte Netlify/Cloudflare/Vercel
 - [Generatorul paginii echipei](generator-echipa.md) — Mike îl deține; puncte fragile tăcute; 2026-11-17: panoul de control, maparea statusurilor
 - [Generatorul de curs](project_generator-curs.md) — 2026-11-17: curs/ v1.2 (piese, agenda, totaluri); Prezintă prin #sala + postMessage; Safari la Alex
-- [Tema: culorile dintr-un loc](project_tema-culori.md) — 2026-11-17: content/tema.yml → CSS, scenă, OG; nume de la Ioana; cum verific „identic”
+- [Tema: culori, gradient, fonturi](project_tema-culori.md) — 2026-11-17: content/tema.yml → CSS, scenă, OG, contrast la build; branding BEMORE (D-057)
 
 ## Deschis
 - Vezi `docs/intrebari-pentru-alex.md`.

@@ -111,7 +111,7 @@ Fiecare ecran are sus eticheta felului (de exemplu „Exercițiu · Unde sunt eu
 
 ## Tema
 
-Culorile și litera stau doar în teme (tokeni): `tema/innersis.css` (Innersis Ive, Ioana) și `tema/sobru.css` (provizorie, pentru orice alt brand). Pentru BEMORE LS: copiezi `innersis.css` ca `tema/bemore-ls.css` și schimbi valorile `--fel-*` și `--t-*`. Generatorul o alege singur după `brand` din `curs.yml`. Structura (mărimi, așezare) e în `lib/stil.css`. Ecranul din sală are 1600×900 și se scalează la orice proiector.
+Culorile și litera stau doar în teme (tokeni): `tema/innersis.css` (Innersis Ive, Ioana) și `tema/sobru.css` (provizorie, pentru orice alt brand). Pentru BEMORE LS: copiezi `innersis.css` ca `tema/bemore-ls.css` și schimbi valorile `--fel-*` și `--t-*`. Generatorul o alege singur după `brand` din `curs.yml`. Structura (mărimi, așezare) e în `lib/stil.css`. Titlurile din sală, mesajul cheie, reflecția și cronometrele folosesc `--font-titlu` (T-031); o temă fără el le scrie cu `--font`. Pentru BEMORE: `--font-greutate-subtitlu` (h2, h3) și `--cronometru-panou-marime` / `-spatiere` (Sora e mai lată). **Imaginile** de pe ecrane (de exemplu schemele SVG 16:9) iau exact spațiul rămas sub titlu și text, fără să fie tăiate; o imagine scrisă imediat sub text primește paragraful ei. Cu titlu și două rânduri de text mare rămâne loc puțin: pe mesajul cheie, ~170 px din 900. Ecranul din sală are 1600×900 și se scalează la orice proiector.
 
 ## Fișierele
 
