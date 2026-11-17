@@ -21,7 +21,10 @@ Păstrează sub 150 de rânduri. Comprimă când crește. Fapte, nu povești.
 - [Descoperire v1](project_descoperire_v1.md) — 4 mecanisme, `content/lansari/`, taxonomie 8 nevoi (ipoteze), ce e amânat
 - [Arhitectura v2](project_arhitectura_v2.md) — 2026-11-15: atelierul, 2 familii, Live din taskuri, Învață, Ce m-a crescut, misiunea (D-028)
 
+- [Curs: o sursă, trei ieșiri](project_curs_o_sursa.md) — 2026-11-17: Change Agility, modul = fișier, Excel = output, sursa privată
+
 ## Ce a mers / ce nu
+- 2026-11-17: la cursuri, separă conținutul reutilizabil (curs) de livrare (ediție); clientul stă doar în ediție, privat.
 - 2026-11-15: cerințele lui Alex vin în rafale în aceeași sesiune. Scrie scheletul devreme, apoi integrează; verifică ID-urile libere chiar înainte de scriere (Maria a luat D-025, D-027).
 - 2026-11-15: împărțirea cu Maria merge: ea numele și textele, eu structura și adresele. Preiau formatele ei (Knowledge, povești) ca schelet, nu le dublez.
 - 2026-11-15: v1 scris fără lista reală a invențiilor. Taxonomia și exemplele sunt ipoteze până răspunde Alex la întrebările 20–21.
