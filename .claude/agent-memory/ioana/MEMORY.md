@@ -32,13 +32,14 @@ Păstrează sub 150 de rânduri. Comprimă când crește. Fapte, nu povești.
 - 2026-11-17: Browserul integrat nu deschide file://; pentru capturi locale merge Chrome headless (`--screenshot`), dar fereastra are minim 500px lățime: verifică overflow-ul cu JS, nu din captură.
 - Tranziția CSS a `clip-path` cu `var()` nu s-a desenat în Chromium; WAAPI cu valori explicite merge.
 - 2026-11-17: Mock-uri la proporții reale: o lățime fixă (1440 / 390) scalată cu `transform`, plus `@container` pe rădăcina mock-ului, ca telefonul să fie același markup. Chrome headless cu `--user-data-dir` nou la fiecare rulare (altfel se blochează); viewport-ul de telefon îl testezi în browserul integrat cu `resize_window mobile` + meta viewport adăugat din JS.
+- 2026-11-17: Alex iubește elementele dinamice; prima verificare a oricărei prime pagini: obiectele se văd imediat peste fundal (contur, culoare proprie, umbră)?
 - 2026-11-17: Alex vrea esența locurilor, nu obiectele lor („prea literar”). Metafora (obiectele-simbol) da; mobilier desenat nu.
 - 2026-11-17: Alex cere acum Liquid Glass clar, cu gradient mesh granulat. Regula mea rămâne: textul doar pe sticlă opacă (80 % sau 93 %) și contrastul calculat peste cel mai rău punct.
 - 2026-11-17: Întrebările deschise despre locuri care îi plac (nu despre site-uri) au dat cel mai mult material de design.
 - 2026-11-17: Alex: „mai aerisit”. Înseamnă mai puține lucruri vizibile deodată, nu mai puține drumuri; compactul și interactivitatea rămân.
 
 ## Proiecte și referințe
-- [Design v2 și v3](project_design-v2.md) — 2026-11-17: v3 = Liquid Glass, mesh granulat, 4 palete; aștept alegerea paletei
+- [Design v2 și v3](project_design-v2.md) — 2026-11-17: D-054 Sora (font + paletă); v3.1 = 3 prime pagini; aștept alegerea
 - [Culori v1](project_culori-v1.md) — 2026-11-17: diagnostic + A/B/C; înlocuit de design v2 (regulile de sens rămân)
 - [Spațiu v2](project_spatial-v2.md) — prototipul curent; deschise: rândurile din Live, propoziția „pod”, test pe telefon
 - [Direcții v1](project_directii-v1.md) — Dialog / Spațiu / Sistem viu; Alex a ales Spațiu

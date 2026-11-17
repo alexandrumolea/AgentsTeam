@@ -6,6 +6,85 @@ v2 rămâne neatinsă, ca istoric: [design-v2.md](design-v2.md). Nimic din `site
 
 ## Jurnal
 - **2026-11-17, v3.0:** pornit din răspunsul lui Alex la D · Studio (v2.2).
+- **2026-11-17, v3.1 (după D-054):** Alex: „Sora îmi place ca font, e mai modern. Îmi place paleta sora. Mă întreb dacă merge și un sage cumva pe undeva în ansamblu, dar poate că nu. Ce nu iese bine, este home page-ul. Elementele dinamice care îmi plac mult, nu sunt suficient de vizibil în acest gradient. Trebuie altă soluție pentru homepage.”
+  - Paleta și fontul Sora sunt fixate. Celelalte trei palete au trecut jos, la „Istoric”.
+  - Trei prime pagini noi de comutat, plus cea din v3 ca reper.
+  - Comutator „Text: Sora peste tot / Sora + Inter Tight” și „Sage: fără / cu”.
+  - Pagina pornește pe Sora, prima pagină 1 · Sticlă colorată.
+
+## v3.1: ce am ales și de ce
+
+### Prima pagină: trei soluții
+Problema din v3: obiectele erau albe și translucide peste un gradient deschis, deci culoarea fundalului le ștergea conturul. Toate trei soluțiile de mai jos repară asta pe căi diferite. Toate trei au:
+- obiectele cu 15 % mai mari;
+- scena mutată mai sus, în centrul liber al ecranului;
+- panourile de text doar în coloana din stânga, ca să nu acopere nimic;
+- legenda la 20 px și „Desfă inovația”;
+- mișcare vizibilă: obiectele plutesc, două lumini mici se rotesc pe orbite, iar la hover sau la Tab obiectul crește și se aprinde (și din legendă).
+
+| | 1 · Sticlă colorată | 2 · Scenă luminoasă | 3 · Seară |
+|---|---|---|---|
+| Ideea | Gradientul trece din fundal în obiecte | Obiectele stau pe un câmp alb, ca pe o scenă | Doar prima pagină e noapte; obiectele au lumină proprie |
+| Fundal | aproape uniform `#F6F4FA`, cu culoare doar în colțuri (24–30 %) | alb în centru, gradientul Sora doar pe margini | `#0D1333`, cu lumini Sora în spatele obiectelor (32–50 %) |
+| Obiecte | fiecare cu gradientul lui Sora (cer → albastru, piersică → portocaliu, lavandă → cer), contur alb, umbră colorată | alb plin, contur `#2B44B8` (7,50 pe alb), umbră albastră moale | translucide, contur alb, aură albastră |
+| Panouri | sticlă albă 80 % | sticlă albă 80 % | sticlă închisă `#121636` la 72 %, text `#F5F3FF` (11,88) |
+| Cât se văd obiectele | foarte bine, și pe telefon | foarte bine, cel mai „precis” | cel mai bine; e momentul „wow” |
+| Riscul | culoare multă dacă adăugăm obiecte | cel mai cuminte dintre cele trei | contrastul cu restul site-ului, luminos |
+| Cost în `scena.js` | mediu | mic | cel mai mic (scena de azi e deja pe întuneric) |
+
+**Recomand 1 · Sticlă colorată.** Păstrează site-ul luminos de la un capăt la altul, iar culorile Sora, care lui Alex îi plac, ajung exact pe lucrurile care se mișcă. **3 · Seară** e alternativa cu cel mai mare efect. Dacă Alex o vrea, poate fi și varianta de seară a lui 1 (după ora vizitatorului), cu același cod.
+
+### Fontul: Sora peste tot
+- Am măsurat: Sora la 19 px e cu 11 % mai lată decât Inter Tight la 20 px, deci un rând de lecție are 56–60 de caractere în loc de 66. E încă în zona bună de citit (45–75).
+- Recomand **Sora peste tot**: titluri la 200, text la 300 și 400, lecția la 19 px cu rânduri la 1,75. Un singur font e mai simplu și pagina e mai ușoară.
+- Rezerva: dacă lecțiile ajung lungi (peste 15 minute), doar paragrafele lecției trec pe Inter Tight. Comutatorul din pagină arată diferența.
+
+### Sage: merge, dar doar în lecție
+Răspunsul cinstit: **da în lecție, nu în gradient.**
+- **În gradient nu.** Am încercat o pată sage `#B9C9A8` între lavandă și cer. Lângă lavandă și piersică devine gri-murdar și ia din luminozitatea paletei.
+- **În lecție da.** Sage devine culoarea a ce faci tu și a ce ai terminat, adică wellness-ul minții:
+  - masa de lucru pe `#E9EFE4`;
+  - bifa ✓ la lecțiile parcurse și eticheta „Pe masa de lucru” în `#4E6B45` (5,10 pe masă, 4,98 pe sticlă);
+  - cercul care respiră, în sage și cer;
+  - punctul din „Live” (doar decor).
+- Pe prima pagină și în Compania mea nu l-aș folosi: acolo nu adaugă sens.
+
+### Tokenii finali (Sora)
+| Rol | Valoare | Note |
+|---|---|---|
+| `mesh-baza` | `#F3EEF6` | paginile interioare |
+| `mesh` | cer `#4FA3F0`, cer deschis `#8FD3F7`, lavandă `#B7A6EA`, piersică `#F7B79A`, portocaliu `#F28C3B` | poziții și mărimi ca în `design-v3.html` |
+| `sticla` / alfa | `#FFFFFF` / 0,80 navigare și carduri, 0,93 unde citești | |
+| `text` / `muted` | `#14161F` / `#474A58` | 15,04 / 7,33 în cel mai rău caz |
+| `accent` / `accent-mare` | `#2B44B8` / `#2B44B8` | 6,68 |
+| `buton` / `pe-buton` | `#14161F` / `#FFFFFF` | 18,04 |
+| `punct` / `punct-inel` | `#F28C3B` / `#C96A1E` | doar semn |
+| `masa` | `#EEF1FB` (fără sage) sau `#E9EFE4` (cu sage) | 15,98 / 15,40 |
+| `sage`, `sage-ink` | `#9DB08A` (decor), `#4E6B45` (text) | doar în lecție |
+| `home-1-fundal` | `#F6F4FA`, colțuri cer / lavandă / portocaliu la 24–30 % | |
+| `home-1-obiecte` | perechi de gradient: live cer deschis → cer; journey piersică → portocaliu; knowledge lavandă → cer deschis; coaching piersică → lavandă; workshops cer deschis → lavandă; compania cer → lavandă; centrul cer deschis → lavandă | |
+| `home-1-umbra` | `rgba(43,68,184,.22)` | |
+| `home-2-contur` | `#2B44B8` | 7,50 pe alb; minim 3,68 pe marginea lavandă (prag 3 pentru elemente care nu sunt text) |
+| `home-3-fundal` / `home-3-sticla` | `#0D1333` / `#121636` la 0,72 | |
+| `home-3-text` / `muted` / `link` / `accent-mare` | `#F5F3FF` / `#C9CBE6` / `#A9C4FF` / `#FFB98A` | 11,88 / 8,17 / 7,46 / 7,79 |
+
+Toate cele 72 de combinații din pagină (4 prime pagini × 3 pagini × 3 ecrane × cu și fără sage) au trecut verificarea: niciun prag ratat, fără derulare laterală la 375 px, fără erori.
+
+### Impactul asupra `scena.js`
+În toate trei, fundalul e CSS în spatele unui canvas WebGL transparent (`alpha: true`), iar etichetele (numere, „Desfă inovația”, straturile) sunt HTML peste canvas. Geometria obiectelor rămâne cea de azi.
+- **1 · Sticlă colorată:**
+  - fiecare obiect primește un material cu două culori care se amestecă pe înălțime (culori pe vârfuri sau o textură mică de gradient, 2 × 64 px), plus `clearcoat` pentru reflexia de sticlă și conturul alb din `EdgesGeometry`;
+  - umbra colorată devine o textură moale sub fiecare obiect (umbră de contact), nu umbre în timp real;
+  - estimare: 2–3 zile.
+- **2 · Scenă luminoasă:**
+  - material alb mat, contur `#2B44B8` și umbre de contact;
+  - cea mai ieftină la randare;
+  - estimare: 2 zile.
+- **3 · Seară:**
+  - scena de azi e deja pe întuneric, cu lumini aditive, deci se recolorează: fundal transparent peste `#0D1333`, aura obiectelor din sprite-urile existente (`AdditiveBlending` merge pe întuneric);
+  - fără efect de strălucire pe tot ecranul (prea scump pe telefon);
+  - estimare: 1–2 zile.
+- **Orbitele:** cele două lumini care se rotesc sunt două puncte pe o elipsă, cost neglijabil. Cu mișcare redusă, stau pe loc.
 
 ## Cererea
 Alex, 2026-11-17, despre D · Studio:

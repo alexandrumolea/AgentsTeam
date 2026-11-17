@@ -202,6 +202,50 @@ td.n{font-variant-numeric:tabular-nums;white-space:nowrap;font-weight:500}
 .lnav{display:flex;justify-content:space-between;align-items:center;gap:20px;flex-wrap:wrap;margin-top:48px}
 .lnav .prev{font-size:16px;color:var(--mu)}
 
+
+/* v3.1: textul, sage, primele pagini noi */
+.mock[data-body="sora"]{font-family:var(--fs)}
+.mock[data-body="sora"] .l-read .body{font-size:19px;line-height:1.75;font-weight:300}
+.mock[data-body="sora"] .ask li,.mock[data-body="sora"] .write{font-weight:300}
+.l-toc .dn .ck{display:none}
+.mock[data-sage="1"] .l-toc li.done .dn .n{display:none}
+.mock[data-sage="1"] .l-toc li.done .dn .ck{display:inline;color:#4E6B45}
+.mock[data-sage="1"] .desk{background:#E9EFE4}
+.mock[data-sage="1"] .desk .eb{color:#4E6B45}
+.mock[data-sage="1"] .breath .orb2{background:radial-gradient(60% 60% at 35% 30%,#FFFFFF 0%,rgba(255,255,255,0) 60%),radial-gradient(80% 80% at 70% 80%,#9DB08A 0%,rgba(157,176,138,0) 70%),#CFE3EE}
+.mock[data-sage="1"] .breath button{border-color:#4E6B45}
+.mock[data-sage="1"] .live i{background:#7E9A6E}
+.scene .sc{transform-box:fill-box;transform-origin:center;transform:scale(1.15);transition:transform .45s cubic-bezier(.2,.7,.2,1)}
+.scene .obj:hover .sc,.scene .obj:focus-visible .sc,.scene .obj.hi .sc{transform:scale(1.28)}
+.scene .trav{fill:var(--mk)}
+/* 1 · sticlă colorată: fundal liniștit, culoarea trece în obiecte */
+.home[data-h="color"] .mesh{background:radial-gradient(45% 55% at 0% 0%,rgba(79,163,240,.30) 0%,rgba(79,163,240,0) 70%),radial-gradient(40% 50% at 100% 100%,rgba(242,140,59,.24) 0%,rgba(242,140,59,0) 70%),radial-gradient(40% 50% at 0% 100%,rgba(183,166,234,.30) 0%,rgba(183,166,234,0) 70%),#F6F4FA}
+.home[data-h="color"] .scene .shape{fill:var(--gf,rgba(255,255,255,.5));stroke:rgba(255,255,255,.95);stroke-width:1.3}
+.home[data-h="color"] .scene .obj{filter:drop-shadow(0 18px 22px rgba(43,68,184,.22)) drop-shadow(0 2px 3px rgba(43,68,184,.18))}
+.home[data-h="color"] .scene .orb{stroke:rgba(43,68,184,.28)}
+.home[data-h="color"] .scene .lead-l{stroke:rgba(43,68,184,.45)}
+.home[data-h="color"] .scene .faint{stroke:rgba(43,68,184,.25)}
+/* 2 · scenă luminoasă: un câmp alb, gradientul doar ca lumină pe margini */
+.home[data-h="stage"] .mesh{background:radial-gradient(46% 62% at 68% 52%,#FFFFFF 0%,rgba(255,255,255,.95) 42%,rgba(255,255,255,0) 74%),radial-gradient(42% 52% at 0% 0%,#4FA3F0 0%,rgba(79,163,240,0) 70%),radial-gradient(36% 46% at 100% 0%,#8FD3F7 0%,rgba(143,211,247,0) 70%),radial-gradient(42% 48% at 0% 100%,#B7A6EA 0%,rgba(183,166,234,0) 70%),radial-gradient(34% 40% at 100% 62%,#F7B79A 0%,rgba(247,183,154,0) 70%),radial-gradient(40% 50% at 100% 100%,#F28C3B 0%,rgba(242,140,59,0) 70%),#F3EEF6}
+.home[data-h="stage"] .scene .shape{fill:rgba(255,255,255,.9);stroke:#2B44B8;stroke-width:1.5}
+.home[data-h="stage"] .scene .faint{stroke:rgba(43,68,184,.35)}
+.home[data-h="stage"] .scene .obj{filter:drop-shadow(0 20px 18px rgba(79,163,240,.30)) drop-shadow(0 4px 6px rgba(43,68,184,.18))}
+.home[data-h="stage"] .scene .orb{stroke:rgba(43,68,184,.3)}
+.home[data-h="stage"] .scene .lead-l{stroke:rgba(43,68,184,.5)}
+.home[data-h="stage"] .scene .obj:hover .shape,.home[data-h="stage"] .scene .obj.hi .shape{fill:#EEF3FF;stroke-width:2.4}
+/* 3 · seară: doar prima pagină, obiectele au lumină proprie */
+.home[data-h="night"]{color:var(--tx);--g:18 22 54;--tx:#F5F3FF;--tx-rgb:245 243 255;--mu:#C9CBE6;--ac:#A9C4FF;--em:#FFB98A;--mk:#F28C3B;--mk-ring:#FFC7A3;--sh:0 0 0}
+.home[data-h="night"] .mesh{background:radial-gradient(28% 36% at 66% 44%,rgba(79,163,240,.5) 0%,rgba(79,163,240,0) 70%),radial-gradient(26% 32% at 86% 70%,rgba(242,140,59,.42) 0%,rgba(242,140,59,0) 70%),radial-gradient(30% 34% at 50% 78%,rgba(183,166,234,.42) 0%,rgba(183,166,234,0) 70%),radial-gradient(22% 30% at 92% 22%,rgba(143,211,247,.4) 0%,rgba(143,211,247,0) 70%),radial-gradient(30% 36% at 72% 96%,rgba(247,183,154,.32) 0%,rgba(247,183,154,0) 70%),#0D1333}
+.home[data-h="night"] .grain{mix-blend-mode:soft-light;opacity:.5}
+.home[data-h="night"] .g{background:rgb(var(--g) / .72);border-color:rgba(255,255,255,.16);box-shadow:inset 0 1px 0 rgba(255,255,255,.22),0 24px 60px -30px rgba(0,0,0,.7)}
+.mock[data-rt="1"] .home[data-h="night"] .g{background:rgb(var(--g))}
+.home[data-h="night"] .scene .shape{fill:rgba(255,255,255,.08);stroke:rgba(255,255,255,.95);stroke-width:1.3}
+.home[data-h="night"] .scene .faint{stroke:rgba(255,255,255,.4)}
+.home[data-h="night"] .scene .obj{filter:drop-shadow(0 0 8px rgba(143,211,247,.75)) drop-shadow(0 0 22px rgba(79,163,240,.35))}
+.home[data-h="night"] .scene .obj:hover .shape,.home[data-h="night"] .scene .obj.hi .shape{fill:rgba(255,255,255,.2)}
+.home[data-h="night"] .scene .orb{stroke:rgba(255,255,255,.28)}
+.home[data-h="night"] .scene .trav{fill:#FFFFFF;filter:drop-shadow(0 0 6px #8FD3F7)}
+.home[data-h="night"] .scene .pill rect,.home[data-h="night"] .scene .num circle{stroke:rgba(255,255,255,.3)}
 /* laptop 1280 */
 @container m (min-width:701px) and (max-width:1300px){
   .h-hero{left:32px;top:32px;width:560px;padding:32px 40px 38px}
@@ -227,7 +271,8 @@ td.n{font-variant-numeric:tabular-nums;white-space:nowrap;font-weight:500}
   .h-hero h1{font-size:34px;line-height:1.08}
   .h-hero .cine{font-size:16px;margin-top:14px}
   .h-hero .cum{font-size:15px}
-  .scene{top:auto;bottom:250px;height:270px}
+  .scene{top:auto;bottom:252px;height:290px}
+  .h-hero h1{font-size:32px}
   .scene .pill text{font-size:34px}.scene .num text{font-size:30px}.scene .num circle{r:26px}
   .h-legend{left:14px;right:14px;bottom:14px;width:auto;grid-template-columns:1fr;padding:16px 22px 12px;border-radius:24px}
   .h-legend .lg + .lg{display:none}
@@ -261,6 +306,7 @@ td.n{font-variant-numeric:tabular-nums;white-space:nowrap;font-weight:500}
   .keep p{font-size:28px}
 }
 @media (prefers-reduced-motion:reduce){
+  .scene .sc{transition:none}
   .scene .float,.live i,.breath.on .orb2{animation:none}
   .scene .layer,.scene .llab{transition:none}
 }
@@ -268,9 +314,9 @@ td.n{font-variant-numeric:tabular-nums;white-space:nowrap;font-weight:500}
 
 <div class="page">
   <header>
-    <div class="eyebrow">Ioana · design v3 · 17 noiembrie 2026 · propunere</div>
+    <div class="eyebrow">Ioana · design v3.1 · 17 noiembrie 2026 · după D-054</div>
     <h1 class="t">Sticlă peste lumină</h1>
-    <p class="lead">Un singur design, cu patru palete de comutat. <strong>Elementele metaforice din Planșa</strong>, <strong>structura cursului din Studio</strong>, iar atelierul, showroom-ul și biblioteca se simt prin lumină, spațiu, calm și ordine, fără mobilier. Stilul e Liquid Glass: culori care se topesc unele în altele, cu granulație fină, și panouri de sticlă pe care stă tot textul.</p>
+    <p class="lead">Ai ales <strong>fontul Sora</strong> și <strong>paleta Sora</strong>. Problema rămasă era prima pagină: obiectele care se mișcă se pierdeau în gradient. Aici sunt <strong>trei prime pagini noi</strong> de comutat, plus cea din v3 ca reper. Mai jos poți compara Sora peste tot cu Sora + Inter Tight în lecție și poți vedea unde ar merge un sage.</p>
   </header>
 
   <div class="took">
@@ -278,17 +324,10 @@ td.n{font-variant-numeric:tabular-nums;white-space:nowrap;font-weight:500}
     <div><b>Din Studio</b><p>Lecția: cuprinsul cursului lângă text, sala de lectură, masa de lucru, respirația, ideea de reținut.</p></div>
     <div><b>Scos din Studio</b><p>Masa, raftul, lămpile, fereastra cu orașul, planta. Tot ce era literal.</p></div>
     <div><b>Esența locurilor</b><p>Lumină care vine dintr-o parte, mult spațiu, panouri aliniate, un singur lucru important pe ecran.</p></div>
-    <div><b>Culorile</b><p>Ca în imaginea ta: câmpuri mari care se topesc, cu granulație fină. Textul nu stă niciodată direct pe gradient.</p></div>
+    <div><b>Culorile</b><p>Paleta Sora. Pe prima pagină, culoarea trece din fundal în obiecte, ca să se vadă. Textul nu stă niciodată direct pe gradient.</p></div>
   </div>
 
   <div class="controls" role="group" aria-label="Ce vezi">
-    <div class="ctl"><span class="lbl" id="l-p">Paleta</span>
-      <div class="seg" id="c-p" aria-labelledby="l-p">
-        <button data-v="ive"><span class="dots"><i style="background:#2E5AA7"></i><i style="background:#5C88CD"></i><i style="background:#F1C436"></i><i style="background:#EFEAE0"></i></span>BEMORE Ive</button>
-        <button data-v="sora"><span class="dots"><i style="background:#4FA3F0"></i><i style="background:#B7A6EA"></i><i style="background:#F7B79A"></i><i style="background:#F28C3B"></i></span>Sora</button>
-        <button data-v="navy"><span class="dots"><i style="background:#001440"></i><i style="background:#708090"></i><i style="background:#FFE4E1"></i><i style="background:#FFA089"></i></span>Navy și roz</button>
-        <button data-v="teal"><span class="dots"><i style="background:#204654"></i><i style="background:#A9E0F1"></i><i style="background:#CAFFA6"></i><i style="background:#F7F9E1"></i></span>Verde și teal</button>
-      </div></div>
     <div class="ctl"><span class="lbl" id="l-v">Pagina</span>
       <div class="seg" id="c-v" aria-labelledby="l-v">
         <button data-v="home">Prima pagină</button>
@@ -301,10 +340,22 @@ td.n{font-variant-numeric:tabular-nums;white-space:nowrap;font-weight:500}
         <button data-v="lap">Laptop 1280</button>
         <button data-v="phone">Telefon</button>
       </div></div>
-    <div class="ctl"><span class="lbl" id="l-f">Titluri</span>
-      <div class="seg" id="c-f" aria-labelledby="l-f">
-        <button data-v="sora">Sora</button>
-        <button data-v="inter">Inter Tight</button>
+    <div class="ctl" id="ctl-h"><span class="lbl" id="l-h">Prima pagină</span>
+      <div class="seg" id="c-h" aria-labelledby="l-h">
+        <button data-v="color">1 · Sticlă colorată</button>
+        <button data-v="stage">2 · Scenă luminoasă</button>
+        <button data-v="night">3 · Seară</button>
+        <button data-v="v3">Reper v3</button>
+      </div></div>
+    <div class="ctl"><span class="lbl" id="l-b">Text</span>
+      <div class="seg" id="c-b" aria-labelledby="l-b">
+        <button data-v="sora">Sora peste tot</button>
+        <button data-v="inter">Sora + Inter Tight</button>
+      </div></div>
+    <div class="ctl"><span class="lbl" id="l-g">Sage</span>
+      <div class="seg" id="c-g" aria-labelledby="l-g">
+        <button data-v="0">Fără</button>
+        <button data-v="1">Cu sage</button>
       </div></div>
     <div class="ctl"><span class="lbl" id="l-r">Transparență</span>
       <div class="seg" id="c-r" aria-labelledby="l-r">
@@ -330,21 +381,33 @@ td.n{font-variant-numeric:tabular-nums;white-space:nowrap;font-weight:500}
 
   <section class="s">
     <div class="eyebrow">Fontul</div>
-    <h2>Sora pentru titluri, Inter Tight pentru text</h2>
+    <h2>Sora peste tot</h2>
     <div class="two">
-      <div><p class="spec" style="font-family:var(--fs);font-weight:200">Învățarea ca sursă a binelui</p>
-        <p><b>Sora ExtraLight</b> la titluri: geometrică, rotundă, făcută pentru ecran, se potrivește cu sticla și cu cercurile din scenă. Are ș și ț corecte. La greutăți mici rămâne subțire, cum cere stilul Ive.</p></div>
-      <div><p class="spec" style="font-family:var(--f);font-weight:400;font-size:28px;line-height:1.4">O întrebare bună valorează mai mult decât zece răspunsuri.</p>
-        <p><b>Inter Tight</b> la textul lung, la meniu și la etichete: mai îngust, se citește mai repede în lecții de 10–20 de minute. Sora la text mărunt e prea lată.</p></div>
+      <div><p class="spec" style="font-family:var(--fs);font-weight:300;font-size:22px;line-height:1.75;letter-spacing:-.005em">Un asistent AI îți răspunde în câteva secunde. Tentația e să-i mai dai o întrebare, și încă una. După o oră ai multe răspunsuri și niciun pas făcut.</p>
+        <p><b>Sora, 19 px, rânduri la 1,75.</b> Se citește bine și pare mai modernă. E cu aproximativ 11 % mai lată, deci un rând de lecție are 56–60 de caractere în loc de 66. Un singur font pe tot site-ul înseamnă și o pagină mai ușoară.</p></div>
+      <div><p class="spec" style="font-family:var(--f);font-weight:400;font-size:22px;line-height:1.7">Un asistent AI îți răspunde în câteva secunde. Tentația e să-i mai dai o întrebare, și încă una. După o oră ai multe răspunsuri și niciun pas făcut.</p>
+        <p><b>Inter Tight, 20 px.</b> E puțin mai rapidă la textul foarte lung, pentru că e mai îngustă. Diferența se simte abia la lecții de peste 15 minute.</p></div>
     </div>
-    <p class="caption">Recomandarea mea: Sora pentru titluri și Inter Tight pentru restul. Două fonturi în loc de patru cât are site-ul azi. Poți compara cu „Titluri: Inter Tight”.</p>
+    <p class="caption">Recomandarea mea: Sora peste tot. Titlurile la 200, textul la 300 și 400. Dacă lecțiile ajung lungi, trecem doar paragrafele lecției pe Inter Tight, fără să schimbăm altceva. Compară în pagină cu „Text: Sora + Inter Tight” pe Lecție de curs.</p>
+  </section>
+
+  <section class="s">
+    <div class="eyebrow">Istoric</div>
+    <h2>Celelalte palete din v3</h2>
+    <p class="lead" style="margin-bottom:14px">Nu mai sunt în alegere. Le las aici ca reper; cu ele, prima pagină arată ca în v3.</p>
+    <div class="seg" id="c-p">
+      <button data-v="sora">Sora (aleasă)</button>
+      <button data-v="ive">BEMORE Ive</button>
+      <button data-v="navy">Navy și roz</button>
+      <button data-v="teal">Verde și teal</button>
+    </div>
   </section>
 </div>
 
 <script>
 (function(){
 "use strict";
-var S={p:"ive",v:"home",e:"desk",f:"sora",r:"0"};
+var S={p:"sora",v:"home",e:"desk",f:"sora",r:"0",h:"color",b:"sora",g:"0"};
 var PAL={
   ive:{name:"BEMORE LS Ive, topit",phrase:"Amalfi, cornflower, travertin și citron se topesc unul în altul, în loc să stea în blocuri. Cea mai aproape de BEMORE.",
     chips:[["#2E5AA7","Amalfi"],["#5C88CD","Cornflower"],["#EFEAE0","Travertin"],["#F1C436","Citron"]],
@@ -378,26 +441,35 @@ function pill(x,y,t,cls,anchor){var w=Math.round(t.length*(S.e==="phone"?17:9.2)
   return '<g class="pill '+(cls||"")+'"><rect x="'+x0+'" y="'+(y-h/2)+'" width="'+w+'" height="'+h+'" rx="'+h/2+'"/><text x="'+(x0+w/2)+'" y="'+(y+(S.e==="phone"?11:6))+'" text-anchor="middle">'+t+'</text></g>';}
 function num(x,y,n){return '<g class="num"><circle cx="'+x+'" cy="'+y+'" r="15"/><text x="'+x+'" y="'+(y+5.5)+'">'+n+'</text></g>';}
 function scene(){
-  var v='<ellipse class="orb" cx="980" cy="560" rx="330" ry="80"/><ellipse class="orb" cx="980" cy="560" rx="500" ry="125"/>';
+  var H=homeMode();
+  var GR={live:["#8FD3F7","#4FA3F0"],povesti:["#F7B79A","#F28C3B"],knowledge:["#B7A6EA","#8FD3F7"],coaching:["#F7B79A","#B7A6EA"],speaking:["#8FD3F7","#B7A6EA"],companie:["#4FA3F0","#B7A6EA"],core:["#8FD3F7","#B7A6EA"]};
+  var v='';
+  if(H==="color"){v+='<defs>'+Object.keys(GR).map(function(k){return '<linearGradient id="gr-'+k+'" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="'+GR[k][0]+'" stop-opacity=".92"/><stop offset="1" stop-color="'+GR[k][1]+'" stop-opacity=".92"/></linearGradient>'}).join("")+'</defs>';}
+  v+='<ellipse class="orb" cx="980" cy="560" rx="330" ry="80"/><ellipse class="orb" cx="980" cy="560" rx="500" ry="125"/>';
+  if(H!=="v3"&&!matchMedia("(prefers-reduced-motion: reduce)").matches){
+    v+='<circle class="trav" r="5"><animateMotion dur="24s" repeatCount="indefinite" path="M650,560 a330,80 0 1,0 660,0 a330,80 0 1,0 -660,0"/></circle>'+
+       '<circle class="trav" r="4"><animateMotion dur="38s" repeatCount="indefinite" path="M1480,560 a500,125 0 1,1 -1000,0 a500,125 0 1,1 1000,0"/></circle>';}
   function o(k,fl,from,to){
-    return '<g class="obj" data-k="'+k+'" tabindex="0" role="link" aria-label="'+rn(k)+'"><g class="float '+fl+'">'+SH[k]+'</g><line class="lead-l" x1="'+from[0]+'" y1="'+from[1]+'" x2="'+to[0]+'" y2="'+to[1]+'"/>'+num(to[0]+12,to[1]-10,NUMS[k])+'</g>';
+    return '<g class="obj" data-k="'+k+'" tabindex="0" role="link" aria-label="'+rn(k)+'"><g class="float '+fl+'"><g class="sc">'+SH[k]+'</g></g><line class="lead-l" x1="'+from[0]+'" y1="'+from[1]+'" x2="'+to[0]+'" y2="'+to[1]+'"/>'+num(to[0]+12,to[1]-10,NUMS[k])+'</g>';
   }
   v+=o("live","",[684,448],[714,414])+o("povesti","d2",[600,624],[572,596])+o("knowledge","d3",[896,690],[926,664])+
      o("coaching","",[1210,640],[1236,614])+o("speaking","d2",[1326,318],[1352,294])+o("companie","d3",[1302,552],[1268,520]);
-  var core='<g class="obj core" data-k="inventii" tabindex="0" role="button" aria-label="Desfă inovația: Innovations" aria-expanded="false">';
+  if(H==="color"){Object.keys(GR).forEach(function(k){if(k!=="core")v=v.replace('data-k="'+k+'" tabindex','data-k="'+k+'" style="--gf:url(#gr-'+k+')" tabindex')});}
+  var core='<g class="obj core" data-k="inventii"'+(H==="color"?' style="--gf:url(#gr-core)"':'')+' tabindex="0" role="button" aria-label="Desfă inovația: Innovations" aria-expanded="false">';
   LAYERS.slice().reverse().forEach(function(n,j){var i=LAYERS.length-1-j,rx=150-i*8;
     core+='<g class="layer" data-i="'+i+'"><ellipse class="shape" cx="980" cy="400" rx="'+rx+'" ry="'+(38-i*2)+'"/>'+
       (i===0?'<ellipse class="faint" cx="980" cy="400" rx="'+(rx-36)+'" ry="22"/><circle class="mk" cx="980" cy="400" r="6"/>':'')+
       '<g class="llab"><line class="lead-l" x1="'+(980+rx)+'" y1="400" x2="1172" y2="400"/>'+pill(1180,400,n)+'</g></g>';});
   core+='<line class="lead-l" x1="1082" y1="378" x2="1112" y2="314"/>'+num(1124,304,4)+pill(980,494,"Desfă inovația","rest","middle")+'</g>';
-  var vb=S.e==="phone"?"500 220 960 640":S.e==="lap"?"-360 -70 1800 1125":"-260 -60 1700 1062";
+  var vb=S.e==="phone"?"500 220 960 640":S.e==="lap"?"-360 20 1800 1125":"-260 30 1700 1062";
   return '<svg class="scene" viewBox="'+vb+'" preserveAspectRatio="xMidYMid '+(S.e==="phone"?"meet":"slice")+'" aria-label="Scena atelierului">'+v+core+'</svg>';
 }
 var HERO='<h1>Construiesc unelte pentru oameni care <em>vor să crească.</em></h1><p class="cine">Sunt Alex: coach, fondator și inventator.</p><p class="cum">Fiecare obiect de aici e un drum. Trage de spațiu sau alege mai jos.</p>';
 function bg(){return '<div class="mesh"></div><div class="grain"></div>';}
+function homeMode(){return S.p==="sora"?S.h:"v3";}
 function home(){
   var li=function(r){return '<li data-k="'+r.k+'"><a href="#"><span class="nn">'+(NUMS[r.k]||"")+'</span>'+r.n+'</a></li>'};
-  return '<div class="home">'+bg()+scene()+
+  return '<div class="home" data-h="'+homeMode()+'">'+bg()+scene()+
     '<div class="h-hero g"><div class="h-row"><span class="brand"><span class="dot"></span>Alex · Atelier</span><a class="live" href="#"><i></i>Live</a></div>'+HERO+'</div>'+
     '<nav class="h-legend g" aria-label="Drumuri"><div class="lg"><span class="cap">De ce ai nevoie?</span><ul>'+ROOMS.filter(function(r){return r.g===1}).map(li).join("")+'<li class="more"><a href="#">Toate cele 8 drumuri →</a></li></ul></div>'+
     '<div class="lg"><span class="cap">Intră în atelier</span><ul>'+ROOMS.filter(function(r){return r.g!==1}).map(li).join("")+'</ul></div></nav>'+
@@ -416,7 +488,7 @@ function room(){
 }
 function lesson(){
   var Ls=["Ce vrei de la un asistent AI","Primul tău context","Unde îți fuge atenția când lucrezi cu AI","Cum îi dai contextul potrivit","Când te oprești","Ritmul tău de lucru"];
-  var toc='<aside class="l-toc g"><span class="cap">Curs de exemplu · 6 lecții</span><div class="prog" aria-hidden="true"><i></i></div><ol>'+Ls.map(function(t,i){return '<li class="'+(i<2?"done":i===2?"now":"")+'"><a href="#"'+(i===2?' aria-current="page"':'')+'><span class="dn">'+(i+1)+'</span><span>'+t+'</span>'+(i===2?'<i class="dot"></i>':'')+'</a></li>'}).join("")+'</ol></aside>';
+  var toc='<aside class="l-toc g"><span class="cap">Curs de exemplu · 6 lecții</span><div class="prog" aria-hidden="true"><i></i></div><ol>'+Ls.map(function(t,i){return '<li class="'+(i<2?"done":i===2?"now":"")+'"><a href="#"'+(i===2?' aria-current="page"':'')+'><span class="dn"><b class="n">'+(i+1)+'</b><b class="ck" aria-label="parcursă">✓</b></span><span>'+t+'</span>'+(i===2?'<i class="dot"></i>':'')+'</a></li>'}).join("")+'</ol></aside>';
   var f1='<figure class="fig"><svg viewBox="0 0 640 190" aria-hidden="true"><line x1="144" y1="80" x2="276" y2="80"/><line x1="364" y1="80" x2="496" y2="80"/>'+
     '<circle cx="100" cy="80" r="44"/><circle cx="320" cy="80" r="44"/><circle cx="540" cy="80" r="44"/>'+
     '<text x="100" y="158">Întrebarea</text><text x="320" y="158">Răspunsul</text><text x="540" y="158">Pasul</text>'+
@@ -449,23 +521,29 @@ function ctab(){
     ["Text pe masa de lucru","plin "+p.desk,cr(hx(p.tx),hx(p.desk)),7],
     ["Butonul principal",p.btn[0]+" / "+p.btn[1],cr(hx(p.btn[1]),hx(p.btn[0])),4.5],
     ["Fără transparență (rezerva)","sticlă plină "+p.g,cr(hx(p.tx),hx(p.g)),7]];
-  document.getElementById("ctab").innerHTML=rows.map(function(r){var ok=r[2]>=r[3];return '<tr><td>'+r[0]+'</td><td>'+r[1]+'</td><td class="n '+(ok?"ok":"no")+'">'+r[2].toFixed(2).replace(".",",")+' : 1</td><td>'+(r[3]===7?"AAA, 7 : 1":"AA, 4,5 : 1")+(ok?" · trece":" · nu trece")+'</td></tr>'}).join("");
+  if(S.p==="sora"&&S.v==="home"&&S.h==="night"){
+    var base="#0D1333",glows=["#4FA3F0","#B7A6EA","#F7B79A","#F28C3B","#8FD3F7"].map(function(c){var a=hx(c),b=hx(base);return "#"+a.map(function(v,i){return Math.round(v*.5+b[i]*.5).toString(16).padStart(2,"0")}).join("")}).concat([base]);
+    rows=[["Seară: text pe sticlă închisă","sticlă #121636, 72 %",worst("#F5F3FF","#121636",.72,glows),4.5],["Seară: text secundar","sticlă 72 %",worst("#C9CBE6","#121636",.72,glows),4.5],["Seară: linkuri, numere","sticlă 72 %",worst("#A9C4FF","#121636",.72,glows),4.5],["Seară: „vor să crească.”","sticlă 72 %",worst("#FFB98A","#121636",.72,glows),3]].concat(rows.slice(3));}
+  if(S.g==="1"&&S.p==="sora")rows=rows.concat([["Sage: text pe masa de lucru","plin #E9EFE4",cr(hx("#14161F"),hx("#E9EFE4")),7],["Sage: eticheta, bifa","#4E6B45 pe #E9EFE4",cr(hx("#4E6B45"),hx("#E9EFE4")),4.5],["Sage: bifa pe sticlă","sticlă 80 %",worst("#4E6B45","#FFFFFF",.8,p.mesh),4.5]]);
+  document.getElementById("ctab").innerHTML=rows.map(function(r){var ok=r[2]>=r[3];return '<tr><td>'+r[0]+'</td><td>'+r[1]+'</td><td class="n '+(ok?"ok":"no")+'">'+r[2].toFixed(2).replace(".",",")+' : 1</td><td>'+(r[3]===7?"AAA, 7 : 1":r[3]===3?"AA text mare, 3 : 1":"AA, 4,5 : 1")+(ok?" · trece":" · nu trece")+'</td></tr>'}).join("");
 }
 
 /* randare */
 var frame=document.getElementById("frame"),stage=document.getElementById("stage"),timerId=null;
 function setPressed(id,val){[].forEach.call(document.querySelectorAll("#"+id+" button"),function(b){b.setAttribute("aria-pressed",String(b.dataset.v===val))})}
 function render(){
-  setPressed("c-p",S.p);setPressed("c-v",S.v);setPressed("c-e",S.e);setPressed("c-f",S.f);setPressed("c-r",S.r);
+  setPressed("c-p",S.p);setPressed("c-v",S.v);setPressed("c-e",S.e);setPressed("c-r",S.r);setPressed("c-h",S.h);setPressed("c-b",S.b);setPressed("c-g",S.g);
+  document.getElementById("ctl-h").hidden=S.v!=="home"||S.p!=="sora";
   var p=PAL[S.p];
   document.getElementById("a-name").textContent=p.name;document.getElementById("a-phrase").textContent=p.phrase;
   document.getElementById("a-chips").innerHTML=p.chips.map(function(c){return '<span><i style="background:'+c[0]+'"></i>'+c[1]+' '+c[0]+'</span>'}).join("");
   var html=S.v==="home"?home():S.v==="room"?room():lesson();
-  frame.innerHTML='<div class="mock" data-dev="'+S.e+'" data-pal="'+S.p+'" data-font="'+S.f+'" data-rt="'+S.r+'">'+html+'</div>';
+  frame.innerHTML='<div class="mock" data-dev="'+S.e+'" data-pal="'+S.p+'" data-font="sora" data-body="'+S.b+'" data-sage="'+S.g+'" data-rt="'+S.r+'">'+html+'</div>';
   stage.classList.toggle("phone-mode",S.e==="phone");
   var SZ={desk:"1440 × 900",lap:"1280 × 800",phone:"390 × 844"}[S.e];
+  var HC={color:"Sticlă colorată: fundalul se liniștește, iar culorile Sora trec în obiecte. Fiecare obiect are gradientul lui și o umbră colorată.",stage:"Scenă luminoasă: obiectele stau pe un câmp alb, cu contur albastru; gradientul Sora rămâne doar ca lumină pe margini.",night:"Seară: doar prima pagină e închisă. Obiectele au lumină proprie, iar gradientul Sora strălucește în spatele lor. Paginile de citit rămân luminoase.",v3:"Reper: prima pagină din v3, în care obiectele se pierdeau în gradient."};
   document.getElementById("caption").textContent=S.v==="home"?
-    "Mostră la "+SZ+". Scena e desenată aici în 2D; pe site rămâne 3D. Apasă pe obiectul din centru ca să-l desfaci. Treci peste legendă: obiectul se aprinde. „Transparență: Redusă” arată rezerva pentru cine a cerut mai puțină transparență sau pentru browserele fără blur.":
+    HC[homeMode()]+" Mostră la "+SZ+", desenată 2D. Obiectele plutesc, două lumini mici se rotesc pe orbite, iar la hover sau la Tab obiectul crește și se aprinde (și din legendă). Apasă pe centru: „Desfă inovația”.":
     S.v==="room"?"Mostră la lățime reală, pagina întreagă. Numele și rolurile sunt confirmate de Alex; textele subliniate punctat sunt exemple.":
     "Mostră la lățime reală, pagina întreagă. Cursul și lecția sunt text de exemplu. Structura e cea din Studio. Cronometrul respiră: 4 secunde inspiri, 4 expiri.";
   ctab();fit();wire();
@@ -505,8 +583,8 @@ function wire(){
     });}
 }
 function bind(id,key){[].forEach.call(document.querySelectorAll("#"+id+" button"),function(b){b.addEventListener("click",function(){S[key]=b.dataset.v;if(timerId){clearInterval(timerId);timerId=null}render()})})}
-bind("c-p","p");bind("c-v","v");bind("c-e","e");bind("c-f","f");bind("c-r","r");
-try{var m=/^(ive|sora|navy|teal)-(home|room|lesson)(?:-(phone|lap))?$/.exec(location.hash.replace("#",""));if(m){S.p=m[1];S.v=m[2];if(m[3])S.e=m[3]}}catch(e){}
+bind("c-p","p");bind("c-v","v");bind("c-e","e");bind("c-r","r");bind("c-h","h");bind("c-b","b");bind("c-g","g");
+try{var m=/^(ive|sora|navy|teal)-(home|room|lesson)(?:-(phone|lap))?(?:-(color|stage|night|v3))?(-sage)?(-inter)?$/.exec(location.hash.replace("#",""));if(m){S.p=m[1];S.v=m[2];if(m[3])S.e=m[3];if(m[4])S.h=m[4];if(m[5])S.g="1";if(m[6])S.b="inter"}}catch(e){}
 var rt;window.addEventListener("resize",function(){clearTimeout(rt);rt=setTimeout(fit,80)});
 if(document.fonts&&document.fonts.ready)document.fonts.ready.then(fit);
 render();
