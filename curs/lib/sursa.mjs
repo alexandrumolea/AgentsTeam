@@ -19,7 +19,7 @@ export const TIPURI_PIESA = Object.keys(FAMILIE);
 export const FAMILII = ['continut', 'activitate', 'punte'];
 export const FORMATE = ['individual', 'perechi', 'grup', 'plen'];
 export const ENERGII = ['calm', 'mediu', 'activ'];
-const BRANDURI = ['innersis', 'bemore-ls'];
+const BRANDURI = ['bemore', 'innersis', 'bemore-ls']; // bemore = noul branding BEMORE (Alex, 2026-11-17); până la curs/tema/bemore.css se folosește sobru.css
 const LIMBI = ['ro', 'en'];
 const PUBLIC = ['nu', 'link', 'da'];
 const ID_OK = /^[a-z0-9]+(-[a-z0-9]+)*$/;
