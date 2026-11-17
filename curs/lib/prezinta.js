@@ -25,8 +25,7 @@
   function ecranHtml(i) {
     var e = ECRANE[i];
     if (!e) return '<div class="ecran ecran-final"><p>Final</p></div>';
-    return '<div class="ecran lume-' + e.lume + '"><div class="ecran-continut">' + e.html + '</div>' +
-      (e.cronometru ? '<div class="ecran-cronometru" data-cron></div>' : '') + '</div>';
+    return '<div class="ecran fel-' + e.fel + (e.titlu ? ' ecran-titlu' : '') + '">' + e.html + '</div>';
   }
   function puneEcran(cadru, i) {
     if (cadru._i === i && cadru.firstElementChild) { potriveste(cadru); return; }
@@ -174,6 +173,8 @@
       $('alternative').innerHTML = m.alternative || '';
       $('btn-negru').setAttribute('aria-pressed', negru);
       $('btn-sala').textContent = deschisa ? 'Ecranul din sală: deschis' : 'Deschide ecranul din sală';
+      var bp = document.querySelectorAll('#banda [data-i]');
+      for (var bk = 0; bk < bp.length; bk++) { var ea = +bp[bk].getAttribute('data-i') === st.i; bp[bk].classList.toggle('acum', ea); bp[bk].classList.toggle('trecut', +bp[bk].getAttribute('data-i') < st.i); if (ea) bp[bk].setAttribute('aria-current', 'step'); else bp[bk].removeAttribute('aria-current'); }
       var li = document.querySelectorAll('#schita-mica li[data-modul]');
       for (var q = 0; q < li.length; q++) li[q].classList.toggle('acum', +li[q].getAttribute('data-modul') === e.modul);
       // Derulăm doar lista schiței, nu toată pagina.
@@ -332,6 +333,22 @@
     if (!confirm('Repornești ziua? Se șterg orele la care ai intrat în fiecare modul.')) return;
     st = { i: 0, intrari: {}, start: Date.now() }; salveaza(); mergiLa(0);
   });
+  // Banda zilei (Ioana, slide-tipuri v1): un semn pe ecran, în ordinea zilei, cu forma și culoarea felului.
+  // Arată dintr-o privire ce urmează (teorie, exercițiu, reflecție…). Un click sare la acel ecran.
+  (function () {
+    var banda = $('banda'); if (!banda) return;
+    var html = '';
+    for (var k = 0; k < ECRANE.length; k++) {
+      var x = ECRANE[k], nou = k > 0 && ECRANE[k - 1].modul !== x.modul;
+      html += (nou ? '<span class="banda-sep" aria-hidden="true"></span>' : '') +
+        '<button type="button" class="banda-p" data-i="' + k + '" title="' + (k + 1) + ' · ' + x.eticheta.replace(/"/g, '&quot;') + '" aria-label="Ecranul ' + (k + 1) + ': ' + x.eticheta.replace(/"/g, '&quot;') + '"><span class="semn-mic fel-' + x.fel + '"></span></button>';
+    }
+    banda.innerHTML = html;
+    banda.addEventListener('click', function (ev) {
+      var t = ev.target.closest ? ev.target.closest('[data-i]') : null; if (!t) return;
+      mergiLa(+t.getAttribute('data-i')); t.blur();
+    });
+  })();
   var lista = document.querySelectorAll('#schita-mica li[data-modul]');
   for (var q = 0; q < lista.length; q++) lista[q].addEventListener('click', function () {
     var mi = +this.getAttribute('data-modul');
@@ -398,7 +415,7 @@
   if (h === 'tipar-ecrane') {
     document.body.classList.add('tipar-ecrane');
     var st2 = document.createElement('style'); st2.textContent = '@page { size: 1600px 900px; margin: 0; }'; document.head.appendChild(st2);
-    var html = ''; for (var x = 0; x < ECRANE.length; x++) html += ecranHtml(x).replace(' data-cron>', '>' + (ECRANE[x].cronometru ? ECRANE[x].cronometru + ':00' : ''));
+    var html = ''; for (var x = 0; x < ECRANE.length; x++) html += ecranHtml(x).replace(' data-cron>', '>'); // la tipar, cronometrul arată durata (pusă de build)
     $('tipar-ecrane-lista').innerHTML = html; hidrateaza($('tipar-ecrane-lista'));
   } else if (h === 'tipar-trainer') {
     var st3 = document.createElement('style'); st3.textContent = '@page { size: A4; margin: 14mm; }'; document.head.appendChild(st3);

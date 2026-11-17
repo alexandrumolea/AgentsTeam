@@ -1,0 +1,66 @@
+/*
+  Tema Innersis Ive (Ioana, slide-tipuri v1, 2026-11-17). Aici stau DOAR tokeni; structura e în lib/stil.css.
+  Pornește de la slide-urile Ive ale lui Alex: navy de cerneală, hârtie caldă, teal ca accent, aur doar ca „șoaptă”.
+  Felurile ecranelor (team/ioana/documente/slide-tipuri-v1.md):
+    teorie    = hârtie, semnul pătrat     exercițiu = alb + panoul de aur cu cronometrul, semnul triunghi
+    reflecție = navy, semnul cerc (aur)   mesaj     = câmp teal, semnul linie
+    pauză     = salvie, semnul două bare
+  Contrastul (WCAG 2.2) e calculat pentru fiecare pereche text / fond; toate trec AA, cele mai multe AAA.
+*/
+:root {
+  /* Litera: fonturi de sistem, merg fără internet. Pe Mac, Helvetica Neue. */
+  --font: "Helvetica Neue", Helvetica, -apple-system, system-ui, Arial, sans-serif;
+  --font-greutate-titlu: 200;
+  --font-greutate-text: 300;
+  --font-greutate-accent: 500;
+
+  /* Teorie (teorie, model, poveste): o pagină pe hârtie. Text 13,55 · accent 4,91 */
+  --fel-teorie-fundal: #F5F2EC;
+  --fel-teorie-text: #1C2733;
+  --fel-teorie-accent: #2B7378;
+  --fel-teorie-linie: #D6CFC2;
+  --fel-teorie-gata: #A63D2A;      /* 5,66 */
+
+  /* Reflecție (reflecție, deschidere, închidere): navy, spațiu, un cerc. Text 14,59 · teal 7,31 · aur 7,02 */
+  --fel-reflectie-fundal: #13202F;
+  --fel-reflectie-text: #F3F1EC;
+  --fel-reflectie-accent: #6FB9BA;
+  --fel-reflectie-semn: #C9A45C;
+  --fel-reflectie-cerc: rgba(111, 185, 186, .26);
+  --fel-reflectie-gata: #E58C73;   /* 6,53 */
+
+  /* Mesaj cheie: câmp teal, text mare, centrat. Text 7,40 · aur deschis 5,36 */
+  --fel-mesaj-fundal: #1E5E63;
+  --fel-mesaj-text: #FFFFFF;
+  --fel-mesaj-accent: #F0D9A8;
+  --fel-mesaj-gata: #FFD2C4;       /* 5,38 */
+
+  /* Exercițiu (exercițiu, energizant): alb, pași numerotați, panoul de aur cu cronometrul. Text 14,50 · accent 5,26 · pe panou 8,43 */
+  --fel-exercitiu-fundal: #FBFAF7;
+  --fel-exercitiu-text: #1C2733;
+  --fel-exercitiu-accent: #2B7378;
+  --fel-exercitiu-linie: #DDD7CB;
+  --fel-exercitiu-panou: #D9B567;
+  --fel-exercitiu-pe-panou: #13202F;
+  --fel-exercitiu-semn: #A07A2C;   /* semnul triunghi pe fond alb: 3,95 (grafic: prag 3) */
+  --fel-exercitiu-gata: #8A2B1C;   /* 4,40 pe panou, la 160 px (text mare: prag 3) */
+
+  /* Pauză: salvie, liniște, cronometrul în centru. Text 10,43 · accent 4,74 */
+  --fel-pauza-fundal: #DCE5DD;
+  --fel-pauza-text: #1F3328;
+  --fel-pauza-accent: #3E6B55;
+  --fel-pauza-gata: #A63D2A;       /* 4,90 */
+
+  /* Materialul trainerului (ecranul lui Alex) */
+  --t-fundal: #FBFAF8;
+  --t-suprafata: #FFFFFF;
+  --t-text: #1C2733;
+  --t-sters: #5F6873;
+  --t-linie: #E2DED6;
+  --t-accent: #2B7378;
+  --t-pe-accent: #FFFFFF;
+  --t-nota-fundal: #FBF3E2;
+  --t-nota-linie: #C9A45C;
+  --t-acum: #E3F0EF;
+  --cronometru-gata: #A63D2A;
+}

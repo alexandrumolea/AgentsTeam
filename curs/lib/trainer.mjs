@@ -7,9 +7,22 @@ import { creeazaRandare, escapeHtml as e, normal } from './randare.mjs';
 import { imaginiDin, ora, desfasoara, FORMATE, ENERGII, FAMILIE, FAMILII } from './sursa.mjs';
 
 const AICI = dirname(fileURLToPath(import.meta.url));
-// Lumea Ive a ecranelor: la module, după tip; la piese, după familie (1.9: conținut = întunecat, activitate = luminos, punte = accent).
-const LUME = { teorie: 'intunecat', exercitiu: 'luminos', reflectie: 'luminos', pauza: 'luminos', mesaj: 'accent' };
-const LUME_FAMILIE = { continut: 'intunecat', activitate: 'luminos', punte: 'accent' };
+// Felul ecranului din sală (Ioana, slide-tipuri v1, 2026-11-17): patru feluri care se recunosc dintr-o privire, plus pauza.
+// Fiecare fel are alt fond, alt semn (pătrat, cerc, linie, triunghi, două bare), altă așezare și eticheta lui. Vezi
+// team/ioana/documente/slide-tipuri-v1.md. Tipul modulului sau al piesei alege felul; un ecran cu cronometru dintr-un
+// modul de teorie sau de mesaj e, de fapt, o activitate, deci devine exercițiu.
+export const FEL = {
+  teorie: 'teorie', model: 'teorie', poveste: 'teorie',
+  reflectie: 'reflectie', deschidere: 'reflectie', inchidere: 'reflectie',
+  mesaj: 'mesaj',
+  exercitiu: 'exercitiu', energizant: 'exercitiu',
+  pauza: 'pauza',
+};
+const ETICHETA_TIP = {
+  teorie: 'Teorie', model: 'Model', poveste: 'Poveste', reflectie: 'Reflecție', deschidere: 'Deschidere', inchidere: 'Închidere',
+  mesaj: 'Mesaj cheie', exercitiu: 'Exercițiu', energizant: 'Energizant', pauza: 'Pauză',
+};
+const FORMAT_SALA = { individual: 'singur', perechi: 'în perechi', grup: 'în grup', plen: 'toată sala' };
 const TIP = {
   teorie: 'teorie', exercitiu: 'exercițiu', reflectie: 'reflecție', mesaj: 'mesaj', pauza: 'pauză',
   model: 'model', poveste: 'poveste', energizant: 'energizant', deschidere: 'deschidere', inchidere: 'închidere',
@@ -23,8 +36,29 @@ export function caleTema(brand) {
 }
 
 const ENERGIE = { calm: 'energie calmă', mediu: 'energie medie', activ: 'energie activă' };
-const lumePiesa = (x) => (x.tip === 'pauza' ? 'luminos' : LUME_FAMILIE[x.familie] ?? 'luminos');
-const lumeDe = (r, s) => (s && s.piesa ? lumePiesa(s.piesa) : r.fel === 'piesa' ? lumePiesa(r.piesa) : LUME[r.fel === 'pauza' ? 'pauza' : r.modul.tip]) ?? 'luminos';
+/** De unde vine un ecran: tipul, titlul și formatul piesei sau ale modulului. */
+const sursaPiesa = (x) => ({ tip: x.tip, titlu: x.titlu, format: x.format });
+const sursaModul = (m) => ({ tip: m.tip, titlu: m.titlu });
+const sursaDe = (r, s) => (s && s.piesa ? sursaPiesa(s.piesa) : r.fel === 'piesa' ? sursaPiesa(r.piesa) : r.fel === 'pauza' ? { tip: 'pauza', titlu: r.titlu } : sursaModul(r.modul));
+
+/** Un ecran din sală: felul, eticheta și interiorul (eticheta cu semnul felului, conținutul, panoul sau cronometrul).
+ *  Același HTML în sală, în previzualizări, în ecranul de comandă și la tipar. */
+export function ecranul(sursa, continut, cronometru = 0, titlu = false) {
+  let fel = FEL[sursa.tip] ?? 'teorie';
+  const activitate = cronometru > 0 && (fel === 'teorie' || fel === 'mesaj');
+  if (activitate) fel = 'exercitiu';
+  const nume = activitate ? 'Exercițiu' : ETICHETA_TIP[sursa.tip] ?? 'Teorie';
+  const eticheta = titlu || fel === 'pauza' || !sursa.titlu ? nume : `${nume} · ${sursa.titlu}`;
+  const cron = cronometru ? `<div class="ecran-cronometru" data-cron>${cronometru}:00</div>` : ''; // în sală, prezinta.js îl ține la zi
+  const format = FORMAT_SALA[sursa.format] ?? '';
+  // Exercițiul are panoul lui: cronometrul mare (sau semnul ▶) și formatul. Celelalte feluri pun cronometrul jos, în dreapta.
+  const panou = fel === 'exercitiu'
+    ? `<div class="ecran-panou">${cron || '<span class="panou-semn" aria-hidden="true"></span>'}${format ? `<p class="panou-format">${e(format)}</p>` : ''}</div>`
+    : cron;
+  const html = `<p class="ecran-eticheta"><span class="ecran-semn" aria-hidden="true"></span><span class="ecran-eticheta-text">${e(eticheta)}</span></p>`
+    + `<div class="ecran-continut">${continut}</div>${panou}`;
+  return { fel, eticheta, html };
+}
 /** Etichetele (Alex, 2026-11-17): organizare internă. Nu ajung în sală și nici în cursul participanților. */
 const eticheteMici = (x) => (x.etichete?.length ? ` <span class="etichete-mici">${x.etichete.map((t) => e(t.text)).join(' · ')}</span>` : '');
 /** „15 min · perechi · energie medie” la activități; „20 min · model” la restul. */
@@ -39,22 +73,26 @@ export function construiesteEcrane(c) {
   const randeaza = creeazaRandare({ atribut: 'data-img', randuriNoi: true });
   const randeazaNota = creeazaRandare({ atribut: 'data-img' });
   const ecrane = [];
-  const pauza = (ri, titlu, durata) => ecrane.push({ modul: ri, lume: 'luminos', html: `<h1>${e(titlu)}</h1><p class="ecran-sub">${durata} min</p>`, cronometru: durata, note: [], titlu: true });
+  const pune = (ri, sursa, continut, cronometru = 0, titlu = false) => {
+    const x = ecranul(sursa, continut, cronometru, titlu);
+    ecrane.push({ modul: ri, fel: x.fel, eticheta: x.eticheta, html: x.html, cronometru, note: [], ...(titlu ? { titlu: true } : {}) });
+  };
+  const pauza = (ri, titlu, durata) => pune(ri, { tip: 'pauza', titlu }, `<h1>${e(titlu)}</h1><p class="ecran-sub">${durata} min</p>`, durata, true);
   let nr = 0;
   c.agenda.forEach((r, ri) => {
     if (r.fel === 'pauza') { pauza(ri, r.titlu, r.durata); return; }
     if (r.fel === 'modul') {
       if (r.modul.tip === 'pauza') pauza(ri, r.modul.titlu, r.durata);
-      else { nr++; ecrane.push({ modul: ri, lume: lumeDe(r), html: `<p class="ecran-numar">${String(nr).padStart(2, '0')}</p><h1>${e(r.modul.titlu)}</h1>`, cronometru: 0, note: [], titlu: true }); }
+      else { nr++; pune(ri, sursaModul(r.modul), `<p class="ecran-numar">${String(nr).padStart(2, '0')}</p><h1>${e(r.modul.titlu)}</h1>`, 0, true); }
     }
     const inainte = ecrane.length, noteInainte = [];
     for (const s of desfasoara(r)) {
       if (s.strat === 'sala' || s.strat === 'sala-si-curs') {
-        ecrane.push({ modul: ri, lume: lumeDe(r, s), html: randeaza(s.md), cronometru: s.atribute.cronometru ?? 0, note: [] });
+        pune(ri, sursaDe(r, s), randeaza(s.md), s.atribute.cronometru ?? 0);
       } else if (s.strat === 'piesa-inceput' && s.piesa.tip === 'pauza') {
         pauza(ri, s.piesa.titlu, s.piesa.durata);
       } else if (s.strat === 'piesa-inceput' && r.fel === 'piesa' && !s.piesa.segmente.some((x) => x.strat === 'sala' || x.strat === 'sala-si-curs')) {
-        ecrane.push({ modul: ri, lume: lumePiesa(s.piesa), html: `<h1>${e(s.piesa.titlu)}</h1>`, cronometru: 0, note: [], titlu: true });
+        pune(ri, sursaPiesa(s.piesa), `<h1>${e(s.piesa.titlu)}</h1>`, 0, true);
       } else if (s.strat === 'trainer') {
         // Nota merge la ecranul de dinaintea ei; la o piesă singură, cea scrisă înaintea primului ecran merge pe primul ecran.
         if (r.fel === 'piesa' && ecrane.length === inainte) noteInainte.push(randeazaNota(s.md));
@@ -82,7 +120,10 @@ function harta(c) {
 const json = (x) => JSON.stringify(x).replace(/</g, '\\u003c');
 const oraR = (r) => (r.start == null ? '–' : `${ora(r.start)}–${ora(r.sfarsit)}`);
 const titluR = (r) => (r.fel === 'pauza' ? r.titlu : r.fel === 'piesa' ? r.piesa.titlu : r.modul.titlu);
-const ecranStatic = (lume, html) => `<div class="cadru"><div class="ecran lume-${lume}"><div class="ecran-continut">${html}</div></div></div>`;
+// Previzualizare: cronometrul arată durata și nu se leagă de cronometrul din Prezintă (fără data-cron).
+const ecranStatic = (x) => `<div class="cadru"><div class="ecran fel-${x.fel}">${x.html.replace(' data-cron>', '>')}</div></div>`;
+/** Tipul, cu semnul felului lui (același semn ca pe ecranele din sală și în banda din ecranul de comandă). */
+const tipSemn = (tip) => `<span class="tip"><span class="semn-mic fel-${FEL[tip] ?? 'teorie'}" aria-hidden="true"></span>${TIP[tip] ?? e(tip)}</span>`;
 
 /** Totalul zilei și diferența față de durata_zi, în Ziua și în Schiță (D-053). */
 function totalZi(c) {
@@ -94,17 +135,17 @@ function totalZi(c) {
 }
 
 function vedereaZiua(c) {
-  const randPiesa = (x, i, cls) => `<tr class="${cls}" data-modul="${i}"><td></td><td>↳ <a href="#ex-${e(x.id)}" data-banca>${e(x.titlu)}</a>${eticheteMici(x)}</td><td><span class="tip">${TIP[x.tip] ?? e(x.tip)}</span></td><td>${x.durata} min</td><td class="sters">${x.familie === 'activitate' ? `${e(x.format)} · ${ENERGIE[x.energie] ?? e(x.energie)}` : e(x.ancora)}</td><td>${x.materiale.map(e).join('<br>')}</td></tr>`;
+  const randPiesa = (x, i, cls) => `<tr class="${cls}" data-modul="${i}"><td></td><td>↳ <a href="#ex-${e(x.id)}" data-banca>${e(x.titlu)}</a>${eticheteMici(x)}</td><td>${tipSemn(x.tip)}</td><td>${x.durata} min</td><td class="sters">${x.familie === 'activitate' ? `${e(x.format)} · ${ENERGIE[x.energie] ?? e(x.energie)}` : e(x.ancora)}</td><td>${x.materiale.map(e).join('<br>')}</td></tr>`;
   const randuri = c.agenda.map((r, i) => {
-    if (r.fel === 'pauza') return `<tr data-modul="${i}" class="pauza"><td class="ora">${oraR(r)}</td><td>${e(r.titlu)}</td><td><span class="tip">pauză</span></td><td>${r.durata} min</td><td></td><td></td></tr>`;
+    if (r.fel === 'pauza') return `<tr data-modul="${i}" class="pauza"><td class="ora">${oraR(r)}</td><td>${e(r.titlu)}</td><td>${tipSemn('pauza')}</td><td>${r.durata} min</td><td></td><td></td></tr>`;
     if (r.fel === 'piesa') {
       const x = r.piesa;
-      return `<tr data-modul="${i}" class="${x.tip === 'pauza' ? 'pauza' : 'piesa-singura'}"><td class="ora">${oraR(r)}</td><td><a href="#ex-${e(x.id)}" data-banca>${e(x.titlu)}</a> <span class="sters">(piesă)</span>${eticheteMici(x)}</td><td><span class="tip">${TIP[x.tip] ?? e(x.tip)}</span></td><td>${r.durata} min</td><td>${e(x.ancora)}</td><td>${x.materiale.map(e).join('<br>') || '<span class="sters">–</span>'}</td></tr>`;
+      return `<tr data-modul="${i}" class="${x.tip === 'pauza' ? 'pauza' : 'piesa-singura'}"><td class="ora">${oraR(r)}</td><td><a href="#ex-${e(x.id)}" data-banca>${e(x.titlu)}</a> <span class="sters">(piesă)</span>${eticheteMici(x)}</td><td>${tipSemn(x.tip)}</td><td>${r.durata} min</td><td>${e(x.ancora)}</td><td>${x.materiale.map(e).join('<br>') || '<span class="sters">–</span>'}</td></tr>`;
     }
     const m = r.modul;
     const calcul = r.piese.length ? `<span class="calcul">${r.durataModul} + ${r.piese.map((x) => x.durata).join(' + ')}</span>` : '';
     return `<tr data-modul="${i}"><td class="ora">${oraR(r)}</td><td><b>${e(m.titlu)}</b>${eticheteMici(m)}</td>
-  <td><span class="tip">${TIP[m.tip] ?? e(m.tip)}</span></td><td><b>${r.durata} min</b>${calcul}</td><td>${e(m.ancora)}</td>
+  <td>${tipSemn(m.tip)}</td><td><b>${r.durata} min</b>${calcul}</td><td>${e(m.ancora)}</td>
   <td>${m.materiale.map(e).join('<br>') || '<span class="sters">–</span>'}</td></tr>${r.piese.map((x) => randPiesa(x, i, 'exercitiu-rand')).join('')}`;
   }).join('\n');
   const nota = c.editie.nota_trainer ? `<p class="nota-editie"><span class="eticheta">Despre acest grup</span><br>${e(c.editie.nota_trainer)}</p>` : '';
@@ -142,7 +183,7 @@ export function listaSchita(c) {
 }
 
 /** Un segment, cum apare în vederile Modul și Bibliotecă. */
-function piesa(s, lume, randeaza) {
+function piesa(s, sursa, randeaza) {
   if (s.strat === 'text') return `<div class="strat strat-text">${randeaza(s.md)}</div>`;
   if (s.strat === 'trainer') return `<div class="strat strat-trainer"><span class="eticheta">Trainer</span>${randeaza(s.md)}</div>`;
   if (s.strat === 'participant') return `<div class="strat strat-participant"><span class="eticheta">Doar în cursul online</span>${randeaza(s.md)}</div>`;
@@ -152,7 +193,7 @@ function piesa(s, lume, randeaza) {
   const randeazaEcran = creeazaRandare({ atribut: 'data-img', randuriNoi: true });
   const eticheta = s.strat === 'sala' ? 'Ecran în sală' : 'Ecran în sală și în curs';
   const cron = s.atribute.cronometru ? ` · cronometru ${s.atribute.cronometru} min` : '';
-  return `<div class="strat strat-ecran"><span class="eticheta">${eticheta}${cron}</span>${ecranStatic(lume, randeazaEcran(s.md))}</div>`;
+  return `<div class="strat strat-ecran"><span class="eticheta">${eticheta}${cron}</span>${ecranStatic(ecranul(sursa, randeazaEcran(s.md), s.atribute.cronometru ?? 0))}</div>`;
 }
 
 function alternativeHtml(c, m, alese) {
@@ -164,7 +205,7 @@ function vedereaModul(c) {
   const randeaza = creeazaRandare({ atribut: 'data-img' });
   const articol = (m, r) => {
     const piese = r ? desfasoara(r) : m.segmente;
-    const continut = piese.map((s) => piesa(s, r ? lumeDe(r, s) : (LUME[m.tip] ?? 'luminos'), randeaza)).join('\n');
+    const continut = piese.map((s) => piesa(s, r ? sursaDe(r, s) : sursaModul(m), randeaza)).join('\n');
     const durata = r ? `${r.durata} min${r.piese.length ? ` (modul ${r.durataModul} + piese ${r.durataPiese})` : ''}` : `${m.durata} min fără piese`;
     return `<article class="modul ${r ? '' : 'sarit'}" id="modul-${e(m.id)}">
 <header><span class="eticheta">${r ? oraR(r) + ' · ' : ''}${TIP[m.tip] ?? e(m.tip)} · ${durata}${r ? '' : ' · nu e în agenda acestei ediții'}</span>
@@ -173,7 +214,7 @@ ${continut}</article>`;
   };
   const singura = (r) => `<article class="modul piesa-singura" id="rand-${e(r.piesa.id)}">
 <header><span class="eticheta">${oraR(r)} · piesă singură · ${despre(r.piesa)}</span><h3>${e(r.piesa.titlu)}</h3>${r.piesa.etichete.length ? `<p>${eticheteMici(r.piesa)}</p>` : ''}${r.piesa.materiale.length ? `<p class="sters">Materiale: ${r.piesa.materiale.map(e).join(', ')}</p>` : ''}</header>
-${desfasoara(r).filter((s) => s.strat !== 'piesa-inceput' && s.strat !== 'piesa-sfarsit').map((s) => piesa(s, lumeDe(r, s), randeaza)).join('\n')}</article>`;
+${desfasoara(r).filter((s) => s.strat !== 'piesa-inceput' && s.strat !== 'piesa-sfarsit').map((s) => piesa(s, sursaDe(r, s), randeaza)).join('\n')}</article>`;
   const dinAgenda = c.agenda.filter((r) => r.fel === 'modul' || (r.fel === 'piesa' && r.piesa.tip !== 'pauza')).map((r) => (r.fel === 'modul' ? articol(r.modul, r) : singura(r))).join('\n');
   const afara = c.module.filter((m) => !m.inAgenda).map((m) => articol(m, null)).join('\n');
   return `<h2>Modulele</h2>${dinAgenda}${afara ? `<h2 class="sub">Nu sunt în agenda acestei ediții</h2>${afara}` : ''}`;
@@ -223,7 +264,7 @@ ${x.obiectiv ? `<p class="ex-obiectiv-tot">${e(x.obiectiv)}</p>` : ''}
 <div><p class="eticheta">Materiale</p><p>${x.materiale.length ? x.materiale.map(e).join(', ') : '<span class="sters">nimic special</span>'}</p></div>
 <div><p class="eticheta">Detalii</p><p>${detalii}${x.in_curs ? '' : '<br><b>Nu apare în cursul online</b>'}</p></div>
 </div>
-${x.segmente.map((s) => piesa(s, lumePiesa(x), randeaza)).join('\n')}
+${x.segmente.map((s) => piesa(s, sursaPiesa(x), randeaza)).join('\n')}
 </div></details>`;
   };
   const primaAzi = (x) => c.agenda.indexOf(azi.get(x.id)[0]);
@@ -317,6 +358,8 @@ export function construiesteTrainer(c) {
     <div>
       <p class="eticheta">Acum · <span id="pozitie"></span> · <span id="modul-acum"></span></p>
       <div class="cadru" id="cadru-acum"></div>
+      <div class="banda-cutie"><div class="banda" id="banda" role="group" aria-label="Ecranele zilei, după fel"></div>
+        <p class="banda-legenda" aria-hidden="true"><span><span class="semn-mic fel-teorie"></span>teorie</span><span><span class="semn-mic fel-exercitiu"></span>exercițiu</span><span><span class="semn-mic fel-reflectie"></span>reflecție</span><span><span class="semn-mic fel-mesaj"></span>mesaj cheie</span><span><span class="semn-mic fel-pauza"></span>pauză</span></p></div>
       <div class="butoane">
         <button id="inapoi">← Înapoi</button><button id="inainte" class="principal">Înainte →</button>
         <button id="btn-cron">Cronometru (C)</button><button id="btn-negru">Negru (N)</button><button id="btn-schita">Schița (S)</button>

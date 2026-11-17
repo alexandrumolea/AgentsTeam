@@ -1,5 +1,5 @@
 /*
-  Tema provizorie, sobră (T-022). Ioana o înlocuiește cu tema Ive a brandului (T-023):
+  Tema provizorie, sobră (T-022). Tema Innersis Ive e în tema/innersis.css (Ioana, 2026-11-17); pentru alt brand:
   copiezi acest fișier ca tema/<brand>.css (innersis.css sau bemore-ls.css) și schimbi doar valorile.
   Generatorul alege tema/<brand>.css dacă există, altfel pe aceasta. Aici stau DOAR tokeni.
 */
@@ -10,16 +10,34 @@
   --font-greutate-text: 300;
   --font-greutate-accent: 500;
 
-  /* Ecranul din sală: cele trei lumi (tip: teorie = întunecat; exercitiu, reflectie, pauza = luminos; mesaj = accent) */
-  --lume-intunecat-fundal: #16181d;
-  --lume-intunecat-text: #f2f0eb;
-  --lume-intunecat-accent: #9fb8c8;
-  --lume-luminos-fundal: #f4f2ee;
-  --lume-luminos-text: #1b1d22;
-  --lume-luminos-accent: #4f6f86;
-  --lume-accent-fundal: #4f6f86;
-  --lume-accent-text: #ffffff;
-  --lume-accent-accent: #ffffff;
+  /* Ecranul din sală: felurile (lib/trainer.mjs, FEL). Aceeași structură ca tema/innersis.css, în tonuri neutre. */
+  --fel-teorie-fundal: #f4f2ee;
+  --fel-teorie-text: #1b1d22;
+  --fel-teorie-accent: #4f6f86;
+  --fel-teorie-linie: #d8d4cc;
+  --fel-teorie-gata: #a8452f;
+  --fel-reflectie-fundal: #16181d;
+  --fel-reflectie-text: #f2f0eb;
+  --fel-reflectie-accent: #9fb8c8;
+  --fel-reflectie-semn: #c9b48a;
+  --fel-reflectie-cerc: rgba(159, 184, 200, .25);
+  --fel-reflectie-gata: #e59a85;
+  --fel-mesaj-fundal: #4f6f86;
+  --fel-mesaj-text: #ffffff;
+  --fel-mesaj-accent: #ffffff;
+  --fel-mesaj-gata: #ffd9cf;
+  --fel-exercitiu-fundal: #ffffff;
+  --fel-exercitiu-text: #1b1d22;
+  --fel-exercitiu-accent: #4f6f86;
+  --fel-exercitiu-linie: #e3e0da;
+  --fel-exercitiu-panou: #d8d2c4;
+  --fel-exercitiu-pe-panou: #1b1d22;
+  --fel-exercitiu-semn: #8a7a55;   /* semnul triunghi pe fond alb: 3,95 (grafic: prag 3) */
+  --fel-exercitiu-gata: #8a2b1c;
+  --fel-pauza-fundal: #e3e7e2;
+  --fel-pauza-text: #1b1d22;
+  --fel-pauza-accent: #4f6f86;
+  --fel-pauza-gata: #a8452f;
   --cronometru-gata: #c0563f;
 
   /* Materialul trainerului (ecranul lui Alex) */

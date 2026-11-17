@@ -54,3 +54,6 @@ Păstrează sub 150 de rânduri. Comprimă când crește. Fapte, nu povești.
 - 2026-11-17: Banca v2 (cerută de Alex: „UX mai bun, s-o navighez mai ușor”): listă compactă `<details>`, chipuri, căutare, „Azi în agendă” sus. Alex o folosește din timp (agenda) și live, în pauză, pe tabletă. Aștept reacția lui.
 - 2026-11-17: Pentru capturi cu clicuri și viewport de tabletă/telefon din file://: `curs/teste/cdp.mjs` + `Emulation.setDeviceMetricsOverride`. Enter pe `<summary>` nu se simulează cu CDP fără `text`; testează cu click.
 - 2026-11-17: Tokenii temei (`curs/tema/*.css`) nu se ating din stil; folosesc doar `--t-*` existente.
+- 2026-11-17: Ecranele din sală au 4 feluri + pauza (`slide-tipuri-v1.md`): teorie ■ hârtie, exercițiu ▶ alb + panou de aur cu cronometru, reflecție ● navy + cerc, mesaj ▬ câmp teal centrat, pauză ‖ salvie. Tema `curs/tema/innersis.css` e a mea; BEMORE LS = copie cu alte valori. Aștept reacția lui Alex la primul Prezintă.
+- 2026-11-17: Capcană: o clasă de fel pusă și pe ecran, și pe semnele mici (`fel-x`) cere selectori legați de `.ecran.fel-x`, altfel decorurile (::before/::after, padding) se scurg în UI.
+- 2026-11-17: Slide-urile Ive ale lui Alex: Helvetica Neue subțire, etichetă mică spațiată în teal, punct de aur la reflecție, liste 01/02 cu linii fine. Pe proiector: fără sticlă, fonturi de sistem.

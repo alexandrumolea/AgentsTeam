@@ -58,27 +58,94 @@ article.modul.sarit { opacity: .5; }
 .cadru { position: relative; overflow: hidden; aspect-ratio: 16 / 9; background: #000; border-radius: 4px; }
 .cadru > .ecran { position: absolute; left: 0; top: 0; transform-origin: 0 0; }
 
-/* Ecranul din sală */
-.ecran { width: 1600px; height: 900px; padding: 110px 140px; display: flex; flex-direction: column; justify-content: center; font-family: var(--font); font-weight: var(--font-greutate-text); font-size: 64px; line-height: 1.25; overflow: hidden; }
-.ecran.lume-intunecat { background: var(--lume-intunecat-fundal); color: var(--lume-intunecat-text); --ecran-accent: var(--lume-intunecat-accent); }
-.ecran.lume-luminos { background: var(--lume-luminos-fundal); color: var(--lume-luminos-text); --ecran-accent: var(--lume-luminos-accent); }
-.ecran.lume-accent { background: var(--lume-accent-fundal); color: var(--lume-accent-text); --ecran-accent: var(--lume-accent-accent); }
+/* Ecranul din sală (Ioana, slide-tipuri v1, 2026-11-17): patru feluri și pauza, distincte prin cinci semnale deodată:
+   fondul (deschis / închis / colorat), semnul (pătrat, cerc, linie, triunghi, două bare), așezarea, mărimea textului și eticheta.
+   Culoarea nu e niciodată singurul semnal: pe un proiector spălat sau pentru cine nu distinge culorile rămân forma și așezarea.
+   Felul îl alege lib/trainer.mjs (FEL). Ecranul are 1600×900; sub 26 px nu scrie nimic. */
+.ecran { position: relative; width: 1600px; height: 900px; padding: 190px 140px 110px; display: flex; flex-direction: column; justify-content: center; font-family: var(--font); font-weight: var(--font-greutate-text); font-size: 60px; line-height: 1.25; overflow: hidden; background: var(--ecran-fundal); color: var(--ecran-text); }
+.ecran.fel-teorie    { --ecran-fundal: var(--fel-teorie-fundal);    --ecran-text: var(--fel-teorie-text);    --ecran-accent: var(--fel-teorie-accent);    --ecran-semn: var(--fel-teorie-accent);    --ecran-linie: var(--fel-teorie-linie);    --ecran-gata: var(--fel-teorie-gata); }
+.ecran.fel-reflectie { --ecran-fundal: var(--fel-reflectie-fundal); --ecran-text: var(--fel-reflectie-text); --ecran-accent: var(--fel-reflectie-accent); --ecran-semn: var(--fel-reflectie-semn); --ecran-linie: rgba(255,255,255,.16); --ecran-gata: var(--fel-reflectie-gata); }
+.ecran.fel-mesaj     { --ecran-fundal: var(--fel-mesaj-fundal);     --ecran-text: var(--fel-mesaj-text);     --ecran-accent: var(--fel-mesaj-accent);     --ecran-semn: var(--fel-mesaj-accent);     --ecran-linie: rgba(255,255,255,.22); --ecran-gata: var(--fel-mesaj-gata); }
+.ecran.fel-exercitiu { --ecran-fundal: var(--fel-exercitiu-fundal); --ecran-text: var(--fel-exercitiu-text); --ecran-accent: var(--fel-exercitiu-accent); --ecran-semn: var(--fel-exercitiu-semn); --ecran-linie: var(--fel-exercitiu-linie); --ecran-gata: var(--fel-exercitiu-gata); }
+.ecran.fel-pauza     { --ecran-fundal: var(--fel-pauza-fundal);     --ecran-text: var(--fel-pauza-text);     --ecran-accent: var(--fel-pauza-accent);     --ecran-semn: var(--fel-pauza-accent);     --ecran-linie: rgba(0,0,0,.12);       --ecran-gata: var(--fel-pauza-gata); }
+
+/* Eticheta: mică, spațiată, în accent, cu semnul felului (ca în slide-urile Ive ale lui Alex) */
+.ecran-eticheta { position: absolute; left: 140px; right: 140px; top: 80px; margin: 0; display: flex; align-items: center; gap: 24px; font-size: 26px; font-weight: 600; letter-spacing: .26em; line-height: 1.2; text-transform: uppercase; white-space: nowrap; color: var(--ecran-accent); z-index: 1; }
+.ecran-eticheta-text { overflow: hidden; text-overflow: ellipsis; }
+.ecran-semn { flex: none; width: 22px; height: 22px; background: var(--ecran-semn); }
+.ecran.fel-reflectie .ecran-semn { border-radius: 50%; }
+.ecran.fel-mesaj .ecran-semn { width: 48px; height: 7px; }
+.ecran.fel-exercitiu .ecran-semn { width: 22px; height: 26px; clip-path: polygon(0 0, 100% 50%, 0 100%); }
+.ecran.fel-pauza .ecran-semn { width: 22px; height: 26px; background: linear-gradient(to right, var(--ecran-semn) 0 34%, transparent 34% 66%, var(--ecran-semn) 66%); }
+
+.ecran-continut { position: relative; z-index: 1; }
 .ecran-continut > :first-child { margin-top: 0; }
 .ecran-continut > :last-child { margin-bottom: 0; }
 .ecran h1, .ecran h2, .ecran h3 { font-weight: var(--font-greutate-titlu); line-height: 1.1; margin: 0 0 .4em; }
-.ecran h1 { font-size: 104px; }
+.ecran h1 { font-size: 104px; letter-spacing: -.01em; }
 .ecran h2 { font-size: 72px; }
 .ecran p { margin: 0 0 .5em; }
 .ecran strong { font-weight: var(--font-greutate-accent); }
-.ecran ol, .ecran ul { margin: .3em 0 0; padding-left: 1.2em; font-size: 54px; }
+.ecran ul { margin: .3em 0 0; padding-left: 1.2em; font-size: .9em; }
 .ecran li { margin: .25em 0; }
-.ecran li::marker { color: var(--ecran-accent); }
-.ecran img { display: block; max-width: 100%; max-height: 680px; margin: 0 auto; object-fit: contain; }
-.ecran .ecran-numar { font-size: 34px; letter-spacing: .12em; color: var(--ecran-accent); margin-bottom: 28px; }
-.ecran .ecran-sub { font-size: 36px; opacity: .7; margin-top: 24px; }
-.ecran-cronometru { position: absolute; right: 80px; bottom: 56px; font-size: 64px; font-weight: var(--font-greutate-titlu); font-variant-numeric: tabular-nums; color: var(--ecran-accent); }
-.ecran-cronometru.gata { color: var(--cronometru-gata); font-weight: var(--font-greutate-accent); }
+.ecran ul li::marker { color: var(--ecran-accent); }
+/* Listele numerotate, ca în slide-urile lui Alex: 01, 02… în accent, cu linii subțiri între pași */
+.ecran ol { list-style: none; counter-reset: pas; margin: .35em 0 0; padding: 0; font-size: .9em; }
+.ecran ol > li { counter-increment: pas; display: grid; grid-template-columns: 2.1em 1fr; margin: 0; padding: .3em 0; border-top: 2px solid var(--ecran-linie); }
+.ecran ol > li:first-child { border-top: 0; }
+.ecran ol > li::before { content: counter(pas, decimal-leading-zero); color: var(--ecran-accent); font-weight: var(--font-greutate-text); }
+.ecran img { display: block; max-width: 100%; max-height: 600px; margin: 0 auto; object-fit: contain; }
+.ecran .ecran-numar { font-size: 40px; font-weight: var(--font-greutate-accent); letter-spacing: .2em; color: var(--ecran-accent); margin-bottom: 28px; }
+.ecran .ecran-sub { font-size: 36px; opacity: .75; margin-top: 24px; }
+.ecran-cronometru { position: absolute; right: 80px; bottom: 56px; font-size: 64px; font-weight: var(--font-greutate-titlu); font-variant-numeric: tabular-nums; color: var(--ecran-accent); z-index: 1; }
+.ecran-cronometru.gata { color: var(--ecran-gata); font-weight: var(--font-greutate-accent); }
+
+/* Teorie: o pagină. Textul pornește de sus, sub o linie subțire, aliniat la stânga; titlul de modul stă jos, ca un capitol. */
+.ecran.fel-teorie { justify-content: flex-start; padding-top: 230px; font-size: 60px; }
+.ecran.fel-teorie::before { content: ""; position: absolute; left: 140px; right: 140px; top: 146px; height: 2px; background: var(--ecran-linie); }
+.ecran.fel-teorie.ecran-titlu { justify-content: flex-end; padding-bottom: 150px; }
+
+/* Reflecție: navy, text mare și rar, la stânga, cu un cerc larg și subțire în dreapta (loc de gândit) */
+.ecran.fel-reflectie { font-size: 74px; line-height: 1.22; }
+.ecran.fel-reflectie .ecran-continut { max-width: 1180px; }
+.ecran.fel-reflectie::after { content: ""; position: absolute; width: 860px; height: 860px; right: -300px; top: 20px; border-radius: 50%; border: 2px solid var(--fel-reflectie-cerc); }
+.ecran.fel-reflectie ol { font-size: .72em; }
+
+/* Mesaj cheie: câmp de culoare, o singură idee, foarte mare, în centru, sub o linie groasă */
+.ecran.fel-mesaj { align-items: center; text-align: center; font-size: 92px; font-weight: var(--font-greutate-titlu); line-height: 1.15; }
+.ecran.fel-mesaj .ecran-eticheta { justify-content: center; }
+.ecran.fel-mesaj .ecran-continut { max-width: 1260px; }
+.ecran.fel-mesaj .ecran-continut::before { content: ""; display: block; width: 120px; height: 8px; margin: 0 auto 60px; background: var(--ecran-accent); }
+.ecran.fel-mesaj strong { font-weight: var(--font-greutate-text); }
+.ecran.fel-mesaj ol, .ecran.fel-mesaj ul { text-align: left; font-size: .6em; }
+
+/* Exercițiu: pașii la stânga, panoul de aur la dreapta, cu cronometrul mare și formatul (în perechi, în grup…) */
+.ecran.fel-exercitiu { padding-right: 560px; font-size: 58px; }
+.ecran.fel-exercitiu .ecran-eticheta { right: 560px; }
+.ecran.fel-exercitiu h1 { font-size: 88px; }
+.ecran-panou { position: absolute; top: 0; right: 0; bottom: 0; width: 440px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 24px; background: var(--fel-exercitiu-panou); color: var(--fel-exercitiu-pe-panou); }
+.ecran-panou .ecran-cronometru { position: static; font-size: 150px; line-height: 1; color: var(--fel-exercitiu-pe-panou); letter-spacing: -.02em; }
+.ecran-panou .ecran-cronometru.gata { color: var(--fel-exercitiu-gata); }
+.panou-semn { width: 120px; height: 140px; clip-path: polygon(0 0, 100% 50%, 0 100%); background: var(--fel-exercitiu-pe-panou); }
+.panou-format { margin: 0 !important; font-size: 28px; font-weight: 600; letter-spacing: .24em; text-transform: uppercase; }
+
+/* Pauză: totul în centru, cronometrul foarte mare */
+.ecran.fel-pauza { align-items: center; text-align: center; }
+.ecran.fel-pauza .ecran-eticheta { justify-content: center; }
+.ecran.fel-pauza h1 { font-size: 72px; margin-bottom: 0; }
+.ecran.fel-pauza .ecran-sub { display: none; }
+.ecran.fel-pauza .ecran-cronometru { position: static; order: 2; margin-top: 30px; font-size: 230px; line-height: 1; letter-spacing: -.02em; }
+
 .ecran-final { background: #000; color: #555; align-items: center; font-size: 32px; }
+
+/* Semnul felului, mic, în materialul trainerului (Ziua, banda din ecranul de comandă, legenda) */
+.semn-mic { display: inline-block; flex: none; width: 12px; height: 12px; vertical-align: -1px; }
+.semn-mic.fel-teorie { background: var(--fel-teorie-fundal); box-shadow: inset 0 0 0 2px var(--fel-teorie-text); }
+.semn-mic.fel-reflectie { border-radius: 50%; background: var(--fel-reflectie-fundal); }
+.semn-mic.fel-mesaj { width: 16px; height: 6px; vertical-align: 2px; background: var(--fel-mesaj-fundal); }
+.semn-mic.fel-exercitiu { width: 12px; height: 14px; clip-path: polygon(0 0, 100% 50%, 0 100%); background: var(--fel-exercitiu-semn); }
+.semn-mic.fel-pauza { background: linear-gradient(to right, var(--fel-pauza-accent) 0 34%, transparent 34% 66%, var(--fel-pauza-accent) 66%); }
+.tip .semn-mic { margin-right: .4em; }
 
 /* Fereastra sălii și „Prezintă aici” */
 body.sala { background: #000; overflow: hidden; height: 100vh; }
@@ -101,6 +168,17 @@ body.sala { background: #000; overflow: hidden; height: 100vh; }
 .comanda .note { background: var(--t-nota-fundal); border-left: 3px solid var(--t-nota-linie); padding: .6rem .9rem; min-height: 4rem; }
 .comanda .note:empty::before { content: "Nicio notă pentru acest ecran."; color: var(--t-sters); }
 .comanda .urmeaza .cadru { width: 100%; }
+/* Banda zilei: un semn pe ecran, cu forma felului; cel de acum e încadrat, cele trecute se estompează */
+.banda-cutie { margin: .6rem 0 .2rem; }
+.banda { display: flex; flex-wrap: wrap; align-items: center; gap: 2px; }
+.banda-p { display: inline-grid; place-items: center; width: 24px; height: 28px; padding: 0; border: 0; border-radius: 5px; background: transparent; }
+.banda-p:hover { background: var(--t-acum); }
+.banda-p.trecut .semn-mic { opacity: .35; }
+.banda-p.acum { background: var(--t-acum); box-shadow: inset 0 0 0 2px var(--t-text); }
+.banda-sep { width: 1px; height: 18px; margin: 0 5px; background: var(--t-linie); }
+.banda-legenda { display: flex; flex-wrap: wrap; gap: .2rem 1rem; margin: .3rem 0 0; font-size: .78rem; color: var(--t-sters); }
+.banda-legenda > span { display: inline-flex; align-items: center; gap: .4rem; }
+@media (pointer: coarse) { .banda-p { width: 32px; height: 40px; } }
 .comanda .schita-mica { position: relative; max-height: 40vh; overflow: auto; margin-top: 1rem; }
 .comanda .schita-mica ol.schita { margin-left: 3.8rem; }
 .comanda .schita-mica .ancora { font-size: 1.1rem; }
@@ -125,7 +203,6 @@ kbd { font: .8rem var(--font); border: 1px solid var(--t-linie); border-bottom-w
   section + section { break-before: page; }
   article.modul { break-inside: auto; }
   .strat-trainer, .strat-ecran { break-inside: avoid; }
-  .strat-ecran .ecran-cronometru { display: none; } /* eticheta spune deja câte minute */
   body.tipar-ecrane main { display: none; }
 }
 #tipar-ecrane-lista { display: none; }
@@ -223,7 +300,7 @@ details.ex[open] .ex-obiectiv { display: none; }
 .schita li.piesa-singura .ancora { font-size: 1.25rem; }
 .chip-sep { display: inline-block; width: 1px; align-self: stretch; background: var(--t-linie); margin: 0 .25rem; }
 .filtre-nota { margin: 0; font-size: .8rem; }
-.ex-tip-continut { border-color: var(--lume-intunecat-fundal); }
+.ex-tip-continut { border-color: var(--fel-teorie-text); }
 .ex-tip-punte { border-color: var(--t-accent); }
 
 /* Obiectivele zilei (Alex, 2026-11-17): bife în schiță, compacte; ținte mari pe tabletă; la tipar, căsuțe goale */

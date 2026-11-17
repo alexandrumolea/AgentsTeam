@@ -76,7 +76,7 @@ Primul ecran al fiecărui modul (numărul și titlul) se face singur. O pauză p
 ### Piesele și agenda (v1.2, 1.7–1.9 la Radu, D-053)
 
 - **O piesă** = `piese/<id>.md` (id-ul e numele fișierului, unic în tot cursul, și printre module). Antet: `titlu`, `durata` (obligatorie, la orice piesă), `tip`; opțional `ancora`, `module`, `materiale`, `in_curs` (da/nu). Corpul are aceleași straturi ca un modul.
-- **Tipul alege familia și culoarea ecranelor:** conținut (`teorie`, `model`, `poveste`: întunecat), activitate (`exercitiu`, `reflectie`, `energizant`: luminos), punte (`deschidere`, `inchidere`, `mesaj`: accent; `pauza`: ecran cu cronometru). **Activitățile** cer și `format` (individual · perechi · grup · plen), `energie` (calm · mediu · activ) și `obiectiv`.
+- **Tipul alege familia** (conținut: `teorie`, `model`, `poveste`; activitate: `exercitiu`, `reflectie`, `energizant`; punte: `deschidere`, `inchidere`, `mesaj`, `pauza`). **Felul ecranului din sală** e separat (vezi „Felurile ecranelor”, mai jos). **Activitățile** cer și `format` (individual · perechi · grup · plen), `energie` (calm · mediu · activ) și `obiectiv`.
 - **Modulul propune:** `piese: { implicite: [...], alternative: [...] }`. Linia `::piese` arată unde intră piesele alese (fără ea, la final). `durata` modulului = doar corpul lui (poate fi 0).
 - **Ediția decide:** `agenda` e lista zilei: `- curba` (modul cu implicitele), `- modul: curba` + `piese: [model-curba, plimbare-curba]` (`[]` = fără), `- ridica-te-daca` (piesă singură), `- pauza-cafea` (piesă de tip pauză), `- pauza: 10` (scurtătură, cu `titlu` opțional). Fără `agenda`: toate modulele, cu implicitele. `comun/<id>` e rezervat pentru biblioteca comună de după 25.
 - **Depășirea zilei** nu oprește build-ul (Alex, 2026-11-17): apare ca avertisment și, marcată, în Ziua și în Schiță („depășire 45 min”).
@@ -95,9 +95,23 @@ Agenda: id inexistent (nici modul, nici piesă), modul de două ori, rând care 
 - **Un singur ecran:** „Prezintă aici” arată ecranul sălii în aceeași fereastră, pe tot ecranul. `Esc` iese.
 - **„Față de plan”:** în ziua ediției, după ceas; în altă zi, față de momentul în care ai apăsat Prezintă (scrie „repetiție”). „Repornește ziua” șterge orele.
 
+## Felurile ecranelor (Ioana, 2026-11-17)
+
+Patru feluri, ca Alex să recunoască tipul dintr-o privire, pe proiector și în miniaturile din ecranul de comandă. Detaliile și capturile: `team/ioana/documente/slide-tipuri-v1.md`.
+
+| Felul | Tipurile | Cum îl recunoști |
+|---|---|---|
+| Teorie | `teorie`, `model`, `poveste` | hârtie deschisă, semn ■, text de sus, sub o linie subțire, ca o pagină |
+| Exercițiu | `exercitiu`, `energizant`; și orice ecran cu `cronometru` dintr-un modul de teorie sau de mesaj | alb + panoul de aur în dreapta, cu cronometrul mare (sau ▶) și formatul („în perechi”), semn ▶ |
+| Reflecție | `reflectie`, `deschidere`, `inchidere` | navy, semn ● de aur, text mare la stânga, un cerc subțire în dreapta |
+| Mesaj cheie | `mesaj` | câmp teal, semn ▬, o idee foarte mare, în centru, sub o linie groasă |
+| Pauză | `pauza` | salvie, semn ‖, totul în centru, cronometrul foarte mare |
+
+Fiecare ecran are sus eticheta felului (de exemplu „Exercițiu · Unde sunt eu pe curbă”). În ecranul de comandă, sub „Acum”, **banda zilei** arată câte un semn pentru fiecare ecran, în ordine; un click sare la ecranul ales. Felul îl alege `FEL` din `lib/trainer.mjs`.
+
 ## Tema
 
-Culorile și litera stau doar în `tema/sobru.css` (tokeni). Pentru tema Ive a unui brand (T-023, Ioana): copiezi fișierul ca `tema/innersis.css` sau `tema/bemore-ls.css` și schimbi valorile. Generatorul o alege singur după `brand` din `curs.yml`. Structura (mărimi, așezare) e în `lib/stil.css`. Ecranul din sală are 1600×900 și se scalează la orice proiector.
+Culorile și litera stau doar în teme (tokeni): `tema/innersis.css` (Innersis Ive, Ioana) și `tema/sobru.css` (provizorie, pentru orice alt brand). Pentru BEMORE LS: copiezi `innersis.css` ca `tema/bemore-ls.css` și schimbi valorile `--fel-*` și `--t-*`. Generatorul o alege singur după `brand` din `curs.yml`. Structura (mărimi, așezare) e în `lib/stil.css`. Ecranul din sală are 1600×900 și se scalează la orice proiector.
 
 ## Fișierele
 
