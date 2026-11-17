@@ -4,6 +4,16 @@ Autor: Ioana. Data: 2026-11-17. Status: propunere, Alex alege (nivel 2).
 Pagina de comparat: [design-v2.html](design-v2.html), cu designul, pagina (prima pagină, Compania mea, lecție), ecranul (desktop, telefon) și „Azi / Aerisit” pe prima pagină. Nimic din `site/` sau `content/` nu s-a schimbat.
 Înlocuiește variantele din [culori-v1.md](culori-v1.md); diagnosticul și regulile de sens pentru statusuri de acolo rămân valabile.
 
+## Jurnal
+- **2026-11-17, v2.0:** trei design-uri (A Amalfi, B Planșa, C Lămâia).
+- **2026-11-17, v2.1:** Alex: „Îmi place Planșa. Nu-mi place că e foarte mic scrisul din lista din stânga de pe desktop.” Ce s-a schimbat în pagină:
+  - Legenda din B are acum 20 px (era 16), pe două coloane („De ce ai nevoie?” și „Intră în atelier”), ca să încapă fără să se lovească de titlu sau de scenă. Am verificat la 1440 × 900 și la 1280 × 800 (comutatorul „Laptop 1280” e nou).
+  - Celelalte texte mici din B: „Live” 16 px (era 13), marca 16 px (era 12), eticheta legendei și a căsuței de titlu 13 px, inscripția 24 px, etichetele din scenă (19–22 px, ca să rămână peste 16 px și după ce scena se micșorează), numerele de reper 17–20 px.
+  - Pe toate paginile, tot ce se apasă are acum cel puțin 16 px: meniul, „Site-ul X →”, „← Lecția 2”, cronometrul, butoanele comutatorului.
+  - Pagina pornește acum pe B.
+- **Regula, de acum (Alex observă scrisul mic):** sub 16 px doar etichete (litere mari spațiate, cum ar fi „LEGENDĂ” sau „COMPANIA MEA”), niciodată lucruri pe care dai click. Textul de citit are cel puțin 17 px, iar lecțiile 19–20 px.
+- **Ce urmează:** Alex vrea un stil nou, propus de mine, care să i se potrivească. Întâi răspunde la două întrebări (le pune Tudor în chat), apoi fac propunerea.
+
 ## Cererea
 Alex, 2026-11-17:
 - „Am nevoie ca totul să fie mai aerisit și mai vreau să văd și câteva design-uri care să pornească de la BEMORE IVE ca și culori.”

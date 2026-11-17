@@ -15,3 +15,5 @@ Adăugat: 2026-11-17
 
 **Why:** Alex (2026-11-17): „totul mai aerisit” + design-uri din BEMORE IVE; site-ul e prea închis pentru cursuri; îi plac compactul și interactivitatea.
 **How to apply:** aerisit = mai puține lucruri vizibile deodată (card, ticker, etichete scoase/ascunse), nu mai puține drumuri. Paletele din deck-urile lui Alex se verifică la contrast înainte de web. Legat de [[project-culori-v1]], [[project-spatial-v2]], [[feedback-inovatie-nu-calm]].
+
+2026-11-17 (v2.1): Alex: „Îmi place Planșa.” Legenda din B mărită la 20 px, pe două coloane; verificat la 1440 și 1280. Alex vrea apoi un **stil nou propus de mine**: întâi 2 întrebări (prin Tudor), apoi propunerea. Am început un „D · Cuprins” (carte deschisă, drumurile ca un cuprins scris mare, desenul se desenează la hover, lecția cu cuprinsul cursului și note pe margine). Tudor l-a oprit; schița e în `.claude/agent-memory-local/ioana/schita-design-v2-D-cuprins.html` și o refolosesc doar dacă răspunsurile lui Alex duc într-acolo.
