@@ -1,7 +1,7 @@
 # Manualul de brand al lui Alex, v1: poziționarea și arhitectura de brand
 
 Autor: Maria. Data: 2026-11-17. Idee: I-022 (DRI Ioana, backup Maria).
-Partea vizuală (paleta și fontul Sora, Liquid Glass, spațiere, fotografie) e a Ioanei: `team/ioana/documente/manual-brand-v1.md`. Tudor le unește în skill-ul `brand-alex`.
+Partea vizuală (paleta și fontul Sora, Liquid Glass, spațiere, fotografie) e a Ioanei: `team/ioana/documente/manual-brand-v1.md`. Tudor le unește în skill-ul `brand-bemore`.
 Vocea și tonul: skill-ul `vocea-alex`. Aici nu se repetă.
 
 **Cum citești:** ce e **confirmat** vine din cuvintele lui Alex sau dintr-o decizie (D-…). Ce e **propunere** e regula mea, până o confirmă Alex. Pentru oricine lucrează acum: propunerile se aplică, iar la dubiu se întreabă (secțiunea 7).
@@ -38,6 +38,8 @@ Pe scurt, pe site: **Rezultate. Colaborare. Umanitate.** (deja în Despre).
 ---
 
 ## 2. Arhitectura de brand
+
+> **Decis 2026-11-17 (D-057): varianta (b).** Designul Sora e noul branding BEMORE; site-ul lui Alex îl folosește ca owner. Varianta (a) de mai jos rămâne doar ca istoric.
 
 > **Deschis (2026-11-17), întrebarea 1 pentru Alex.** D-054 a ales azi paleta și fontul Sora și stilul Liquid Glass. D-055 spune că workshop-urile din 23 și 25 sunt în „noul branding BEMORE pe care îl definește acum Ioana”. Nu știm încă dacă Sora e **brandul personal al lui Alex** sau **noul branding BEMORE**. Mai jos sunt ambele variante. Tot ce nu depinde de alegere e în tabelul comun.
 
@@ -94,12 +96,12 @@ Pentru echipa Studio (Andrei, Daria, Matei, Irina) și pentru oricine face un ma
 | clientul vine **prin BEMORE Learning Studio** în vechea identitate | BEMORE LS | `bemore-ls-ive` | `bemore-ls`; de verificat cu Alex dacă mai există cazul |
 | e un **program Wise Teams** | Wise Teams | `wise-critical-path` pentru rapoarte; slide-uri: întrebi | (nu există încă) |
 | clientul vine **prin LIFT** | LIFT | nu avem kit; întrebi | (nu există încă) |
-| e un **curs propriu al lui Alex** pe site (cursul online, Knowledge Base, Innovations) | (a): brandul lui Alex. (b): același sistem ca BEMORE, semnat Alex | `brand-alex` (în curs) | (a): lipsește valoarea, vezi T-029. (b): `bemore` ajunge |
+| e un **curs propriu al lui Alex** pe site (cursul online, Knowledge Base, Innovations) | noul branding BEMORE, semnat Alex (D-057) | skill-ul `brand-bemore` | `bemore` |
 | **nu e clar** sau sunt două răspunsuri | stop | – | – |
 
 **Când nu e clar:** nu ghicești și nu amesteci. Întrebi Alex, prin Andrei (Head of Learning) sau prin Tudor, cu o propoziție: „Materialul X: Innersis, BEMORE sau al tău?” Până răspunde, lucrezi doar conținutul, nu tema vizuală.
 
-**Cazul de acum (23 și 25):** decis în D-055, noul branding BEMORE. Ecranele și printurile poartă BEMORE. Cursul online al participanților (D-049, public și generic, fără client): în (b) e tot BEMORE ca sistem; în (a) propun să fie în brandul lui Alex, pentru că stă pe site-ul lui. De confirmat odată cu întrebarea 1.
+**Cazul de acum (23 și 25):** decis în D-055, noul branding BEMORE. Ecranele și printurile poartă BEMORE. Cursul online al participanților (D-049, public și generic, fără client) e tot în noul branding BEMORE (D-057).
 
 ---
 

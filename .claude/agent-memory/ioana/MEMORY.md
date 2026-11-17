@@ -35,10 +35,13 @@ Păstrează sub 150 de rânduri. Comprimă când crește. Fapte, nu povești.
 - 2026-11-17: Alex iubește elementele dinamice; prima verificare a oricărei prime pagini: obiectele se văd imediat peste fundal (contur, culoare proprie, umbră)?
 - 2026-11-17: Alex vrea esența locurilor, nu obiectele lor („prea literar”). Metafora (obiectele-simbol) da; mobilier desenat nu.
 - 2026-11-17: Alex cere acum Liquid Glass clar, cu gradient mesh granulat. Regula mea rămâne: textul doar pe sticlă opacă (80 % sau 93 %) și contrastul calculat peste cel mai rău punct.
+- 2026-11-17: Brief-urile de la Tudor se pot schimba de două ori într-o sarcină (D-055, D-057). Scrie regulile neutre la nume și ține valorile într-un singur loc, ca schimbarea să fie de câteva rânduri.
+- 2026-11-17: Sesiunea mea de lucru nu are voie să pornească un server local (refuzat); pentru capturi folosesc `curs/teste/cdp.mjs` dintr-un script în scratchpad.
 - 2026-11-17: Întrebările deschise despre locuri care îi plac (nu despre site-uri) au dat cel mai mult material de design.
 - 2026-11-17: Alex: „mai aerisit”. Înseamnă mai puține lucruri vizibile deodată, nu mai puține drumuri; compactul și interactivitatea rămân.
 
 ## Proiecte și referințe
+- [Manual de brand BEMORE](project_manual-brand.md) — 2026-11-17: D-057 Sora = noul BEMORE, Sora titluri + Inter Tight text; bemore.css gata
 - [Design v2 și v3](project_design-v2.md) — 2026-11-17: D-054 Sora (font + paletă); v3.1 = 3 prime pagini; aștept alegerea
 - [Culori v1](project_culori-v1.md) — 2026-11-17: diagnostic + A/B/C; înlocuit de design v2 (regulile de sens rămân)
 - [Spațiu v2](project_spatial-v2.md) — prototipul curent; deschise: rândurile din Live, propoziția „pod”, test pe telefon

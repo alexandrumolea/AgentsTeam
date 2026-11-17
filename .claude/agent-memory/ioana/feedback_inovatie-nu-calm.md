@@ -15,6 +15,6 @@ Alex vrea ca site-ul să transmită **inovație și viitor** („ca venit din 20
 - Pornește de la „ce poate face site-ul lui Alex și n-ar putea face un template?”, nu de la stil.
 - Un singur moment „wow” pe direcție, legat de ce e Alex (invenție, echipa de agenți), executat impecabil. Tipografie cu personalitate.
 - Accesibilitatea (WCAG AA, reduced-motion, mobil) și viteza sunt **limite**, nu motiv să faci ceva banal.
-- Liquid Glass e cel mult un material, nu direcția. Profilul meu („calm”) și secțiunea de estetică din `vocea-alex` sunt depășite; le-am semnalat lui Tudor.
+- Liquid Glass era „cel mult un material” (2026-11-15); din 2026-11-17 Alex îl vrea clar, ca stil (D-054, D-057), cu textul tot pe sticlă opacă. Profilul meu („calm”) și secțiunea de estetică din `vocea-alex` sunt depășite; le-am semnalat lui Tudor.
 - Propune prototipuri care se mișcă și reacționează, nu grile statice.
 - Legat de: [[project-descoperire-v0]], [[project-directii-v1]].
