@@ -27,7 +27,21 @@ try {
   const stare = () => b.evaluate(ctrl, '__curs.stare()');
   const ecrane = await b.evaluate(ctrl, 'JSON.parse(document.getElementById("date-curs").textContent).ecrane.map(e=>({c:e.cronometru,t:!!e.titlu}))');
   ok(ecrane.length === 13, `materialul are ${ecrane.length} ecrane în sală (aștept 13)`);
-  if (poze) for (const v of ['ziua', 'schita', 'modul']) { await b.click(ctrl, `[data-vedere="${v}"]`); await b.screenshot(ctrl, join(poze, `vedere-${v}.png`)); }
+  if (poze) for (const v of ['ziua', 'schita', 'modul', 'banca']) { await b.click(ctrl, `[data-vedere="${v}"]`); await b.screenshot(ctrl, join(poze, `vedere-${v}.png`)); }
+
+  // Banca: toate exercițiile, cu filtre.
+  await b.click(ctrl, '[data-vedere="banca"]');
+  const vizibile = () => b.evaluate(ctrl, '[...document.querySelectorAll("article.exercitiu")].filter(a => !a.hidden).length');
+  ok((await vizibile()) === 3, 'Banca arată toate cele 3 exerciții');
+  await b.evaluate(ctrl, '{ const s=document.querySelector("[data-filtru=energie]"); s.value="activ"; s.dispatchEvent(new Event("change")); }');
+  ok((await vizibile()) === 2, 'filtrul „energie activă” lasă 2 exerciții');
+  await b.evaluate(ctrl, '{ const s=document.querySelector("[data-filtru=durata]"); s.value="10"; s.dispatchEvent(new Event("change")); }');
+  ok((await vizibile()) === 1, '+ „până la 10 min” lasă 1');
+  await b.evaluate(ctrl, 'document.querySelectorAll("[data-filtru]").forEach(s => { if (s.type === "checkbox") s.checked = true; else s.value = ""; s.dispatchEvent(new Event("change")); })');
+  ok((await vizibile()) === 1, '„doar din agenda de azi” lasă exercițiul ales (perechi-curba)');
+  await b.click(ctrl, '[data-vedere="modul"]');
+  await b.evaluate(ctrl, 'document.querySelector("a[data-banca]").click()');
+  ok(await b.evaluate(ctrl, '!document.getElementById("banca").hidden && !document.getElementById("ex-plimbare-curba").hidden'), 'linkul spre alternativă din Modul deschide Banca la exercițiu');
 
   // Tastele nu schimbă ecranul în afara modului Prezintă.
   await b.click(ctrl, '[data-vedere="ziua"]');
@@ -56,6 +70,8 @@ try {
 
   // Cronometrul: primul ecran cu cronometru.
   const iCron = ecrane.findIndex((e) => e.c && !e.t);
+  await b.evaluate(ctrl, `document.querySelectorAll('#schita-mica li[data-modul]')[1].click()`);
+  ok(/Curba de pe podea/.test(await b.evaluate(ctrl, 'document.getElementById("alternative").textContent')), 'la modulul „curba”, ecranul de comandă arată alternativa');
   await b.evaluate(ctrl, `document.querySelectorAll('#schita-mica li[data-modul]')[0].click()`);
   for (let i = 0; i < iCron; i++) await b.key(sala, 'ArrowRight');
   ok((await stare()).i === iCron, `am ajuns la ecranul cu cronometru (${iCron})`);

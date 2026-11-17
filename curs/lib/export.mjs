@@ -1,7 +1,7 @@
 // 1. Cursul participanților: un JSON pentru site, fără :::trainer, fără :::sala, fără ediție.
 // Verificarea se face pe REZULTAT (Radu, 1.6), nu doar pe sursă.
 import { creeazaRandare, text, normal, escapeHtml } from './randare.mjs';
-import { imaginiDin } from './sursa.mjs';
+import { imaginiDin, desfasoara } from './sursa.mjs';
 
 const IN_CURS = new Set(['text', 'sala-si-curs', 'participant']);
 const CLASA = { 'sala-si-curs': 'curs-cheie', participant: 'curs-tu' };
@@ -9,22 +9,25 @@ const CLASA = { 'sala-si-curs': 'curs-cheie', participant: 'curs-tu' };
 export function construiesteExport(c) {
   const randeaza = creeazaRandare();
   const imagini = new Set();
-  const module = c.module
-    .filter((m) => m.tip !== 'pauza') // o pauză nu e o pagină de citit
-    .map((m) => {
-      const html = m.segmente
-        .filter((s) => IN_CURS.has(s.strat))
-        .map((s) => {
-          imaginiDin(s.md).forEach((i) => imagini.add(i));
-          const h = randeaza(s.md);
-          return CLASA[s.strat] ? `<div class="${CLASA[s.strat]}">\n${h}</div>\n` : h;
-        })
-        .join('');
-      return { id: m.id, titlu: m.titlu, tip: m.tip, durata: m.durata, html };
+  // Din ediție: doar modulele din agendă, în ordinea ei, cu exercițiile folosite care au in_curs: da.
+  const module = c.agenda
+    .filter((r) => r.fel === 'modul' && r.modul.tip !== 'pauza') // o pauză nu e o pagină de citit
+    .map((r) => {
+      let html = '';
+      for (const s of desfasoara(r)) {
+        if (s.exercitiu && !s.exercitiu.in_curs) continue;
+        if (s.strat === 'exercitiu-inceput') { html += `<section class="curs-exercitiu">\n<h3>${escapeHtml(s.exercitiu.titlu)}</h3>\n`; continue; }
+        if (s.strat === 'exercitiu-sfarsit') { html += '</section>\n'; continue; }
+        if (!IN_CURS.has(s.strat)) continue;
+        imaginiDin(s.md).forEach((i) => imagini.add(i));
+        const h = randeaza(s.md);
+        html += CLASA[s.strat] ? `<div class="${CLASA[s.strat]}">\n${h}</div>\n` : h;
+      }
+      return { id: r.modul.id, titlu: r.modul.titlu, tip: r.modul.tip, durata: r.durata, html };
     });
   const x = c.curs;
   return {
-    format: 'curs-participanti/1',
+    format: 'curs-participanti/2',
     sursa: 'generat de curs/build.mjs; nu edita de mână',
     curs: { slug: x.slug, titlu: x.titlu, promisiune: x.promisiune, limba: x.limba, brand: x.brand, public: String(x.public) },
     module,
@@ -42,8 +45,9 @@ function fragmenteInterzise(c) {
       if (n.split(' ').length >= 4) out.push({ sursa, n, original: bucata.trim() });
     }
   };
-  for (const m of c.module) for (const s of m.segmente) {
-    if (s.strat === 'trainer' || s.strat === 'sala') adauga(`${m.fisier}:${s.linia} (:::${s.strat})`, randeaza(s.md));
+  // Toată banca, nu doar ce e în agendă: o notă nu are voie să scape nici prin alt exercițiu.
+  for (const f of [...c.module, ...c.exercitii.values()]) for (const s of f.segmente) {
+    if (s.strat === 'trainer' || s.strat === 'sala') adauga(`${s.fisier}:${s.linia} (:::${s.strat})`, randeaza(s.md));
   }
   if (c.editie.nota_trainer) adauga(`ediția ${c.editie.fisier} (nota_trainer)`, escapeHtml(c.editie.nota_trainer));
   return out;
@@ -64,7 +68,7 @@ export function verificaExport(json, c) {
     const n = normal(nume);
     if (n && totCuSpatii.includes(` ${n} `)) erori.push(`exportul conține un nume interzis de ediție („${nume}”). Scoate-l din textul cursului (poate sta în :::trainer)`);
   }
-  for (const cheie of ['ancora', 'schita', 'materiale', 'nota_trainer', 'nume_interzise', 'sari_peste']) {
+  for (const cheie of ['ancora', 'schita', 'materiale', 'nota_trainer', 'nume_interzise', 'agenda', 'obiectiv', 'energie']) {
     if (brut.includes(`"${cheie}"`)) erori.push(`exportul conține câmpul „${cheie}”, care e doar pentru trainer`);
   }
   return erori;

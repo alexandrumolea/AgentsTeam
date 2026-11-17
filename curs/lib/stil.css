@@ -131,3 +131,17 @@ body.tipar-ecrane #tipar-ecrane-lista { display: block; }
 body.tipar-ecrane .bara, body.tipar-ecrane main { display: none; }
 #tipar-ecrane-lista .ecran { position: relative; break-after: page; print-color-adjust: exact; -webkit-print-color-adjust: exact; }
 @media print { * { print-color-adjust: exact; -webkit-print-color-adjust: exact; } }
+
+/* Banca de exerciții și exercițiile din module (v1.1) */
+h2.sub { font-size: 1.4rem; margin-top: 2.5rem; }
+.exercitiu-incadrat { border: 1px solid var(--t-linie); border-radius: 6px; padding: .2rem 1rem .4rem; margin: 1rem 0; background: var(--t-suprafata); }
+.nota-exercitiu { color: var(--t-sters); border-top: 1px dashed var(--t-nota-linie); padding-top: .4rem; }
+.ziua tr.exercitiu-rand td { border-bottom-style: dashed; font-size: .92rem; }
+.ziua tr.pauza td { color: var(--t-sters); }
+form.filtre { display: flex; flex-wrap: wrap; gap: .5rem 1rem; align-items: center; padding: .6rem .8rem; background: var(--t-suprafata); border: 1px solid var(--t-linie); border-radius: 6px; margin-bottom: 1rem; }
+form.filtre select { font: inherit; }
+article.exercitiu { border-top: 1px solid var(--t-linie); padding: 1.25rem 0; }
+article.exercitiu[hidden] { display: none; }
+article.exercitiu header h3 { font-size: 1.4rem; font-weight: var(--font-greutate-titlu); margin: .2rem 0 .3rem; }
+#alternative p { margin: .6rem 0 0; }
+@media print { form.filtre { display: none; } article.exercitiu[hidden] { display: block; } }

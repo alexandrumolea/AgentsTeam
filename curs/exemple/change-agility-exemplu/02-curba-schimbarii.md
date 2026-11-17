@@ -1,14 +1,17 @@
 ---
 id: curba
 titlu: "Ce se întâmplă cu noi când se schimbă ceva"
-durata: 50
+durata: 35                # doar partea modulului; exercițiile își aduc singure durata
 tip: teorie
 ancora: "Curba, nu linia"
 schita:
   - "Schimbarea scade întâi performanța"
   - "Fiecare e în alt punct al curbei"
   - "Întrebarea: unde ești tu acum?"
-materiale: ["flipchart cu curba desenată", "post-it-uri în 3 culori"]
+materiale: ["flipchart cu curba desenată"]
+exercitii:
+  implicite: [perechi-curba]
+  alternative: [plimbare-curba]
 ---
 
 :::sala-si-curs
@@ -35,18 +38,10 @@ Cere grupului să numească etapele.
 **Tranziția spre exercițiu:** „Acum, fiecare își pune un post-it acolo unde e azi.”
 :::
 
-## Exercițiul
-Unde ești tu acum pe curbă, pentru schimbarea cea mai mare din viața ta de lucru?
+::exercitii
 
-:::sala cronometru=10
-**În perechi, 10 minute**
-1. Pune un post-it pe curbă, unde ești azi.
-2. Spune-i colegului de ce acolo.
-3. Ascultă. Nu dai sfaturi.
-:::
-
-:::participant
-Scrie în worksheet-ul „Curba mea” (pagina 2) unde erai acum o lună și unde ești azi.
+:::trainer
+**Debrief (5 min).** „Ce ați observat: suntem toți în același punct?”
 :::
 
 ## Ce iei cu tine

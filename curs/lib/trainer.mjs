@@ -1,10 +1,10 @@
 // 2. Materialul trainerului: UN fișier HTML care merge fără internet (fonturi de sistem, CSS, script și imagini incluse).
-// Vederile: Ziua, Modulul, Schița (direcția 1) și Prezintă (ecranul de comandă + fereastra sălii).
+// Vederile: Ziua, Modulul, Schița (direcția 1), Banca (exercițiile cursului) și Prezintă (ecranul de comandă + fereastra sălii).
 import { readFileSync, existsSync } from 'node:fs';
 import { join, extname, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { creeazaRandare, escapeHtml as e } from './randare.mjs';
-import { imaginiDin, ora } from './sursa.mjs';
+import { imaginiDin, ora, desfasoara, FORMATE, ENERGII } from './sursa.mjs';
 
 const AICI = dirname(fileURLToPath(import.meta.url));
 const LUME = { teorie: 'intunecat', exercitiu: 'luminos', reflectie: 'luminos', pauza: 'luminos', mesaj: 'accent' };
@@ -16,25 +16,35 @@ export function caleTema(brand) {
   return existsSync(t) ? t : join(AICI, '..', 'tema', 'sobru.css');
 }
 
-/** Ecranele din sală, în ordine: titlul fiecărui modul (făcut singur) + câte unul pe bloc :::sala / :::sala-si-curs. */
+const LUME_EX = { exercitiu: 'luminos', reflectie: 'luminos', energizant: 'accent' };
+const TIP_EX = { exercitiu: 'exercițiu', reflectie: 'reflecție', energizant: 'energizant' };
+const ENERGIE = { calm: 'energie calmă', mediu: 'energie medie', activ: 'energie activă' };
+const lumeDe = (r, s) => (s && s.exercitiu ? LUME_EX[s.exercitiu.tip] : LUME[r.fel === 'pauza' ? 'pauza' : r.modul.tip]) ?? 'luminos';
+const despreEx = (x) => `${x.durata} min · ${e(x.format)} · ${ENERGIE[x.energie] ?? e(x.energie)}`;
+
+/** Ecranele din sală, din agenda ediției: titlul fiecărui modul (făcut singur), apoi câte unul pe bloc :::sala / :::sala-si-curs,
+ *  cu exercițiile alese puse în locul lor. O pauză din agendă e un ecran cu cronometru. */
 export function construiesteEcrane(c) {
   const randeaza = creeazaRandare({ atribut: 'data-img', randuriNoi: true });
   const randeazaNota = creeazaRandare({ atribut: 'data-img' });
   const ecrane = [];
   let nr = 0;
-  c.module.forEach((m, mi) => {
-    if (m.sarit) return;
-    nr++;
-    const lume = LUME[m.tip] ?? 'luminos';
-    const titlu = m.tip === 'pauza'
-      ? `<h1>${e(m.titlu)}</h1><p class="ecran-sub">${m.durata} min</p>`
-      : `<p class="ecran-numar">${String(nr).padStart(2, '0')}</p><h1>${e(m.titlu)}</h1>`;
-    ecrane.push({ modul: mi, lume, html: titlu, cronometru: m.tip === 'pauza' ? m.durata : 0, note: [], titlu: true });
-    for (const s of m.segmente) {
+  c.agenda.forEach((r, ri) => {
+    if (r.fel === 'pauza' || r.modul.tip === 'pauza') {
+      const titlu = r.fel === 'pauza' ? r.titlu : r.modul.titlu;
+      ecrane.push({ modul: ri, lume: 'luminos', html: `<h1>${e(titlu)}</h1><p class="ecran-sub">${r.durata} min</p>`, cronometru: r.durata, note: [], titlu: true });
+      if (r.fel === 'pauza') return;
+    } else {
+      nr++;
+      ecrane.push({ modul: ri, lume: lumeDe(r), html: `<p class="ecran-numar">${String(nr).padStart(2, '0')}</p><h1>${e(r.modul.titlu)}</h1>`, cronometru: 0, note: [], titlu: true });
+    }
+    for (const s of desfasoara(r)) {
       if (s.strat === 'sala' || s.strat === 'sala-si-curs') {
-        ecrane.push({ modul: mi, lume, html: randeaza(s.md), cronometru: s.atribute.cronometru ?? 0, note: [] });
+        ecrane.push({ modul: ri, lume: lumeDe(r, s), html: randeaza(s.md), cronometru: s.atribute.cronometru ?? 0, note: [] });
       } else if (s.strat === 'trainer') {
         ecrane.at(-1).note.push(randeazaNota(s.md)); // nota merge la ecranul de dinaintea ei
+      } else if (s.strat === 'exercitiu-inceput') {
+        ecrane.at(-1).note.push(`<p class="nota-exercitiu">Urmează exercițiul <b>${e(s.exercitiu.titlu)}</b> · ${despreEx(s.exercitiu)}</p>`);
       }
     }
   });
@@ -43,7 +53,7 @@ export function construiesteEcrane(c) {
 
 function harta(c) {
   const imagini = {};
-  for (const m of c.module) for (const s of m.segmente) for (const src of imaginiDin(s.md)) {
+  for (const f of [...c.module, ...c.exercitii.values()]) for (const s of f.segmente) for (const src of imaginiDin(s.md)) {
     if (imagini[src]) continue;
     const date = readFileSync(join(c.folder, src));
     imagini[src] = `data:${MIME[extname(src).toLowerCase()] ?? 'application/octet-stream'};base64,${date.toString('base64')}`;
@@ -52,56 +62,109 @@ function harta(c) {
 }
 
 const json = (x) => JSON.stringify(x).replace(/</g, '\\u003c');
-const oraM = (m) => (m.sarit || m.start == null ? '–' : `${ora(m.start)}–${ora(m.sfarsit)}`);
+const oraR = (r) => (r.start == null ? '–' : `${ora(r.start)}–${ora(r.sfarsit)}`);
+const titluR = (r) => (r.fel === 'pauza' ? r.titlu : r.modul.titlu);
+const ecranStatic = (lume, html) => `<div class="cadru"><div class="ecran lume-${lume}"><div class="ecran-continut">${html}</div></div></div>`;
 
 function vedereaZiua(c) {
-  const randuri = c.module.map((m, i) => `<tr data-modul="${i}" class="${m.sarit ? 'sarit' : ''}">
-  <td class="ora">${oraM(m)}</td><td><b>${e(m.titlu)}</b>${m.sarit ? ' <span class="sters">(sărit la această ediție)</span>' : ''}</td>
-  <td><span class="tip">${TIP[m.tip] ?? e(m.tip)}</span></td><td>${m.durata} min</td><td>${e(m.ancora)}</td>
-  <td>${m.materiale.map(e).join('<br>') || '<span class="sters">–</span>'}</td></tr>`).join('\n');
+  const randuri = c.agenda.map((r, i) => {
+    if (r.fel === 'pauza') return `<tr data-modul="${i}" class="pauza"><td class="ora">${oraR(r)}</td><td>${e(r.titlu)}</td><td><span class="tip">pauză</span></td><td>${r.durata} min</td><td></td><td></td></tr>`;
+    const m = r.modul;
+    const ex = r.exercitii.map((x) => `<tr class="exercitiu-rand" data-modul="${i}"><td></td><td>↳ ${e(x.titlu)}</td><td><span class="tip">${TIP_EX[x.tip] ?? e(x.tip)}</span></td><td>${x.durata} min</td><td class="sters">${e(x.format)} · ${ENERGIE[x.energie] ?? e(x.energie)}</td><td>${x.materiale.map(e).join('<br>')}</td></tr>`).join('');
+    return `<tr data-modul="${i}"><td class="ora">${oraR(r)}</td><td><b>${e(m.titlu)}</b>${r.exercitii.length ? ` <span class="sters">(${m.durata} min + exerciții)</span>` : ''}</td>
+  <td><span class="tip">${TIP[m.tip] ?? e(m.tip)}</span></td><td>${r.durata} min</td><td>${e(m.ancora)}</td>
+  <td>${m.materiale.map(e).join('<br>') || '<span class="sters">–</span>'}</td></tr>${ex}`;
+  }).join('\n');
   const nota = c.editie.nota_trainer ? `<p class="nota-editie"><span class="eticheta">Despre acest grup</span><br>${e(c.editie.nota_trainer)}</p>` : '';
+  const afara = c.module.filter((m) => !m.inAgenda);
   return `<h2>Ziua</h2>${nota}
 <table class="ziua"><thead><tr><th>Ora</th><th>Modulul</th><th>Tip</th><th>Durata</th><th>Ancora</th><th>Materiale</th></tr></thead><tbody>
-${randuri}</tbody></table>`;
+${randuri}</tbody></table>
+${afara.length ? `<p class="sters">Nu sunt în agenda acestei ediții: ${afara.map((m) => e(m.titlu)).join(', ')}.</p>` : ''}`;
 }
 
 export function listaSchita(c) {
-  return `<ol class="schita">${c.module.map((m, i) => `<li data-modul="${i}" class="${m.tip === 'pauza' ? 'pauza' : ''} ${m.sarit ? 'sarit' : ''}">
-  <span class="ora">${m.sarit || m.start == null ? '–' : ora(m.start)}</span>
-  <div class="ancora">${e(m.ancora)}</div><div class="titlu-mic">${e(m.titlu)} · ${m.durata} min</div>
-  ${m.tip === 'pauza' ? '' : `<ul>${m.schita.map((p) => `<li>${e(p)}</li>`).join('')}</ul>`}</li>`).join('\n')}</ol>`;
+  return `<ol class="schita">${c.agenda.map((r, i) => {
+    if (r.fel === 'pauza' || r.modul.tip === 'pauza') return `<li data-modul="${i}" class="pauza"><span class="ora">${ora(r.start)}</span><div class="ancora">${e(r.fel === 'pauza' ? r.titlu : r.modul.ancora)}</div><div class="titlu-mic">${e(titluR(r))} · ${r.durata} min</div></li>`;
+    return `<li data-modul="${i}"><span class="ora">${ora(r.start)}</span>
+  <div class="ancora">${e(r.modul.ancora)}</div><div class="titlu-mic">${e(r.modul.titlu)} · ${r.durata} min</div>
+  <ul>${r.modul.schita.map((p) => `<li>${e(p)}</li>`).join('')}</ul>${r.exercitii.length ? `<div class="titlu-mic">Exercițiu: ${r.exercitii.map((x) => e(x.titlu)).join(', ')}</div>` : ''}</li>`;
+  }).join('\n')}</ol>`;
 }
 
-function vedereaModul(c, ecrane) {
+/** Un segment, cum apare în vederile Modul și Banca. */
+function piesa(s, lume, randeaza) {
+  if (s.strat === 'text') return `<div class="strat strat-text">${randeaza(s.md)}</div>`;
+  if (s.strat === 'trainer') return `<div class="strat strat-trainer"><span class="eticheta">Trainer</span>${randeaza(s.md)}</div>`;
+  if (s.strat === 'participant') return `<div class="strat strat-participant"><span class="eticheta">Doar în cursul online</span>${randeaza(s.md)}</div>`;
+  if (s.strat === 'exercitii') return `<p class="strat sters">Aici intră exercițiile alese în agendă.</p>`;
+  if (s.strat === 'exercitiu-inceput') { const x = s.exercitiu; return `<div class="exercitiu-incadrat"><p class="eticheta">Exercițiu · ${e(x.titlu)} · ${despreEx(x)}${x.in_curs ? '' : ' · nu apare în cursul online'}</p><p>${e(x.obiectiv)}</p>`; }
+  if (s.strat === 'exercitiu-sfarsit') return '</div>';
+  const randeazaEcran = creeazaRandare({ atribut: 'data-img', randuriNoi: true });
+  const eticheta = s.strat === 'sala' ? 'Ecran în sală' : 'Ecran în sală și în curs';
+  const cron = s.atribute.cronometru ? ` · cronometru ${s.atribute.cronometru} min` : '';
+  return `<div class="strat strat-ecran"><span class="eticheta">${eticheta}${cron}</span>${ecranStatic(lume, randeazaEcran(s.md))}</div>`;
+}
+
+function alternativeHtml(c, m, alese) {
+  const alt = [...m.implicite, ...m.alternative].filter((id) => !alese.some((x) => x.id === id)).map((id) => c.exercitii.get(id)).filter(Boolean);
+  return alt.length ? `<p class="sters">Poți alege și: ${alt.map((x) => `<a href="#ex-${e(x.id)}" data-banca>${e(x.titlu)}</a> (${despreEx(x)})`).join('; ')}</p>` : '';
+}
+
+function vedereaModul(c) {
   const randeaza = creeazaRandare({ atribut: 'data-img' });
-  let k = 0; // indexul ecranului din sală, în aceeași ordine ca în construiesteEcrane
-  return `<h2>Modulele</h2>` + c.module.map((m) => {
-    if (!m.sarit) k++; // ecranul de titlu al modulului
-    const continut = m.segmente.map((s) => {
-      if (s.strat === 'text') return `<div class="strat strat-text">${randeaza(s.md)}</div>`;
-      if (s.strat === 'trainer') return `<div class="strat strat-trainer"><span class="eticheta">Trainer</span>${randeaza(s.md)}</div>`;
-      if (s.strat === 'participant') return `<div class="strat strat-participant"><span class="eticheta">Doar în cursul online</span>${randeaza(s.md)}</div>`;
-      const eticheta = s.strat === 'sala' ? 'Ecran în sală' : 'Ecran în sală și în curs';
-      const cron = s.atribute.cronometru ? ` · cronometru ${s.atribute.cronometru} min` : '';
-      const ecran = m.sarit ? randeaza(s.md) : `<div class="cadru" data-previzualizare="${k++}"></div>`;
-      return `<div class="strat strat-ecran"><span class="eticheta">${eticheta}${cron}</span>${ecran}</div>`;
-    }).join('\n');
-    return `<article class="modul ${m.sarit ? 'sarit' : ''}" id="modul-${e(m.id)}">
-<header><span class="eticheta">${oraM(m)} · ${TIP[m.tip] ?? e(m.tip)} · ${m.durata} min${m.sarit ? ' · sărit la această ediție' : ''}</span>
-<h3>${e(m.titlu)}</h3>${m.materiale.length ? `<p class="sters">Materiale: ${m.materiale.map(e).join(', ')}</p>` : ''}</header>
+  const articol = (m, r) => {
+    const piese = r ? desfasoara(r) : m.segmente;
+    const continut = piese.map((s) => piesa(s, r ? lumeDe(r, s) : (LUME[m.tip] ?? 'luminos'), randeaza)).join('\n');
+    const durata = r ? `${r.durata} min` : `${m.durata} min fără exerciții`;
+    return `<article class="modul ${r ? '' : 'sarit'}" id="modul-${e(m.id)}">
+<header><span class="eticheta">${r ? oraR(r) + ' · ' : ''}${TIP[m.tip] ?? e(m.tip)} · ${durata}${r ? '' : ' · nu e în agenda acestei ediții'}</span>
+<h3>${e(m.titlu)}</h3>${m.materiale.length ? `<p class="sters">Materiale: ${m.materiale.map(e).join(', ')}</p>` : ''}${alternativeHtml(c, m, r ? r.exercitii : [])}</header>
 ${continut}</article>`;
-  }).join('\n');
+  };
+  const dinAgenda = c.agenda.filter((r) => r.fel === 'modul').map((r) => articol(r.modul, r)).join('\n');
+  const afara = c.module.filter((m) => !m.inAgenda).map((m) => articol(m, null)).join('\n');
+  return `<h2>Modulele</h2>${dinAgenda}${afara ? `<h2 class="sub">Nu sunt în agenda acestei ediții</h2>${afara}` : ''}`;
+}
+
+function vedereaBanca(c) {
+  const randeaza = creeazaRandare({ atribut: 'data-img' });
+  const folosit = new Map();
+  c.agenda.forEach((r) => { if (r.fel === 'modul') r.exercitii.forEach((x) => folosit.set(x.id, r.modul)); });
+  const toate = [...c.exercitii.values()];
+  if (!toate.length) return '<h2>Banca de exerciții</h2><p class="sters">Cursul nu are încă exerciții în exercitii/.</p>';
+  const rol = (x) => {
+    const m = folosit.get(x.id);
+    const unde = c.module.filter((mm) => mm.implicite.includes(x.id)).map((mm) => `implicit la „${e(mm.titlu)}”`)
+      .concat(c.module.filter((mm) => mm.alternative.includes(x.id)).map((mm) => `alternativă la „${e(mm.titlu)}”`));
+    return (m ? `<b>În agenda de azi, la „${e(m.titlu)}”.</b> ` : 'Nu e în agenda de azi. ') + unde.join(', ');
+  };
+  const optiuni = (nume, valori) => `<label>${nume} <select data-filtru="${nume === 'Format' ? 'format' : 'energie'}"><option value="">toate</option>${valori.map((v) => `<option>${v}</option>`).join('')}</select></label>`;
+  const articole = toate.map((x) => `<article class="exercitiu" id="ex-${e(x.id)}" data-format="${e(x.format)}" data-energie="${e(x.energie)}" data-durata="${x.durata}" data-folosit="${folosit.has(x.id) ? 1 : 0}">
+<header><span class="eticheta">${TIP_EX[x.tip] ?? e(x.tip)} · ${despreEx(x)}${x.in_curs ? '' : ' · nu apare în cursul online'}</span>
+<h3>${e(x.titlu)}</h3><p>${e(x.obiectiv)}</p><p class="sters">${rol(x)}${x.materiale.length ? `<br>Materiale: ${x.materiale.map(e).join(', ')}` : ''}</p></header>
+${x.segmente.map((s) => piesa(s, LUME_EX[x.tip] ?? 'luminos', randeaza)).join('\n')}</article>`).join('\n');
+  return `<h2>Banca de exerciții</h2>
+<form class="filtre" onsubmit="return false">${optiuni('Format', FORMATE)} ${optiuni('Energie', ENERGII)}
+<label>Durata <select data-filtru="durata"><option value="">oricât</option><option value="10">până la 10 min</option><option value="15">până la 15 min</option><option value="20">până la 20 min</option><option value="30">până la 30 min</option></select></label>
+<label><input type="checkbox" data-filtru="folosit"> doar cele din agenda de azi</label> <span class="sters" id="banca-numar"></span></form>
+<p class="sters">Ca să schimbi un exercițiu: editează „agenda” din ediție și rulează din nou build-ul. Orele se recalculează singure.</p>
+${articole}`;
 }
 
 export function construiesteTrainer(c) {
   const ecrane = construiesteEcrane(c);
   const css = readFileSync(caleTema(c.curs.brand), 'utf8') + '\n' + readFileSync(join(AICI, 'stil.css'), 'utf8');
   const script = readFileSync(join(AICI, 'prezinta.js'), 'utf8');
-  const modul = vedereaModul(c, ecrane);
+  const modul = vedereaModul(c);
   const date = {
     curs: { titlu: c.curs.titlu, slug: c.curs.slug, brand: c.curs.brand, limba: c.curs.limba },
     editie: { data: c.editie.data, start: c.editie.start },
-    module: c.module.map((m) => ({ id: m.id, titlu: m.titlu, tip: m.tip, durata: m.durata, start: m.start ?? null, sfarsit: m.sfarsit ?? null, ancora: m.ancora, sarit: m.sarit })),
+    // „module” = rândurile din agenda ediției (module și pauze), în ordine, cu orele calculate.
+    module: c.agenda.map((r) => ({
+      id: r.fel === 'modul' ? r.modul.id : null, titlu: titluR(r), tip: r.fel === 'pauza' ? 'pauza' : r.modul.tip, durata: r.durata, start: r.start, sfarsit: r.sfarsit,
+      alternative: r.fel === 'modul' ? alternativeHtml(c, r.modul, r.exercitii) : '',
+    })),
     ecrane,
   };
   const titlu = `${c.curs.titlu} · materialul trainerului${c.editie.data ? ' · ' + c.editie.data : ''}`;
@@ -121,6 +184,7 @@ export function construiesteTrainer(c) {
     <button data-vedere="ziua">Ziua</button>
     <button data-vedere="modul">Modulul</button>
     <button data-vedere="schita">Schița</button>
+    <button data-vedere="banca">Banca</button>
     <button data-vedere="prezinta" class="principal">Prezintă</button>
   </nav>
 </header>
@@ -128,6 +192,7 @@ export function construiesteTrainer(c) {
 <section id="ziua">${vedereaZiua(c)}</section>
 <section id="schita" hidden><h2>Schița zilei</h2>${listaSchita(c)}</section>
 <section id="modul" hidden>${modul}</section>
+<section id="banca" hidden>${vedereaBanca(c)}</section>
 <section id="prezinta" hidden>
   <div class="comanda-start" id="comanda-start">
     <h2>Prezintă</h2>
@@ -153,6 +218,7 @@ export function construiesteTrainer(c) {
       <p class="mesaj" id="mesaj" role="status"></p>
       <p class="eticheta">Nota trainerului</p>
       <div class="note" id="note"></div>
+      <div id="alternative"></div>
     </div>
     <div>
       <div class="stare">

@@ -1,6 +1,13 @@
 # [EXEMPLU] Ediție inventată. Ediția reală (cu numele clientului) stă doar în privat/.
 data: 2026-11-23
 ora_start: "9:00"
-sari_peste: []
+# Agenda: ordinea zilei. Un rând = un modul (cu exercițiile implicite), un modul cu exercițiile alese sau o pauză.
+agenda:
+  - deschidere
+  - modul: curba
+    exercitii: [perechi-curba]      # alternativa: [plimbare-curba]; [] = fără exercițiu
+  - pauza: 15
+  - pasul-de-luni
+  - inchidere
 nume_interzise: ["Firma Exemplu", "Ion Exemplescu"]
 nota_trainer: "[EXEMPLU] Grup de 14 oameni, două echipe care tocmai au fuzionat."

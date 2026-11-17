@@ -158,6 +158,7 @@
       var note = e.note.length ? e.note : [];
       if (!note.length) for (var j = st.i - 1; j >= 0 && ECRANE[j].modul === e.modul; j--) if (ECRANE[j].note.length) { note = ECRANE[j].note; break; }
       $('note').innerHTML = note.join(''); hidrateaza($('note'));
+      $('alternative').innerHTML = m.alternative || '';
       $('btn-negru').setAttribute('aria-pressed', negru);
       $('btn-sala').textContent = deschisa ? 'Ecranul din sală: deschis' : 'Deschide ecranul din sală';
       var li = document.querySelectorAll('#schita-mica li[data-modul]');
@@ -226,11 +227,21 @@
     for (var k = 0; k < s.length; k++) s[k].hidden = s[k].id !== v;
     var b = document.querySelectorAll('[data-vedere]');
     for (var j = 0; j < b.length; j++) if (b[j].getAttribute('data-vedere') === v) b[j].setAttribute('aria-current', 'page'); else b[j].removeAttribute('aria-current');
-    if (v === 'modul') potrivesteToate();
     if (v === 'prezinta') randeaza();
     marcheazaAcum();
   }
-  function potrivesteToate() { var l = document.querySelectorAll('[data-previzualizare]'); for (var k = 0; k < l.length; k++) puneEcran(l[k], +l[k].getAttribute('data-previzualizare')); }
+  // Banca: filtre pe format, energie, durată și „doar din agenda de azi”.
+  function filtreaza() {
+    var f = {}, l = document.querySelectorAll('[data-filtru]');
+    for (var k = 0; k < l.length; k++) f[l[k].getAttribute('data-filtru')] = l[k].type === 'checkbox' ? l[k].checked : l[k].value;
+    var ex = document.querySelectorAll('article.exercitiu'), n = 0;
+    for (var j = 0; j < ex.length; j++) {
+      var a = ex[j], ok = (!f.format || a.getAttribute('data-format') === f.format) && (!f.energie || a.getAttribute('data-energie') === f.energie) &&
+        (!f.durata || +a.getAttribute('data-durata') <= +f.durata) && (!f.folosit || a.getAttribute('data-folosit') === '1');
+      a.hidden = !ok; if (ok) n++;
+    }
+    var nr = $('banca-numar'); if (nr) nr.textContent = n + ' din ' + ex.length;
+  }
   // În ziua ediției, Ziua și Schița arată modulul de acum.
   function marcheazaAcum() {
     var min = null; if (DATA.editie.data === azi()) { var d = new Date(); min = d.getHours() * 60 + d.getMinutes(); }
@@ -259,7 +270,16 @@
     var mi = +this.getAttribute('data-modul');
     for (var k = 0; k < ECRANE.length; k++) if (ECRANE[k].modul === mi) { mergiLa(k); break; }
   });
-  window.addEventListener('resize', function () { ['cadru-acum', 'cadru-urmeaza', 'aici-cadru'].forEach(function (id) { var c = $(id); if (c) potriveste(c); }); if (vedere === 'modul') potrivesteToate(); });
+  window.addEventListener('resize', function () { ['cadru-acum', 'cadru-urmeaza', 'aici-cadru'].forEach(function (id) { var c = $(id); if (c) potriveste(c); }); });
+  var filtre = document.querySelectorAll('[data-filtru]');
+  for (var fi = 0; fi < filtre.length; fi++) filtre[fi].addEventListener('change', filtreaza);
+  filtreaza();
+  // Linkurile spre bancă (din Modul și din ecranul de comandă) deschid vederea Banca la exercițiul ales.
+  document.addEventListener('click', function (ev) {
+    var a = ev.target.closest ? ev.target.closest('a[data-banca]') : null; if (!a) return;
+    ev.preventDefault(); arata('banca');
+    var t = document.getElementById(a.getAttribute('href').slice(1)); if (t) { t.hidden = false; t.scrollIntoView(); }
+  });
   // Dacă fereastra sălii s-a închis sau s-a golit, ecranul de comandă o spune.
   var eraDeschisa = false;
   setInterval(function () {
@@ -281,9 +301,9 @@
   } else if (h === 'tipar-trainer') {
     var st3 = document.createElement('style'); st3.textContent = '@page { size: A4; margin: 14mm; }'; document.head.appendChild(st3);
     var sec = document.querySelectorAll('main > section'); for (var y = 0; y < sec.length; y++) sec[y].hidden = sec[y].id === 'prezinta';
-    hidrateaza(document); potrivesteToate();
+    hidrateaza(document);
   } else {
-    arata(['ziua', 'modul', 'schita', 'prezinta'].indexOf(h) >= 0 ? h : 'ziua');
+    arata(['ziua', 'modul', 'schita', 'banca', 'prezinta'].indexOf(h) >= 0 ? h : 'ziua');
     hidrateaza(document);
   }
   window.__curs = { stare: function () { return { i: st.i, negru: negru, salaDeschisa: salaDeschisa(), aici: aici, cron: { total: cron.total, ramas: cronRamas(), pornit: !!cron.pornit }, vedere: vedere }; } };

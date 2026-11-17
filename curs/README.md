@@ -1,12 +1,12 @@
 # Generatorul de curs
 
-O sursă, trei ieșiri (Radu, `team/radu/documente/arhitectura-curs-change-agility-v0.md`, v1; D-048–D-051).
-Folderul unui curs (un fișier `.md` pe modul) devine:
+O sursă, trei ieșiri (Radu, `team/radu/documente/arhitectura-curs-change-agility-v0.md`, v1.1; D-048–D-051, I-021).
+Folderul unui curs (un fișier `.md` pe modul, banca de exerciții în `exercitii/`, agenda în ediție) devine:
 
 | Ieșirea | Fișierul | Pentru cine |
 |---|---|---|
-| Cursul participanților | `<slug>-participanti.json` | site-ul, mai târziu, prin PR aprobat de Alex. Fără `:::trainer`, `:::sala`, ediție, schiță |
-| Materialul trainerului | `<slug>-trainer.html` | Alex. Un singur fișier, merge fără internet: vederile Ziua, Modulul, Schița și **Prezintă** |
+| Cursul participanților | `<slug>-participanti.json` | site-ul, mai târziu, prin PR aprobat de Alex. Se face **dintr-o ediție**: modulele din agendă, în ordinea ei, cu exercițiile folosite care au `in_curs: da`. Fără `:::trainer`, `:::sala`, schiță, banca nefolosită |
+| Materialul trainerului | `<slug>-trainer.html` | Alex. Un singur fișier, merge fără internet: vederile Ziua, Modulul, Schița, **Banca** (toate exercițiile, cu filtre) și **Prezintă** |
 | PDF-uri (cu `--pdf`) | `<slug>-trainer.pdf`, `<slug>-ecrane.pdf` | plasa de siguranță: hârtie și ecranele din sală, câte unul pe pagină |
 
 ## Cum rulezi
@@ -59,9 +59,16 @@ Doar în cursul online.
 
 Primul ecran al fiecărui modul (numărul și titlul) se face singur. O pauză primește automat un cronometru cât durata ei.
 
+### Banca de exerciții și agenda (v1.1, 1.7–1.8 la Radu)
+
+- **Un exercițiu** = `exercitii/<id>.md` (id-ul e numele fișierului). Antet: `titlu`, `durata`, `format` (individual · perechi · grup · plen), `tip` (exercitiu · reflectie · energizant), `energie` (calm · mediu · activ), `obiectiv`; opțional `module`, `materiale`, `in_curs` (da/nu). Corpul are aceleași straturi ca un modul.
+- **Modulul propune:** `exercitii: { implicite: [...], alternative: [...] }`. Linia `::exercitii` arată unde intră exercițiile alese (fără ea, la final). `durata` modulului nu include exercițiile.
+- **Ediția decide:** `agenda` e lista zilei: `- curba` (cu implicitele), `- modul: curba` + `exercitii: [plimbare-curba]` (`[]` = fără), `- pauza: 15` (+ `titlu: "Prânz"`). Un modul care lipsește din agendă nu se face. Fără `agenda`: toate modulele, cu implicitele. Orele se recalculează la fiecare build.
+- **Schimbi un exercițiu:** editezi agenda din ediție și rulezi build-ul (o secundă). În sală nu există încă un meniu „schimbă exercițiul”: alegerea live vine după 23, împreună cu drag and drop.
+
 ## Ce oprește build-ul (nu scrie nimic)
 
-Bloc neînchis, bloc în bloc, bloc necunoscut (`:::traner`), atribut necunoscut; text din `:::trainer`, `:::sala` sau `nota_trainer` găsit în exportul pentru participanți (verificat pe rezultat, fragmente de minimum 4 cuvinte); un nume din `nume_interzise` în export (fără diacritice și majuscule); schiță cu peste 3 puncte sau un punct cu peste 8 cuvinte; module care nu încap în `durata_zi`; `cronometru` mai lung decât modulul; imagine de pe internet sau care nu e în `materiale/`; câmpuri lipsă, `id` dublat, `sari_peste` cu un id greșit. **Avertisment:** ecran din sală cu peste 30 de cuvinte, ancoră cu peste 3 cuvinte.
+Agenda: modul sau exercițiu inexistent, modul de două ori, rând care nu e nici modul, nici pauză, pauză care nu e număr, agenda nu încape în `durata_zi`, `sari_peste` (vechi). Banca: id-uri inexistente în `implicite`/`alternative`/`module`, același exercițiu și implicit, și alternativă, câmpuri lipsă sau valori din afara listei, `::exercitii` greșit scris, de două ori sau într-un exercițiu. Apoi, ca în v1: bloc neînchis, bloc în bloc, bloc necunoscut (`:::traner`), atribut necunoscut; text din `:::trainer`, `:::sala` sau `nota_trainer` găsit în exportul pentru participanți (verificat pe rezultat, fragmente de minimum 4 cuvinte); un nume din `nume_interzise` în export (fără diacritice și majuscule); schiță cu peste 3 puncte sau un punct cu peste 8 cuvinte; module care nu încap în `durata_zi`; `cronometru` mai lung decât modulul; imagine de pe internet sau care nu e în `materiale/`; câmpuri lipsă, `id` dublat, `sari_peste` cu un id greșit. **Avertisment:** ecran din sală cu peste 30 de cuvinte, ancoră cu peste 3 cuvinte, exercițiu ales la un modul care nu e în `module` lui, modul de peste 90 de minute fără pauză după. Verificarea notelor trainerului se face pe toată banca, nu doar pe ce e în agendă.
 
 ## Modul Prezintă: cum merge
 
@@ -80,7 +87,7 @@ Culorile și litera stau doar în `tema/sobru.css` (tokeni). Pentru tema Ive a u
 | Fișier | Ce face |
 |---|---|
 | `build.mjs` | linia de comandă: citește, verifică, scrie, face PDF-urile |
-| `lib/sursa.mjs` | citește `curs.yml`, ediția și modulele; verificările pe sursă; programul zilei |
+| `lib/sursa.mjs` | citește `curs.yml`, ediția, modulele și banca; agenda și orele; verificările pe sursă; `desfasoara()` pune exercițiile în modul |
 | `lib/export.mjs` | cursul participanților și verificarea pe rezultat |
 | `lib/trainer.mjs` | materialul trainerului (HTML), ecranele din sală |
 | `lib/prezinta.js` | partea care rulează în browser (vederi, Prezintă, cronometru, tipar) |
