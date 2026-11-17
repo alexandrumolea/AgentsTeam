@@ -71,3 +71,5 @@ Păstrează sub 150 de rânduri. Comprimă când crește. Fapte, nu povești.
 - 2026-11-16: SITE-UL E LIVE PE https://alexandrumolea.com (D-046). Custom domain setat prin API, HTTPS obligatoriu, github.io redirecționează. Lipsește CNAME www → alexandrumolea.github.io (Alex). Build-ul folosește domeniul din site.yml pentru adresa publică.
 
 - 2026-11-16: www CNAME pus de Alex; se propagă. Certificatul HTTPS nu include încă www (T-021: verific la următoarea sesiune; dacă lipsește după 24 h, scot și repun domeniul).
+
+- 2026-11-17: Alex vrea 3 ieșiri pentru cursuri (curs online, material trainer legat de el, schiță). Radu a propus „o sursă, trei ieșiri” (D-048–D-051, de luat). După aprobare: T-022 Mike (generatorul), T-023 Ioana (designul schiței, după 23). În lucru, în paralel, e o altă sesiune pe culori/site (fișiere necomise în site/; nu le comite eu).
