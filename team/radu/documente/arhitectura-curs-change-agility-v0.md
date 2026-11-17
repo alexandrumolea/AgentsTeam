@@ -263,7 +263,9 @@ Cerința lui Alex (2026-11-17): „Aș vrea să avem un fel de bancă de exerci�
 
 Doar avertisment: un exercițiu ales la un modul care nu e în câmpul lui `module`, sau un modul de peste 90 de minute fără nicio pauză după.
 
-### 1.9 Totul modular: piesa de workshop (v1.2, propunere)
+### 1.9 Totul modular: piesa de workshop (v1.2, aprobată D-053)
+
+> **Completarea lui Alex (2026-11-17):** și **pauza e o piesă** (tip `pauza`, familia punte, fără `format`/`energie`). **Fiecare piesă are `durata` obligatorie.** Materialul trainerului arată totalurile: pe modul (modul + piese), pe zi (suma agendei) și diferența față de `durata_zi`. Rândul `pauza: <min>` din agendă rămâne ca scurtătură pentru o pauză fără fișier.
 Întrebarea lui Alex (2026-11-17): „Oare putem gândi cumva totul modular? Adică să zic piese de workshop pe care le-am putea pune? Uneori exerciții, uneori piese de conținut?”
 
 **Răspunsul scurt:** da, și suntem deja aproape. Banca din 1.8 e o bibliotecă de piese care știe doar un fel de piesă, exercițiul. O lărgim la orice fel de piesă și lăsăm agenda să pună o piesă oriunde, nu doar în interiorul unui modul.
