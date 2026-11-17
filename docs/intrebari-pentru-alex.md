@@ -69,7 +69,7 @@
 39. Prin ce ar fi BEMORE diferit de Innersis și de BEMORE Learning Studio?
 
 ## Workshop-urile din 23 și 25 (adăugat 2026-11-16, URGENT, `team/tudor/documente/echipa-workshopuri-v0.md`)
-40. **Brief-ul:** ce a cerut clientul, câți participanți, ce roluri au? Există un email sau o notă cu cererea?
+40. **Brief-ul:** ce a cerut clientul, câți participanți, ce roluri au? Există un email sau o notă cu cererea? **Răspuns parțial 2026-11-17:** primul obiectiv al workshop-ului Change Agility (23): „Schimbarea convingerii că este normal să fim rezistenți la schimbare.” Mai lipsesc: câți participanți, ce roluri au.
 41. ~~**Brand:** Innersis, BEMORE Learning Studio sau BEMORE (testul din I-015)?~~ Răspuns 2026-11-17 (D-055): noul branding BEMORE, nu Innersis.
 42. **Limba:** română sau engleză?
 43. **Ce există deja:** materiale vechi pe change sau pe AI pe care să le refolosim?
