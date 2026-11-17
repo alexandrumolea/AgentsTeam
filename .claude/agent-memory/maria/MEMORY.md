@@ -22,7 +22,7 @@ Păstrează sub 150 de rânduri. Comprimă când crește. Fapte, nu povești.
 
 ## Proiecte
 - [Inspirație și invenții](project_inspiratie.md) — obiectivul 2; constructorul cu unealta, 3 piloni; Atelier = tot site-ul
-- 2026-11-17: [Arhitectura de brand](project_arhitectura_brand.md) — I-022: un brand pe material; deschis: Sora = Alex sau BEMORE (D-055)
+- 2026-11-17: [Arhitectura de brand](project_arhitectura_brand.md) — I-022: un brand pe material; Sora = noul BEMORE (D-057); semnătura site-ului
 - 2026-11-15: [Knowledge, Live, povești](project_knowledge_live_povesti.md) — Invenții/Live/Ce m-a crescut/Învață, D-025, I-010–I-012; misiunea D-026/D-027
 
 ## Deschis

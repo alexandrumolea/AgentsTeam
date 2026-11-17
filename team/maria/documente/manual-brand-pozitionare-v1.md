@@ -105,7 +105,7 @@ Pentru echipa Studio (Andrei, Daria, Matei, Irina) și pentru oricine face un ma
 
 ---
 
-## 4. Numele și poza lui Alex
+## 4. Numele, poza și semnătura lui Alex
 
 **Pe materialele proprii (propunere):**
 - Numele complet o dată, la început (pe deschidere sau în antet), apoi „Alex”.
@@ -116,6 +116,18 @@ Pentru echipa Studio (Andrei, Daria, Matei, Irina) și pentru oricine face un ma
 - Numele și rolul exact din D-047, pe slide-ul trainerului sau în pagina de echipă a partenerului.
 - Poza doar unde partenerul are un format pentru traineri și doar din cele aprobate de Alex. Nu trimitem poze noi fără Alex.
 - Bio-ul pe care îl dă un partener se scrie din paragraful de la secțiunea 1, scurtat, și îl aprobă Alex înainte să plece.
+
+**Semnătura site-ului (propunere, 2026-11-17, de ales de Alex).** Azi: „Alex · Atelier”, cu punctul în colț. Site-ul e în brandul BEMORE (D-057), dar semnătura e a omului: numele lui Alex, nu al firmei. Punctul din colț rămâne și repetă punctul portocaliu din semnul BEMORE (D-058).
+
+| Variantă | De ce | Tab (prima pagină / interior) | Colțul paginii | Telefon |
+|---|---|---|---|---|
+| **1. Alex · Atelier de dezvoltare** (propunerea lui Alex) | Spune ce se întâmplă în atelier. Dar „dezvoltare” e ambiguu (sună și a software) și „atelier de dezvoltare personală” e formula generică de pe piață | Alex · Atelier de dezvoltare / Coaching · Alex | • Alex · Atelier de dezvoltare | • Alex · Atelier |
+| **2. Alex · Atelier** (ce avem) | Scurt, deja cunoscut, păstrează metafora. Nu spune însă despre ce e atelierul | Alex · Atelier / Coaching · Alex · Atelier | • Alex · Atelier | • Alex · Atelier |
+| **3. Alex · Atelier de învățare** (recomandată) | „Învățare” e cuvântul misiunii (D-039) și firul spre BEMORE și cursuri. Mai precis decât „dezvoltare” și încă scurt | Alex · Atelier de învățare / Coaching · Alex | • Alex · Atelier de învățare | • Alex · Atelier |
+| **4. Alex Molea · Systemic Coach & Team Coach** | Cel mai clar în 5 secunde și cel mai bun la căutare. Dar pierde atelierul și pică testul „template bun din 2024” | Alex Molea · Systemic Coach & Team Coach / Coaching · Alex Molea | • Alex Molea | • Alex Molea |
+| **5. Alex · BEMORE** | Arată legătura de owner (D-057). Dar amestecă omul cu firma, exact riscul din secțiunea 2 | Alex · BEMORE / Coaching · Alex · BEMORE | • Alex · BEMORE | • Alex |
+
+Reguli pentru oricare variantă: în tab, pagina vine întâi („Coaching · Alex”), ca să se vadă în tab-urile înguste. Titlul „Systemic Coach & Team Coach” stă în prima propoziție (întrebarea 49), nu și în semnătură. Misiunea rămâne inscripția de la intrare și nu devine semnătură.
 
 **Niciodată (confirmat de regulile casei):**
 - poza sau numele lui Alex lângă un client, fără acordul lui Alex și al clientului;
@@ -160,4 +172,5 @@ D-054: fontul și paleta Sora, stilul Liquid Glass, prima pagină „Sticlă col
 | Dată | Ce s-a schimbat |
 |---|---|
 | 2026-11-17 | v1, pentru I-022. Închide T-025 (paleta BEMORE LS Ive nu a fost aleasă pentru site: D-054 a ales Sora). |
+| 2026-11-17 | Secțiunea 4: cinci variante de semnătură pentru site, după D-057 și D-058. |
 | 2026-11-17 | Secțiunile 2, 3 și 7 rescrise după D-055: două variante, (a) Sora e brandul lui Alex, (b) Sora e noul branding BEMORE. Întrebarea 1 pentru Alex. |
