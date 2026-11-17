@@ -8,18 +8,20 @@ import { spawnSync } from 'node:child_process';
 import { pathToFileURL } from 'node:url';
 import { citesteCurs } from './lib/sursa.mjs';
 import { construiesteExport, verificaExport } from './lib/export.mjs';
-import { construiesteTrainer, caleTema } from './lib/trainer.mjs';
+import { construiesteTrainer, caleTema, pregatesteEcrane } from './lib/trainer.mjs';
 
 const CHROME = ['/Applications/Google Chrome.app/Contents/MacOS/Google Chrome', '/Applications/Chromium.app/Contents/MacOS/Chromium'];
 
 export function build(folder, { editie, out, pdf = false, log = console.log } = {}) {
   const c = citesteCurs(resolve(folder), { editie });
   const erori = [...c.erori];
-  let exp, html;
+  let exp, html, ascunse = 0;
   if (!erori.length) {
     exp = construiesteExport(c);
     erori.push(...verificaExport(exp, c));
-    html = construiesteTrainer(c);
+    const ec = pregatesteEcrane(c); // ordinea și ascunderea din ediție (1.10); o greșeală oprește build-ul
+    erori.push(...ec.erori); c.avertismente.push(...ec.avertismente); ascunse = ec.ecrane.filter((x) => x.ascuns).length;
+    html = construiesteTrainer(c, ec.ecrane);
   }
   for (const a of c.avertismente) log(`  atenție: ${a}`);
   if (erori.length) {
@@ -39,7 +41,7 @@ export function build(folder, { editie, out, pdf = false, log = console.log } = 
   const ecrane = (html.match(/"fel":"/g) || []).length;
   const n = (fel) => c.agenda.filter((r) => r.fel === fel).length;
   const t = c.total, ramas = t.ramas == null ? '' : t.ramas >= 0 ? `, rămân ${t.ramas} min` : `, depășire ${-t.ramas} min`;
-  log(`\nGata: ${c.curs.titlu}${c.editie.data ? `, ediția ${c.editie.data}` : ''}. Agenda: ${n('modul')} module (din ${c.module.length}), ${n('piesa')} piese singure, ${n('pauza')} pauze; total ${t.agenda} min${ramas}. ${c.piese.size} piese în bibliotecă; ${ecrane} ecrane în sală; tema ${caleTema(c.curs.brand).split('/').pop()}.`);
+  log(`\nGata: ${c.curs.titlu}${c.editie.data ? `, ediția ${c.editie.data}` : ''}. Agenda: ${n('modul')} module (din ${c.module.length}), ${n('piesa')} piese singure, ${n('pauza')} pauze; total ${t.agenda} min${ramas}. ${c.piese.size} piese în bibliotecă; ${ecrane} ecrane în sală${ascunse ? ` (${ascunse} ascunse)` : ''}; tema ${caleTema(c.curs.brand).split('/').pop()}.`);
   for (const f of fisiere) log(`  ${f}`);
   return { ok: true, fisiere, export: exp, avertismente: c.avertismente };
 }

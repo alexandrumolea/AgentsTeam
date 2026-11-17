@@ -12,5 +12,12 @@ agenda:
   - pasul-de-luni
   - pauza: 10
   - inchidere
+# Ecranele din sală (1.10, Alex, 2026-11-17): mutări față de ordinea agendei și ecrane ascunse. Id-urile se văd în vederea Ecrane,
+# iar butonul „Copiază pentru ediție” scrie blocul acesta.
+ecrane:
+  muta:
+    - "ridica-te-daca#1 după deschidere#2"   # energizantul, chiar după prezentări
+  ascunse:
+    - "pasul-de-luni#1"                      # întrebarea o pun cu voce tare, fără ecran
 nume_interzise: ["Firma Exemplu", "Ion Exemplescu"]
 nota_trainer: "[EXEMPLU] Grup de 14 oameni, două echipe care tocmai au fuzionat."

@@ -352,3 +352,33 @@ details.ex[open] .ex-obiectiv { display: none; }
 .chip[aria-pressed="true"] .chip-nr { color: inherit; opacity: .75; }
 .etichete-mici { font-size: .78rem; color: var(--t-sters); font-weight: 400; }
 @media (pointer: coarse) { .et-chip { min-height: 32px; padding: .2rem .65rem; } }
+
+/* Vederea Ecrane (1.10, Alex, 2026-11-17): grila de miniaturi, compactă, ca Biblioteca; ținte mari pe tabletă */
+.ec-bara { display: flex; flex-wrap: wrap; gap: .5rem 1rem; align-items: center; justify-content: space-between; margin-bottom: .6rem; }
+.ec-ajutor { margin: 0; font-size: .85rem; max-width: 46rem; }
+.ec-actiuni { display: flex; flex-wrap: wrap; gap: .4rem; }
+#ec-yaml-cutie { margin: .5rem 0 1rem; }
+#ec-yaml { width: 100%; font: .85rem/1.4 ui-monospace, Menlo, monospace; padding: .5rem; border: 1px solid var(--t-linie); border-radius: 6px; background: var(--t-suprafata); color: var(--t-text); }
+.grila-ecrane { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(auto-fill, 256px); gap: .75rem; }
+.ec-carte { position: relative; display: flex; flex-direction: column; gap: .35rem; padding: .45rem; background: var(--t-suprafata); border: 1px solid var(--t-linie); border-radius: 8px; user-select: none; -webkit-user-select: none; cursor: grab; }
+.ec-carte:focus-visible { outline: 2px solid var(--t-accent); outline-offset: 2px; }
+.ec-carte.ascuns { opacity: .45; }
+.ec-carte.ascuns .ec-mini { filter: grayscale(1); }
+.ec-carte.trage { opacity: .85; box-shadow: 0 0 0 2px var(--t-accent); pointer-events: none; cursor: grabbing; }
+.grila-ecrane.in-mutare .ec-carte:not(.trage) { transition: transform .12s; }
+.ec-mini { width: 240px; height: 135px; aspect-ratio: auto; }
+.ec-mini > .ecran { transform: none; zoom: .15; } /* 1600 × 0,15 = 240 */
+.ec-maner { position: absolute; top: .3rem; left: .3rem; z-index: 3; display: grid; place-items: center; width: 32px; height: 32px; border-radius: 6px; background: var(--t-suprafata); color: var(--t-sters); font-size: 18px; touch-action: none; cursor: grab; }
+.ec-info { display: flex; flex-wrap: wrap; align-items: center; gap: .2rem .45rem; font-size: .82rem; line-height: 1.3; }
+.ec-nr { font-weight: 600; font-variant-numeric: tabular-nums; min-width: 1.4rem; }
+.ec-sursa { flex: 1 1 8rem; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.ec-ora { color: var(--t-sters); font-variant-numeric: tabular-nums; }
+.ec-id { flex-basis: 100%; font-size: .72rem; color: var(--t-sters); }
+.ec-butoane { display: flex; gap: .3rem; }
+.ec-butoane button { padding: .2rem .55rem; font-size: .85rem; }
+.ec-butoane .ec-ascunde { margin-left: auto; }
+.ec-mic { font-size: .72rem; padding: .05rem .5rem; margin-left: .4rem; text-transform: none; letter-spacing: 0; }
+.ascunse-aici { margin: .35rem 0 0; font-size: .82rem; color: var(--t-sters); }
+.ascunse-aici:empty { display: none; }
+.ascunse-aici button { font-size: .78rem; padding: .1rem .5rem; }
+@media (pointer: coarse) { .ec-butoane button, .ec-mic, .ascunse-aici button { min-height: 44px; min-width: 44px; } .ec-maner { width: 44px; height: 44px; } }

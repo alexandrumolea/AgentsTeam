@@ -276,3 +276,55 @@ test('etichetele apar discret în Ziua și în Modul', () => {
   assert.match(h, /<h3>Ce iei cu tine<\/h3><p> <span class="etichete-mici">Closing<\/span><\/p>/);
 });
 test('etichetele: format greșit oprește build-ul', () => opreste((e) => e('piese/model-curba.md', (s) => s.replace('etichete: [Change Curve, Foundations]', 'etichete: [{a: 1}]')), /„etichete” e o listă de texte/));
+
+// Ecranele din sală: id stabil, ordinea și ascunderea din ediție (1.10, Alex, 2026-11-17)
+const ECR = (bloc) => (e) => e('editii/2026-11-23.yml', (s) => s.replace(/ecrane:\n(  .*\n|    .*\n)*/, bloc));
+const ordine = (r) => date(r).ecrane.map((x) => x.id + (x.ascuns ? '!' : ''));
+test('ecranele au id stabil: <piesă sau modul>#<n>, #titlu, #pauza, pauza#<k>', () => {
+  const r = cu(ECR('')); ok(r);
+  assert.deepEqual(ordine(r), ['deschidere#titlu', 'deschidere#1', 'deschidere#2', 'curba#titlu', 'curba#1', 'model-curba#1', 'perechi-curba#1', 'pauza-cafea#pauza', 'ridica-te-daca#1', 'pasul-de-luni#titlu', 'pasul-de-luni#1', 'pasul-de-luni#2', 'pauza#1', 'inchidere#titlu', 'inchidere#1']);
+});
+test('id-urile nu se schimbă când se reordonează agenda', () => {
+  const a = new Set(ordine(cu(ECR(''))));
+  const r = cu((e) => { ECR('')(e); AG('  - inchidere\n  - pasul-de-luni\n  - ridica-te-daca\n  - pauza-cafea\n  - modul: curba\n    piese: [model-curba, perechi-curba]\n  - pauza: 10\n  - deschidere')(e); }); ok(r);
+  assert.deepEqual(new Set(ordine(r)), a);
+});
+test('o piesă folosită de două ori: a doua apariție are @2', () => {
+  const r = cu((e) => { ECR('')(e); AG('  - ridica-te-daca\n  - deschidere\n  - ridica-te-daca')(e); }); ok(r);
+  assert.ok(ordine(r).includes('ridica-te-daca#1') && ordine(r).includes('ridica-te-daca@2#1'));
+});
+test('exemplul: o mutare și o ascundere din ediție', () => {
+  const r = cu(() => {}); ok(r);
+  const o = ordine(r);
+  assert.equal(o[3], 'ridica-te-daca#1');
+  assert.ok(o.includes('pasul-de-luni#1!'));
+});
+test('ecrane: „la început” și mutări pe rând', () => {
+  const r = cu(ECR('ecrane:\n  muta: ["inchidere#1 la început", "curba#1 după inchidere#1"]\n')); ok(r);
+  assert.deepEqual(ordine(r).slice(0, 3), ['inchidere#1', 'curba#1', 'deschidere#titlu']);
+});
+test('ecrane: un ecran nou (care nu e în muta) intră la locul lui firesc', () => {
+  const r = cu((e) => { ECR('ecrane:\n  muta: ["inchidere#1 la început"]\n')(e); e('piese/perechi-curba.md', (s) => s + '\n:::sala\nEcran nou\n:::\n'); }); ok(r);
+  const o = ordine(r);
+  assert.equal(o[0], 'inchidere#1');
+  assert.equal(o[o.indexOf('perechi-curba#1') + 1], 'perechi-curba#2');
+});
+test('ecrane: id inexistent oprește build-ul', () => opreste(ECR('ecrane:\n  ascunse: ["curba#9"]\n'), /„curba#9” .*nu e un ecran din curs/));
+test('ecrane: id inexistent în muta oprește build-ul', () => opreste(ECR('ecrane:\n  muta: ["nimic#1 după curba#1"]\n'), /nu e un ecran din curs/));
+test('ecrane: același ecran mutat de două ori', () => opreste(ECR('ecrane:\n  muta: ["curba#1 la început", "curba#1 după inchidere#1"]\n'), /mutat de două ori/));
+test('ecrane: același ecran de două ori în ascunse', () => opreste(ECR('ecrane:\n  ascunse: ["curba#1", "curba#1"]\n'), /de două ori în ascunse/));
+test('ecrane: rând de neînțeles', () => opreste(ECR('ecrane:\n  muta: ["curba#1 înainte de inchidere#1"]\n'), /nu se înțelege/));
+test('ecrane: câmp necunoscut', () => opreste(ECR('ecrane:\n  ordine: []\n'), /„ordine” necunoscut/));
+test('ecrane: un ecran din curs care nu e azi în agendă dă doar avertisment', () => {
+  const r = cu(ECR('ecrane:\n  ascunse: ["plimbare-curba#1"]\n')); ok(r);
+  assert.ok(r.avertismente.some((a) => /„plimbare-curba#1” .*nu e în agenda de azi/.test(a)));
+});
+test('ecrane: toate ecranele unei piese ascunse → avertisment, durata rămâne în total', () => {
+  const r = cu(ECR('ecrane:\n  ascunse: ["ridica-te-daca#1"]\n')); ok(r);
+  assert.ok(r.avertismente.some((a) => /toate ecranele lui „Ridică-te dacă” sunt ascunse; durata \(5 min\) rămâne/.test(a)));
+  assert.match(html(r), /Total: 2 h 35 min/);
+});
+test('ecrane: cursul online nu se schimbă', () => {
+  const a = exportul(cu(ECR(''))), b = exportul(cu(ECR('ecrane:\n  muta: ["inchidere#1 la început"]\n  ascunse: ["curba#1", "model-curba#1"]\n')));
+  assert.equal(a, b);
+});

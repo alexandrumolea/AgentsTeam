@@ -359,6 +359,41 @@ Se oprește dacă:
 
 **Recomandarea mea:** facem varianta minimă acum, cu termen miercuri 18 seara. Conținutul real încă nu există, deci acum e momentul cel mai ieftin. Dacă până miercuri seara nu e gata și testată, înghețăm formatul v1.1 pentru 23 și facem schimbarea după 25. Conținutul scris între timp se mută cu o simplă redenumire.
 
+
+### 1.10 Ecranele din sală: mută și ascunde (Alex, 2026-11-17)
+Cererea lui Alex: „Pot avea hide și move la slide-uri să le pot organiza?” A ales: **mut orice ecran**, nu doar piese întregi.
+
+**Id-ul stabil al fiecărui ecran** (se vede în vederea Ecrane, sub fiecare miniatură):
+| Ecranul | Id-ul |
+|---|---|
+| al n-lea bloc `:::sala` / `:::sala-si-curs` din fișierul unei piese sau al unui modul | `<id>#<n>`, de exemplu `curba#1`, `perechi-curba#1` |
+| ecranul de titlu al unui modul (făcut singur) | `<modul>#titlu` |
+| piesa singură fără ecrane (ecranul cu titlul ei) | `<piesă>#titlu` |
+| piesa de tip pauză (ecranul cu cronometrul) | `<piesă>#pauza` |
+| al k-lea rând `pauza: N` din agendă | `pauza#<k>` |
+| a doua apariție a aceleiași piese în agendă | `<piesă>@2#<n>` |
+
+Id-ul nu depinde de ordinea agendei: dacă muți rânduri în agendă, ecranele își păstrează id-urile.
+
+**În ediție** (doar diferențele, ușor de citit de mână):
+```yaml
+ecrane:
+  muta:
+    - "ridica-te-daca#1 după deschidere#2"   # sau „<ecran> la început”
+  ascunse:
+    - "pasul-de-luni#1"
+```
+- Mutările se aplică pe rând, peste ordinea firească a agendei. Un ecran nou (scris după ce ai salvat ordinea) intră singur la locul lui firesc, deci nu cere nimic.
+- **Build-ul se oprește** dacă un id nu e un ecran din curs, dacă un ecran e mutat de două ori sau apare de două ori în `ascunse`, dacă un rând nu se înțelege sau dacă toate ecranele sunt ascunse. Un id din curs care azi nu e în agendă dă doar avertisment.
+- **Timpul rămâne pe piese.** Un ecran mutat în alt modul rămâne legat de piesa lui: ora, nota trainerului și „rămas din modul”. Dacă toate ecranele unei piese sunt ascunse, piesa **rămâne în totalul zilei**, cu avertisment: ascunzi ecrane, nu activitatea. Ca s-o scoți din zi, o scoți din agendă.
+- **Cursul online nu se schimbă.** Ordinea și ascunderea sunt doar pentru sală.
+
+**În materialul trainerului:**
+- **Vederea Ecrane:** grila de miniaturi în ordinea de prezentare, cu felul, piesa, ora și id-ul. Muți ecranele prin tragere (cu mouse-ul de oriunde de pe carte, cu degetul de pe mânerul ⠿), cu ↑ ↓ sau, pe cartea selectată, cu Alt+săgeți. „Ascunde” / „Arată” (sau H) pe fiecare carte; cele ascunse rămân estompate în grilă.
+- Ordinea ta se salvează în browser (slug + data ediției) și rezistă la refresh. „Copiază pentru ediție” pune blocul `ecrane:` în clipboard (și într-un câmp din care îl poți copia), iar „Resetează la ordinea din curs” revine la ce scrie în ediție.
+- **Se aplică** în prezentare (ecranul de comandă, fereastra sălii, „Prezintă aici”), în banda zilei și în „Acum” / „Urmează”. Ecranele ascunse se sar. Fereastra sălii primește id-ul ecranului de arătat.
+- **În sală:** „Ascunde ecranul” (cel de acum) și „Ascunde-l” (cel următor), iar sub „Urmează” apare „1 ecran ascuns urmează aici · Arată”.
+
 ---
 
 ## 2. Cum se leagă de ce există

@@ -82,26 +82,37 @@ export function construiesteEcrane(c) {
   const randeaza = creeazaRandare({ atribut: 'data-img', randuriNoi: true });
   const randeazaNota = creeazaRandare({ atribut: 'data-img' });
   const ecrane = [];
-  const pune = (ri, sursa, continut, cronometru = 0, titlu = false) => {
+  // Id-ul stabil al fiecărui ecran (1.10, Alex, 2026-11-17): <piesă sau modul>#<n> (al n-lea bloc :::sala / :::sala-si-curs din fișier),
+  // <modul>#titlu, <piesă>#titlu (piesa singură fără ecrane), <piesă>#pauza, pauza#<k> (al k-lea rând „pauza: N”).
+  // O piesă folosită de două ori în agendă primește la a doua apariție <piesă>@2. Id-ul nu depinde de ordinea agendei.
+  const pune = (ri, id, sursa, continut, cronometru = 0, titlu = false) => {
     const x = ecranul(sursa, continut, cronometru, titlu);
-    ecrane.push({ modul: ri, fel: x.fel, eticheta: x.eticheta, html: x.html, cronometru, note: [], ...(titlu ? { titlu: true } : {}) });
+    ecrane.push({ id, modul: ri, sursa: sursa.titlu ?? '', fel: x.fel, eticheta: x.eticheta, html: x.html, cronometru, note: [], ...(titlu ? { titlu: true } : {}) });
   };
-  const pauza = (ri, titlu, durata) => pune(ri, { tip: 'pauza', titlu }, `<h1>${e(titlu)}</h1><p class="ecran-sub">${durata} min</p>`, durata, true);
-  let nr = 0;
+  const pauza = (ri, id, titlu, durata) => pune(ri, id, { tip: 'pauza', titlu }, `<h1>${e(titlu)}</h1><p class="ecran-sub">${durata} min</p>`, durata, true);
+  const aparitii = new Map();
+  let nr = 0, pauze = 0;
   c.agenda.forEach((r, ri) => {
-    if (r.fel === 'pauza') { pauza(ri, r.titlu, r.durata); return; }
+    if (r.fel === 'pauza') { pauza(ri, `pauza#${++pauze}`, r.titlu, r.durata); return; }
     if (r.fel === 'modul') {
-      if (r.modul.tip === 'pauza') pauza(ri, r.modul.titlu, r.durata);
-      else { nr++; pune(ri, sursaModul(r.modul), `<p class="ecran-numar">${String(nr).padStart(2, '0')}</p><h1>${e(r.modul.titlu)}</h1>`, 0, true); }
+      if (r.modul.tip === 'pauza') pauza(ri, `${r.modul.id}#titlu`, r.modul.titlu, r.durata);
+      else { nr++; pune(ri, `${r.modul.id}#titlu`, sursaModul(r.modul), `<p class="ecran-numar">${String(nr).padStart(2, '0')}</p><h1>${e(r.modul.titlu)}</h1>`, 0, true); }
     }
+    const chei = new Map(), blocuri = new Map();
+    const cheie = (s) => {
+      const p = s.piesa; if (!p) return r.modul.id;
+      if (!chei.has(p)) { const k = (aparitii.get(p.id) ?? 0) + 1; aparitii.set(p.id, k); chei.set(p, k > 1 ? `${p.id}@${k}` : p.id); }
+      return chei.get(p);
+    };
+    const urmatorul = (s) => { const k = cheie(s); blocuri.set(k, (blocuri.get(k) ?? 0) + 1); return `${k}#${blocuri.get(k)}`; };
     const inainte = ecrane.length, noteInainte = [];
     for (const s of desfasoara(r)) {
       if (s.strat === 'sala' || s.strat === 'sala-si-curs') {
-        pune(ri, sursaDe(r, s), randeaza(s.md), s.atribute.cronometru ?? 0);
+        pune(ri, urmatorul(s), sursaDe(r, s), randeaza(s.md), s.atribute.cronometru ?? 0);
       } else if (s.strat === 'piesa-inceput' && s.piesa.tip === 'pauza') {
-        pauza(ri, s.piesa.titlu, s.piesa.durata);
+        pauza(ri, `${cheie(s)}#pauza`, s.piesa.titlu, s.piesa.durata);
       } else if (s.strat === 'piesa-inceput' && r.fel === 'piesa' && !s.piesa.segmente.some((x) => x.strat === 'sala' || x.strat === 'sala-si-curs')) {
-        pune(ri, sursaPiesa(s.piesa), `<h1>${e(s.piesa.titlu)}</h1>`, 0, true);
+        pune(ri, `${cheie(s)}#titlu`, sursaPiesa(s.piesa), `<h1>${e(s.piesa.titlu)}</h1>`, 0, true);
       } else if (s.strat === 'trainer') {
         // Nota merge la ecranul de dinaintea ei; la o piesă singură, cea scrisă înaintea primului ecran merge pe primul ecran.
         if (r.fel === 'piesa' && ecrane.length === inainte) noteInainte.push(randeazaNota(s.md));
@@ -113,7 +124,71 @@ export function construiesteEcrane(c) {
     // Notele de dinaintea primului ecran al unei piese singure merg pe primul ei ecran.
     if (noteInainte.length && ecrane.length > inainte) ecrane[inainte].note.unshift(...noteInainte);
   });
+  ecrane.forEach((x, i) => { x.nat = i; });
   return ecrane;
+}
+
+/**
+ * Ordinea și ascunderea ecranelor din ediție (1.10, Alex, 2026-11-17):
+ *   ecrane:
+ *     muta: ["curba#2 după deschidere#1", "inchidere#1 la început"]
+ *     ascunse: [pasul-de-luni#1]
+ * Mutările se aplică pe rând, peste ordinea firească (agenda). Un ecran nou intră singur la locul lui firesc.
+ * Întoarce { ecrane, erori, avertismente }: ecranele în ordinea ediției, cu `ascuns` pus.
+ */
+export function pregatesteEcrane(c) {
+  const ecrane = construiesteEcrane(c);
+  const erori = [], avertismente = [];
+  const cfg = c.editie.ecrane;
+  const loc = `ediția ${c.editie.fisier ?? ''}, ecrane`;
+  if (cfg === undefined || cfg === null) return { ecrane, erori, avertismente };
+  if (typeof cfg !== 'object' || Array.isArray(cfg)) return { ecrane, erori: [`${loc}: are forma { muta: [...], ascunse: [...] }`], avertismente };
+  for (const k of Object.keys(cfg)) if (!['muta', 'ascunse'].includes(k)) erori.push(`${loc}: „${k}” necunoscut (se pot: muta, ascunse)`);
+  const lista = (v, nume) => { if (v === undefined || v === null) return []; if (!Array.isArray(v)) { erori.push(`${loc}: „${nume}” trebuie să fie o listă`); return []; } return v.map((x) => String(x).trim()); };
+  // Id-urile posibile în curs (nu doar azi): un id care nu există nicăieri e o greșeală; unul din curs care nu e azi în agendă e doar ignorat.
+  const blocuriIn = (f) => f.segmente.filter((s) => s.strat === 'sala' || s.strat === 'sala-si-curs').length;
+  const posibil = (id) => {
+    const m = /^(.+?)(?:@\d+)?#(titlu|pauza|\d+)$/.exec(id); if (!m) return false;
+    if (m[1] === 'pauza' && /^\d+$/.test(m[2])) return true;
+    const f = c.module.find((x) => x.id === m[1]) ?? c.piese.get(m[1]);
+    if (!f) return false;
+    return m[2] === 'titlu' || m[2] === 'pauza' || (+m[2] >= 1 && +m[2] <= blocuriIn(f));
+  };
+  const deAzi = new Map(ecrane.map((x) => [x.id, x]));
+  const verifica = (id, unde) => {
+    if (deAzi.has(id)) return true;
+    if (posibil(id)) avertismente.push(`${loc}: „${id}” (${unde}) nu e în agenda de azi; îl ignor`);
+    else erori.push(`${loc}: „${id}” (${unde}) nu e un ecran din curs. Id-urile arată ca „curba#2”, „curba#titlu” sau „pauza#1” (vezi vederea Ecrane)`);
+    return false;
+  };
+  const ordine = ecrane.slice();
+  const vazute = new Set();
+  for (const rand of lista(cfg.muta, 'muta')) {
+    const m = /^(\S+)\s+(?:după|dupa)\s+(\S+)$/.exec(rand) ?? /^(\S+)\s+la\s+(?:început|inceput)$/.exec(rand);
+    if (!m) { erori.push(`${loc}: „${rand}” nu se înțelege. Se scrie „<ecran> după <ecran>” sau „<ecran> la început”`); continue; }
+    const [, id, dupa] = m;
+    if (vazute.has(id)) { erori.push(`${loc}: „${id}” e mutat de două ori`); continue; }
+    vazute.add(id);
+    if (!verifica(id, 'muta')) continue;
+    if (dupa !== undefined && !verifica(dupa, `muta, după`)) continue;
+    if (dupa === id) { erori.push(`${loc}: „${id}” nu se poate muta după el însuși`); continue; }
+    const x = deAzi.get(id);
+    ordine.splice(ordine.indexOf(x), 1);
+    ordine.splice(dupa === undefined ? 0 : ordine.indexOf(deAzi.get(dupa)) + 1, 0, x);
+  }
+  const ascunse = new Set();
+  for (const id of lista(cfg.ascunse, 'ascunse')) {
+    if (ascunse.has(id)) { erori.push(`${loc}: „${id}” apare de două ori în ascunse`); continue; }
+    ascunse.add(id);
+    if (verifica(id, 'ascunse')) deAzi.get(id).ascuns = true;
+  }
+  if (ordine.length && ordine.every((x) => x.ascuns)) erori.push(`${loc}: toate ecranele sunt ascunse`);
+  // Timpul rămâne pe piese (1.10): un rând din agendă cu toate ecranele ascunse rămâne în total, cu avertisment.
+  c.agenda.forEach((r, ri) => {
+    const ale = ecrane.filter((x) => x.modul === ri);
+    if (ale.length && ale.every((x) => x.ascuns)) avertismente.push(`${loc}: toate ecranele lui „${titluR(r)}” sunt ascunse; durata (${r.durata} min) rămâne în ziua de azi. Ca s-o scoți din zi, scoate-l din agendă`);
+  });
+  return { ecrane: ordine, erori, avertismente };
 }
 
 function harta(c) {
@@ -308,8 +383,7 @@ ${grup(deAzi.length ? 'Restul bibliotecii' : 'Toate piesele', rest)}
 <p class="sters banca-nota">Ca să schimbi o piesă în agendă: editează „agenda” din ediție și rulează din nou build-ul. Orele se recalculează singure.</p>`;
 }
 
-export function construiesteTrainer(c) {
-  const ecrane = construiesteEcrane(c);
+export function construiesteTrainer(c, ecrane = pregatesteEcrane(c).ecrane) {
   const css = readFileSync(caleTema(c.curs.brand), 'utf8') + '\n' + readFileSync(join(AICI, 'stil.css'), 'utf8');
   const script = readFileSync(join(AICI, 'prezinta.js'), 'utf8');
   const modul = vedereaModul(c);
@@ -342,6 +416,7 @@ export function construiesteTrainer(c) {
     <button data-vedere="modul">Modulul</button>
     <button data-vedere="schita">Schița</button>
     <button data-vedere="banca">Biblioteca</button>
+    <button data-vedere="ecrane">Ecrane</button>
     <button data-vedere="prezinta" class="principal">Prezintă</button>
   </nav>
 </header>
@@ -350,6 +425,16 @@ export function construiesteTrainer(c) {
 <section id="schita" hidden><h2>Schița zilei</h2>${totalZi(c)}${blocObiective(c)}${listaSchita(c)}</section>
 <section id="modul" hidden>${modul}</section>
 <section id="banca" hidden>${vedereaBanca(c)}</section>
+<section id="ecrane" hidden>
+  <div class="banca-cap"><h2>Ecranele din sală</h2><p class="sters" id="ec-stare" role="status"></p></div>
+  <div class="ec-bara">
+    <p class="sters ec-ajutor">Trage o carte ca s-o muți (pe tabletă, de mâner ⠿), sau ↑ ↓; <kbd>Alt</kbd>+săgeți și <kbd>H</kbd> pe o carte selectată. Ecranele ascunse se sar la prezentare.</p>
+    <div class="ec-actiuni"><button type="button" id="ec-copiaza" class="principal">Copiază pentru ediție</button><button type="button" id="ec-reset">Resetează la ordinea din curs</button></div>
+  </div>
+  <p class="mesaj" id="ec-mesaj" role="status"></p>
+  <div id="ec-yaml-cutie" hidden><label class="eticheta" for="ec-yaml">Blocul pentru editii/${e(c.editie.fisier ?? 'ediție.yml')}</label><textarea id="ec-yaml" rows="6" readonly spellcheck="false"></textarea></div>
+  <ol class="grila-ecrane" id="grila-ecrane" aria-label="Ecranele, în ordinea de prezentare"></ol>
+</section>
 <section id="prezinta" hidden>
   <div class="comanda-start" id="comanda-start">
     <h2>Prezintă</h2>
@@ -365,7 +450,7 @@ export function construiesteTrainer(c) {
   </div>
   <div class="comanda" id="comanda" hidden>
     <div>
-      <p class="eticheta">Acum · <span id="pozitie"></span> · <span id="modul-acum"></span></p>
+      <p class="eticheta">Acum · <span id="pozitie"></span> · <span id="modul-acum"></span> <button type="button" class="ec-mic" id="btn-ascunde-acum">Ascunde ecranul</button></p>
       <div class="cadru" id="cadru-acum"></div>
       <div class="banda-cutie"><div class="banda" id="banda" role="group" aria-label="Ecranele zilei, după fel"></div>
         <p class="banda-legenda" aria-hidden="true"><span><span class="semn-mic fel-teorie"></span>teorie</span><span><span class="semn-mic fel-exercitiu"></span>exercițiu</span><span><span class="semn-mic fel-reflectie"></span>reflecție</span><span><span class="semn-mic fel-mesaj"></span>mesaj cheie</span><span><span class="semn-mic fel-pauza"></span>pauză</span></p></div>
@@ -386,7 +471,7 @@ export function construiesteTrainer(c) {
         <div><span class="eticheta">Față de plan</span><b id="abatere">–</b></div>
         <div><span class="eticheta">Cronometru</span><b id="cron">–</b></div>
       </div>
-      <div class="urmeaza"><p class="eticheta">Urmează</p><div class="cadru" id="cadru-urmeaza"></div></div>
+      <div class="urmeaza"><p class="eticheta">Urmează <button type="button" class="ec-mic" id="btn-ascunde-urm">Ascunde-l</button></p><div class="cadru" id="cadru-urmeaza"></div><p class="ascunse-aici" id="ascunse-aici"></p></div>
       <div class="schita-mica" id="schita-mica"><button type="button" class="inchide-schita" id="inchide-schita">Închide schița (S / Esc)</button><p class="eticheta">Schița zilei</p>${blocObiective(c)}${listaSchita(c)}</div>
     </div>
   </div>

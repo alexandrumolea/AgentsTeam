@@ -25,9 +25,19 @@ export async function launch({ headless = true, port = 9333 } = {}) {
   async function open(url) { const { targetId } = await send('Target.createTarget', { url: 'about:blank' }); const { sessionId } = await send('Target.attachToTarget', { targetId, flatten: true }); await instrument(sessionId); await send('Page.navigate', { url }, sessionId); await new Promise(r => setTimeout(r, 800)); const p = { targetId, sessionId }; pages.push(p); return p; }
   const evaluate = async (p, expr) => { const r = await send('Runtime.evaluate', { expression: expr, returnByValue: true, awaitPromise: true, userGesture: false }, p.sessionId); if (r.exceptionDetails) throw new Error(r.exceptionDetails.exception?.description || r.exceptionDetails.text); return r.result.value; };
   async function click(p, selector) { const b = await evaluate(p, `(()=>{const el=document.querySelector(${JSON.stringify(selector)}); el.scrollIntoView({block:'center'}); const r=el.getBoundingClientRect();return {x:r.x+r.width/2,y:r.y+r.height/2}})()`); for (const type of ['mousePressed', 'mouseReleased']) await send('Input.dispatchMouseEvent', { type, x: b.x, y: b.y, button: 'left', clickCount: 1 }, p.sessionId); await new Promise(r => setTimeout(r, 500)); }
-  const KEYS = { ArrowRight: 39, ArrowLeft: 37, ArrowDown: 40, ArrowUp: 38, PageDown: 34, PageUp: 33, ' ': 32, Enter: 13, Escape: 27, F5: 116, '.': 190, b: 66, c: 67, n: 78, s: 83, f: 70, '/': 191 };
-  async function key(p, k) { const code = KEYS[k]; const text = k.length === 1 ? k : undefined; await send('Input.dispatchKeyEvent', { type: text ? 'keyDown' : 'rawKeyDown', key: k, windowsVirtualKeyCode: code, text }, p.sessionId); await send('Input.dispatchKeyEvent', { type: 'keyUp', key: k, windowsVirtualKeyCode: code }, p.sessionId); await new Promise(r => setTimeout(r, 120)); }
+  const KEYS = { ArrowRight: 39, ArrowLeft: 37, ArrowDown: 40, ArrowUp: 38, PageDown: 34, PageUp: 33, ' ': 32, Enter: 13, Escape: 27, F5: 116, '.': 190, b: 66, c: 67, n: 78, s: 83, f: 70, h: 72, '/': 191 };
+  // mod: modificatori CDP (1 = Alt, 2 = Ctrl, 4 = Cmd, 8 = Shift)
+  async function key(p, k, mod = 0) { const code = KEYS[k]; const text = k.length === 1 && !mod ? k : undefined; await send('Input.dispatchKeyEvent', { type: text ? 'keyDown' : 'rawKeyDown', key: k, windowsVirtualKeyCode: code, text, modifiers: mod }, p.sessionId); await send('Input.dispatchKeyEvent', { type: 'keyUp', key: k, windowsVirtualKeyCode: code, modifiers: mod }, p.sessionId); await new Promise(r => setTimeout(r, 120)); }
+  // Tragere cu mouse-ul, în pași, de la centrul unui element la centrul altuia (+dx). Ambele trebuie să fie în fereastră.
+  async function trage(p, din, la, dx = 0) {
+    const c = (sel) => evaluate(p, `(()=>{const el=document.querySelector(${JSON.stringify(sel)}); const r=el.getBoundingClientRect(); return {x:r.x+r.width/2,y:r.y+r.height/2}})()`);
+    const a = await c(din); const b = await c(la); b.x += dx;
+    await send('Input.dispatchMouseEvent', { type: 'mousePressed', x: a.x, y: a.y, button: 'left', clickCount: 1 }, p.sessionId);
+    for (let i = 1; i <= 10; i++) await send('Input.dispatchMouseEvent', { type: 'mouseMoved', x: a.x + (b.x - a.x) * i / 10, y: a.y + (b.y - a.y) * i / 10, button: 'left', buttons: 1 }, p.sessionId);
+    await send('Input.dispatchMouseEvent', { type: 'mouseReleased', x: b.x, y: b.y, button: 'left', clickCount: 1 }, p.sessionId);
+    await new Promise(r => setTimeout(r, 200));
+  }
   async function screenshot(p, file) { const { data } = await send('Page.captureScreenshot', { format: 'png' }, p.sessionId); (await import('node:fs')).writeFileSync(file, Buffer.from(data, 'base64')); }
   const close = () => { try { ws.close(); } catch {} proc.kill(); };
-  return { exceptii, cereri, send, open, evaluate, click, key, pages, close, screenshot, listeners };
+  return { exceptii, cereri, send, open, evaluate, click, key, trage, pages, close, screenshot, listeners };
 }

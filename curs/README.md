@@ -59,6 +59,13 @@ Doar în cursul online.
 
 Primul ecran al fiecărui modul (numărul și titlul) se face singur. O pauză primește automat un cronometru cât durata ei.
 
+### Ecranele din sală: mută și ascunde (1.10, Alex, 2026-11-17)
+
+- Fiecare ecran are un id stabil: `curba#1` (al n-lea bloc din sală al fișierului), `curba#titlu`, `pauza-cafea#pauza`, `pauza#1`; a doua apariție a unei piese: `<piesă>@2#1`. Id-urile se văd în vederea **Ecrane**.
+- **Vederea Ecrane:** miniaturi în ordinea de prezentare. Muți prin tragere (pe tabletă, de mânerul ⠿), ↑ ↓ sau Alt+săgeți; „Ascunde” / „Arată” (sau H). Ordinea ta stă în browser; **„Copiază pentru ediție”** dă blocul pentru fișierul ediției; „Resetează la ordinea din curs” revine la ediție.
+- **În ediție:** `ecrane: { muta: ["ridica-te-daca#1 după deschidere#2", "x#1 la început"], ascunse: ["pasul-de-luni#1"] }`. Un id greșit sau dublat oprește build-ul; unul din curs care azi nu e în agendă dă avertisment; un ecran nou intră singur la locul lui.
+- Ascunsele se sar la prezentare, în banda zilei, în „Acum”/„Urmează” și în PDF-ul ecranelor. Timpul rămâne pe piese: o piesă cu toate ecranele ascunse rămâne în total (avertisment). Cursul online nu se schimbă.
+
 ### Etichetele (Alex, 2026-11-17)
 
 - `etichete: [Positive Outlook, Closing]` pe piese și pe module, opțional. Texte libere, scrise cum vrei (și în engleză, cu spații).
