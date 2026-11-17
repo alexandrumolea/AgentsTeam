@@ -1,6 +1,6 @@
-# Arhitectura unui curs: o sursă, trei ieșiri (v1)
+# Arhitectura unui curs: o sursă, trei ieșiri (v1.1)
 
-**Autor:** Radu. **Data:** 2026-11-17. **Versiune:** v1. Față de v0, materialul trainerului e și prezentarea din sală (precizarea lui Alex de mai jos). **Status:** propunere, nimic construit. Alex decide la final (D-048–D-051).
+**Autor:** Radu. **Data:** 2026-11-17. **Versiune:** v1.1. Față de v0: materialul trainerului e și prezentarea din sală (v1); banca de exerciții și agenda din ediție (v1.1, secțiunea 1.8, I-021, doar formatul). **Status:** D-048–D-051 aprobate de Alex (2026-11-17); Mike construiește (T-022).
 **Pentru:** workshop-ul Change Agility (o zi, 23 noiembrie, D-044, parte din I-018). Același model trebuie să meargă fără cod nou și pentru 25 noiembrie (Self-management în relația cu AI).
 **Citit înainte:** `team/tudor/documente/echipa-workshopuri-v0.md`, `docs/procese/ce-iese-public.md`, `site/build.mjs`, `content/`, I-018, I-019, D-043–D-045, `arhitectura-v2.md`.
 
@@ -39,9 +39,12 @@ cursuri/                         locul privat (vezi secțiunea 3)
     02-curba-schimbarii.md
     03-pauza.md
     ...
+    exercitii/                   banca de exerciții a cursului (1.8)
+      perechi-curba.md           un fișier pe exercițiu; numele fișierului = id-ul
+      plimbare-curba.md
     materiale/                   worksheet-uri (.docx), imagini, scheme
     editii/
-      2026-11-23.yml             ediția: ora de start, module sărite, numele interzise
+      2026-11-23.yml             ediția: ora de start, agenda (ordinea și exercițiile alese), numele interzise
 ```
 **Regula 7 din CLAUDE.md:** orice schimbare de conținut înseamnă un fișier editat. Textul unui modul, timpul lui, o întrebare pentru trainer, un punct din schiță: toate stau în fișierul modulului.
 
@@ -94,14 +97,17 @@ Antetul modulului:
 ---
 id: curba
 titlu: "Ce se întâmplă cu noi când se schimbă ceva"
-durata: 50
+durata: 35                # doar partea modulului; exercițiile își aduc singure durata
 tip: teorie
 ancora: "Curba, nu linia"
 schita:
   - "Schimbarea scade întâi performanța"
   - "Fiecare e în alt punct al curbei"
   - "Întrebarea: unde ești tu acum?"
-materiale: ["flipchart cu curba desenată", "post-it-uri în 3 culori"]
+materiale: ["flipchart cu curba desenată"]
+exercitii:
+  implicite: [perechi-curba]       # intră în agendă dacă ediția nu spune altceva
+  alternative: [plimbare-curba]    # le vezi lângă modul și le poți alege
 ---
 
 :::sala-si-curs
@@ -128,7 +134,33 @@ Cere grupului să numească etapele.
 **Tranziția spre exercițiu:** „Acum, fiecare își pune un post-it acolo unde e azi.”
 :::
 
-## Exercițiul
+::exercitii
+
+:::trainer
+**Debrief (5 min).** „Ce ați observat: suntem toți în același punct?”
+:::
+
+## Ce iei cu tine
+O schimbare nu se judecă după prima lună.
+```
+
+Ce iese din acest fișier:
+Linia `::exercitii` arată unde intră exercițiile alese. Fără ea, exercițiile intră la finalul modulului.
+
+Exercițiul implicit, `cursuri/change-agility/exercitii/perechi-curba.md` **[EXEMPLU]**:
+```markdown
+---
+titlu: "Unde sunt eu pe curbă"
+durata: 15
+format: perechi              # individual · perechi · grup · plen
+tip: exercitiu               # exercitiu · reflectie · energizant (alege lumea Ive)
+energie: mediu               # calm · mediu · activ
+obiectiv: "Fiecare își vede locul pe curbă și îl spune cu voce tare"
+module: [curba]              # unde se potrivește; gol = oriunde
+materiale: ["post-it-uri în 3 culori", "worksheet Curba mea"]
+in_curs: da                  # nu = nu apare niciodată în cursul online
+---
+
 Unde ești tu acum pe curbă, pentru schimbarea cea mai mare din viața ta de lucru?
 
 :::sala cronometru=10
@@ -138,18 +170,19 @@ Unde ești tu acum pe curbă, pentru schimbarea cea mai mare din viața ta de lu
 3. Ascultă. Nu dai sfaturi.
 :::
 
+:::trainer
+Formează perechi între oameni care nu lucrează zilnic împreună.
+:::
+
 :::participant
 Scrie în worksheet-ul „Curba mea” (pagina 2) unde erai acum o lună și unde ești azi.
 :::
-
-## Ce iei cu tine
-O schimbare nu se judecă după prima lună.
 ```
+Alternativa `plimbare-curba.md` are același antet, cu `format: grup`, `energie: activ`, `durata: 20`: curba e desenată pe podea cu bandă, iar oamenii stau fizic unde sunt.
 
-Ce iese din acest fișier:
-- **Cursul online:** întrebarea, ideea cu desenul curbei, exercițiul (întrebarea), nota despre worksheet, „Ce iei cu tine”. Fără nota trainerului și fără instrucțiunile pentru perechi.
+- **Cursul online:** întrebarea, ideea cu desenul curbei, întrebarea exercițiului, nota despre worksheet, „Ce iei cu tine”. Fără notele trainerului și fără instrucțiunile pentru perechi.
 - **Ecranul din sală, 4 ecrane:** titlul modulului (făcut singur), întrebarea, curba, instrucțiunile pentru perechi cu cronometrul de 10 minute.
-- **Vederea trainerului:** ecranul curent și pe cel următor, nota trainerului pentru momentul ăsta, ora (de exemplu 10:10–11:00), timpul rămas din modul, materialele și schița.
+- **Vederea trainerului:** ecranul curent și pe cel următor, nota trainerului pentru momentul ăsta, ora (de exemplu 10:10–11:00 = 35 de minute modul + 15 exercițiu), timpul rămas din modul, materialele, alternativele și schița.
 - **Schița:** „Curba, nu linia” și cele trei puncte, la ora 10:10.
 
 ### 1.6 Siguranța: notele trainerului nu scapă niciodată
@@ -158,20 +191,77 @@ Build-ul se oprește (nu publică nimic) dacă:
 - apare un bloc necunoscut (de exemplu `:::traner` sau `:::sal`, scrise greșit). Mai bine un build oprit decât o notă de trainer ajunsă la participanți sau un exercițiu de sală ajuns în cursul online;
 - exportul pentru cursul online conține ceva din `:::trainer` sau `:::sala` (verificare făcută pe rezultat, nu doar pe sursă);
 - schița are peste 3 puncte sau un punct are peste 8 cuvinte;
-- modulele nu încap în `durata_zi`, sau un `cronometru` e mai lung decât `durata` modulului;
+- agenda ediției (module + exerciții + pauze) nu încape în `durata_zi`, sau un `cronometru` e mai lung decât `durata` modulului ori a exercițiului în care stă;
+- regulile pentru bancă și agendă din 1.8;
 - un ecran din sală trimite la o imagine care nu e în `materiale/` sau la o adresă de pe internet (prezentarea trebuie să meargă fără internet);
 - în cursul participanților apare un cuvânt din `nume_interzise` al ediției (numele clientului, al oamenilor). Lista stă doar în fișierul privat al ediției.
 
 Doar avertisment, fără oprire: un ecran din sală cu peste 30 de cuvinte. Pe proiector, mai puțin e mai bine.
 
-### 1.7 Ediția: `editii/2026-11-23.yml`
+### 1.7 Ediția: `editii/2026-11-23.yml` (sursa agendei)
 ```yaml
 data: 2026-11-23
 ora_start: "9:00"
-sari_peste: []            # id-uri de module pe care nu le facem la această livrare
+# Agenda: ordinea zilei. Lipsește = toate modulele, în ordinea din nume, cu exercițiile implicite.
+# Un rând = un modul (cu exercițiile implicite) sau un modul cu exercițiile alese de tine, sau o pauză.
+agenda:
+  - deschidere
+  - modul: curba
+    exercitii: [plimbare-curba]      # înlocuiește implicitele; [] = fără exercițiu
+  - pauza: 15
+  - modul: rezistenta
+    exercitii: [perechi-curba, cerc-intrebari]   # ordinea din listă e ordinea din sală
+  - pauza: 60
+    titlu: "Prânz"
+  - inchidere
 nume_interzise: []        # numele clientului și al oamenilor; build-ul oprește cursul public dacă le găsește
 nota_trainer: ""          # ce e special la acest grup (doar în materialul trainerului)
 ```
+Orele se calculează singure: `ora_start` + duratele, în ordinea din agendă. Un modul care lipsește din agendă nu se face la această ediție (înlocuiește `sari_peste` din v1).
+
+### 1.8 Banca de exerciții (v1.1, I-021, doar formatul)
+Cerința lui Alex (2026-11-17): „Aș vrea să avem un fel de bancă de exerciții la fiecare curs, din care să-mi pot alege ușor și live și din timp. Și să-mi construiesc agenda cumva dinamic, poate chiar cu drag and drop.”
+
+**Unde stau.** `cursuri/<slug>/exercitii/<id>.md`, un fișier pe exercițiu. Id-ul e numele fișierului și nu se schimbă. Corpul are aceleași straturi ca modulele (`:::sala`, `:::sala-si-curs`, `:::trainer`, `:::participant`) și aceleași verificări.
+
+**Antetul.**
+| Câmp | Obligatoriu | Ce e |
+|---|---|---|
+| `titlu` | da | numele exercițiului |
+| `durata` | da | minute, cu tot cu instrucțiuni și debrief scurt |
+| `format` | da | `individual` · `perechi` · `grup` · `plen` |
+| `tip` | da | `exercitiu` · `reflectie` · `energizant`; alege lumea Ive a ecranelor |
+| `energie` | da | `calm` · `mediu` · `activ`; ajută la alegerea după ora zilei |
+| `obiectiv` | da | o propoziție: ce se întâmplă cu omul |
+| `module` | nu | id-urile modulelor unde se potrivește; gol = oriunde |
+| `materiale` | nu | ce trebuie în sală |
+| `in_curs` | nu | `da` (implicit) / `nu`: niciodată în cursul online (de exemplu un energizant) |
+
+**Cum alege agenda, în două niveluri.**
+1. **Modulul** propune: `exercitii.implicite` (ce se face dacă nu spui nimic) și `exercitii.alternative` (ce poți alege în loc).
+2. **Ediția** decide: `agenda` dă ordinea modulelor, pauzele și exercițiile alese pe fiecare modul. Poate alege orice exercițiu din bancă, nu doar alternativele. **Ediția e sursa agendei.** Timpii, schița și ecranele se recalculează din ea.
+
+**Ce apare în cursul online: doar exercițiile folosite în ediția din care publicăm,** cu `in_curs: da`. Exportul se face dintr-o ediție (de exemplu `2026-11-23`), deci participanții văd ziua pe care au trăit-o, nu o listă de exerciții pe care nu le-au făcut. Banca întreagă nu se publică: e trusa de lucru a lui Alex.
+
+**Pregătit pentru „live” și drag and drop, fără să le construim acum.**
+- Agenda e o singură listă, într-un singur fișier. Un editor cu drag and drop (după 23) doar mută rânduri în această listă și o scrie înapoi. Formatul nu se mai schimbă.
+- Materialul trainerului are toată banca înăuntru, chiar și exercițiile nefolosite, deci alegerea live merge fără internet.
+
+| | v1 pentru 23 | După 23 |
+|---|---|---|
+| Alegere din timp | da: editezi `agenda` din ediție (sau îi spui unui agent), build-ul recalculează orele | editor vizual al agendei, cu drag and drop |
+| Banca în materialul trainerului | da: vederea **Banca**, listă cu filtre pe format, durată și energie, cu tot conținutul | căutare, „folosit la edițiile…” |
+| Schimbare live în sală | doar dacă e ieftin (Mike decide până miercuri): în ecranul de comandă, la un modul cu alternative, un meniu „schimbă exercițiul” înlocuiește ecranele și recalculează orele. Schimbarea nu se salvează (fișierul e offline) | inserezi orice exercițiu din bancă; după zi, ce s-a făcut se scrie înapoi în ediție |
+
+**Build-ul se oprește dacă:**
+- un id din `agenda`, din `exercitii.implicite`/`alternative` sau din `module` nu există;
+- două exerciții au același id sau un exercițiu apare și în implicite, și în alternative la același modul;
+- un modul apare de două ori în agendă;
+- un rând din agendă nu e nici `modul`, nici `pauza`, sau `pauza` nu e un număr de minute;
+- agenda nu încape în `durata_zi`;
+- un câmp obligatoriu lipsește sau are o valoare din afara listei (`format`, `tip`, `energie`).
+
+Doar avertisment: un exercițiu ales la un modul care nu e în câmpul lui `module`, sau un modul de peste 90 de minute fără nicio pauză după.
 
 ---
 
@@ -245,10 +335,11 @@ Dacă un modul are nevoie de un exemplu din compania clientului, exemplul stă �
 - **Nu se publică pe site.** Stă pe Drive-ul lui Alex, lângă celelalte materiale de training.
 
 Patru vederi în același fișier, cu butoane sus:
-1. **Ziua:** desfășurătorul, cu ora fiecărui modul, durata, tipul și materialele. Ce e acum se vede imediat.
+1. **Ziua:** desfășurătorul din agenda ediției, cu ora fiecărui modul și exercițiu, durata, tipul și materialele. Ce e acum se vede imediat.
 2. **Modulul:** tot conținutul, cu notele trainerului evidențiate. Pentru pregătire.
 3. **Schița:** doar ancorele și punctele cheie. Asta e vederea „las materialele deoparte”.
 4. **Prezintă:** deschide ecranul din sală. Vederea lui Alex devine ecranul de comandă (4.2).
+5. **Banca:** toate exercițiile cursului, cu filtre (1.8).
 
 ### 4.2 Modul Prezintă: cum merge în sală
 Seamănă cu „Presenter View” din PowerPoint sau Keynote: **două ferestre din același fișier.** Fereastra lui Alex o deschide pe a participanților și o comandă direct, fără internet și fără server.
@@ -304,7 +395,7 @@ Taste simple: săgeți sau telecomanda de prezentare pentru ecranul următor, `C
 | Ma 24 | ce a lipsit în sală; aceleași fișiere pentru Self-management (25) | Tudor, Elena |
 
 **v1 minim pentru 23 (ce promitem):**
-- sursa în formatul de mai sus, cu straturile `:::sala` și `:::sala-si-curs`;
+- sursa în formatul de mai sus, cu straturile `:::sala` și `:::sala-si-curs`, banca de exerciții și agenda din ediție (1.8);
 - materialul trainerului: HTML care merge fără internet, cu vederile Ziua, Modul, Schiță (direcția 1, simplă) și **Prezintă** (două ferestre, cronometru, tema Ive a brandului);
 - PDF-ul ecranelor din sală și PDF-ul materialului trainerului, ca plasă de siguranță;
 - cursul participanților pe `alexandrumolea.com/cursuri/change-agility/`, fără ecranele din sală, nelistat, accesibil prin QR.
@@ -337,3 +428,4 @@ Taste simple: săgeți sau telecomanda de prezentare pentru ecranul următor, `C
 |---|---|
 | 2026-11-17 | Alex a cerut cele trei ieșiri. Radu a scris propunerea v0, fără nimic construit. |
 | 2026-11-17 | v1: Alex a precizat că materialul trainerului trebuie să poată fi prezentat (pe tot ecranul sau într-o fereastră), cu exercițiile pentru sală, care nu intră în cursul online. Am adăugat straturile `:::sala` și `:::sala-si-curs`, modul Prezintă (4.2), rolul nou al slide-urilor Ive (2.2), verificările noi (1.6), calendarul și deciziile actualizate. |
+| 2026-11-17 | v1.1: D-048–D-051 aprobate. Alex a aprobat formatul pentru banca de exerciții (I-021): secțiunea 1.8, agenda în ediție (înlocuiește `sari_peste`), `durata` modulului fără exerciții, exemplul cu exercițiu implicit și alternativ, verificările noi. Editorul cu drag and drop vine după 23. |

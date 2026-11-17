@@ -15,5 +15,7 @@ Adăugat: 2026-11-17
 
 2026-11-17 (v1): materialul trainerului e și prezentarea: mod Prezintă cu două ferestre (sală + comandă cu note, timp, schiță), offline din fișier. Straturi noi `:::sala` (doar ecranul din sală, un bloc = un ecran, `cronometru=N`) și `:::sala-si-curs`. Stilul Ive devine temă a ecranelor; PPTX doar la cerere sau ca plan B vineri 20.
 
+2026-11-17 (v1.1): D-048–D-051 aprobate. Banca de exerciții (I-021, doar formatul): `exercitii/<id>.md`; modulul are `exercitii.implicite/alternative` și linia `::exercitii`; ediția are `agenda` (module, `pauza: N`, exerciții alese) = sursa agendei; `durata` modulului fără exerciții. Online = doar exercițiile ediției publicate. Drag and drop după 23.
+
 **Why:** Alex (2026-11-17) vrea ca o modificare în materialul trainerului să schimbe și cursul participanților; GitHub Pages nu are parole; repo-ul e public.
 **How to apply:** Pentru 25.11 (Self-management cu AI) și orice curs nou: același format, folder nou, fără cod. Actualizează după deciziile lui Alex. Taskuri: T-022 (Mike), T-023 (Ioana). Vezi [[project-arhitectura-v2]].
