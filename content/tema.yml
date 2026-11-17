@@ -134,7 +134,7 @@ scena:
   edge: "#FFFFFF"                # conturul alb al obiectelor
   orbit: accent                  # orbitele desenate (linie punctată, foarte stinsă)
   orbit-light: punct             # cele două lumini mici care se rotesc pe orbite
-  # obiectele-simbol: fiecare are gradientul lui (Ioana, home-1-obiecte)
+  # obiectele-simbol: formele din planșa Ioanei (design v3.1), fiecare cu gradientul lui
   obj-coaching: [piersica, lavanda]
   obj-companie: [cer, lavanda]
   obj-speaking: [cer-deschis, lavanda]
@@ -142,14 +142,8 @@ scena:
   obj-live: [cer-deschis, cer]
   obj-povesti: [piersica, portocaliu]   # piatra din My Journey: singurul obiect mat
   obj-knowledge: [lavanda, cer-deschis]
-  obj-despre: [cer, lavanda]            # medalionul „Despre mine” (manualul: cer → lavandă)
-  obj-centru: [cer-deschis, lavanda]    # baza inovației din centru (doar când Innovations e vizibil)
-  ring: accent                   # inelul inovației
-  ticks: "#FFFFFF"               # semnele de pe inel
-  core: punct                    # cristalul din centru
-  core-emissive: piersica
-  disc: "#FFFFFF"                # discul și cupola de sticlă (translucide)
-  dome: lavanda
+  obj-despre: [cer, piersica]           # lentila „Despre mine” (manualul §7: cer → piersică; cer → lavandă e al Companiei mele)
+  obj-centru: [cer-deschis, lavanda]    # discurile inovației din centru (doar când Innovations e vizibil)
   # Live: echipa ca rețea
   agent: accent                  # luminițele agenților
   alex: text                     # punctul solid al lui Alex

@@ -396,32 +396,41 @@ function panelBody(c){
 }
 
 /* ---------- pagina principală: scena („1 · Sticlă colorată”, design v3.1) ---------- */
-// Desenul 2D al scenei: varianta fără WebGL și fără JavaScript. Aceleași obiecte, aceleași gradiente.
+// Desenul 2D al scenei: varianta fără WebGL și fără JavaScript (T-035). Aceleași forme ca scena 3D (build din src/scena.js),
+// desenate ca în planșa Ioanei (design v3.1, obiectul SH): același număr = aceeași formă peste tot.
+// Fiecare formă e centrată în (0, 0) și încape cam în ±75 × ±50.
 const SHAPES = {
-  coaching: '<ellipse class="s" rx="74" ry="40"/><ellipse class="h" rx="24" ry="12" cy="-4"/>',
-  companie: '<path class="s" d="M-50-20l50-24 50 24-50 24z"/><path class="s" d="M-50-20v56l50 24v-56z"/><path class="s" d="M50-20v56l-50 24v-56z"/>',
-  speaking: '<path class="s" d="M-60 20a60 60 0 0 1 120 0z"/>',
-  inventii: '<path class="s" d="M0-48l42 24v48L0 48-42 24v-48z"/>',
+  coaching: '<ellipse class="s" rx="74" ry="40"/><ellipse class="s" rx="24" ry="12" cy="-4"/>',
+  companie: '<path class="s" d="M-50-28l50-24 50 24-50 24z"/><path class="s" d="M-50-28v56l50 24v-56z"/><path class="s" d="M50-28v56l-50 24v-56z"/>',
+  speaking: '<ellipse class="s" cy="24" rx="62" ry="10"/><path class="s" d="M-56 22a56 56 0 0 1 112 0z"/>',
+  inventii: '<ellipse class="s" cy="18" rx="62" ry="15"/><ellipse class="s" cy="6" rx="66" ry="16"/><ellipse class="s" cy="-6" rx="70" ry="17"/><ellipse class="s" cy="-18" rx="74" ry="18"/>',
   live: '<circle class="s" r="34"/><circle class="m" cx="-10" cy="-8" r="3.5"/><circle class="m" cx="12" cy="-2" r="3.5"/><circle class="m" cx="-2" cy="12" r="3.5"/>',
-  povesti: '<ellipse class="s" rx="58" ry="30"/>',
+  povesti: '<ellipse class="f" cy="32" rx="48" ry="8"/><ellipse class="s" rx="58" ry="30"/>',
   knowledge: '<path class="s" d="M-70 34l70-22 70 22-70 22z"/><path class="s" d="M-70 17l70-22 70 22-70 22z"/><path class="s" d="M-70 0l70-22 70 22-70 22z"/><path class="s" d="M-70-17l70-22 70 22-70 22z"/>',
-  despre: '<circle class="s" r="40"/><circle class="f" r="25"/>'
+  despre: '<ellipse class="s" cx="8" rx="34" ry="46" opacity=".55"/><ellipse class="s" rx="34" ry="46"/><ellipse class="f" rx="27.5" ry="39"/><circle class="m" r="6"/>' // lentila (manualul §7)
 };
 function fallbackSvg(){
-  const orb = CATS.filter(c => c.pe_orbita !== false && SHAPES[c.cheie]);
+  // cu „Desfă inovația”, Innovations e nucleul din centru, nu încă un obiect pe orbită (ca în scena 3D)
+  const orb = CATS.filter(c => c.pe_orbita !== false && SHAPES[c.cheie] && !(centru && c.cheie === 'inventii'));
   const cx = 980, cy = 520, rx = 380, ry = 96;
   const grad = (id, pair) => `<linearGradient id="${id}" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="${pair[0]}"/><stop offset="1" stop-color="${pair[1]}"/></linearGradient>`;
   const defs = orb.map(c => grad(`fg-${c.cheie}`, TEMA.scena[`obj-${c.cheie}`])).join('') + (centru ? grad('fg-centru', TEMA.scena['obj-centru']) : '');
+  // numărul de reper, cu linia lui, deasupra obiectului, spre exterior (în stânga orbitei, spre stânga)
+  const nr = (x, y, n, sx = 1) => n ? `<line class="l" x1="${x}" y1="${y}" x2="${x + sx * 22}" y2="${y - 26}"/><g class="nr" transform="translate(${x + sx * 34} ${y - 40})"><circle r="16"/><text y="6">${n}</text></g>` : '';
+  // adâncimea: obiectele din spate sunt puțin mai mici și se desenează înaintea nucleului, cele din față după.
+  // Nucleul plutește deasupra orbitei (ca în mostră), ca obiectele din spate să se vadă sub el.
   const objs = orb.map((c, j) => {
-    const a = Math.PI * 0.15 + j * Math.PI * 2 / orb.length, x = Math.round(cx + Math.sin(a) * rx), y = Math.round(cy + Math.cos(a) * ry);
-    return `<ellipse class="sh" cx="${x}" cy="${y + 58}" rx="56" ry="10"/><g transform="translate(${x} ${y - 20})" fill="url(#fg-${esc(c.cheie)})">${SHAPES[c.cheie]}</g><g class="nr" transform="translate(${x + 62} ${y - 70})"><circle r="16"/><text y="6">${c.nr}</text></g>`;
-  }).join('');
-  const core = centru ? `<ellipse class="sh" cx="${cx}" cy="${cy + 40}" rx="150" ry="20"/><g transform="translate(${cx} ${cy - 110})" fill="url(#fg-centru)">${[4, 3, 2, 1, 0].map(i => `<ellipse class="s" cy="${(i - 2) * 7}" rx="${150 - i * 8}" ry="${38 - i * 2}"/>`).join('')}<circle class="m" r="6" cy="-14"/></g>`
+    // niciun obiect drept în spatele nucleului sau drept în fața butonului: pornim de la o jumătate (sau un sfert) de pas
+    const a = Math.PI / orb.length * (orb.length % 2 ? 0.5 : 1) + j * Math.PI * 2 / orb.length, x = Math.round(cx + Math.sin(a) * rx), y = Math.round(cy + Math.cos(a) * ry);
+    const k = (0.86 + 0.14 * (Math.cos(a) + 1) / 2).toFixed(2), sx = x < cx - 40 ? -1 : 1;
+    return { back: Math.cos(a) < 0, y, svg: `<ellipse class="sh" cx="${x}" cy="${y + 58}" rx="${Math.round(56 * k)}" ry="10"/><g transform="translate(${x} ${y - 20}) scale(${k})" fill="url(#fg-${esc(c.cheie)})">${SHAPES[c.cheie]}</g>${nr(x + sx * 40, y - 50, c.nr, sx)}` };
+  }).sort((p, q) => p.y - q.y);
+  const core = centru ? `<ellipse class="sh" cx="${cx}" cy="${cy + 6}" rx="118" ry="15"/><g transform="translate(${cx} ${cy - 175}) scale(.8)" fill="url(#fg-centru)">${[4, 3, 2, 1, 0].map(i => `<ellipse class="s" cy="${(i - 2) * 7}" rx="${150 - i * 8}" ry="${38 - i * 2}"/>`).join('')}<ellipse class="f" cy="-14" rx="114" ry="22"/><circle class="m" r="6" cy="-14"/></g>${nr(cx + 84, cy - 194, C.inventii.nr)}`
     : `<circle class="m" cx="${cx}" cy="${cy - 30}" r="7"/>`;
-  return `<svg class="fb" viewBox="520 330 920 400" preserveAspectRatio="xMidYMid meet" role="presentation">
+  return `<svg class="fb" viewBox="${centru ? "520 262 920 468" : "520 330 920 400"}" preserveAspectRatio="xMidYMid meet" role="presentation">
   <defs>${defs}</defs>
   <ellipse class="o" cx="${cx}" cy="${cy}" rx="${rx - 70}" ry="${ry - 20}"/><ellipse class="o" cx="${cx}" cy="${cy}" rx="${rx + 40}" ry="${ry + 12}"/>
-  ${core}${objs}
+  ${objs.filter(o => o.back).map(o => o.svg).join('')}${core}${objs.filter(o => !o.back).map(o => o.svg).join('')}
 </svg>`;
 }
 
@@ -506,7 +515,12 @@ ${events.length ? [...days].map(([, list]) => `<h3 class="day">${esc(fLongDay(li
 </section>
 <p class="actions"><a class="btn" href="${u('live/echipa/')}">Echipa de agenți →</a><a class="btn ghost" href="${u('api/live.json')}">Datele, ca JSON</a></p>`;
   } else if (c.cheie === 'despre'){
-    const poza = despre.data.poza ? `<figure class="me"><img src="${u(despre.data.poza)}" alt="${esc(despre.data.poza_alt || 'Alex')}" width="900" height="1200" loading="eager" decoding="async"><figcaption>${esc(despre.data.rol || '')}</figcaption></figure>` : '';
+    // poza_forma: lentila (D-060, Ioana: poza-forme-v1.html, varianta C) sau gol = dreptunghiul 3 : 4 de dinainte
+    const d = despre.data, lens = d.poza_forma === 'lentila';
+    const img = d.poza ? `<img src="${u(d.poza)}" alt="${esc(d.poza_alt || 'Alex')}" width="${lens ? 560 : 900}" height="${lens ? 560 : 1200}" loading="eager" decoding="async">` : '';
+    const poza = !img ? '' : lens
+      ? `<figure class="me me-lens"><div class="lens"><span class="halo" aria-hidden="true"></span><div class="bezel"><div class="ph">${img}</div></div><span class="dot sig" aria-hidden="true"></span></div><figcaption>${esc(d.rol || '')}</figcaption></figure>`
+      : `<figure class="me">${img}<figcaption>${esc(d.rol || '')}</figcaption></figure>`;
     inner = `${poza}<div class="prose">${despreHtml}</div>
 <h2>Atelierul, la vedere</h2>
 <p>Lucrez cu o echipă de agenți AI, iar munca noastră e publică. ${C.live ? `<a href="${u('live/echipa/')}">Vezi echipa și procesele</a> sau <a href="${pageUrl(C.live)}">ce construim acum</a>.` : `Totul e în <a href="${esc(GH)}" rel="noopener">repo-ul public pe GitHub</a>.`}</p>

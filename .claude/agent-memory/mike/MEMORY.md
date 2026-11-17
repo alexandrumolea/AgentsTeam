@@ -25,6 +25,8 @@ Păstrează sub 150 de rânduri. Comprimă când crește. Fapte, nu povești.
 - 2026-11-17: Obiecte 3D pe fundal luminos: culoarea se pierde din lumină și mediu prea puternice și din ceață fixă (pe telefon camera e mai departe). Verifică cu testul din manualul BEMORE §7: contur, culoare proprie, umbră. Chrome headless pe Mac randează pe GPU-ul real (ANGLE Metal), deci capturile sunt fidele; panoul browserului integrat nu prinde canvasul WebGL.
 - 2026-11-17: Alex extinde cerințele în timpul lucrului (D-056, D-057, D-058 în aceeași sarcină). Fă configurabil ce e probabil să se schimbe (vizibil, fonturi, semnătură), nu valori fixe.
 - 2026-11-17: panoul de control: cere „mapează statusurile, nu inventa” → clasific doar după coloana Status, iar ce scrie în textul taskului („după ce Alex…”) îl raportez lui Tudor, nu-l parsez.
+- 2026-11-17: formele scenei (planșa Ioanei, design-v3 `SH`) stau în DOUĂ locuri care trebuie ținute la fel: `build` în site/src/scena.js și `SHAPES` în site/build.mjs. Testează cu toate secțiunile vizibile într-o copie (rsync în scratchpad + sed vizibil:true), nu doar cu ce e live: abia acolo apar suprapunerile. Ioana poate trimite specificații în timpul lucrului (lentila): lasă loc unei forme provizorii ușor de înlocuit.
+- 2026-11-17: poza de pe Despre: forma se alege din content/despre.md (`poza_forma: lentila` + `poza`). Decupajele le fac ca fișiere noi cu sips (`-c H W --cropOffset Y X`). sips păstrează un EXIF mic: îl scot cu un script Python care lasă doar profilul ICC (APP2).
 
 ## Fișiere de memorie
 - [Stack și găzduire](project_stack-hosting.md) — GitHub Pages (D-036–D-038), CNAME ignorat la Actions; fapte Netlify/Cloudflare/Vercel

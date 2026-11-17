@@ -1,7 +1,9 @@
 ---
 titlu: "Despre mine"
 rol: "Systemic Coach & Team Coach"
-poza: "alex.jpg"
+poza: "alex-cerc.jpg"
+# lentila = poza rotundă în rama de sticlă (D-060); gol = dreptunghiul 3 : 4. Pentru lentilă, poza e pătrată, cu fața în centru.
+poza_forma: "lentila"
 poza_alt: "Alex, zâmbind, pe o alee cu copaci de toamnă"
 ---
 Construiesc unelte pentru oameni care vor să crească. Sunt Alex: coach, fondator și inventator.

@@ -66,6 +66,7 @@ O valoare poate fi un cod hex, numele altui rol (`buton: text`) sau oricare dint
 - Fonturile: build-ul copiază din `node_modules/@fontsource-variable/<font>` doar `latin` și `latin-ext` (cu ș și ț), plus licența (`assets/fonts/LICENSE-*.txt`), și scrie `@font-face`-urile. Un font nou cere pachetul lui (`npm install --save-exact @fontsource-variable/<font>`) și o linie în `FONTURI` din `tema.mjs`.
 - Granulația fundalului e `assets/grain.png` (128 × 128 px, ~6 KB), generat de build, determinist.
 - Scena 3D primește culorile prin datele din pagină: `COL.accent` pentru roluri, `SC['obj-live']` pentru scenă. Dacă scena cere un rol care nu există, build-ul se oprește. Canvasul e transparent, peste gradientul CSS.
-- `src/favicon.svg` și `src/og.svg` sunt șabloane cu `{{accent}}`, `{{scena.ring}}` sau `{{scena.obj-coaching.0}}` (prima culoare a perechii).
+- `src/favicon.svg` și `src/og.svg` sunt șabloane cu `{{accent}}`, `{{scena.orbit}}` sau `{{scena.obj-coaching.0}}` (prima culoare a perechii).
 - Semnătura din colț și din tab („Alex · Atelier”) stă într-un singur fișier, `content/site.yml` (`intro.marca` pentru colț și imaginea de previzualizare, `titlu` pentru tab). După o schimbare: `npm run imagini`.
 - Excepții, intenționate: albul marginilor de sticlă și al conturului obiectelor (`#fff`, lumină, nu paletă).
+- Formele obiectelor (planșa Ioanei) sunt în două locuri care trebuie să rămână la fel: `build` din `src/scena.js` (3D) și `SHAPES` din `build.mjs` (desenul fără WebGL). Același număr = aceeași formă peste tot.
