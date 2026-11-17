@@ -1,0 +1,514 @@
+<title>Atelier design v3</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter+Tight:ital,wght@0,200;0,300;0,400;0,500;1,200;1,300&family=Sora:wght@200;300;400&display=swap">
+<style>
+/* Layout: foaia de prezentare e luminoasă și liniștită; dedesubt, scena cu paleta, pagina, ecranul și fontul de comutat.
+   Mostrele: fundal gradient mesh granulat, panouri Liquid Glass, textul doar pe sticlă. Valorile și contrastul: design-v3.md. */
+:root{
+  --paper:#F4F1EB; --ink:#22201C; --muted:#5E594F; --line:#D8D1C3; --acc:#2E5AA7;
+  --f:"Inter Tight","Helvetica Neue",Helvetica,Arial,sans-serif;
+  --fs:"Sora","Inter Tight","Helvetica Neue",Arial,sans-serif;
+  color-scheme:light;
+}
+*{box-sizing:border-box}
+[hidden]{display:none!important}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--paper);color:var(--ink);font-family:var(--f);font-size:16px;line-height:1.55}
+.page{max-width:1480px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:56px 96px}
+.eyebrow{font-size:12px;font-weight:500;letter-spacing:.16em;text-transform:uppercase;color:var(--acc)}
+h1.t{font-family:var(--fs);font-weight:200;font-size:clamp(36px,5.2vw,68px);line-height:1.04;letter-spacing:-.025em;margin:18px 0 18px;max-width:20ch;text-wrap:balance}
+.lead{max-width:64ch;color:var(--muted);font-size:18px;margin:0}
+.lead strong{color:var(--ink);font-weight:500}
+h2{font-family:var(--fs);font-weight:200;font-size:clamp(26px,3vw,38px);line-height:1.12;letter-spacing:-.015em;margin:0 0 18px;text-wrap:balance}
+a{color:var(--acc)}
+:focus-visible{outline:2px solid var(--acc);outline-offset:3px}
+.took{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:20px 28px;margin:36px 0 0;padding-top:20px;border-top:1px solid var(--line)}
+@media (max-width:1100px){.took{grid-template-columns:repeat(3,minmax(0,1fr))}}
+@media (max-width:700px){.took{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media (max-width:440px){.took{grid-template-columns:1fr}}
+.took > div{min-width:0}
+.took b{display:block;font-size:12px;font-weight:500;letter-spacing:.12em;text-transform:uppercase;color:var(--acc);margin-bottom:6px}
+.took p{margin:0;font-size:16px}
+.controls{display:flex;flex-wrap:wrap;gap:20px 36px;margin:40px 0 0;padding-top:20px;border-top:1px solid var(--line);align-items:flex-end}
+.ctl{display:flex;flex-direction:column;gap:8px;min-width:0}
+.ctl .lbl{font-size:12px;font-weight:500;letter-spacing:.16em;text-transform:uppercase;color:var(--muted)}
+.seg{display:flex;flex-wrap:wrap;gap:4px}
+.seg button{font:inherit;font-size:16px;background:transparent;border:1px solid var(--line);color:var(--ink);padding:8px 14px;border-radius:999px;cursor:pointer;line-height:1.2;display:inline-flex;align-items:center;gap:8px}
+.seg button:hover{border-color:var(--muted)}
+.seg button[aria-pressed="true"]{background:var(--ink);border-color:var(--ink);color:#fff}
+.seg .dots{display:inline-flex}
+.seg .dots i{width:10px;height:10px;border-radius:50%;margin-left:-3px;box-shadow:0 0 0 1px rgba(0,0,0,.15)}
+.about{display:grid;grid-template-columns:minmax(0,1.2fr) minmax(0,1fr);gap:16px 48px;margin:28px 0 22px;align-items:end}
+@media (max-width:820px){.about{grid-template-columns:1fr}}
+.about .name{font-family:var(--fs);font-weight:200;font-size:clamp(28px,3.4vw,44px);line-height:1.05;letter-spacing:-.015em;margin:0}
+.about .phrase{font-size:18px;margin:8px 0 0;max-width:52ch}
+.chips{display:flex;flex-wrap:wrap;gap:10px}
+.chips span{display:flex;align-items:center;gap:8px;font-size:14px;color:var(--muted);font-variant-numeric:tabular-nums}
+.chips i{width:28px;height:28px;border-radius:8px;box-shadow:inset 0 0 0 1px rgba(0,0,0,.12)}
+.stage{margin-top:4px}
+.frame{position:relative;overflow:hidden;margin:0 auto;background:#ddd}
+.frame.phone{border-radius:34px;box-shadow:0 0 0 1px var(--muted),0 0 0 9px var(--ink)}
+.stage.phone-mode{padding:10px 0}
+.mock{position:absolute;top:0;left:0;transform-origin:0 0}
+.caption{font-size:14px;color:var(--muted);margin:14px 0 0;max-width:92ch}
+section.s{margin-top:80px;padding-top:26px;border-top:1px solid var(--line)}
+.tw{overflow-x:auto;margin-top:8px}
+table{border-collapse:collapse;width:100%;min-width:640px;font-size:15px}
+th,td{text-align:left;padding:11px 14px 11px 0;border-bottom:1px solid var(--line);vertical-align:top}
+th{font-size:12px;font-weight:500;letter-spacing:.14em;text-transform:uppercase;color:var(--muted)}
+td.n{font-variant-numeric:tabular-nums;white-space:nowrap;font-weight:500}
+.ok{color:#2F5B2A}.no{color:#8A2E1F}
+.two{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:24px 48px}
+@media (max-width:820px){.two{grid-template-columns:1fr}}
+.two p{margin:0 0 10px;font-size:16px}
+.spec{font-size:44px;line-height:1.1;margin:6px 0 12px;letter-spacing:-.02em}
+
+/* ============ MOCK ============ */
+.mock{container:m/inline-size;font-family:var(--f);-webkit-font-smoothing:antialiased;color:var(--tx);--fd:var(--fs)}
+.mock[data-font="inter"]{--fd:var(--f)}
+.mock[data-dev="desk"]{width:1440px}.mock[data-dev="lap"]{width:1280px}.mock[data-dev="phone"]{width:390px}
+/* paletele: mesh, sticlă, text */
+.mock[data-pal="ive"]{--m0:#EFEAE0;--g:246 242 234;--tx:#2A2620;--tx-rgb:42 38 32;--mu:#5A5446;--ac:#23406F;--em:#2E5AA7;--btn:#2E5AA7;--btn-tx:#F6F2EA;--mk:#F1C436;--mk-ring:#C9A21F;--sh:35 64 111;--desk:#ECE4D6;
+  --mesh:radial-gradient(62% 72% at 6% 4%,#2E5AA7 0%,rgba(46,90,167,0) 70%),radial-gradient(40% 50% at 100% 0%,#27508F 0%,rgba(39,80,143,0) 70%),radial-gradient(52% 58% at 66% 32%,#5C88CD 0%,rgba(92,136,205,0) 70%),radial-gradient(55% 55% at 36% 78%,#F6F2EA 0%,rgba(246,242,234,0) 70%),radial-gradient(52% 62% at 98% 98%,#F1C436 0%,rgba(241,196,54,0) 72%)}
+.mock[data-pal="sora"]{--m0:#F3EEF6;--g:255 255 255;--tx:#14161F;--tx-rgb:20 22 31;--mu:#474A58;--ac:#2B44B8;--em:#2B44B8;--btn:#14161F;--btn-tx:#FFFFFF;--mk:#F28C3B;--mk-ring:#C96A1E;--sh:43 47 85;--desk:#EEF1FB;
+  --mesh:radial-gradient(60% 70% at 4% 6%,#4FA3F0 0%,rgba(79,163,240,0) 70%),radial-gradient(50% 55% at 70% 0%,#8FD3F7 0%,rgba(143,211,247,0) 70%),radial-gradient(55% 60% at 32% 80%,#B7A6EA 0%,rgba(183,166,234,0) 70%),radial-gradient(50% 60% at 86% 56%,#F7B79A 0%,rgba(247,183,154,0) 70%),radial-gradient(48% 58% at 100% 100%,#F28C3B 0%,rgba(242,140,59,0) 72%)}
+.mock[data-pal="navy"]{--m0:#FFE4E1;--g:255 244 242;--tx:#001440;--tx-rgb:0 20 64;--mu:#3F4858;--ac:#001440;--em:#A8442A;--btn:#001440;--btn-tx:#FFE4E1;--mk:#FFA089;--mk-ring:#D9765C;--sh:0 20 64;--desk:#FCE6E2;
+  --mesh:radial-gradient(70% 80% at 0% 0%,#001440 0%,rgba(0,20,64,0) 72%),radial-gradient(42% 50% at 100% 0%,#1B2A55 0%,rgba(27,42,85,0) 70%),radial-gradient(50% 55% at 58% 30%,#708090 0%,rgba(112,128,144,0) 70%),radial-gradient(50% 55% at 78% 72%,#FFE4E1 0%,rgba(255,228,225,0) 70%),radial-gradient(60% 62% at 8% 100%,#FFA089 0%,rgba(255,160,137,0) 72%)}
+.mock[data-pal="teal"]{--m0:#F7F9E1;--g:247 249 225;--tx:#204654;--tx-rgb:32 70 84;--mu:#2F4A55;--ac:#204654;--em:#2E7A5C;--btn:#204654;--btn-tx:#F7F9E1;--mk:#CAFFA6;--mk-ring:#204654;--ob:rgba(32,70,84,.6);--sh:32 70 84;--desk:#EEF5DA;
+  --mesh:radial-gradient(62% 70% at 4% 4%,#A9E0F1 0%,rgba(169,224,241,0) 70%),radial-gradient(40% 48% at 100% 0%,#204654 0%,rgba(32,70,84,0) 70%),radial-gradient(48% 52% at 56% 46%,#F7F9E1 0%,rgba(247,249,225,0) 70%),radial-gradient(58% 64% at 96% 100%,#CAFFA6 0%,rgba(202,255,166,0) 72%),radial-gradient(46% 56% at 0% 96%,#A9E0F1 0%,rgba(169,224,241,0) 72%)}
+.mesh{position:absolute;inset:0;z-index:0;background:var(--mesh),var(--m0)}
+.grain{position:absolute;inset:0;z-index:0;pointer-events:none;opacity:.38;mix-blend-mode:overlay;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 .7 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")}
+/* sticla */
+.g,.gs{position:relative;z-index:2;border-radius:28px;border:1px solid rgba(255,255,255,.6);
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.8),inset 0 -1px 0 rgba(255,255,255,.2),0 24px 60px -30px rgb(var(--sh) / .45);
+  -webkit-backdrop-filter:blur(28px) saturate(150%);backdrop-filter:blur(28px) saturate(150%)}
+.g{background:rgb(var(--g) / .80)}
+.gs{background:rgb(var(--g) / .93)}
+@supports not ((-webkit-backdrop-filter:blur(1px)) or (backdrop-filter:blur(1px))){.g{background:rgb(var(--g) / .94)}.gs{background:rgb(var(--g))}}
+@media (prefers-reduced-transparency:reduce){.g,.gs{background:rgb(var(--g));-webkit-backdrop-filter:none;backdrop-filter:none}}
+.mock[data-rt="1"] .g,.mock[data-rt="1"] .gs{background:rgb(var(--g));-webkit-backdrop-filter:none;backdrop-filter:none}
+.mock a{color:inherit;text-decoration:none}
+.mock .ex{text-decoration:underline dotted;text-decoration-color:var(--mu);text-underline-offset:4px}
+.cap{font-size:12px;font-weight:500;letter-spacing:.16em;text-transform:uppercase;color:var(--mu)}
+.eb{font-size:13px;font-weight:500;letter-spacing:.16em;text-transform:uppercase;color:var(--ac)}
+.brand{font-size:16px;font-weight:400;letter-spacing:.14em;text-transform:uppercase;display:flex;align-items:center;gap:10px}
+.dot{display:inline-block;width:8px;height:8px;border-radius:50%;background:var(--mk);box-shadow:0 0 0 1px var(--mk-ring);flex:none}
+.live{font-size:16px;display:inline-flex;align-items:center;gap:8px;color:var(--tx)}
+.live i{width:7px;height:7px;border-radius:50%;background:var(--ac);animation:pulse 3.2s ease-in-out infinite}
+@keyframes pulse{50%{opacity:.35}}
+.btn{display:inline-flex;align-items:center;gap:10px;background:var(--btn);color:var(--btn-tx)!important;font-size:16px;font-weight:500;padding:16px 28px;border-radius:999px;white-space:nowrap;box-shadow:inset 0 1px 0 rgba(255,255,255,.25)}
+.lnk{font-size:16px;border-bottom:1px solid var(--ac);padding-bottom:2px;white-space:nowrap;color:var(--ac)!important}
+
+/* prima pagină */
+.home{position:relative;overflow:hidden;height:900px}
+.mock[data-dev="lap"] .home{height:800px}.mock[data-dev="phone"] .home{height:844px}
+.scene{position:absolute;inset:0;width:100%;height:100%;z-index:1}
+.scene .orb{fill:none;stroke:rgba(255,255,255,.7);stroke-width:1;stroke-dasharray:4 6;vector-effect:non-scaling-stroke}
+.scene .obj{cursor:pointer;outline:none;filter:drop-shadow(0 0 1px rgb(var(--sh) / .55)) drop-shadow(0 14px 22px rgb(var(--sh) / .22))}
+.scene .shape{fill:rgba(255,255,255,.32);stroke:var(--ob,rgba(255,255,255,.96));stroke-width:1.4;vector-effect:non-scaling-stroke;transition:fill .3s,stroke-width .3s}
+.scene .faint{fill:none;stroke:rgba(255,255,255,.6);stroke-width:1;vector-effect:non-scaling-stroke}
+.scene .mk{fill:var(--mk);stroke:var(--mk-ring);stroke-width:1}
+.scene .obj:hover .shape,.scene .obj:focus-visible .shape,.scene .obj.hi .shape{fill:rgba(255,255,255,.62);stroke-width:2.4}
+.scene .float{animation:fl 10s ease-in-out infinite}.scene .float.d2{animation-duration:12s;animation-delay:-3s}.scene .float.d3{animation-duration:14s;animation-delay:-6s}
+@keyframes fl{50%{transform:translateY(-7px)}}
+.scene .lead-l{stroke:rgba(255,255,255,.85);stroke-width:1;vector-effect:non-scaling-stroke}
+.scene .pill rect,.scene .num circle{fill:rgb(var(--g) / .86);stroke:rgba(255,255,255,.9);stroke-width:1;vector-effect:non-scaling-stroke}
+.scene .pill text,.scene .num text{font-family:var(--f);fill:var(--tx);font-size:17px}
+.scene .num text{font-size:16px;font-weight:500;text-anchor:middle;fill:var(--ac)}
+.scene .layer{transition:transform .8s cubic-bezier(.2,.7,.2,1)}
+.scene .llab{opacity:0;transition:opacity .4s .25s}
+.scene .core.open .llab{opacity:1}
+.scene.opened .obj:not(.core){opacity:.25;transition:opacity .4s}
+.h-hero{position:absolute;left:40px;top:40px;width:620px;padding:36px 48px 44px}
+.h-row{display:flex;justify-content:space-between;align-items:center;margin-bottom:56px}
+.h-hero h1{font-family:var(--fd);font-weight:200;font-size:56px;line-height:1.06;letter-spacing:-.03em;margin:0;text-wrap:balance}
+.mock[data-font="sora"] .h-hero h1{font-weight:200;letter-spacing:-.035em}
+.h-hero h1 em{font-style:normal;color:var(--em)}
+.h-hero .cine{font-size:19px;margin:26px 0 0}
+.h-hero .cum{font-size:16px;margin:8px 0 0;color:var(--mu);max-width:44ch}
+.h-legend{position:absolute;left:40px;bottom:40px;width:620px;padding:26px 48px 30px;display:grid;grid-template-columns:1fr 1fr;gap:0 40px}
+.h-legend ul{list-style:none;margin:8px 0 0;padding:0}
+.h-legend li a{display:grid;grid-template-columns:30px 1fr;align-items:baseline;padding:9px 0;border-bottom:1px solid rgb(var(--tx-rgb) / .14);font-size:20px;line-height:1.3;transition:padding .25s}
+.h-legend li:last-child a{border-bottom:0}
+.h-legend .nn{font-size:16px;font-weight:500;color:var(--ac);font-variant-numeric:tabular-nums}
+.h-legend li a:hover,.h-legend li a:focus-visible,.h-legend li.hi a{padding-left:6px;color:var(--ac)}
+.h-legend .more{display:none}
+.h-inscr{position:absolute;right:40px;bottom:40px;padding:16px 26px;border-radius:999px;font-family:var(--fd);font-weight:200;font-size:22px;font-style:italic;margin:0}
+.mock[data-font="sora"] .h-inscr{font-style:normal}
+
+/* pagini interioare */
+.pg{position:relative;padding:28px 40px 40px;display:grid;gap:28px}
+.nav{display:flex;justify-content:space-between;align-items:center;padding:16px 18px 16px 30px;border-radius:999px}
+.nav nav{display:flex;gap:6px;font-size:16px}
+.nav nav a{padding:10px 18px;border-radius:999px}
+.nav nav a[aria-current]{background:rgb(255 255 255 / .55);box-shadow:inset 0 0 0 1px rgba(255,255,255,.9),0 4px 14px -8px rgb(var(--sh) / .5)}
+.nav .mn{display:none;font-size:16px;padding:8px 14px}
+.r-head{padding:72px 72px 64px}
+.r-head h1,.l-read h1{font-family:var(--fd);font-weight:200;font-size:68px;line-height:1.04;letter-spacing:-.03em;margin:20px 0 0;max-width:20ch;text-wrap:balance}
+.r-head .lead2{font-size:20px;color:var(--mu);margin:26px 0 0;max-width:46ch;line-height:1.5}
+.r-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:24px}
+.r-card{padding:34px 32px 36px;display:flex;flex-direction:column;align-items:flex-start;min-width:0}
+.r-card .big{font-family:var(--fd);font-weight:200;font-size:112px;line-height:.9;color:var(--em);letter-spacing:-.04em;margin:0 0 36px}
+.r-card .role{font-size:13px;font-weight:500;letter-spacing:.16em;text-transform:uppercase;color:var(--ac)}
+.r-card h2{font-family:var(--fd);font-weight:300;font-size:34px;letter-spacing:-.02em;line-height:1.05;margin:10px 0 14px;color:var(--tx)}
+.r-card .need{font-size:17px;color:var(--mu);margin:0 0 22px;line-height:1.5;flex:1}
+.r-end{padding:64px 72px;display:flex;justify-content:space-between;align-items:flex-end;gap:32px;flex-wrap:wrap}
+.r-end p{font-family:var(--fd);font-weight:200;font-size:48px;line-height:1.08;letter-spacing:-.025em;margin:12px 0 0;max-width:18ch}
+.foot{display:flex;justify-content:space-between;font-size:14px;color:var(--mu);padding:6px 30px 0;position:relative;z-index:2}
+
+/* lecția: structura din Studio */
+.l-grid{display:grid;grid-template-columns:290px minmax(0,1fr);gap:28px;align-items:start}
+.l-toc{position:sticky;top:24px;padding:28px 26px 30px}
+.l-toc ol{list-style:none;margin:14px 0 0;padding:0}
+.l-toc li a{display:grid;grid-template-columns:26px 1fr 10px;gap:6px;align-items:baseline;padding:12px 0;border-bottom:1px solid rgb(var(--tx-rgb) / .12);font-size:16px;line-height:1.35;color:var(--mu)}
+.l-toc li:last-child a{border-bottom:0}
+.l-toc li.now a{color:var(--tx)}
+.l-toc .dn{color:var(--ac);font-variant-numeric:tabular-nums;font-weight:500}
+.l-toc .dot{align-self:center}
+.l-toc .prog{height:4px;border-radius:4px;background:rgb(var(--tx-rgb) / .1);margin-top:18px;overflow:hidden}
+.l-toc .prog i{display:block;height:100%;width:42%;background:var(--ac);border-radius:4px}
+.l-read{padding:64px 80px 72px;max-width:900px}
+.l-read .meta{display:flex;gap:24px;font-size:16px;color:var(--mu);margin-top:18px}
+.l-read .body{font-size:20px;line-height:1.7;margin:0 0 22px;max-width:62ch}
+.l-read .lede{margin-top:40px}
+.l-read h2{font-family:var(--fd);font-weight:300;font-size:32px;letter-spacing:-.02em;line-height:1.15;margin:12px 0 18px}
+.fig{margin:44px 0 0}
+.fig svg{display:block;width:100%;max-width:640px;height:auto}
+.fig line,.fig circle{fill:none;stroke:var(--ac);stroke-width:1.3}
+.fig circle{fill:rgb(var(--g) / .6)}
+.fig text{font-family:var(--f);font-size:18px;fill:var(--tx);text-anchor:middle}
+.fig text.s{font-size:16px;fill:var(--mu)}
+.fig figcaption{margin-top:10px}
+.desk{margin:64px 0 0;padding:40px 44px;border-radius:24px;background:var(--desk);box-shadow:inset 0 0 0 1px rgb(var(--tx-rgb) / .08)}
+.ask{list-style:none;margin:8px 0 26px;padding:0}
+.ask li{padding:13px 0;border-bottom:1px solid rgb(var(--tx-rgb) / .14);font-size:18px}
+.write{display:block;width:100%;min-height:160px;border:0;background:transparent repeating-linear-gradient(to bottom,transparent 0 31px,rgb(var(--tx-rgb) / .16) 31px 32px);font:inherit;font-size:18px;line-height:32px;color:var(--tx);resize:vertical;padding:0}
+.write::placeholder{color:var(--mu);opacity:1}
+.write:focus{outline:2px solid var(--ac);outline-offset:6px}
+.breath{display:flex;gap:20px;align-items:center;margin-top:30px}
+.breath .orb2{width:64px;height:64px;border-radius:50%;flex:none;background:var(--mesh),var(--m0);box-shadow:inset 0 1px 0 rgba(255,255,255,.8),inset 0 0 0 1px rgba(255,255,255,.6),0 10px 24px -12px rgb(var(--sh) / .5);transform:scale(.8)}
+.breath.on .orb2{animation:inhale 8s ease-in-out infinite}
+@keyframes inhale{0%,100%{transform:scale(.8)}50%{transform:scale(1.15)}}
+.breath button{font:inherit;font-size:16px;color:var(--tx);background:none;border:0;border-bottom:1px solid var(--ac);padding:2px 0;cursor:pointer}
+.breath .bt{margin:6px 0 0;font-size:16px;color:var(--mu)}
+.breath output{font-variant-numeric:tabular-nums;font-size:20px;font-weight:300;color:var(--tx);margin-right:8px}
+.keep{margin:72px 0 0;display:grid;grid-template-columns:auto minmax(0,1fr);gap:20px;align-items:baseline}
+.keep .dot{width:12px;height:12px}
+.keep p{font-family:var(--fd);font-weight:200;font-size:40px;line-height:1.15;letter-spacing:-.025em;margin:0;max-width:18ch}
+.tool{display:flex;justify-content:space-between;align-items:baseline;gap:20px;flex-wrap:wrap;margin-top:64px;padding:22px 0;border-top:1px solid rgb(var(--tx-rgb) / .14);border-bottom:1px solid rgb(var(--tx-rgb) / .14);font-size:18px}
+.lnav{display:flex;justify-content:space-between;align-items:center;gap:20px;flex-wrap:wrap;margin-top:48px}
+.lnav .prev{font-size:16px;color:var(--mu)}
+
+/* laptop 1280 */
+@container m (min-width:701px) and (max-width:1300px){
+  .h-hero{left:32px;top:32px;width:560px;padding:32px 40px 38px}
+  .h-row{margin-bottom:40px}
+  .h-hero h1{font-size:50px}
+  .h-legend{left:32px;bottom:32px;width:560px;padding:22px 40px 26px}
+  .h-legend li a{padding:7px 0}
+  .h-inscr{right:32px;bottom:32px;font-size:20px}
+  .r-head{padding:60px 56px 52px}
+  .r-head h1,.l-read h1{font-size:58px}
+  .r-grid{gap:18px}
+  .r-card{padding:28px 24px 30px}
+  .r-card .big{font-size:96px}
+  .r-card h2{font-size:30px}
+  .l-grid{grid-template-columns:250px minmax(0,1fr)}
+  .l-read{padding:56px 56px 64px}
+}
+/* telefon */
+@container m (max-width:700px){
+  .h-hero{left:14px;right:14px;top:14px;width:auto;padding:20px 22px 22px;border-radius:24px}
+  .h-row{margin-bottom:22px}
+  .brand{font-size:16px;letter-spacing:.12em}
+  .h-hero h1{font-size:34px;line-height:1.08}
+  .h-hero .cine{font-size:16px;margin-top:14px}
+  .h-hero .cum{font-size:15px}
+  .scene{top:auto;bottom:250px;height:270px}
+  .scene .pill text{font-size:34px}.scene .num text{font-size:30px}.scene .num circle{r:26px}
+  .h-legend{left:14px;right:14px;bottom:14px;width:auto;grid-template-columns:1fr;padding:16px 22px 12px;border-radius:24px}
+  .h-legend .lg + .lg{display:none}
+  .h-legend li a{font-size:18px;padding:10px 0}
+  .h-legend .more{display:block}
+  .h-legend .more a{display:block;border-bottom:0;color:var(--mu)}
+  .h-legend li:nth-child(3) a{border-bottom:1px solid rgb(var(--tx-rgb) / .14)}
+  .h-inscr{display:none}
+  .pg{padding:14px 14px 24px;gap:16px}
+  .nav{padding:10px 10px 10px 20px}
+  .nav nav{display:none}.nav .mn{display:block}
+  .r-head{padding:36px 24px 32px;border-radius:24px}
+  .r-head h1,.l-read h1{font-size:36px;line-height:1.08}
+  .r-head .lead2{font-size:17px}
+  .r-grid{grid-template-columns:1fr;gap:14px}
+  .r-card{padding:24px 24px 26px;border-radius:24px}
+  .r-card .big{font-size:72px;margin-bottom:20px}
+  .r-card h2{font-size:28px}
+  .r-end{padding:36px 24px;border-radius:24px}
+  .r-end p{font-size:30px}
+  .foot{flex-direction:column;gap:4px;padding:4px 10px 0}
+  .l-grid{grid-template-columns:1fr;gap:14px}
+  .l-toc{position:static;padding:18px 22px 20px;border-radius:24px}
+  .l-toc li:not(.now){display:none}
+  .l-read{padding:32px 22px 40px;border-radius:24px}
+  .l-read .meta{flex-wrap:wrap;gap:4px 18px}
+  .l-read .body{font-size:17px}
+  .l-read h2{font-size:26px}
+  .desk{margin:44px -8px 0;padding:24px 20px}
+  .keep{margin-top:48px;gap:14px}
+  .keep p{font-size:28px}
+}
+@media (prefers-reduced-motion:reduce){
+  .scene .float,.live i,.breath.on .orb2{animation:none}
+  .scene .layer,.scene .llab{transition:none}
+}
+</style>
+
+<div class="page">
+  <header>
+    <div class="eyebrow">Ioana · design v3 · 17 noiembrie 2026 · propunere</div>
+    <h1 class="t">Sticlă peste lumină</h1>
+    <p class="lead">Un singur design, cu patru palete de comutat. <strong>Elementele metaforice din Planșa</strong>, <strong>structura cursului din Studio</strong>, iar atelierul, showroom-ul și biblioteca se simt prin lumină, spațiu, calm și ordine, fără mobilier. Stilul e Liquid Glass: culori care se topesc unele în altele, cu granulație fină, și panouri de sticlă pe care stă tot textul.</p>
+  </header>
+
+  <div class="took">
+    <div><b>Din Planșa</b><p>Cele 7 obiecte-simbol, numerele de reper și legenda scrisă mare. „Desfă inovația” rămâne.</p></div>
+    <div><b>Din Studio</b><p>Lecția: cuprinsul cursului lângă text, sala de lectură, masa de lucru, respirația, ideea de reținut.</p></div>
+    <div><b>Scos din Studio</b><p>Masa, raftul, lămpile, fereastra cu orașul, planta. Tot ce era literal.</p></div>
+    <div><b>Esența locurilor</b><p>Lumină care vine dintr-o parte, mult spațiu, panouri aliniate, un singur lucru important pe ecran.</p></div>
+    <div><b>Culorile</b><p>Ca în imaginea ta: câmpuri mari care se topesc, cu granulație fină. Textul nu stă niciodată direct pe gradient.</p></div>
+  </div>
+
+  <div class="controls" role="group" aria-label="Ce vezi">
+    <div class="ctl"><span class="lbl" id="l-p">Paleta</span>
+      <div class="seg" id="c-p" aria-labelledby="l-p">
+        <button data-v="ive"><span class="dots"><i style="background:#2E5AA7"></i><i style="background:#5C88CD"></i><i style="background:#F1C436"></i><i style="background:#EFEAE0"></i></span>BEMORE Ive</button>
+        <button data-v="sora"><span class="dots"><i style="background:#4FA3F0"></i><i style="background:#B7A6EA"></i><i style="background:#F7B79A"></i><i style="background:#F28C3B"></i></span>Sora</button>
+        <button data-v="navy"><span class="dots"><i style="background:#001440"></i><i style="background:#708090"></i><i style="background:#FFE4E1"></i><i style="background:#FFA089"></i></span>Navy și roz</button>
+        <button data-v="teal"><span class="dots"><i style="background:#204654"></i><i style="background:#A9E0F1"></i><i style="background:#CAFFA6"></i><i style="background:#F7F9E1"></i></span>Verde și teal</button>
+      </div></div>
+    <div class="ctl"><span class="lbl" id="l-v">Pagina</span>
+      <div class="seg" id="c-v" aria-labelledby="l-v">
+        <button data-v="home">Prima pagină</button>
+        <button data-v="room">Compania mea</button>
+        <button data-v="lesson">Lecție de curs</button>
+      </div></div>
+    <div class="ctl"><span class="lbl" id="l-e">Ecran</span>
+      <div class="seg" id="c-e" aria-labelledby="l-e">
+        <button data-v="desk">Desktop 1440</button>
+        <button data-v="lap">Laptop 1280</button>
+        <button data-v="phone">Telefon</button>
+      </div></div>
+    <div class="ctl"><span class="lbl" id="l-f">Titluri</span>
+      <div class="seg" id="c-f" aria-labelledby="l-f">
+        <button data-v="sora">Sora</button>
+        <button data-v="inter">Inter Tight</button>
+      </div></div>
+    <div class="ctl"><span class="lbl" id="l-r">Transparență</span>
+      <div class="seg" id="c-r" aria-labelledby="l-r">
+        <button data-v="0">Sticlă</button>
+        <button data-v="1">Redusă</button>
+      </div></div>
+  </div>
+
+  <div class="about" aria-live="polite">
+    <div><p class="name" id="a-name"></p><p class="phrase" id="a-phrase"></p></div>
+    <div class="chips" id="a-chips"></div>
+  </div>
+
+  <div class="stage" id="stage"><div class="frame" id="frame"></div></div>
+  <p class="caption" id="caption"></p>
+
+  <section class="s">
+    <div class="eyebrow">Contrast, calculat pentru paleta aleasă</div>
+    <h2>Textul trece AA peste cel mai închis punct al gradientului</h2>
+    <p class="lead" style="margin-bottom:10px">Sticla amestecă fundalul. Am calculat cazul cel mai rău: panoul așezat exact peste cea mai închisă (sau cea mai deschisă) culoare din gradient, fără blur. Textul lung al lecției trece AAA (7 : 1).</p>
+    <div class="tw"><table><thead><tr><th>Ce</th><th>Pe ce</th><th>Raport, cel mai rău caz</th><th>Prag</th></tr></thead><tbody id="ctab"></tbody></table></div>
+  </section>
+
+  <section class="s">
+    <div class="eyebrow">Fontul</div>
+    <h2>Sora pentru titluri, Inter Tight pentru text</h2>
+    <div class="two">
+      <div><p class="spec" style="font-family:var(--fs);font-weight:200">Învățarea ca sursă a binelui</p>
+        <p><b>Sora ExtraLight</b> la titluri: geometrică, rotundă, făcută pentru ecran, se potrivește cu sticla și cu cercurile din scenă. Are ș și ț corecte. La greutăți mici rămâne subțire, cum cere stilul Ive.</p></div>
+      <div><p class="spec" style="font-family:var(--f);font-weight:400;font-size:28px;line-height:1.4">O întrebare bună valorează mai mult decât zece răspunsuri.</p>
+        <p><b>Inter Tight</b> la textul lung, la meniu și la etichete: mai îngust, se citește mai repede în lecții de 10–20 de minute. Sora la text mărunt e prea lată.</p></div>
+    </div>
+    <p class="caption">Recomandarea mea: Sora pentru titluri și Inter Tight pentru restul. Două fonturi în loc de patru cât are site-ul azi. Poți compara cu „Titluri: Inter Tight”.</p>
+  </section>
+</div>
+
+<script>
+(function(){
+"use strict";
+var S={p:"ive",v:"home",e:"desk",f:"sora",r:"0"};
+var PAL={
+  ive:{name:"BEMORE LS Ive, topit",phrase:"Amalfi, cornflower, travertin și citron se topesc unul în altul, în loc să stea în blocuri. Cea mai aproape de BEMORE.",
+    chips:[["#2E5AA7","Amalfi"],["#5C88CD","Cornflower"],["#EFEAE0","Travertin"],["#F1C436","Citron"]],
+    mesh:["#EFEAE0","#2E5AA7","#27508F","#5C88CD","#F6F2EA","#F1C436"],g:"#F6F2EA",tx:"#2A2620",mu:"#5A5446",ac:"#23406F",btn:["#2E5AA7","#F6F2EA"],desk:"#ECE4D6"},
+  sora:{name:"Sora",phrase:"Cer, lavandă, piersică și portocaliu, ca afișul fontului Sora. Cea mai luminoasă și mai jucăușă.",
+    chips:[["#4FA3F0","Cer"],["#B7A6EA","Lavandă"],["#F7B79A","Piersică"],["#F28C3B","Portocaliu"]],
+    mesh:["#F3EEF6","#4FA3F0","#8FD3F7","#B7A6EA","#F7B79A","#F28C3B"],g:"#FFFFFF",tx:"#14161F",mu:"#474A58",ac:"#2B44B8",btn:["#14161F","#FFFFFF"],desk:"#EEF1FB"},
+  navy:{name:"Navy și roz",phrase:"Albastrul adânc din colț se luminează spre roz pal și mandarină. Cea mai apropiată de imaginea cu gradientul granulat.",
+    chips:[["#001440","Cetacean Blue"],["#708090","Slate Gray"],["#FFE4E1","Misty Rose"],["#FFA089","Vivid Tangerine"]],
+    mesh:["#FFE4E1","#001440","#1B2A55","#708090","#FFE4E1","#FFA089"],g:"#FFF4F2",tx:"#001440",mu:"#3F4858",ac:"#001440",btn:["#001440","#FFE4E1"],desk:"#FCE6E2"},
+  teal:{name:"Verde și teal",phrase:"Cer de ghețar, apă adâncă, pajiște și ceață de dimineață. Cea mai odihnitoare, cea mai „wellness”.",
+    chips:[["#204654","Teal Waters"],["#A9E0F1","Glacial Sky"],["#CAFFA6","Spring Meadow"],["#F7F9E1","Morning Mist"]],
+    mesh:["#F7F9E1","#A9E0F1","#204654","#F7F9E1","#CAFFA6","#A9E0F1"],g:"#F7F9E1",tx:"#204654",mu:"#2F4A55",ac:"#204654",btn:["#204654","#F7F9E1"],desk:"#EEF5DA"}
+};
+var ROOMS=[
+ {k:"coaching",n:"Coaching",g:1},{k:"companie",n:"Compania mea",g:1},{k:"speaking",n:"Latest Workshops",g:1},
+ {k:"inventii",n:"Innovations",g:2},{k:"live",n:"Live",g:2},{k:"povesti",n:"My Journey",g:2},{k:"knowledge",n:"Knowledge Base",g:2},{k:"despre",n:"Despre mine",g:3}
+];
+var NUMS={coaching:1,companie:2,speaking:3,inventii:4,live:5,povesti:6,knowledge:7};
+var LAYERS=["Scena","Jurnalul","Echipa","Conținutul","Baza"];
+var SH={
+ live:'<circle class="shape" cx="660" cy="470" r="32"/><circle class="mk" cx="650" cy="462" r="3.5"/><circle class="mk" cx="672" cy="468" r="3.5"/><circle class="mk" cx="658" cy="482" r="3.5"/>',
+ povesti:'<ellipse class="shape" cx="640" cy="640" rx="58" ry="30"/><ellipse class="faint" cx="640" cy="672" rx="48" ry="8"/>',
+ knowledge:'<path class="shape" d="M760 745l70-22 70 22-70 22z"/><path class="shape" d="M760 728l70-22 70 22-70 22z"/><path class="shape" d="M760 711l70-22 70 22-70 22z"/><path class="shape" d="M760 694l70-22 70 22-70 22z"/>',
+ coaching:'<ellipse class="shape" cx="1140" cy="660" rx="74" ry="40"/><ellipse class="shape" cx="1140" cy="656" rx="24" ry="12"/>',
+ speaking:'<path class="shape" d="M1210 350a60 60 0 0 1 120 0z"/><ellipse class="faint" cx="1270" cy="350" rx="60" ry="10"/>',
+ companie:'<path class="shape" d="M1300 560l50-24 50 24-50 24z"/><path class="shape" d="M1300 560v56l50 24v-56z"/><path class="shape" d="M1400 560v56l-50 24v-56z"/>'
+};
+function rn(k){return ROOMS.filter(function(r){return r.k===k})[0].n}
+function pill(x,y,t,cls,anchor){var w=Math.round(t.length*(S.e==="phone"?17:9.2)+(S.e==="phone"?48:30)),h=S.e==="phone"?58:34,x0=anchor==="middle"?x-w/2:x;
+  return '<g class="pill '+(cls||"")+'"><rect x="'+x0+'" y="'+(y-h/2)+'" width="'+w+'" height="'+h+'" rx="'+h/2+'"/><text x="'+(x0+w/2)+'" y="'+(y+(S.e==="phone"?11:6))+'" text-anchor="middle">'+t+'</text></g>';}
+function num(x,y,n){return '<g class="num"><circle cx="'+x+'" cy="'+y+'" r="15"/><text x="'+x+'" y="'+(y+5.5)+'">'+n+'</text></g>';}
+function scene(){
+  var v='<ellipse class="orb" cx="980" cy="560" rx="330" ry="80"/><ellipse class="orb" cx="980" cy="560" rx="500" ry="125"/>';
+  function o(k,fl,from,to){
+    return '<g class="obj" data-k="'+k+'" tabindex="0" role="link" aria-label="'+rn(k)+'"><g class="float '+fl+'">'+SH[k]+'</g><line class="lead-l" x1="'+from[0]+'" y1="'+from[1]+'" x2="'+to[0]+'" y2="'+to[1]+'"/>'+num(to[0]+12,to[1]-10,NUMS[k])+'</g>';
+  }
+  v+=o("live","",[684,448],[714,414])+o("povesti","d2",[600,624],[572,596])+o("knowledge","d3",[896,690],[926,664])+
+     o("coaching","",[1210,640],[1236,614])+o("speaking","d2",[1326,318],[1352,294])+o("companie","d3",[1302,552],[1268,520]);
+  var core='<g class="obj core" data-k="inventii" tabindex="0" role="button" aria-label="Desfă inovația: Innovations" aria-expanded="false">';
+  LAYERS.slice().reverse().forEach(function(n,j){var i=LAYERS.length-1-j,rx=150-i*8;
+    core+='<g class="layer" data-i="'+i+'"><ellipse class="shape" cx="980" cy="400" rx="'+rx+'" ry="'+(38-i*2)+'"/>'+
+      (i===0?'<ellipse class="faint" cx="980" cy="400" rx="'+(rx-36)+'" ry="22"/><circle class="mk" cx="980" cy="400" r="6"/>':'')+
+      '<g class="llab"><line class="lead-l" x1="'+(980+rx)+'" y1="400" x2="1172" y2="400"/>'+pill(1180,400,n)+'</g></g>';});
+  core+='<line class="lead-l" x1="1082" y1="378" x2="1112" y2="314"/>'+num(1124,304,4)+pill(980,494,"Desfă inovația","rest","middle")+'</g>';
+  var vb=S.e==="phone"?"500 220 960 640":S.e==="lap"?"-360 -70 1800 1125":"-260 -60 1700 1062";
+  return '<svg class="scene" viewBox="'+vb+'" preserveAspectRatio="xMidYMid '+(S.e==="phone"?"meet":"slice")+'" aria-label="Scena atelierului">'+v+core+'</svg>';
+}
+var HERO='<h1>Construiesc unelte pentru oameni care <em>vor să crească.</em></h1><p class="cine">Sunt Alex: coach, fondator și inventator.</p><p class="cum">Fiecare obiect de aici e un drum. Trage de spațiu sau alege mai jos.</p>';
+function bg(){return '<div class="mesh"></div><div class="grain"></div>';}
+function home(){
+  var li=function(r){return '<li data-k="'+r.k+'"><a href="#"><span class="nn">'+(NUMS[r.k]||"")+'</span>'+r.n+'</a></li>'};
+  return '<div class="home">'+bg()+scene()+
+    '<div class="h-hero g"><div class="h-row"><span class="brand"><span class="dot"></span>Alex · Atelier</span><a class="live" href="#"><i></i>Live</a></div>'+HERO+'</div>'+
+    '<nav class="h-legend g" aria-label="Drumuri"><div class="lg"><span class="cap">De ce ai nevoie?</span><ul>'+ROOMS.filter(function(r){return r.g===1}).map(li).join("")+'<li class="more"><a href="#">Toate cele 8 drumuri →</a></li></ul></div>'+
+    '<div class="lg"><span class="cap">Intră în atelier</span><ul>'+ROOMS.filter(function(r){return r.g!==1}).map(li).join("")+'</ul></div></nav>'+
+    '<p class="h-inscr g">Învățarea ca sursă a binelui.</p></div>';
+}
+function navbar(cur){
+  return '<header class="nav g"><span class="brand"><span class="dot"></span>Alex · Atelier</span><nav>'+["Coaching","Compania mea","Workshops","Atelier"].map(function(x){return '<a href="#"'+(x===cur?' aria-current="page"':'')+'>'+x+'</a>'}).join("")+'</nav><span class="mn">Meniu</span></header>';
+}
+var BIZ=[["BEMORE","Owner"],["Wise Teams","Partener"],["LIFT","Colaborator"],["Innersis","Leadership Trainer"]];
+function room(){
+  return '<div class="pg">'+bg()+navbar("Compania mea")+
+    '<div class="r-head g"><span class="eb">Compania mea</span><h1>Vreau ceva pentru echipa sau compania mea.</h1><p class="lead2 ex">Patru locuri în care lucrez cu echipe și companii. Alege-l pe cel care seamănă cu nevoia ta.</p></div>'+
+    '<div class="r-grid">'+BIZ.map(function(b){return '<article class="r-card g"><p class="big" aria-hidden="true">'+b[0].charAt(0)+'</p><span class="role">'+b[1]+'</span><h2>'+b[0]+'</h2><p class="need ex">Ce nevoie rezolvă, într-o propoziție (de la Alex).</p><a class="lnk" href="#">Site-ul '+b[0]+' →</a></article>'}).join("")+'</div>'+
+    '<div class="r-end g"><div><span class="cap">Nu știi care ți se potrivește?</span><p>Prima conversație e gratuită.</p></div><a class="btn" href="#">Vorbește cu mine →</a></div>'+
+    '<footer class="foot"><span>Alex · Atelier</span><span>Repo public pe GitHub</span></footer></div>';
+}
+function lesson(){
+  var Ls=["Ce vrei de la un asistent AI","Primul tău context","Unde îți fuge atenția când lucrezi cu AI","Cum îi dai contextul potrivit","Când te oprești","Ritmul tău de lucru"];
+  var toc='<aside class="l-toc g"><span class="cap">Curs de exemplu · 6 lecții</span><div class="prog" aria-hidden="true"><i></i></div><ol>'+Ls.map(function(t,i){return '<li class="'+(i<2?"done":i===2?"now":"")+'"><a href="#"'+(i===2?' aria-current="page"':'')+'><span class="dn">'+(i+1)+'</span><span>'+t+'</span>'+(i===2?'<i class="dot"></i>':'')+'</a></li>'}).join("")+'</ol></aside>';
+  var f1='<figure class="fig"><svg viewBox="0 0 640 190" aria-hidden="true"><line x1="144" y1="80" x2="276" y2="80"/><line x1="364" y1="80" x2="496" y2="80"/>'+
+    '<circle cx="100" cy="80" r="44"/><circle cx="320" cy="80" r="44"/><circle cx="540" cy="80" r="44"/>'+
+    '<text x="100" y="158">Întrebarea</text><text x="320" y="158">Răspunsul</text><text x="540" y="158">Pasul</text>'+
+    '<text class="s" x="100" y="182">o propoziție</text><text class="s" x="320" y="182">unul bun</text><text class="s" x="540" y="182">azi</text></svg><figcaption class="cap">Fig. 1 · De la întrebare la pas</figcaption></figure>';
+  var read='<article class="l-read gs"><span class="eb">Lecția 3 din 6</span><h1>Unde îți fuge atenția când lucrezi cu AI</h1><div class="meta"><span>12 minute</span><span>o idee · un exercițiu · o unealtă</span></div>'+
+    '<p class="body lede">Un asistent AI îți răspunde în câteva secunde. Tentația e să-i mai dai o întrebare, și încă una. După o oră ai multe răspunsuri și niciun pas făcut.</p>'+
+    '<p class="body">Atenția nu se pierde din lipsă de informație. Se pierde când nu știi ce întrebare contează acum.</p>'+f1+
+    '<section class="desk"><span class="eb">Pe masa de lucru</span><h2>Gândește-te la ultima ta conversație cu un AI.</h2>'+
+    '<ul class="ask"><li>Ce voiai să afli la început?</li><li>Ce ai aflat de fapt?</li><li>Ce pas ai făcut după?</li></ul>'+
+    '<label for="w3" class="cap" style="display:block;margin-bottom:8px">Scrie aici. Rămâne doar pe dispozitivul tău.</label><textarea id="w3" class="write" placeholder="Voiam să aflu…"></textarea>'+
+    '<div class="breath"><div class="orb2" aria-hidden="true"></div><div><button type="button" data-timer>Pornește 3 minute</button><p class="bt"><output>3:00</output> <span data-breath>Respiră liniștit cât scrii.</span></p></div></div></section>'+
+    '<div class="keep"><span class="dot" aria-hidden="true"></span><div><span class="cap">Dacă reții un singur lucru</span><p>O întrebare bună valorează mai mult decât zece răspunsuri.</p></div></div>'+
+    '<div class="tool"><span><span class="cap" style="display:block;margin-bottom:6px">Unealta</span>Fișa „Întrebarea zilei”, o pagină</span><a class="lnk" href="#">Deschide fișa →</a></div>'+
+    '<div class="lnav"><a class="prev" href="#">← Lecția 2</a><a class="btn" href="#">Lecția 4 · Cum îi dai contextul potrivit →</a></div></article>';
+  return '<div class="pg">'+bg()+navbar("Atelier")+'<div class="l-grid">'+toc+read+'</div></div>';
+}
+
+/* contrastul, calculat în pagină */
+function hx(h){h=h.replace("#","");return [0,2,4].map(function(i){return parseInt(h.slice(i,i+2),16)})}
+function lum(c){var v=c.map(function(x){x/=255;return x<=.03928?x/12.92:Math.pow((x+.055)/1.055,2.4)});return .2126*v[0]+.7152*v[1]+.0722*v[2]}
+function cr(a,b){var x=lum(a),y=lum(b);return (Math.max(x,y)+.05)/(Math.min(x,y)+.05)}
+function worst(fg,glass,alpha,mesh){var m=99;mesh.forEach(function(c){var mix=hx(glass).map(function(v,i){return v*alpha+hx(c)[i]*(1-alpha)});m=Math.min(m,cr(hx(fg),mix))});return m}
+function ctab(){
+  var p=PAL[S.p],rows=[
+    ["Text (titluri, meniu, legendă)","sticlă 80 %",worst(p.tx,p.g,.8,p.mesh),4.5],
+    ["Text secundar","sticlă 80 %",worst(p.mu,p.g,.8,p.mesh),4.5],
+    ["Linkuri, numere, accent","sticlă 80 %",worst(p.ac,p.g,.8,p.mesh),4.5],
+    ["Textul lung al lecției","suprafața de citit, 93 %",worst(p.tx,p.g,.93,p.mesh),7],
+    ["Text secundar în lecție","suprafața de citit, 93 %",worst(p.mu,p.g,.93,p.mesh),4.5],
+    ["Text pe masa de lucru","plin "+p.desk,cr(hx(p.tx),hx(p.desk)),7],
+    ["Butonul principal",p.btn[0]+" / "+p.btn[1],cr(hx(p.btn[1]),hx(p.btn[0])),4.5],
+    ["Fără transparență (rezerva)","sticlă plină "+p.g,cr(hx(p.tx),hx(p.g)),7]];
+  document.getElementById("ctab").innerHTML=rows.map(function(r){var ok=r[2]>=r[3];return '<tr><td>'+r[0]+'</td><td>'+r[1]+'</td><td class="n '+(ok?"ok":"no")+'">'+r[2].toFixed(2).replace(".",",")+' : 1</td><td>'+(r[3]===7?"AAA, 7 : 1":"AA, 4,5 : 1")+(ok?" · trece":" · nu trece")+'</td></tr>'}).join("");
+}
+
+/* randare */
+var frame=document.getElementById("frame"),stage=document.getElementById("stage"),timerId=null;
+function setPressed(id,val){[].forEach.call(document.querySelectorAll("#"+id+" button"),function(b){b.setAttribute("aria-pressed",String(b.dataset.v===val))})}
+function render(){
+  setPressed("c-p",S.p);setPressed("c-v",S.v);setPressed("c-e",S.e);setPressed("c-f",S.f);setPressed("c-r",S.r);
+  var p=PAL[S.p];
+  document.getElementById("a-name").textContent=p.name;document.getElementById("a-phrase").textContent=p.phrase;
+  document.getElementById("a-chips").innerHTML=p.chips.map(function(c){return '<span><i style="background:'+c[0]+'"></i>'+c[1]+' '+c[0]+'</span>'}).join("");
+  var html=S.v==="home"?home():S.v==="room"?room():lesson();
+  frame.innerHTML='<div class="mock" data-dev="'+S.e+'" data-pal="'+S.p+'" data-font="'+S.f+'" data-rt="'+S.r+'">'+html+'</div>';
+  stage.classList.toggle("phone-mode",S.e==="phone");
+  var SZ={desk:"1440 × 900",lap:"1280 × 800",phone:"390 × 844"}[S.e];
+  document.getElementById("caption").textContent=S.v==="home"?
+    "Mostră la "+SZ+". Scena e desenată aici în 2D; pe site rămâne 3D. Apasă pe obiectul din centru ca să-l desfaci. Treci peste legendă: obiectul se aprinde. „Transparență: Redusă” arată rezerva pentru cine a cerut mai puțină transparență sau pentru browserele fără blur.":
+    S.v==="room"?"Mostră la lățime reală, pagina întreagă. Numele și rolurile sunt confirmate de Alex; textele subliniate punctat sunt exemple.":
+    "Mostră la lățime reală, pagina întreagă. Cursul și lecția sunt text de exemplu. Structura e cea din Studio. Cronometrul respiră: 4 secunde inspiri, 4 expiri.";
+  ctab();fit();wire();
+}
+function fit(){
+  var m=frame.firstChild;if(!m)return;
+  var W=stage.clientWidth,base={phone:390,lap:1280,desk:1440}[S.e],s=Math.min(1,W/base);
+  var h=S.v==="home"?{phone:844,lap:800,desk:900}[S.e]:m.offsetHeight;
+  m.style.transform="scale("+s+")";frame.style.width=Math.floor(base*s)+"px";frame.style.height=Math.ceil(h*s)+"px";
+  frame.className="frame "+(S.e==="phone"?"phone":"desk");
+}
+function wire(){
+  var root=frame.firstChild,core=root.querySelector(".core"),svg=root.querySelector(".scene");
+  if(core){
+    var set=function(open){[].forEach.call(core.querySelectorAll(".layer"),function(l){var i=+l.dataset.i;l.style.transform="translateY("+((i-2)*(open?62:7))+"px)"});};
+    set(false);
+    var toggle=function(){var open=!core.classList.contains("open");core.classList.toggle("open",open);svg.classList.toggle("opened",open);core.setAttribute("aria-expanded",String(open));set(open);
+      core.querySelector(".pill.rest text").textContent=open?"Închide":"Desfă inovația";};
+    core.addEventListener("click",toggle);core.addEventListener("keydown",function(e){if(e.key==="Enter"||e.key===" "){e.preventDefault();toggle()}});
+  }
+  [].forEach.call(root.querySelectorAll(".h-legend li[data-k]"),function(li){
+    var k=li.dataset.k,o=root.querySelector('.scene .obj[data-k="'+k+'"]');
+    li.querySelector("a").addEventListener("click",function(e){e.preventDefault();if(k==="companie"){S.v="room";render();}});
+    if(!o)return;
+    var on=function(){o.classList.add("hi")},off=function(){o.classList.remove("hi")};
+    li.addEventListener("mouseenter",on);li.addEventListener("mouseleave",off);li.addEventListener("focusin",on);li.addEventListener("focusout",off);
+    o.addEventListener("mouseenter",function(){li.classList.add("hi")});o.addEventListener("mouseleave",function(){li.classList.remove("hi")});
+    o.addEventListener("click",function(){if(k==="companie"){S.v="room";render();}});
+  });
+  var tb=root.querySelector("[data-timer]");
+  if(tb){var out=tb.parentNode.querySelector("output"),bl=root.querySelector("[data-breath]"),br=root.querySelector(".breath");
+    tb.addEventListener("click",function(){
+      if(timerId){clearInterval(timerId);timerId=null;tb.textContent="Pornește 3 minute";out.textContent="3:00";br.classList.remove("on");bl.textContent="Respiră liniștit cât scrii.";return}
+      var t=180;tb.textContent="Oprește";br.classList.add("on");bl.textContent="Inspiră.";
+      timerId=setInterval(function(){t--;out.textContent=Math.floor(t/60)+":"+String(t%60).padStart(2,"0");bl.textContent=(Math.floor((180-t)/4)%2?"Expiră.":"Inspiră.");
+        if(t<=0){clearInterval(timerId);timerId=null;tb.textContent="Pornește 3 minute";out.textContent="Gata";br.classList.remove("on")}},1000);
+    });}
+}
+function bind(id,key){[].forEach.call(document.querySelectorAll("#"+id+" button"),function(b){b.addEventListener("click",function(){S[key]=b.dataset.v;if(timerId){clearInterval(timerId);timerId=null}render()})})}
+bind("c-p","p");bind("c-v","v");bind("c-e","e");bind("c-f","f");bind("c-r","r");
+try{var m=/^(ive|sora|navy|teal)-(home|room|lesson)(?:-(phone|lap))?$/.exec(location.hash.replace("#",""));if(m){S.p=m[1];S.v=m[2];if(m[3])S.e=m[3]}}catch(e){}
+var rt;window.addEventListener("resize",function(){clearTimeout(rt);rt=setTimeout(fit,80)});
+if(document.fonts&&document.fonts.ready)document.fonts.ready.then(fit);
+render();
+})();
+</script>
