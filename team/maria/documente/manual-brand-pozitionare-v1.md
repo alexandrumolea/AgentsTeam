@@ -93,7 +93,7 @@ Pentru echipa Studio (Andrei, Daria, Matei, Irina) și pentru oricine face un ma
 |---|---|---|---|
 | clientul vine **prin Innersis** | Innersis | `innersis-ive` (slide-uri), `training-flow-design` (varianta Innersis) | `innersis` |
 | livrăm **sub BEMORE** (inclusiv 23 și 25, D-055) | noul branding BEMORE | tema BEMORE (T-028); până există, tema neutră. Pentru flow-ul Excel, varianta BEMORE LS din `training-flow-design`, până se actualizează | `bemore` |
-| clientul vine **prin BEMORE Learning Studio** în vechea identitate | BEMORE LS | `bemore-ls-ive` | `bemore-ls`; de verificat cu Alex dacă mai există cazul |
+| e un **curs BEMORE Learning Studio** | marca de curs „BEMORE Learning Studio”, pe designul BEMORE (Sora), D-061. Vechea identitate LS nu se mai folosește | tema BEMORE (`curs/tema/bemore.css`), cu marca LS discretă | `bemore` |
 | e un **program Wise Teams** | Wise Teams | `wise-critical-path` pentru rapoarte; slide-uri: întrebi | (nu există încă) |
 | clientul vine **prin LIFT** | LIFT | nu avem kit; întrebi | (nu există încă) |
 | e un **curs propriu al lui Alex** pe site (cursul online, Knowledge Base, Innovations) | noul branding BEMORE, semnat Alex (D-057) | skill-ul `brand-bemore` | `bemore` |

@@ -22,7 +22,7 @@ Sursa completă, citește-o când lucrezi efectiv la un material:
 ## Ce brand poartă un material
 - Clientul vine prin **Innersis** → `innersis-ive`.
 - Livrăm **sub BEMORE** (inclusiv cursurile proprii ale lui Alex și site-ul lui) → acest brand, `brand: bemore`.
-- Vechea identitate **BEMORE Learning Studio** → `bemore-ls-ive` (de confirmat cu Alex dacă mai există cazul).
+- Cursurile **BEMORE Learning Studio** → tot acest brand (designul Sora), cu marca „BEMORE Learning Studio” (D-061). Vechea identitate LS și `bemore-ls-ive` nu se mai folosesc pentru ele.
 - **Wise Teams** → `wise-critical-path` pentru rapoarte; pentru slide-uri întrebi.
 - **LIFT** sau nu e clar → stop, întrebi Alex prin Andrei sau Tudor. Un material poartă un singur brand.
 
