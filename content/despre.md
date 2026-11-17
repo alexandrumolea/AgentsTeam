@@ -20,6 +20,7 @@ Rolurile care mi-au format modul de a lucra cu oamenii și cu învățarea.
 
 - **Leadership Trainer** · Innersis · 2026 – prezent  
   Inovație în training și calitate în livrarea programelor de training.
+- **Colaborator** · LIFT · prezent
 - **Coach & Team Coach** · 2023 – prezent  
   Lucrez pentru dezvoltarea strategiei și armonizarea echipelor în direcția unui scop comun.
 - **Founder** · BEMORE Learning Studio · 2013 – 2025  
