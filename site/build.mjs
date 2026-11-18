@@ -295,7 +295,7 @@ const misiune = (site.intro && site.intro.inscriptie) || [];
 const CSS_HASHLESS = 'assets/site.css';
 let cssV = '';
 // Politica de securitate: doar resurse de pe site; import map-ul inline e permis prin hash.
-const csp = scriptHash => `default-src 'self'; script-src 'self'${scriptHash ? ` '${scriptHash}'` : ''}; style-src 'self'; img-src 'self' data:; font-src 'self'; connect-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'`;
+const csp = scriptHash => `default-src 'self'; script-src 'self'${[].concat(scriptHash || []).map(h => ` '${h}'`).join('')}; style-src 'self'; img-src 'self' data:; font-src 'self'; connect-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'`;
 function head({ title, description, path, extra = '', scriptHash = '' }){
   const t = title ? `${title} · ${site.titlu_scurt || site.titlu}` : site.titlu; // pagina întâi, ca să se vadă în tab-urile înguste
   const canon = SITE_URL ? `<link rel="canonical" href="${esc(abs(path))}">` : '';
@@ -436,6 +436,9 @@ function fallbackSvg(){
 
 function indexHtml(importmap){
   const imHash = 'sha256-' + createHash('sha256').update(importmap).digest('base64');
+  // Scoate „no-js” înainte de prima randare: altfel desenul de rezervă (orbitele mov) clipește până se încarcă scena (Alex, 2026-11-18).
+  const jsOn = "document.body.classList.remove('no-js')";
+  const jsOnHash = 'sha256-' + createHash('sha256').update(jsOn).digest('base64');
   const intro = site.intro || {};
   const first = familii[0]?.cheie;
   const road = c => `<li><a href="${pageUrl(c)}" data-k="${esc(c.cheie)}"><span class="nn" aria-hidden="true">${c.nr || ''}</span><span>${esc(c.eticheta)}</span></a></li>`;
@@ -467,8 +470,9 @@ function indexHtml(importmap){
   const parts = centru ? `<button class="explode" id="explode" type="button" aria-expanded="false" aria-controls="parts">${esc(centru.buton || 'Desfă inovația')}</button>
   <ol class="parts" id="parts" aria-label="${esc(centru.titlu)}, strat cu strat">${centru.straturi.map(s => `<li><b>${esc(s.nume)}</b>${esc(s.text)}</li>`).join('')}</ol>` : '';
 
-  return `${head({ title: '', path: '', scriptHash: imHash, extra: `<script type="importmap">${importmap}</script>\n<link rel="modulepreload" href="${u('assets/scena.js')}?v=${cssV}">` })}
+  return `${head({ title: '', path: '', scriptHash: [imHash, jsOnHash], extra: `<script type="importmap">${importmap}</script>\n<link rel="modulepreload" href="${u('assets/scena.js')}?v=${cssV}">` })}
 <body class="home no-js${rezervare ? ' has-book' : ''}">
+<script>${jsOn}</script>
 <div class="bg" aria-hidden="true"><i></i></div>
 <div class="fallback" aria-hidden="true">${fallbackSvg()}</div>
 <canvas id="gl" aria-hidden="true"></canvas>
