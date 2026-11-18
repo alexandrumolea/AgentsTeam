@@ -20,13 +20,13 @@
 - **Etapa B, producția.** Slide-uri, scheme, curs online, note de trainer, banca de exerciții, numai pentru piesele cu verdict „da”. Butonul „Trimite în agendă” face agenda ediției.
 
 ## Schema
-Bucla Research → Obiective → Piese → Flow Logic → Livrare flexibilă se repetă la fiecare livrare, până cursul se stabilizează (Alex, 2026-11-17). Piese și Flow Logic se fac în Laborator (etapa A).
+Bucla Research → Viziune și obiective → Piese → Flow Logic → Livrare flexibilă se repetă la fiecare livrare, până cursul se stabilizează (Alex, 2026-11-17). Piese și Flow Logic se fac în Laborator (etapa A).
 
 ```mermaid
 flowchart LR
   D[2. Diagnosticare<br/>la fiecare ediție] --> O
   subgraph Bucla["Bucla, până la stabilizare"]
-    R[1. Research] --> O[3. Obiective]
+    R[1. Research] --> O[3. Viziune și obiective]
     subgraph A["Laboratorul, ~o lună: masa.yml"]
       P[4. Piese<br/>colectate → filtrate] --> F[5. Flow Logic<br/>ordonate în 4 blocuri]
     end
@@ -69,7 +69,7 @@ Pauzele de 15 minute sunt presupunerea noastră; Alex le poate corecta.
 | 1 | **Research** | modele, studii, exemple cu surse în `research.md` + piese candidate în `masa.yml` | Irina | citește rezumatul de 5 rânduri |
 | 2 | **Diagnosticare** (la fiecare ediție) | chestionar anonim de 3–5 întrebări înainte + o piesă de diagnostic la deschidere. Rezumatul, fără nume, în `editii/<data>.yml` (`nota_trainer`) | Daria | aprobă și **trimite** chestionarul |
 | 2b | **Practicianul în Laborator** (~o lună, în paralel cu 1–5) | trainerul care va livra învață, observă și dezbate cu partenerii de gândire (AI, oameni din publicul țintă, peers); descoperirile, exemplele și poveștile din practica lui intră pe masă ca piese candidate (`sursa: practică` / `conversație`), fără nume | trainerul care livrează (azi Alex). Daria le notează pe masă | trăiește subiectul, spune ce a aflat |
-| 3 | **Obiective** | cel mult 4, scurte, în `curs.yml` (sau în ediție) | Daria | aprobă lista |
+| 3 | **Viziune și obiective** | **Viziunea:** transformarea dorită, într-o propoziție clară și simplă (Alex, 2026-11-18). **Obiectivele:** cel mult 4, scurte, care duc spre viziune. Ambele în `curs.yml` (sau în ediție) | Daria | formulează viziunea, aprobă lista |
 | 4 | **Piese** (Laborator) | candidate colectate și filtrate în `masa.yml` | Daria (Irina) | dă verdictele |
 | 5 | **Flow Logic** (Laborator) | piesele „da” ordonate în cele 4 blocuri | Daria. Andrei verifică | ordonează și **aprobă masa** |
 | – | **Producția** (etapa B) | `piese/<id>.md` cu ecrane (`:::sala`), scheme, note de trainer; „Trimite în agendă” face `agenda` din `editii/<data>.yml` | Matei (Daria, Irina) | Biblioteca de piese, vederile Ziua și Schița |
