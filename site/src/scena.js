@@ -55,9 +55,11 @@ const roadLinks = [...document.querySelectorAll('#roads a[data-k]')];
 const roadOf = k => roadLinks.find(a => a.dataset.k === k);
 roadLinks.forEach(a => {
   const i = IDX[a.dataset.k];
-  a.setAttribute('role', 'button'); a.setAttribute('aria-pressed', 'false'); a.setAttribute('aria-controls', 'panel');
-  a.addEventListener('click', e => { e.preventDefault(); select(i); });
-  a.addEventListener('keydown', e => { if (e.key === ' '){ e.preventDefault(); select(i); } });
+  if (!INTENTS[i].direct){ // `panou: false` (Despre): rămâne link obișnuit spre pagină
+    a.setAttribute('role', 'button'); a.setAttribute('aria-pressed', 'false'); a.setAttribute('aria-controls', 'panel');
+    a.addEventListener('click', e => { e.preventDefault(); select(i); });
+    a.addEventListener('keydown', e => { if (e.key === ' '){ e.preventDefault(); select(i); } });
+  }
   a.addEventListener('pointerenter', () => setHint(i)); a.addEventListener('pointerleave', () => setHint(-1));
   a.addEventListener('focus', () => setHint(i)); a.addEventListener('blur', () => setHint(-1));
 });
@@ -89,10 +91,11 @@ function setModes(k){
 }
 function select(i){
   if (i === undefined) return;
+  if (INTENTS[i].direct){ location.href = INTENTS[i].url; return; } // fără panou: direct pe pagină (Alex, 2026-11-18)
   if (open) setOpen(false);
   if (selected === i){ closePanel(); return; }
   selected = i; const it = INTENTS[i];
-  roadLinks.forEach(a => a.setAttribute('aria-pressed', String(a.dataset.k === it.k)));
+  roadLinks.forEach(a => a.hasAttribute('aria-pressed') && a.setAttribute('aria-pressed', String(a.dataset.k === it.k)));
   renderPanel(it); setModes(it.k);
   body.classList.add('sheet');
   sr.textContent = `Deschis: ${it.label}.`;
@@ -103,12 +106,12 @@ function closePanel(){
   if (selected < 0) return;
   const back = panel.contains(document.activeElement) || !body.contains(document.activeElement) ? roadOf(INTENTS[selected].k) : null;
   body.classList.remove('sheet'); setModes('');
-  selected = -1; roadLinks.forEach(a => a.setAttribute('aria-pressed', 'false'));
+  selected = -1; roadLinks.forEach(a => a.hasAttribute('aria-pressed') && a.setAttribute('aria-pressed', 'false'));
   if (back && back.offsetParent) back.focus({ preventScroll: true });
 }
 $('#px').addEventListener('click', closePanel);
 const about = $('#about');
-if (about && IDX.despre !== undefined) about.addEventListener('click', e => { e.preventDefault(); if (selected !== IDX.despre) select(IDX.despre); $('#px').focus({ preventScroll: true }); });
+if (about && IDX.despre !== undefined && !INTENTS[IDX.despre].direct) about.addEventListener('click', e => { e.preventDefault(); if (selected !== IDX.despre) select(IDX.despre); $('#px').focus({ preventScroll: true }); });
 const liveLink = $('#liveLink');
 if (liveLink) liveLink.addEventListener('click', e => { e.preventDefault(); if (selected !== IDX.live) select(IDX.live); $('#px').focus({ preventScroll: true }); });
 addEventListener('keydown', e => { if (e.key === 'Escape'){ closePanel(); setOpen(false); } });

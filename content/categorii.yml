@@ -6,6 +6,7 @@
 # `vizibil`: true = secțiunea apare pe site; false = există doar aici, ascunsă peste tot (meniu, legendă,
 #   scena 3D, pagină, sitemap, api/continut.json, linkuri). Adresa ei duce la prima pagină.
 #   Le facem vizibile pe măsură ce avem ce pune în ele (Alex, D-056, 2026-11-17).
+# `panou: false`: pe prima pagină, clicul (pe obiect, în legendă sau pe link) deschide direct pagina, fără panoul din stânga.
 
 familii:
   - cheie: direct
@@ -121,6 +122,7 @@ categorii:
     scurt: "Despre"
     fraza: "Vreau să te cunosc."
     url: despre
+    panou: false              # Alex, 2026-11-18: „să mi se deschidă direct pagina cu despre mine”
     familie: titlu
     dimensiune: viata
     ordine: 1

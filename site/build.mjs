@@ -507,10 +507,10 @@ function indexHtml(importmap){
     <div class="g g1">${famTitle(first) ? `<h2 class="cap">${esc(famTitle(first))}</h2>` : ''}<ul>${g1.map(road).join('')}</ul>${g2.length ? `<button class="more" id="more" type="button" aria-expanded="false" aria-controls="g2">Toate cele ${CATS.length} drumuri →</button>` : ''}</div>
     ${g2.length ? `<div class="g g2" id="g2">${g2Title ? `<h2 class="cap">${esc(g2Title)}</h2>` : '<h2 class="cap" aria-hidden="true">&nbsp;</h2>'}<ul>${g2.map(road).join('')}</ul></div>` : ''}
   </nav>`;
-  const templates = CATS.map(c => `<template id="tpl-${esc(c.cheie)}">${panelBody(c)}</template>`).join('\n');
+  const templates = CATS.filter(c => c.panou !== false).map(c => `<template id="tpl-${esc(c.cheie)}">${panelBody(c)}</template>`).join('\n');
   const data = {
     base: BASE,
-    categorii: CATS.map(c => ({ k: c.cheie, label: c.eticheta, fam: c.familie, orbit: c.pe_orbita !== false, nr: c.nr || 0, url: pageUrl(c) })),
+    categorii: CATS.map(c => ({ k: c.cheie, label: c.eticheta, fam: c.familie, orbit: c.pe_orbita !== false, nr: c.nr || 0, url: pageUrl(c), direct: c.panou === false })),
     // luminițele echipei țin de Live: cât timp Live e ascuns, nu apar
     echipa: C.live ? [{ slug: 'alex', nume: 'Alex', tip: 'alex', aprins: true }, ...AGENTS.map(a => ({ slug: a.slug, nume: a.nume, tip: 'agent', aprins: lit.has(a.slug) }))] : [],
     puls: C.live ? pulses : [],
