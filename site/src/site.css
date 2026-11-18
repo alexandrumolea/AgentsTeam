@@ -353,8 +353,6 @@ body.page > .top{position:sticky;z-index:5}
   *,*::before,*::after{transition-duration:.01ms!important;transition-delay:0s!important;animation:none!important}
   .inscription{opacity:1}
 }
-/* butonul global „Oprește mișcarea” (T-039, site/src/miscare.js): clasa `still` pe <html> oprește toate animațiile CSS */
-html.still *,html.still *::before,html.still *::after{animation-play-state:paused!important}
 
 /* ---------- Despre: orbita în jurul lentilei ----------
    Mostra: team/ioana/documente/despre-compozitie-v2.html (varianta A, deschisă cu ?solo=a), aprobată de Alex pe 2026-11-18.
@@ -379,12 +377,6 @@ html.still *,html.still *::before,html.still *::after{animation-play-state:pause
 .despre .facts dt{margin:0 0 3px;font:500 13px/1.35 var(--sans);letter-spacing:.14em;text-transform:uppercase;color:var(--muted)}
 .despre .facts dd{margin:0;font-size:18px;line-height:1.45}
 .despre .prim .actions{margin-top:16px}
-/* butonul de mișcare: cu text pe ecran lat; pe telefon rotund, 44 px, în colțul cardului (numele rămâne pentru cititoarele de ecran) */
-.motion{appearance:none;display:inline-flex;align-items:center;gap:10px;padding:12px 18px;border-radius:999px;border:0;background:rgb(var(--text-rgb) / .06);box-shadow:inset 0 0 0 1px rgb(var(--text-rgb) / .16);color:var(--text);font:500 16px/1.2 var(--sans);cursor:pointer}
-.motion i{display:inline-flex;gap:3px}
-.motion i::before,.motion i::after{content:"";width:3px;height:12px;border-radius:1px;background:currentColor}
-html.still .motion i::after{display:none}
-html.still .motion i::before{width:0;height:0;border-radius:0;background:none;border-style:solid;border-width:6px 0 6px 10px;border-color:transparent transparent transparent currentColor}
 
 /* orbita: inelul pornește din primul an (--A0) și se oprește la „azi” (--azi); punctele se pun cu sin() / cos() */
 .despre .orbit{--R:196px;--L:276px;--up:20px;position:relative;width:680px;max-width:100%;height:490px;margin:0 auto;order:-1}
@@ -394,7 +386,7 @@ html.still .motion i::before{width:0;height:0;border-radius:0;background:none;bo
 .despre .track{border:1px dashed rgb(var(--text-rgb) / .16)}
 .despre .ring{background:conic-gradient(from var(--A0),var(--cer) 0deg,var(--lavanda) calc(var(--azi) * .4),var(--piersica) calc(var(--azi) * .75),var(--portocaliu) var(--azi),transparent var(--azi));
   -webkit-mask:radial-gradient(farthest-side,transparent calc(100% - 4px),#000 calc(100% - 3.5px));mask:radial-gradient(farthest-side,transparent calc(100% - 4px),#000 calc(100% - 3.5px))}
-/* lumina care trece pe inel de la primul an până la „azi”, apoi se stinge; o tură la 12 s. O oprește butonul de mișcare */
+/* lumina care trece pe inel de la primul an până la „azi”, apoi se stinge; o tură la 12 s. O oprește doar „reduce motion” */
 .despre .comet{opacity:0;background:conic-gradient(from 0deg,transparent 0deg 290deg,rgb(var(--sticla-rgb) / .98) 359deg,transparent 360deg);
   -webkit-mask:radial-gradient(farthest-side,transparent calc(100% - 8px),#000 calc(100% - 7px));mask:radial-gradient(farthest-side,transparent calc(100% - 8px),#000 calc(100% - 7px));
   filter:drop-shadow(0 0 6px rgb(var(--sticla-rgb) / .9));animation:despre-trece 12s linear infinite}
@@ -440,13 +432,17 @@ html.still .motion i::before{width:0;height:0;border-radius:0;background:none;bo
 @media (prefers-reduced-transparency:reduce){.despre .lens .bezel{background:var(--surface);-webkit-backdrop-filter:none;backdrop-filter:none}.despre .lens .halo{opacity:.5}.despre .badge{background:var(--surface)}}
 
 /* 2 · misiunea, cu pachetul de cărți alături: trei cărți de sticlă, cuvântul scris pe fiecare, rotație continuă de 20 s
-   (Alex: fără pauză la hover sau clic). O opresc doar butonul de mișcare și „reduce motion”. */
+   (Alex: fără pauză la hover sau clic, fără buton de oprire). O oprește doar „reduce motion” din sistem. */
 .despre .mission{display:grid;gap:8px;padding:24px 20px}
 .despre .statement{margin:0 0 18px;font:200 52px/1.1 var(--display);letter-spacing:-.025em;text-wrap:balance}
 .despre .mission p:not(.statement){font-size:19px;line-height:1.65}
 .despre .mission p:last-child{margin:0}
-.despre .stage{perspective:1150px;display:flex;justify-content:center;align-items:center;width:100%;height:340px;border-radius:20px;background:
-  radial-gradient(55% 70% at 30% 40%,rgb(var(--cer-deschis-rgb) / .75),transparent 70%),radial-gradient(55% 70% at 72% 62%,rgb(var(--piersica-rgb) / .8),transparent 70%),radial-gradient(70% 90% at 50% 50%,rgb(var(--lavanda-rgb) / .65),transparent 75%)}
+.despre .stage{position:relative;perspective:1150px;display:flex;justify-content:center;align-items:center;width:100%;height:340px}
+/* lumina din spatele sticlei: pete cu rază „closest-side”, care se sting complet înainte de marginea zonei lor, deci nu se vede nicio margine */
+.despre .stage::before{content:"";position:absolute;inset:-8% -6%;z-index:-1;pointer-events:none;background:
+  radial-gradient(closest-side at 38% 46%,rgb(var(--cer-deschis-rgb) / .6),rgb(var(--cer-deschis-rgb) / .25) 55%,rgb(var(--cer-deschis-rgb) / 0)),
+  radial-gradient(closest-side at 64% 56%,rgb(var(--piersica-rgb) / .62),rgb(var(--piersica-rgb) / .25) 55%,rgb(var(--piersica-rgb) / 0)),
+  radial-gradient(closest-side at 50% 50%,rgb(var(--lavanda-rgb) / .5),rgb(var(--lavanda-rgb) / .18) 60%,rgb(var(--lavanda-rgb) / 0))}
 .despre .deck{position:relative;width:208px;height:250px;transform-style:preserve-3d;animation:spinY 20s linear infinite}
 .despre .vc{position:absolute;inset:0;text-align:center;transform-style:preserve-3d}
 /* sticla pe stratul ei: altfel 3D-ul se aplatizează */
@@ -489,7 +485,7 @@ html.still .motion i::before{width:0;height:0;border-radius:0;background:none;bo
 .no-js .despre *,.no-js .despre *::before,.no-js .despre *::after{animation:none!important}
 .no-js .despre .comet{display:none}
 .no-js .despre .deck{transform:rotateY(-24deg)}
-@media (prefers-reduced-motion:reduce){.despre .comet,.motion{display:none}.despre .deck{transform:rotateY(-24deg)}}
+@media (prefers-reduced-motion:reduce){.despre .comet{display:none}.despre .deck{transform:rotateY(-24deg)}}
 
 @media (min-width:1100px){
   .despre .prim{grid-template-columns:minmax(0,1fr) 680px;align-items:center;gap:0;padding:28px 32px 28px 56px}
@@ -516,8 +512,6 @@ html.still .motion i::before{width:0;height:0;border-radius:0;background:none;bo
   .despre .glass,.despre .glass-read{border-radius:24px}
   .despre .prim{padding:14px 20px 20px}
   .despre .facts dd{font-size:17px}
-  .despre .prim .motion{position:absolute;top:12px;right:12px;z-index:2;width:44px;height:44px;padding:0;justify-content:center;background:rgb(var(--sticla-rgb) / .92)}
-  .despre .prim .motion span{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
   .despre .orbit{--R:108px;--L:150px;--up:18px;width:100%;max-width:326px;height:316px}
   .despre .pt i{left:-7px;top:-7px;width:14px;height:14px}
   .despre .pt.two i{box-shadow:0 0 0 2px var(--sticla),0 0 0 3.5px var(--punct-inel),0 0 0 5.5px var(--sticla),0 0 0 7px var(--punct-inel)}

@@ -313,7 +313,7 @@ let PARCURS; try { PARCURS = citesteParcurs(despre.data, NOW); } catch (e) { fai
 const lentila = despre.data.poza ? `<div class="lens"><span class="halo" aria-hidden="true"></span><div class="bezel"><div class="ph"><img src="${u(despre.data.poza)}" alt="${esc(despre.data.poza_alt || 'Alex')}" width="560" height="560" loading="eager" decoding="async"></div></div><span class="dot sig" aria-hidden="true"></span></div>` : '';
 const ORBITA = orbita(PARCURS, esc, lentila);
 // valorile: pachetul de trei cărți de sticlă, cu cuvântul scris pe fiecare, care se rotește încontinuu (ca pe vechiul site).
-// Se oprește doar din butonul „Oprește mișcarea” (site/src/miscare.js) și din „reduce motion”; atunci stă la −24°.
+// Se oprește doar cu „reduce motion” din sistem (și fără JavaScript); atunci stă la −24°.
 const valori = (Array.isArray(despre.data.valori) ? despre.data.valori : []).slice(0, 3).map(String);
 const valoriHtml = valori.length ? `<div class="stage" role="img" aria-label="${esc(`Valorile mele: ${valori.join(', ')}`)}"><div class="deck" aria-hidden="true">${valori.map((v, i) => `<div class="vc vc${i + 1}"><span class="gl"></span><span class="f">${esc(v)}</span><span class="b">${esc(v)}</span></div>`).join('')}</div></div>` : '';
 const misiune = (site.intro && site.intro.inscriptie) || [];
@@ -378,8 +378,8 @@ const footer = () => `<footer class="foot glass">
   <p>Actualizat ${esc(fLongDay(NOW))}, ${esc(fTime(NOW))}. Datele: <a href="${u('api/continut.json')}">continut.json</a>${C.live ? ` · <a href="${u('api/live.json')}">live.json</a>` : ''}</p>
 </footer>`;
 
-function page({ cheie, title, description, path, bodyHtml, mainClass = 'wrap glass-read', bodyClass = '', scripts = '', headExtra = '' }){
-  return `${head({ title, description, path, extra: headExtra })}
+function page({ cheie, title, description, path, bodyHtml, mainClass = 'wrap glass-read', bodyClass = '', scripts = '' }){
+  return `${head({ title, description, path })}
 <body class="page${bodyClass ? ' ' + bodyClass : ''}">
 <div class="bg" aria-hidden="true"></div>
 ${topNav(cheie)}
@@ -556,14 +556,13 @@ ${C.live ? `<p class="actions"><a class="btn" href="${pageUrl(C.live)}">Vezi ce 
 // Mostra: team/ioana/documente/despre-compozitie-v2.html (deschisă cu ?solo=a). Același spațiu între toate blocurile.
 function desprePage(c){
   const d = despre.data, P = despreParti;
-  const motion = '<button class="motion" type="button" title="Oprește sau pornește mișcarea" hidden><i aria-hidden="true"></i><span>Oprește mișcarea</span></button>';
   const hero = `<section class="prim w glass-read" aria-labelledby="despreH">
   <div class="cine">
     ${d.rol ? `<p class="eyebrow">${esc(d.rol)}</p>` : ''}
     <h1 id="despreH">${esc(c.eticheta)}</h1>
     ${P.lead ? `<p class="lede">${P.lead}</p>` : ''}
     ${d.acum ? `<dl class="facts"><div><dt>Acum</dt><dd>${esc(d.acum)}</dd></div></dl>` : ''}
-    <div class="actions">${C.coaching ? `<a class="btn" href="${pageUrl(C.coaching)}">${esc(C.coaching.eticheta)} <span aria-hidden="true">→</span></a>` : ''}<a href="#parcurs">Tot parcursul</a>${motion}</div>
+    <div class="actions">${C.coaching ? `<a class="btn" href="${pageUrl(C.coaching)}">${esc(C.coaching.eticheta)} <span aria-hidden="true">→</span></a>` : ''}<a href="#parcurs">Tot parcursul</a></div>
   </div>
   ${ORBITA.figure}
 </section>`;
@@ -576,8 +575,7 @@ function desprePage(c){
   <div class="actions">${C.coaching ? `<a class="btn" href="${pageUrl(C.coaching)}">${esc(C.coaching.eticheta)} <span aria-hidden="true">→</span></a>` : ''}${GH ? `<a href="${esc(GH)}" rel="noopener">Mă găsești pe GitHub</a>` : ''}</div>
 </section>`;
   const bodyHtml = `${hero}\n${mission}\n${ORBITA.parcurs}\n${next}`;
-  return page({ cheie: c.cheie, title: c.eticheta, description: site.descriere, path: c.url + '/', bodyHtml, mainClass: 'despre', bodyClass: 'no-js',
-    headExtra: `<script src="${u('assets/miscare.js')}?v=${cssV}"></script>`, scripts: `\n<script src="${u('assets/despre.js')}?v=${cssV}" defer></script>` });
+  return page({ cheie: c.cheie, title: c.eticheta, description: site.descriere, path: c.url + '/', bodyHtml, mainClass: 'despre', bodyClass: 'no-js', scripts: `\n<script src="${u('assets/despre.js')}?v=${cssV}" defer></script>` });
 }
 
 function teamPage(){
@@ -636,12 +634,11 @@ const fontFaces = Object.values(TEMA.fonturi).filter((f, i, all) => all.findInde
   }).join('\n');
 }).join('\n');
 const css = TEMA.css() + fontFaces + '\n' + cssSrc + ORBITA.css; // :root cu culorile și fonturile din content/tema.yml, apoi restul stilului
-const despreJs = readFileSync(join(HERE, 'src/despre.js'), 'utf8'), miscareJs = readFileSync(join(HERE, 'src/miscare.js'), 'utf8');
-cssV = createHash('sha256').update(css + js + despreJs + miscareJs).digest('hex').slice(0, 10);
+const despreJs = readFileSync(join(HERE, 'src/despre.js'), 'utf8');
+cssV = createHash('sha256').update(css + js + despreJs).digest('hex').slice(0, 10);
 write('assets/site.css', css);
 write('assets/scena.js', js);
 write('assets/despre.js', despreJs);
-write('assets/miscare.js', miscareJs);
 cpSync(join(NM, 'three/build/three.module.min.js'), join(OUT, 'assets/three/three.module.min.js'));
 cpSync(join(NM, 'three/examples/jsm/environments/RoomEnvironment.js'), join(OUT, 'assets/three/addons/environments/RoomEnvironment.js'));
 cpSync(join(NM, 'three/LICENSE'), join(OUT, 'assets/three/LICENSE'));

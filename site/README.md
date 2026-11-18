@@ -24,7 +24,7 @@ Scena se adaptează singură: cu cel mult 3 obiecte, orbita se strânge și obie
 - Antetul: `rol` (eticheta de sus), `acum` (pe primul card), `poza` + `poza_alt` (în lentila din centrul orbitei), `valori` (cele trei cărți), `parcurs.roluri` (rol, organizatie, de_la, pana_la sau „prezent”, descriere, `scurt` = numele de pe orbită) și `formare.lista` (titlu, unde).
 - Din roluri, `site/orbita.mjs` face la build orbita din primul card (un punct pe anul de început, unghiurile și culorile calculate din ani, rolurile din același an pe un punct cu inel dublu, etichetele depărtate ca să nu se suprapună) și lista parcursului, cel mai nou rol primul.
 - Un rol fără `de_la`, un an greșit sau un rol care se termină înainte să înceapă opresc build-ul, cu mesaj clar.
-- Mișcarea (lumina de pe inel, punctele, cărțile) e doar CSS. O opresc butonul „Oprește mișcarea” (`site/src/miscare.js`, clasa `still` pe `<html>`, ținută minte în `localStorage`) și „reduce motion”. `site/src/despre.js` arată rolul sub orbită.
+- Mișcarea (lumina de pe inel, punctele, cărțile) e doar CSS și e continuă (Alex, 2026-11-18: fără buton de oprire). O oprește doar „reduce motion” din sistem; fără JavaScript, pagina stă pe loc. `site/src/despre.js` arată rolul sub orbită.
 
 ## Cum schimbi culorile și fonturile
 
