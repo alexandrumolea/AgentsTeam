@@ -4,21 +4,13 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Sora:wght@200;300;400&family=Inter+Tight:wght@400;500;600&display=swap">
 <style>
-/* Layout: o singură coloană-traseu, faze ca stații pe o linie verticală; masa și ziua ca planșe late */
-:root{
+/* O singură temă, deschisă (Alex, 2026-11-18). Layout: o singură coloană-traseu, faze ca stații pe o linie verticală; masa și ziua ca planșe late */
+:root{color-scheme:light;
   --bg:#F7F4FA; --surface:#FFFFFF; --ink:#14161F; --muted:#5B5E70; --line:#E1DCEA;
   --cer:#2B44B8; --lavanda:#B7A6EA; --piersica:#F6C9B4; --portocaliu:#E8742A; --sage:#6F8F6A;
   --a-bg:#EEEAFB; --b-bg:#E6F0EC; --gate-bg:#FFF1E6; --alex-bg:#FDEDE4; --pauza:#E9EFE6;
   --f-titlu:"Sora",ui-sans-serif,system-ui,sans-serif; --f-text:"Inter Tight",ui-sans-serif,system-ui,sans-serif;
 }
-@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
-  --bg:#0D1333; --surface:#161D44; --ink:#F5F3FF; --muted:#A8AECF; --line:#2B3363;
-  --cer:#A9C4FF; --lavanda:#8E7FD6; --piersica:#C98A6E; --portocaliu:#F28C3B; --sage:#9DBF96;
-  --a-bg:#232A5C; --b-bg:#1C3338; --gate-bg:#3A2A22; --alex-bg:#3A2630; --pauza:#22322A; color-scheme:dark}}
-:root[data-theme="dark"]{
-  --bg:#0D1333; --surface:#161D44; --ink:#F5F3FF; --muted:#A8AECF; --line:#2B3363;
-  --cer:#A9C4FF; --lavanda:#8E7FD6; --piersica:#C98A6E; --portocaliu:#F28C3B; --sage:#9DBF96;
-  --a-bg:#232A5C; --b-bg:#1C3338; --gate-bg:#3A2A22; --alex-bg:#3A2630; --pauza:#22322A; color-scheme:dark}
 *{box-sizing:border-box}
 body{background:var(--bg);color:var(--ink);font:400 16px/1.6 var(--f-text);
   padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:0 64px}
@@ -174,6 +166,7 @@ code{font-size:.9em;background:var(--bg);border:1px solid var(--line);border-rad
       <div class="nume"><h3>Etapa D · Producția</h3><span>doar pentru piesele „da”</span></div>
       <div class="pasi">
         <article class="pas"><p class="nr">D</p><h3>Piesele prind viață</h3><p>Ecranele din sală (slide-uri v2, nota comună A · Lumi), scheme, note de trainer, banca de exerciții. „Trimite în agendă” face din firul roșu agenda ediției.</p><dl><dt>Cine</dt><dd>Matei, cu Daria și Irina; Ioana pe vizual</dd></dl></article>
+        <article class="pas"><p class="nr">D</p><h3>Schița</h3><p>Ziua dintr-o privire, pe o pagină: blocurile, piesele din firul roșu, orele și obiectivele de bifat pe parcurs. Stă în materialul trainerului (vederea Schița, și în modul Prezintă) și se tipărește.</p><dl><dt>Din</dt><dd>firul roșu</dd><dt>Cine</dt><dd>se generează; designul final: Alex cu Ioana</dd></dl></article>
         <article class="pas"><p class="nr">6</p><h3>Livrare flexibilă</h3><p>Ziua în sală. Alternativele și Biblioteca permit schimbări pe loc, din materialul trainerului.</p><dl><dt>Cine</dt><dd>Alex; Mike pe generator</dd></dl></article>
       </div>
     </div>

@@ -52,6 +52,7 @@ Fără ea nu se produce nimic.
 - **Ce include:** slide-uri, scheme, curs online, note de trainer, banca de exerciții.
 - **Pentru ce piese:** numai pentru cele cu verdict „da”.
 - Butonul „Trimite în agendă” face din firul roșu agenda ediției.
+- **Schița** (D-051): ziua dintr-o privire, pe o pagină. Arată blocurile, piesele din firul roșu, orele și checklist-ul cu obiectivele de bifat pe parcursul zilei. Se generează din agendă, stă în materialul trainerului (vederea Schița, și în modul Prezintă) și se poate tipări. Designul final îl face Alex cu Ioana după primele livrări (T-023).
 
 ## Schema
 Bucla mare (A ⇄ B → C → D → livrare → feedback → înapoi în A) se repetă la fiecare livrare, până cursul se stabilizează (Alex, 2026-11-17).
