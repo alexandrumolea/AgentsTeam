@@ -1,17 +1,21 @@
-// Pagina Despre: pachetul de cărți se rotește doar cu JavaScript, ca să aibă buton de pauză (WCAG 2.2.2).
-// Click sau Enter pe pachet: pauză / pornește. Cu „reduce motion”, pachetul stă pe loc și butonul rămâne inactiv.
+// Pagina Despre: fără „no-js”, animațiile CSS pornesc (orbita, cărțile). Eticheta de sub orbită arată rolul
+// punctului peste care treci cu mouse-ul, la care ajungi cu Tab sau pe care îl atingi (atingerea îl fixează).
 document.body.classList.remove('no-js');
-const stage = document.querySelector('.values .stage');
-if (stage){
-  const still = matchMedia('(prefers-reduced-motion: reduce)');
-  const sync = () => { stage.disabled = still.matches; };
-  sync();
-  still.addEventListener('change', sync);
-  stage.addEventListener('click', () => stage.setAttribute('aria-pressed', String(stage.getAttribute('aria-pressed') !== 'true')));
+const badge = document.querySelector('.orbit .badge');
+if (badge){
+  const role = badge.querySelector('.role'), dots = [...document.querySelectorAll('.orbit button.pt')];
+  let pinned = null;
+  const em = (text, cls) => { const e = document.createElement('em'); e.textContent = text; if (cls) e.className = cls; return e; };
+  const show = d => {
+    if (!d) { badge.classList.remove('on'); return; }
+    role.replaceChildren(em(d.dataset.yrs), document.createTextNode(d.dataset.role), ...(d.classList.contains('now') ? [em('acum', 'acum')] : []));
+    badge.classList.add('on');
+  };
+  dots.forEach(d => {
+    d.addEventListener('mouseenter', () => show(d));
+    d.addEventListener('mouseleave', () => show(pinned));
+    d.addEventListener('focus', () => show(d));
+    d.addEventListener('blur', () => show(pinned));
+    d.addEventListener('click', () => { pinned = pinned === d ? null : d; dots.forEach(x => x.setAttribute('aria-pressed', String(x === pinned))); show(pinned || d); });
+  });
 }
-// Orbita drumului: lumina face o singură trecere, de la primul an la „azi”, când orbita intră în ecran (CSS: .orb.drum).
-const orb = document.querySelector('.orb');
-if (orb && 'IntersectionObserver' in window){
-  const io = new IntersectionObserver(es => { if (es.some(e => e.isIntersecting)) { orb.classList.add('drum'); io.disconnect(); } }, { threshold: 0.35 });
-  io.observe(orb);
-} else if (orb) orb.classList.add('drum');

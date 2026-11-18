@@ -15,7 +15,7 @@ Adăugat: 2026-11-18
 - Verific ritmul: o pagină dintr-un singur card lung nu are moment; momentul principal primește lățime, fond sau sticlă diferite.
 - Lățimile se aliniază cu bara de sus (1200 px), altfel pagina pare pusă în mijloc.
 - Mișcarea care durează peste 5 s are pauză din tastatură, nu doar hover.
-- Livrabil: 2 compoziții la 1440 + 390, cu textele și poza reale, plus recomandarea. Model: `team/ioana/documente/despre-compozitie-v1.html`.
+- Livrabil: 2 compoziții la 1440 + 390, cu textele și poza reale, plus recomandarea. Model: `team/ioana/documente/arhiva/despre-compozitie-v1.html`.
 - Legat de [[project-manual-brand]], [[feedback-inovatie-nu-calm]].
 
 2026-11-18 (runda 2): Alex a ales A, dar „background-ul este fragmentat și arată ciudat”: banda cu gradient propriu, cu margini tăiate, peste gradientul paginii. Regula: **un singur câmp de lumină pe toată pagina**. Momentul unei secțiuni îl fac cu lumină care se intensifică (pete radiale mult mai mari decât secțiunea, care se sting înainte de margini), spațiu și lățime, nu cu o bandă. Granulația trebuie să stea deasupra luminii.
@@ -31,3 +31,5 @@ Adăugat: 2026-11-18
 2026-11-18 (runda 3.1): Alex a ales orbita, dar: „Acum lipsesc elementele dinamice… Nu înțeleg de ce mi-ai scoate elementul vizual care mi-a plăcut care este dinamic.” Regula: **ce i-a plăcut și se mișcă nu se face static**. Densitatea nu se obține tăind mișcarea. Mișcarea rămâne, cu oprire (un buton global „Oprește mișcarea”, plus pauză la clic pe element) și o variantă statică la reduced-motion.
 - Cuvintele de pe cărțile rotitoare: plăcuțe albe care plutesc în fața pachetului (translateZ până la aceeași adâncime), ca să nu se vadă niciodată prin sticlă.
 - Orbita vie: lumina (`conic-gradient` rotit) trece din 2007 până azi în 12 s, iar punctele se aprind cu aceeași animație și o întârziere din an; eticheta de jos arată rolul la hover, focus sau atingere.
+2026-11-18 (runda 3.2): Alex despre cărți: „nu are nevoie să aibă pauză… se rotește încontinuu… fiecare card avea scris pe el ceva. Nu erau 3 etichete peste.” Regula: **un element pe care Alex îl cere „ca înainte” se reproduce după original** (vechiul site: `alexandrumolea.github.io/home/`, `.mission-deck`), nu se „îmbunătățește”. Doar culorile se schimbă. Lizibilitatea o rezolv în limitele lui (sticlă mai transparentă, text mai închis; am măsurat contrastul pe cadre: minimum 4,1:1, text mare). Pauza o dă doar butonul global, plus reduce motion.
+2026-11-18: Două roluri din același an (Wise Teams și LIFT, 2025) = un punct cu inel dublu și eticheta pe două rânduri; atingerea arată ambele roluri.

@@ -7,7 +7,7 @@
 <meta name="claude:viewport-fit-sides" content="cover">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@300;400;500&family=Sora:wght@200;300;400&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@300;400;500&family=Sora:wght@200;300;400;600&display=swap">
 <style>
 
 /* Planșa (rama propunerii, după tema celui care o deschide) + mock-urile site-ului (doar luminoase, ca site-ul).
@@ -160,11 +160,13 @@ body{background:var(--c-bg);color:var(--c-fg);font:400 17px/1.55 var(--f-text);-
 .site .motion i::before,.site .motion i::after{content:"";width:3px;height:12px;border-radius:1px;background:currentColor}
 .site.still .motion i::after{display:none}
 .site.still .motion i::before{width:0;height:0;border-radius:0;background:none;border-style:solid;border-width:6px 0 6px 10px;border-color:transparent transparent transparent currentColor}
-.site .motion:focus-visible,.sA .stage:focus-visible,.sA .st:focus-visible{outline:2px solid var(--accent);outline-offset:3px}
+.sA .hero .motion{position:absolute;top:12px;right:12px;z-index:2;width:44px;height:44px;padding:0;justify-content:center;background:rgb(255 255 255 / .92)}
+.sA .hero .motion span{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+.site .motion:focus-visible,.sA .st:focus-visible{outline:2px solid var(--accent);outline-offset:3px}
 
 .sA .hero{padding:14px 20px 20px;display:grid;gap:4px}
 /* orbita: 280° de la 2007 (220°) până azi; 14° pe an */
-.sA .orbit{--R:108px;--L:150px;--A0:220deg;--Y:14deg;position:relative;width:100%;max-width:326px;height:292px;margin:0 auto;order:-1}
+.sA .orbit{--R:108px;--L:150px;--A0:220deg;--Y:14deg;position:relative;width:100%;max-width:326px;height:316px;margin:0 auto;order:-1}
 .sA .orbit .lens{position:absolute;left:50%;top:calc(50% - 18px);margin:calc(var(--L) / -2) 0 0 calc(var(--L) / -2)}
 .sA .core{position:absolute;left:50%;top:calc(50% - 18px);width:0;height:0}
 .sA .track,.sA .ring,.sA .comet{position:absolute;left:calc(var(--R) * -1);top:calc(var(--R) * -1);width:calc(var(--R) * 2);height:calc(var(--R) * 2);border-radius:50%;pointer-events:none}
@@ -181,10 +183,16 @@ body{background:var(--c-bg);color:var(--c-fg);font:400 17px/1.55 var(--f-text);-
 .sA .st{--ang:calc(var(--A0) + var(--y) * var(--Y));position:absolute;left:calc(var(--R) * sin(var(--ang)));top:calc(var(--R) * cos(var(--ang)) * -1);width:0;height:0;padding:0;border:0;background:none;cursor:pointer;color:var(--text);font:inherit}
 .sA .st i{position:absolute;left:-7px;top:-7px;width:14px;height:14px;border-radius:50%;background:var(--c);box-shadow:0 0 0 3px #fff,0 0 0 4px rgb(20 22 31 / .28),0 6px 14px -4px rgb(var(--umbra) / .6);animation:lit 12s linear infinite;animation-delay:calc(var(--y) / 19.9 * 6.96s)}
 .sA .st.now i{box-shadow:0 0 0 3px #fff,0 0 0 5px var(--inel),0 0 0 9px rgb(242 140 59 / .2)}
+/* două roluri începute în același an: inel dublu */
+.sA .st.two i{box-shadow:0 0 0 2px #fff,0 0 0 3.5px var(--inel),0 0 0 5.5px #fff,0 0 0 7px var(--inel)}
+.sA .st.end{cursor:default}
+.sA .st.two .lb{left:22px}
+.sA .st.two .n{display:none}
+.sA .st.end .lb b{color:var(--muted)}
 @keyframes lit{0%,100%{transform:scale(1);filter:none}2%{transform:scale(1.5);filter:brightness(1.25) drop-shadow(0 0 8px #fff)}9%{transform:scale(1);filter:none}}
 .sA .st .lb{position:absolute;top:calc(-11px + var(--dy,0px));display:inline-flex;gap:6px;align-items:baseline;white-space:nowrap;font:500 13px/22px var(--sans);letter-spacing:.06em;padding:0 2px;border-radius:8px;font-variant-numeric:tabular-nums}
 .sA .st.l .lb{right:16px;text-align:right}
-.sA .st.r .lb{left:16px}
+.sA .st.r .lb{left:16px;text-align:left}
 .sA .st .n{display:none}
 .sA .st:hover i,.sA .st:focus-visible i,.sA .st[aria-pressed="true"] i{transform:scale(1.3);animation:none}
 .sA .st:hover .lb,.sA .st:focus-visible .lb,.sA .st[aria-pressed="true"] .lb{background:var(--text);color:#fff;padding:0 8px}
@@ -205,23 +213,23 @@ body{background:var(--c-bg);color:var(--c-fg);font:400 17px/1.55 var(--f-text);-
 .sA .mission{padding:24px 20px;display:grid;gap:8px}
 .sA .statement{margin:0 0 12px;font:200 34px/1.1 var(--display);letter-spacing:-.025em;text-wrap:balance}
 .sA .mission p:last-child{margin:0}
-.sA .stage{appearance:none;border:0;padding:0;cursor:pointer;perspective:1100px;display:flex;justify-content:center;align-items:center;width:100%;height:300px;border-radius:20px;background:
+/* pachetul de cărți, ca pe vechiul site: trei cărți de sticlă semitransparente, cuvântul scris pe fiecare, rotație continuă de 20 s.
+   Se oprește doar din butonul global „Oprește mișcarea” sau din reduce motion. */
+.sA .stage{perspective:1150px;display:flex;justify-content:center;align-items:center;width:100%;height:300px;border-radius:20px;background:
   radial-gradient(55% 70% at 30% 40%,rgb(143 211 247 / .75),transparent 70%),radial-gradient(55% 70% at 72% 62%,rgb(247 183 154 / .8),transparent 70%),radial-gradient(70% 90% at 50% 50%,rgb(183 166 234 / .65),transparent 75%)}
-.sA .deck{position:relative;display:block;width:176px;height:220px;transform-style:preserve-3d;animation:spinY 20s linear infinite}
-.sA .stage[aria-pressed="true"] .deck,.sA .stage:hover .deck{animation-play-state:paused}
-.sA .vc{position:absolute;inset:0;border-radius:22px;transform-style:preserve-3d;border:1.5px solid rgb(255 255 255 / .9);box-shadow:inset 0 1px 0 rgb(255 255 255 / .85),0 30px 60px -24px rgb(43 68 184 / .4)}
-.sA .vc span{position:absolute;left:12px;right:12px;padding:10px 0;border-radius:12px;background:rgb(255 255 255 / .95);box-shadow:0 4px 12px -6px rgb(var(--umbra) / .5);text-align:center;font:500 15px/1.2 var(--sans);letter-spacing:.08em;text-transform:uppercase;color:#14161F;backface-visibility:hidden;-webkit-backface-visibility:hidden}
-.sA .vc1{transform:translateZ(56px);background:linear-gradient(150deg,rgb(143 211 247 / .62),rgb(79 163 240 / .36))}
-.sA .vc2{transform:translateZ(0);background:linear-gradient(150deg,rgb(214 204 245 / .68),rgb(183 166 234 / .4))}
-.sA .vc3{transform:translateZ(-56px);background:linear-gradient(150deg,rgb(250 205 184 / .74),rgb(242 140 59 / .42))}
-.sA .vc1 span{bottom:16px}.sA .vc3 span{top:16px}.sA .vc2 span{top:50%;transform:translateY(-50%)}
-/* plăcuțele cu cuvinte stau toate în fața pachetului (aceeași adâncime), deci nu se văd niciodată prin sticlă */
-.sA .vc{--d:56px}
-.sA .vc1 .f{transform:translateZ(8px)}.sA .vc1 .b{transform:rotateY(180deg) translateZ(calc(var(--d) * 2 + 8px))}
-.sA .vc2 .f{transform:translateY(-50%) translateZ(calc(var(--d) + 8px))}.sA .vc2 .b{transform:translateY(-50%) rotateY(180deg) translateZ(calc(var(--d) + 8px))}
-.sA .vc3 .f{transform:translateZ(calc(var(--d) * 2 + 8px))}.sA .vc3 .b{transform:rotateY(180deg) translateZ(8px)}
-@keyframes spinY{from{transform:rotateY(0)}to{transform:rotateY(360deg)}}
-.sA .hint{margin:8px 0 0;text-align:center;font:500 13px/1.3 var(--sans);letter-spacing:.12em;text-transform:uppercase;color:var(--muted)}
+.sA .deck{position:relative;width:176px;height:212px;transform-style:preserve-3d;animation:spinY 20s linear infinite}
+.sA .vc{position:absolute;inset:0;text-align:center;transform-style:preserve-3d}
+/* sticla pe stratul ei, ca în original: altfel 3D-ul se aplatizează */
+.sA .vc .gl{position:absolute;inset:0;border-radius:22px;border:1px solid rgb(30 42 90 / .26);box-shadow:inset 0 1px 0 rgb(255 255 255 / .7),0 30px 60px -22px rgb(30 42 90 / .45)}
+.sA .vc span:not(.gl){position:absolute;left:12px;right:12px;font:600 19px/1.2 var(--display);letter-spacing:1.5px;text-transform:uppercase;color:#121735;backface-visibility:hidden;-webkit-backface-visibility:hidden}
+.sA .vc1{transform:translateZ(56px)}.sA .vc2{transform:translateZ(0)}.sA .vc3{transform:translateZ(-56px)}
+.sA .vc1 .gl{background:linear-gradient(150deg,rgb(255 255 255 / .24),rgb(255 255 255 / .06))}
+.sA .vc2 .gl{background:linear-gradient(150deg,rgb(183 166 234 / .3),rgb(183 166 234 / .08))}
+.sA .vc3 .gl{background:linear-gradient(150deg,rgb(79 163 240 / .26),rgb(79 163 240 / .06))}
+.sA .vc1 .f,.sA .vc1 .b{bottom:28px}.sA .vc3 .f,.sA .vc3 .b{top:28px}.sA .vc2 .f,.sA .vc2 .b{top:50%}
+.sA .vc1 .b,.sA .vc3 .b{transform:rotateY(180deg)}
+.sA .vc2 .f{transform:translateY(-50%)}.sA .vc2 .b{transform:translateY(-50%) rotateY(180deg)}
+@keyframes spinY{to{transform:rotateY(360deg)}}
 /* parcursul: tot textul, cel mai nou primul; punctul are culoarea de pe orbită */
 .sA .path{padding:24px 20px;display:grid;gap:4px}
 .sA .path > header p{color:var(--muted);margin:0}
@@ -244,6 +252,7 @@ body{background:var(--c-bg);color:var(--c-fg);font:400 17px/1.55 var(--f-text);-
   .sA .hero{grid-template-columns:minmax(0,1fr) 680px;align-items:center;gap:0;padding:28px 32px 28px 56px}
   .sA .orbit{--R:196px;--L:276px;order:0;max-width:none;width:680px;height:490px}
   .sA .st i{left:-9px;top:-9px;width:18px;height:18px}
+  .sA .st.two i{box-shadow:0 0 0 3px #fff,0 0 0 5px var(--inel),0 0 0 8px #fff,0 0 0 10px var(--inel)}
   .sA .orbit .lens,.sA .core{top:calc(50% - 20px)}
   .sA .badge{top:calc(50% - 20px + var(--R) - 20px);font-size:13px;padding:8px 18px}
   .sA .badge b{font-size:26px}
@@ -251,17 +260,21 @@ body{background:var(--c-bg);color:var(--c-fg);font:400 17px/1.55 var(--f-text);-
   .sA .st .lb b{font:500 13px/22px var(--sans);letter-spacing:.1em;color:var(--muted)}
   .sA .st:hover .lb b,.sA .st:focus-visible .lb b,.sA .st[aria-pressed="true"] .lb b{color:#fff}
   .sA .st .n{display:inline}
+  .sA .st.two .n{display:inline-block;line-height:22px}
+  .sA .st.two .lb{top:-22px;left:24px}
   .sA .st.l .lb b{order:2}
   .sA .hero .lead{max-width:30ch}
+  .sA .hero .motion{position:static;width:auto;height:auto;padding:12px 18px;background:rgb(20 22 31 / .06)}
+  .sA .hero .motion span{position:static;width:auto;height:auto;overflow:visible;clip:auto}
   .sA .hero .facts{max-width:34ch}
   .sA .mission{grid-template-columns:minmax(0,1fr) 440px;gap:48px;align-items:center;padding:36px 40px 36px 56px}
   .sA .statement{font-size:52px;margin-bottom:18px}
-  .sA .mission p:not(.statement):not(.eyebrow):not(.hint){font-size:19px;line-height:1.65}
+  .sA .mission p:not(.statement):not(.eyebrow){font-size:19px;line-height:1.65}
   .sA .stage{height:340px}
-  .sA .deck{width:210px;height:260px}
-  .sA .vc1{transform:translateZ(66px)}.sA .vc3{transform:translateZ(-66px)}
-  .sA .vc{--d:66px}
-  .sA .vc span{font-size:16px;letter-spacing:.1em;padding:11px 0}
+  .sA .deck{width:208px;height:250px}
+  .sA .vc1{transform:translateZ(62px)}.sA .vc3{transform:translateZ(-62px)}
+  .sA .vc span:not(.gl){font-size:22px;letter-spacing:2px}
+  .sA .vc1 .f,.sA .vc1 .b{bottom:30px}.sA .vc3 .f,.sA .vc3 .b{top:30px}
   .sA .path{grid-template-columns:minmax(0,2fr) minmax(0,1fr);gap:0 48px;padding:40px 56px 36px}
   .sA .path > header{grid-column:1 / -1;display:flex;align-items:baseline;gap:24px;flex-wrap:wrap}
   .sA .roles{columns:2;column-gap:36px}
@@ -283,11 +296,11 @@ body{background:var(--c-bg);color:var(--c-fg);font:400 17px/1.55 var(--f-text);-
       <section class="seen" aria-labelledby="seenH">
         <h2 id="seenH">Ce s-a schimbat față de v2</h2>
         <ul>
-          <li><b>Cărțile Rezultate, Colaborare, Umanitate se rotesc iar,</b> ca pe vechiul site, lângă misiune. Cuvintele stau pe plăcuțe albe, mari (16 px, contrast peste 14:1), care plutesc în fața pachetului, deci nu se văd niciodată prin sticlă.</li>
+          <li><b>Cărțile Rezultate, Colaborare, Umanitate se rotesc iar,</b> ca pe vechiul site, lângă misiune. Sunt ca în original: trei cărți de sticlă, cu cuvântul scris pe fiecare (Sora, 22 px), în culorile Sora, și se rotesc încontinuu.</li>
           <li><b>Orbita e vie:</b> o lumină pornește din 2007 și merge pe inel până azi, iar fiecare punct se aprinde când trece ea. Trecerea durează 7 secunde; lumina se stinge și pornește din nou după alte 5.</li>
           <li><b>Punctele arată rolul:</b> treci cu mouse-ul, ajungi cu Tab sau atingi un punct, și eticheta de jos arată rolul și anii.</li>
           <li><b>Primul card:</b> doar „Acum”, cu cuvintele tale. „Lucrez cu” și „Formare” au ieșit; orbita și lentila au crescut în locul lor (lentila: 276 px).</li>
-          <li><b>Rolurile noi:</b> BEMORE Learning Studio continuă, iar Wise Teams apare din 2025. Pe orbită sunt 5 roluri active, toate cu inel portocaliu.</li>
+          <li><b>Rolurile noi:</b> BEMORE Learning Studio continuă, iar Wise Teams și LIFT apar din 2025. Pe orbită sunt 5 roluri active, toate cu inel portocaliu.</li>
         </ul>
       </section>
     </div>
@@ -297,13 +310,13 @@ body{background:var(--c-bg);color:var(--c-fg);font:400 17px/1.55 var(--f-text);-
     <div>
       <p class="thesis">Tu, în centrul drumului: lentila cu poza în mijlocul orbitei, lumina care trece prin cei 19 ani și cărțile valorilor, care se rotesc lângă misiune.</p>
       <div class="pro">
-        <p><span class="k">Cum se oprește</span>Butonul „Oprește mișcarea” din primul card oprește tot: lumina, punctele și cărțile. Cărțile se opresc și singure, cu un clic, Enter sau la hover. Cu „reduce motion” din sistem, nimic nu se mișcă: inelul și punctele stau aprinse, iar cărțile stau la −24°, ca să se vadă toate trei.</p>
+        <p><span class="k">Cum se oprește</span>Butonul „Oprește mișcarea” din primul card oprește tot: lumina, punctele și cărțile. Cu „reduce motion” din sistem, nimic nu se mișcă: inelul și punctele stau aprinse, iar cărțile stau la −24°, ca să se vadă toate trei.</p>
       </div>
     </div>
     <ul>
-      <li><b>Mișcarea respectă WCAG 2.2.2:</b> tot ce se mișcă mai mult de 5 secunde are pauză din tastatură și din mouse. Butonul e același pe desktop și pe telefon. Pe site, starea lui poate fi ținută minte de la o pagină la alta (T-039).</li>
-      <li><b>Etichetele nu se suprapun.</b> Orbita are acum 280° (14° pe an), cu un gol mai mare jos, pentru „19 ani de drum”. Pe telefon, eticheta de jos stă sub „2007” și „azi”, fără să se atingă.</li>
-      <li><b>Cele 5 roluri active</b> (BEMORE LS 2013, Coaching 2023, Wise Teams 2025, Innersis 2026, LIFT azi) au toate inelul portocaliu, iar în listă sunt primele, cu „acum”.</li>
+      <li><b>Mișcarea respectă WCAG 2.2.2:</b> tot ce se mișcă mai mult de 5 secunde are pauză din tastatură și din mouse. Pe desktop e un buton cu text sub „Coaching”; pe telefon e un buton rotund de 44 px, în colțul primului card, lângă orbită. Pe site, starea lui poate fi ținută minte de la o pagină la alta (T-039).</li>
+      <li><b>Etichetele nu se suprapun.</b> Orbita are acum 280° (14° pe an), cu un gol mai mare jos, pentru „19 ani de drum”. Pe telefon, eticheta de jos stă sub „2007” și „azi”, fără să se atingă. Wise Teams și LIFT au început amândouă în 2025, deci împart un punct cu inel dublu și eticheta „2025 Wise Teams · LIFT”; atingerea lui arată ambele roluri.</li>
+      <li><b>Cele 5 roluri active</b> (BEMORE LS 2013, Coaching 2023, Wise Teams și LIFT 2025, Innersis 2026) au toate inelul portocaliu, iar în listă sunt primele, cu „acum”.</li>
       <li><b>Pe telefon,</b> orbita vine prima și arată doar anii; rolul îl vezi atingând punctul. Lista de dedesubt are tot textul.</li>
     </ul>
   </div>
@@ -319,16 +332,15 @@ body{background:var(--c-bg);color:var(--c-fg);font:400 17px/1.55 var(--f-text);-
       <p>Uită-te la orbită cel puțin 12 secunde, cât ține o tură întreagă a luminii, și treci cu mouse-ul peste puncte. Apoi apasă „Oprește mișcarea”.</p>
       <ul>
         <li>Ritmul luminii: o trecere la 12 secunde ți se pare viu sau prea des?</li>
-        <li>LIFT: din ce an colaborezi? Până atunci, punctul stă la „azi”.</li>
         <li>Wise Teams nu are încă descriere; în listă apare doar rolul și anul.</li>
       </ul>
     </div>
     <div>
       <h3>Pentru Mike, după aprobare</h3>
       <ul>
-        <li>Punctele se așază doar cu CSS: <code>sin()</code> / <code>cos()</code>, unghiul = 220° + 14° × (anul − 2007). LIFT stă la 19,9 („azi”) până primim anul. Eticheta merge la stânga sau la dreapta după jumătatea cercului; <code>--dy</code> împinge ușor etichetele apropiate.</li>
+        <li>Punctele se așază doar cu CSS: <code>sin()</code> / <code>cos()</code>, unghiul = 220° + 14° × (anul − 2007). Două roluri din același an împart un punct (clasa <code>two</code>, inel dublu), iar eticheta le numește pe amândouă; „azi” e doar un semn la capătul inelului (19,9). Eticheta merge la stânga sau la dreapta după jumătatea cercului; <code>--dy</code> împinge ușor etichetele apropiate.</li>
         <li>Lumina e un <code>conic-gradient</code> mascat pe inel, rotit cu o animație de 12 s; aprinderea punctelor folosește aceeași animație, cu întârzierea calculată din an. Totul e CSS; JavaScript are doar două roluri: eticheta de jos și butonul de oprire (o clasă pe pagină, <code>still</code>).</li>
-        <li>Cărțile: același pachet ca pe pagina publicată (rotație 20 s, pauză la clic, Enter și hover); se schimbă doar plăcuțele albe ale cuvintelor.</li>
+        <li>Cărțile: pachetul de pe vechiul site, reprodus (208 × 250 px, cărțile la ±62 px, rotație de 20 s, sticla pe stratul ei, cuvintele pe ambele fețe), în culorile Sora (alb, lavandă, cer). Fără pauză la hover sau clic; se oprește doar din butonul global și din reduce motion.</li>
         <li><code>prefers-reduced-motion</code>: nici lumina, nici rotirea; butonul de mișcare dispare, pentru că nu mai e nimic de oprit.</li>
       </ul>
     </div>
@@ -346,9 +358,9 @@ body{background:var(--c-bg);color:var(--c-fg);font:400 17px/1.55 var(--f-text);-
       <h1>Despre mine</h1>
       <p class="lead">Construiesc unelte pentru oameni care vor să crească. Sunt Alex: coach, fondator și inventator.</p>
       <dl class="facts"><div><dt>Acum</dt><dd>Fondator la BEMORE LS, Leadership Trainer la Innersis, colaborator la LIFT, fondator Wise Teams de un an.</dd></div></dl>
-      <div class="actions"><a class="btn" href="#">Coaching <span aria-hidden="true">→</span></a><a href="#r-innersis">Tot parcursul</a><button class="motion" type="button" aria-pressed="false"><i aria-hidden="true"></i><span>Oprește mișcarea</span></button></div>
+      <div class="actions"><a class="btn" href="#">Coaching <span aria-hidden="true">→</span></a><a href="#r-innersis">Tot parcursul</a><button class="motion" type="button" aria-pressed="false" title="Oprește sau pornește mișcarea"><i aria-hidden="true"></i><span>Oprește mișcarea</span></button></div>
     </div>
-    <figure class="orbit" aria-label="Parcursul pe scurt: 9 roluri, din 2007 până azi">
+    <figure class="orbit" aria-label="Parcursul pe scurt: 8 roluri, din 2007 până azi">
       <div class="lens"><span class="halo"></span><div class="bezel"><div class="ph"><img class="foto" alt="Alex, zâmbind, pe o alee cu copaci de toamnă" width="560" height="560"></div></div><span class="dot sig"></span></div>
       <div class="core">
         <div class="track" aria-hidden="true"></div><div class="ring" aria-hidden="true"></div><div class="comet" aria-hidden="true"></div>
@@ -357,9 +369,9 @@ body{background:var(--c-bg);color:var(--c-fg);font:400 17px/1.55 var(--f-text);-
         <button type="button" class="st l" data-yrs="2012" data-role="HR Learning Solutions Lead, Vodafone" style="--y:5;--c:#92A5EC;--dy:6px"><i></i><span class="lb"><b>2012</b><span class="n">Vodafone HR</span></span></button>
         <button type="button" class="st l now" data-yrs="2013 – prezent" data-role="Founder, BEMORE Learning Studio" style="--y:6;--c:#A0A5EB;--dy:-6px"><i></i><span class="lb"><b>2013</b><span class="n">BEMORE LS</span></span></button>
         <button type="button" class="st r now" data-yrs="2023 – prezent" data-role="Coach &amp; Team Coach" style="--y:16;--c:#F6AA85;--dy:-2px"><i></i><span class="lb"><b>2023</b><span class="n">Coaching</span></span></button>
-        <button type="button" class="st r now" data-yrs="2025 – prezent" data-role="Fondator, Wise Teams" style="--y:18;--c:#F49B62;--dy:-4px"><i></i><span class="lb"><b>2025</b><span class="n">Wise Teams</span></span></button>
+        <button type="button" class="st r now two" data-yrs="2025 – prezent" data-role="Fondator, Wise Teams · Colaborator, LIFT" aria-label="2025: Wise Teams și LIFT" style="--y:18;--c:#F49B62;--dy:-6px"><i></i><span class="lb"><b>2025</b><span class="n">Wise Teams<br>LIFT</span></span></button>
         <button type="button" class="st r now" data-yrs="2026 – prezent" data-role="Leadership Trainer, Innersis" style="--y:19;--c:#F39249;--dy:0px"><i></i><span class="lb"><b>2026</b><span class="n">Innersis</span></span></button>
-        <button type="button" class="st r now" data-yrs="azi" data-role="Colaborator, LIFT" style="--y:19.9;--c:#F28C3B;--dy:8px"><i></i><span class="lb"><b>azi</b><span class="n">LIFT</span></span></button>
+        <span class="st r end" aria-hidden="true" style="--y:19.9;--dy:10px"><span class="lb"><b>azi</b></span></span>
       </div>
       <p class="badge" aria-live="polite"><span class="def"><b>19</b> ani de drum</span><span class="role"></span></p>
     </figure>
@@ -371,12 +383,11 @@ body{background:var(--c-bg);color:var(--c-fg);font:400 17px/1.55 var(--f-text);-
       <p>Îmi place să aduc la suprafață lucruri invizibile pentru a umple goluri sau a micșora distanța dintre oameni, în așa fel încât să reușim să facem mai multe lucruri împreună, să ne facem mai puțin rău reciproc și să ne provocăm mai puțin stres.</p>
     </div>
     <div class="values">
-      <button class="stage" type="button" aria-pressed="false" aria-label="Valorile mele: Rezultate, Colaborare, Umanitate. Oprește rotirea cărților"><span class="deck" aria-hidden="true">
-        <span class="vc vc1"><span class="f">Rezultate</span><span class="b">Rezultate</span></span>
-        <span class="vc vc2"><span class="f">Colaborare</span><span class="b">Colaborare</span></span>
-        <span class="vc vc3"><span class="f">Umanitate</span><span class="b">Umanitate</span></span>
-      </span></button>
-      <p class="hint" aria-hidden="true">Clic pe cărți: pauză</p>
+      <div class="stage" role="img" aria-label="Valorile mele: Rezultate, Colaborare, Umanitate"><div class="deck" aria-hidden="true">
+        <div class="vc vc1"><span class="gl"></span><span class="f">Rezultate</span><span class="b">Rezultate</span></div>
+        <div class="vc vc2"><span class="gl"></span><span class="f">Colaborare</span><span class="b">Colaborare</span></div>
+        <div class="vc vc3"><span class="gl"></span><span class="f">Umanitate</span><span class="b">Umanitate</span></div>
+      </div></div>
     </div>
   </section>
   <section class="path w glass-read" aria-labelledby="pA">
@@ -384,9 +395,9 @@ body{background:var(--c-bg);color:var(--c-fg);font:400 17px/1.55 var(--f-text);-
     <ol class="roles">
       <li id="r-innersis" class="now" style="--c:#F39249"><span class="yrs">2026 – prezent<em>acum</em></span><b>Leadership Trainer</b><span class="org">Innersis</span><p>Inovație în training și calitate în livrarea programelor de training.</p></li>
       <li id="r-wise" class="now" style="--c:#F49B62"><span class="yrs">2025 – prezent<em>acum</em></span><b>Fondator</b><span class="org">Wise Teams</span></li>
+      <li id="r-lift" class="now" style="--c:#F49B62"><span class="yrs">2025 – prezent<em>acum</em></span><b>Colaborator</b><span class="org">LIFT</span></li>
       <li id="r-coach" class="now" style="--c:#F6AA85"><span class="yrs">2023 – prezent<em>acum</em></span><b>Coach &amp; Team Coach</b><p>Lucrez pentru dezvoltarea strategiei și armonizarea echipelor în direcția unui scop comun.</p></li>
       <li id="r-bemore" class="now" style="--c:#A0A5EB"><span class="yrs">2013 – prezent<em>acum</em></span><b>Founder</b><span class="org">BEMORE Learning Studio</span><p>Dezvoltare de specialiști Learning &amp; Development. Training design și coaching pentru mediul corporate.</p></li>
-      <li id="r-lift" class="now" style="--c:#F28C3B"><span class="yrs">prezent<em>acum</em></span><b>Colaborator</b><span class="org">LIFT</span></li>
       <li id="r-hr" style="--c:#92A5EC"><span class="yrs">2012</span><b>HR Learning Solutions Lead</b><span class="org">Vodafone</span><p>Centralizarea și dezvoltarea echipei de traineri în HR și coaching pentru o parte din liderii organizației, ambele în contextul proiectului de schimbare culturală.</p></li>
       <li id="r-sales" style="--c:#5DA4EF"><span class="yrs">2008 – 2011</span><b>Sales &amp; Sales Management</b><span class="org">Vodafone</span><p>Dezvoltarea echipelor de vânzări performante.</p></li>
       <li id="r-ong" style="--c:#4FA3F0"><span class="yrs">2007 – 2012</span><b>Fondator</b><span class="org">Youth ONG</span><p>O organizație concentrată pe dezvoltarea abilităților antreprenoriale în rândul tinerilor.</p></li>
@@ -418,9 +429,6 @@ body{background:var(--c-bg);color:var(--c-fg);font:400 17px/1.55 var(--f-text);-
     // butonul global: oprește tot ce se mișcă
     const mv = site.querySelector('.motion');
     mv.addEventListener('click', () => { const on = !site.classList.toggle('still') ? false : true; mv.setAttribute('aria-pressed', on); mv.querySelector('span').textContent = on ? 'Pornește mișcarea' : 'Oprește mișcarea'; });
-    // cărțile: pauză la clic / Enter
-    const st = site.querySelector('.stage');
-    st.addEventListener('click', () => { const on = st.getAttribute('aria-pressed') !== 'true'; st.setAttribute('aria-pressed', on); st.setAttribute('aria-label', 'Valorile mele: Rezultate, Colaborare, Umanitate. ' + (on ? 'Pornește' : 'Oprește') + ' rotirea cărților'); });
     // punctele orbitei: eticheta de jos arată rolul
     const badge = site.querySelector('.badge'), role = badge.querySelector('.role'), dots = [...site.querySelectorAll('.st')];
     let pinned = null;

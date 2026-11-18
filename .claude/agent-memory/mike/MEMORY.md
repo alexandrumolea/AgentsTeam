@@ -36,6 +36,8 @@ Păstrează sub 150 de rânduri. Comprimă când crește. Fapte, nu povești.
 - 2026-11-18: compar cu mostra Ioanei randând template-ul ei separat (lățimea fixă, Chrome headless, animațiile oprite în același moment cu getAnimations), apoi măsor în pixeli (zgomot, înălțimi) în loc să judec după ochi. Fără PIL pe Mac: canvas în Chrome.
 
 - 2026-11-18: review Ioana pe Despre, WCAG 2.2.2 e blocant: nimic decorativ nu se mișcă singur la nesfârșit (lumina orbitei = o trecere de 4,5 s, pornită când intră în ecran; haloul respiră doar la hover). Întreabă din prima: „se oprește singur în 5 s?”.
+- 2026-11-18: Despre v2 (orbita în jurul lentilei): pe site clasele globale `.hero`, `.st`, `.lead` sunt nescopate (prima pagină, Live); în pagini noi folosesc alte nume (`.prim`, `.pt`). Valorile per element (unghi, culoare, întârziere) merg ca CSS generat pe clase, nu style=. checkUsage din tema.mjs trebuie să vadă și CSS-ul generat. Testez etichetele cu dreptunghiuri (getBoundingClientRect) la 320/360/375/761/1440, inclusiv cu fiecare punct apăsat: starea apăsată lărgește eticheta și abia acolo ieșea din card.
+- 2026-11-18: Alex vrea mișcare continuă (cărțile, lumina orbitei); WCAG 2.2.2 e acoperit de butonul global „Oprește mișcarea” (clasa `still` pe <html>, localStorage), nu de pauze locale la hover.
 
 ## Fișiere de memorie
 - [Stack și găzduire](project_stack-hosting.md) — GitHub Pages (D-036–D-038), CNAME ignorat la Actions; fapte Netlify/Cloudflare/Vercel

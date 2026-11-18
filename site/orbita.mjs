@@ -1,18 +1,21 @@
-// Orbita drumului (pagina Despre, D-063). Portat din generatorul Ioanei:
-// team/ioana/documente/despre-compozitie/orbita-mock.mjs. Datele vin din content/despre.md (parcurs, formare).
-// Geometria se calculează aici, la build: pagina nu are nevoie de JavaScript ca să o deseneze.
-// Cadranul e la scară: primul an jos în stânga, azi jos în dreapta, în sensul acelor de ceas.
-// Fiecare rol e un arc cât a durat; când două roluri se suprapun, al doilea trece pe culoarul următor.
+// Orbita din primul card al paginii Despre: lentila cu poza în centru, rolurile ca puncte pe un inel,
+// lumina care trece de la primul an până azi. Mostra: team/ioana/documente/despre-compozitie-v2.html (varianta A,
+// „Orbita în jurul lentilei”), aprobată de Alex pe 2026-11-18. Datele vin din content/despre.md (parcurs, formare).
+//
+// Geometria se calculează aici, la build: un unghi pe an, din primul an până la finalul anului curent.
+// CSS-ul generat (la finalul site.css) dă fiecărui punct unghiul (--o), culoarea de pe inel (--c), momentul în care
+// îl atinge lumina (--d) și o mică deplasare a etichetei (--dy), ca etichetele apropiate să nu se suprapună.
+// Pagina pune punctele cu sin() / cos() în site/src/site.css. JavaScript (site/src/despre.js) doar arată rolul jos.
 
-const S = 540, C = S / 2, A0 = 210, SW = 300;           // mărimea desenului, unghiul de start (ceas: 0 = sus), deschiderea
-const LANES = [222, 199, 176];                           // culoarele rolurilor, din exterior spre interior
-const R_PUNCT = 152;                                     // un rol fără an de început: doar un punct „azi”
-const R_FORMARE = 104, LITERE = 'ABCDEFGHIJ';
-const GOL = 2.2;                                         // un mic gol la capete, ca arcele să nu se lipească
+const A0 = 220, SPAN = 280;                 // unghiul primului an (ceas: 0 = sus) și deschiderea inelului; golul de jos ține „19 ani de drum”
+const R = { tel: 108, mare: 196 };          // raza inelului pe telefon și de la 761 px în sus (la fel în site.css)
+const LINIE = 22, SPATIU = 3;               // înălțimea unei etichete și spațiul minim dintre două etichete
+const TRECERE = 6.96;                       // câte secunde îi ia luminii să ajungă la „azi” (58 % din tura de 12 s)
+// culorile inelului, de la primul an la azi (rolurile din content/tema.yml): ca în conic-gradient-ul din site.css
+const OPRIRI = [[0, 'cer'], [0.4, 'lavanda'], [0.75, 'piersica'], [1, 'portocaliu']];
 
-const f = n => +n.toFixed(1);
-const pc = n => +(n / S * 100).toFixed(2);
-const pad = i => String(i + 1).padStart(2, '0');
+const f = n => +n.toFixed(2);
+const rad = a => a * Math.PI / 180;
 
 // Validează și normalizează datele. Orice greșeală aruncă o eroare cu mesaj clar (build-ul se oprește).
 export function citesteParcurs(data, now = Date.now()){
@@ -22,6 +25,7 @@ export function citesteParcurs(data, now = Date.now()){
   const start = Date.UTC(an, 0, 1), urm = Date.UTC(an + 1, 0, 1);
   const AZI = an + (now - start) / (urm - start);
   const prezent = v => String(v ?? '').trim().toLowerCase() === 'prezent';
+  const gol = v => v === undefined || v === null || v === '';
   const anValid = (v, unde) => {
     if (!Number.isInteger(v) || v < 1950 || v > an) throw new Error(`${F}: ${unde} trebuie să fie un an între 1950 și ${an} (acum e „${v}”).`);
     return v;
@@ -29,87 +33,111 @@ export function citesteParcurs(data, now = Date.now()){
   const roluri = (Array.isArray(p.roluri) ? p.roluri : []).map((r, i) => {
     const unde = `parcurs.roluri[${i + 1}]`;
     if (!r || !String(r.rol || '').trim()) throw new Error(`${F}: ${unde} are nevoie de „rol”.`);
-    const deLa = r.de_la === undefined || r.de_la === null || r.de_la === '' ? null : anValid(r.de_la, `${unde}.de_la`);
+    if (gol(r.de_la)) throw new Error(`${F}: ${unde} („${r.rol}”) are nevoie de „de_la”, anul în care a început: din el se pune punctul pe orbită.`);
+    const deLa = anValid(r.de_la, `${unde}.de_la`);
     const acum = prezent(r.pana_la);
-    const panaLa = acum ? null : r.pana_la === undefined || r.pana_la === null || r.pana_la === '' ? deLa : anValid(r.pana_la, `${unde}.pana_la`);
-    if (deLa === null && !acum) throw new Error(`${F}: ${unde} („${r.rol}”) nu are „de_la”. Fără an de început, rolul trebuie să fie „pana_la: prezent”.`);
-    if (deLa !== null && panaLa !== null && panaLa < deLa) throw new Error(`${F}: ${unde} („${r.rol}”) se termină înainte să înceapă.`);
-    const ani = deLa === null ? 'prezent' : acum ? `${deLa} – prezent` : panaLa === deLa ? String(deLa) : `${deLa} – ${panaLa}`;
-    return { rol: String(r.rol).trim(), organizatie: String(r.organizatie || '').trim(), descriere: String(r.descriere || '').trim(), de_la: deLa, pana_la: acum ? 'prezent' : panaLa, ani, acum,
-      a: deLa === null ? AZI : deLa, b: deLa === null ? null : acum ? AZI : Math.min(panaLa + 1, AZI) }; // sfârșitul unui an = începutul anului următor
+    const panaLa = acum ? null : gol(r.pana_la) ? deLa : anValid(r.pana_la, `${unde}.pana_la`);
+    if (panaLa !== null && panaLa < deLa) throw new Error(`${F}: ${unde} („${r.rol}”) se termină înainte să înceapă.`);
+    const ani = acum ? `${deLa} – prezent` : panaLa === deLa ? String(deLa) : `${deLa} – ${panaLa}`;
+    const organizatie = String(r.organizatie || '').trim(), rol = String(r.rol).trim();
+    return { rol, organizatie, descriere: String(r.descriere || '').trim(), scurt: String(r.scurt || organizatie || rol).trim(),
+      de_la: deLa, pana_la: acum ? 'prezent' : panaLa, ani, acum, ordine: i };
   });
-  // de la cel mai vechi la cel mai nou; rolurile fără an de început la final
-  roluri.sort((x, y) => (x.de_la === null) - (y.de_la === null) || x.a - y.a || (x.b ?? AZI) - (y.b ?? AZI));
+  if (!roluri.length) throw new Error(`${F}: parcurs.roluri are nevoie de cel puțin un rol.`);
+  // în listă: cel mai nou primul; în același an, în ordinea din fișier
+  roluri.sort((x, y) => y.de_la - x.de_la || x.ordine - y.ordine);
   const formare = (Array.isArray(fm.lista) ? fm.lista : []).map((e, i) => {
     if (!e || !String(e.titlu || '').trim()) throw new Error(`${F}: formare.lista[${i + 1}] are nevoie de „titlu”.`);
     return { titlu: String(e.titlu).trim(), unde: String(e.unde || '').trim() };
   });
-  if (formare.length > LITERE.length) throw new Error(`${F}: formare.lista are cel mult ${LITERE.length} rânduri.`);
-  const ani = roluri.filter(r => r.de_la !== null).map(r => r.de_la);
-  if (roluri.length && !ani.length) throw new Error(`${F}: parcurs.roluri are nevoie de cel puțin un rol cu „de_la”.`);
-  const Y0 = ani.length ? Math.min(...ani) : an, Y1 = an + 1;
-  // culoarul: primul pe care rolul nu se suprapune cu altul
-  const capat = [];
-  for (const r of roluri){
-    if (r.b === null) { r.culoar = null; continue; }
-    let k = capat.findIndex(e => e <= r.a);
-    if (k < 0) k = capat.length;
-    if (k >= LANES.length) throw new Error(`${F}: prea multe roluri în paralel în jurul anului ${r.de_la} (cel mult ${LANES.length}).`);
-    capat[k] = r.b; r.culoar = k;
-  }
+  const Y0 = Math.min(...roluri.map(r => r.de_la));
   return {
-    titlu: String(p.titlu || 'Parcursul meu profesional'), intro: String(p.intro || ''), centru: String(p.centru || 'ani de drum'),
-    formareTitlu: String(fm.titlu || 'Formare'), formareNota: String(fm.nota || ''),
-    roluri, formare, Y0, Y1, AZI, an
+    titlu: String(p.titlu || 'Parcursul meu profesional'), intro: String(p.intro || ''), eticheta_ani: String(p.eticheta_ani || 'ani de drum'),
+    formareTitlu: String(fm.titlu || 'Formare'), roluri, formare, Y0, AZI, an
   };
 }
 
 // „19 ani”, dar „20 de ani” (în română, de la 20 în sus apare „de”, cu excepția lui 1–19 din fiecare sută)
 const deAni = n => { const r = n % 100; return n !== 0 && (r === 0 || r >= 20) ? 'de ' : ''; };
 
-export function orbita(P, esc){
-  const { roluri, formare, Y0, Y1, AZI } = P;
-  const ang = y => A0 + (y - Y0) / (Y1 - Y0) * SW;
-  const pt = (a, r) => [C + r * Math.sin(a * Math.PI / 180), C - r * Math.cos(a * Math.PI / 180)];
-  const css = [];
-  const loc = (sel, [x, y]) => css.push(`.despre .orb .dial ${sel}{left:${pc(x)}%;top:${pc(y)}%}`);
-  const raza = r => r.culoar === null ? R_PUNCT : LANES[r.culoar];
+// Etichetele de pe aceeași parte a cercului, așezate pe verticală: le depărtăm cât e nevoie, cât mai puțin.
+function departeaza(et){
+  const s = [...et].sort((a, b) => a.y - b.y);
+  s.forEach(e => { e.dy = 0; });
+  for (let k = 0; k < 200; k++){
+    let mutat = false;
+    for (let i = 0; i < s.length - 1; i++){
+      const a = s[i], b = s[i + 1], min = (a.h + b.h) / 2 + SPATIU, d = (b.y + b.dy) - (a.y + a.dy);
+      if (d < min - 0.01){ const m = (min - d) / 2; a.dy -= m; b.dy += m; mutat = true; }
+    }
+    if (!mutat) break;
+  }
+}
 
-  const arce = roluri.map((r, i) => {
-    const R = raza(r), cls = `arc a${i + 1} l${r.culoar === null ? 'p' : r.culoar + 1}${r.acum ? ' now' : ''}`;
-    if (r.b === null){ const [x, y] = pt(ang(r.a), R); return `<circle class="${cls}" cx="${f(x)}" cy="${f(y)}" r="6"/>`; }
-    const g = Math.min(GOL, (ang(r.b) - ang(r.a)) / 3);    // un rol scurt păstrează un arc vizibil
-    const [x1, y1] = pt(ang(r.a) + g, R), [x2, y2] = pt(ang(r.b) - g, R), mare = (ang(r.b) - ang(r.a) - 2 * g) > 180 ? 1 : 0;
-    return `<path class="${cls}" d="M${f(x1)} ${f(y1)} A${R} ${R} 0 ${mare} 1 ${f(x2)} ${f(y2)}"/>`;
-  }).join('');
-  const discuri = roluri.map((r, i) => { loc(`.r${i + 1}`, pt(ang(r.a), raza(r))); return `<span class="ref r${i + 1}${r.acum ? ' now' : ''}">${pad(i)}</span>`; }).join('');
-  const litere = formare.map((e, i) => { loc(`.e${i + 1}`, pt(i * 360 / formare.length, R_FORMARE)); return `<span class="ref edu-ref e${i + 1}">${LITERE[i]}</span>`; }).join('');
-  // reperele: din 5 în 5 ani, cât încap înainte de „azi”; etichetele de la capete sunt trase spre jos, ca să nu stea pe arce
-  const repere = [];
-  for (let y = Y0; y <= AZI - 2.5; y += 5) repere.push(y);
-  const etichete = [...repere.map((y, i) => [String(y), i === 0 ? ang(y) - 8 : ang(y)]), ['azi', ang(AZI) + 10]];
-  const tickuri = etichete.map(([t, a], i) => { loc(`.tk${i + 1}`, pt(a, 266)); return `<span class="tick tk${i + 1}${t === 'azi' ? ' azi' : ''}">${t}</span>`; }).join('');
-  const linii = [...repere, AZI].map(y => { const a = ang(y), [x1, y1] = pt(a, 234), [x2, y2] = pt(a, 241); return `<line x1="${f(x1)}" y1="${f(y1)}" x2="${f(x2)}" y2="${f(y2)}"/>`; }).join('');
-  const ani = P.an - Y0;
-  const svg = `<svg viewBox="0 0 ${S} ${S}" aria-hidden="true" focusable="false"><circle class="track" cx="${C}" cy="${C}" r="${LANES[0]}"/>${formare.length ? `<circle class="track" cx="${C}" cy="${C}" r="${R_FORMARE}"/>` : ''}<g class="ticks">${linii}</g>${arce}<g class="light"><circle cx="${C}" cy="${C - 238}" r="4"/></g></svg>`;
-  const dial = `<div class="dial" aria-hidden="true">${svg}${tickuri}${discuri}${litere}<div class="core"><span class="big">${ani}</span><span class="cap">${esc(deAni(ani) + P.centru)}</span></div></div>`;
+export function orbita(P, esc, lentila){
+  const { roluri, formare, Y0, AZI, an } = P;
+  const DEG = SPAN / (an + 1 - Y0);            // un unghi pe an: inelul se termină la finalul anului curent
+  const aziO = (AZI - Y0) * DEG;
+  const culoare = o => {
+    const t = Math.min(1, Math.max(0, o / aziO));
+    const k = OPRIRI.findIndex(([x]) => x >= t), [t1, c1] = OPRIRI[Math.max(0, k - 1)], [t2, c2] = OPRIRI[Math.max(0, k)];
+    const w = t2 === t1 ? 1 : (t - t1) / (t2 - t1);
+    return w <= 0.005 ? `var(--${c1})` : w >= 0.995 ? `var(--${c2})` : `color-mix(in srgb,var(--${c1}),var(--${c2}) ${Math.round(w * 100)}%)`;
+  };
 
-  const lista = roluri.map((r, i) => `<li class="s${i + 1}${r.acum ? ' now' : ''}"><span class="ref" aria-hidden="true">${pad(i)}</span><div><b>${esc(r.rol)}</b><span class="meta">${esc([r.organizatie, r.ani].filter(Boolean).join(' · '))}</span>${r.descriere ? `<p>${esc(r.descriere)}</p>` : ''}</div></li>`).join('');
-  const listaFormare = formare.map((e, i) => `<li class="t${i + 1}"><span class="ref edu-ref" aria-hidden="true">${LITERE[i]}</span><div><b>${esc(e.titlu)}</b>${e.unde ? `<span class="meta">${esc(e.unde)}</span>` : ''}</div></li>`).join('');
-  const html = `<section class="orb w glass-read" aria-labelledby="parcursH">
-  <div class="orb-head"><h2 id="parcursH">${esc(P.titlu)}</h2>${P.intro ? `<p class="lede">${esc(P.intro)}</p>` : ''}</div>
-  ${dial}
-  <ol class="stations" aria-label="${esc(`Rolurile, de la ${Y0} până azi`)}">${lista}</ol>
-  ${formare.length ? `<div class="edu-b"><h2 id="formareH">${esc(P.formareTitlu)}</h2>${P.formareNota ? `<p class="hint">${esc(P.formareNota)}</p>` : ''}<ul class="stations" aria-labelledby="formareH">${listaFormare}</ul></div>` : ''}
+  // un punct pe an: rolurile începute în același an îl împart (inel dublu, eticheta le numește pe toate)
+  const ani = [...new Set(roluri.map(r => r.de_la))].sort((a, b) => a - b);
+  const puncte = ani.map((y, i) => {
+    const rs = roluri.filter(r => r.de_la === y).sort((a, b) => a.ordine - b.ordine), o = (y - Y0) * DEG, a = A0 + o;
+    return { cls: `p${i + 1}`, y, rs, o, parte: Math.sin(rad(a)) < 0 ? 'l' : 'r', now: rs.some(r => r.acum) };
+  });
+  const azi = { cls: 'p-azi', o: aziO, parte: Math.sin(rad(A0 + aziO)) < 0 ? 'l' : 'r', rs: [] };
+  const toate = [...puncte, azi];
+
+  // deplasarea etichetelor, separat pentru telefon (doar anul) și pentru ecranele mari (anul și numele, pe rânduri)
+  const dy = {};
+  for (const [k, raza] of Object.entries(R)){
+    for (const parte of ['l', 'r']){
+      const et = toate.filter(p => p.parte === parte).map(p => ({ p, y: -raza * Math.cos(rad(A0 + p.o)), h: LINIE * (k === 'mare' ? Math.max(1, p.rs.length) : 1) }));
+      departeaza(et);
+      et.forEach(e => { (dy[e.p.cls] ||= {})[k] = f(e.dy); });
+    }
+  }
+
+  const btn = p => {
+    const yrs = [...new Set(p.rs.map(r => r.ani))].join(' · ');
+    const role = p.rs.map(r => [r.rol, r.organizatie].filter(Boolean).join(', ')).join(' · ');
+    const nume = p.rs.map(r => esc(r.scurt)).join('<br>');
+    const aria = `${p.y}: ${p.rs.map(r => r.scurt).join(' și ')}`;
+    return `<button type="button" class="pt ${p.parte} ${p.cls}${p.now ? ' now' : ''}${p.rs.length > 1 ? ' two' : ''}" data-yrs="${esc(yrs)}" data-role="${esc(role)}" aria-label="${esc(aria)}" aria-pressed="false"><i></i><span class="lb" aria-hidden="true"><b>${p.y}</b><span class="n">${nume}</span></span></button>`;
+  };
+  const nAni = an - Y0;
+  const figure = `<figure class="orbit" aria-label="${esc(`Parcursul pe scurt: ${roluri.length} roluri, din ${Y0} până azi`)}">
+  ${lentila}
+  <div class="core">
+    <div class="track" aria-hidden="true"></div><div class="ring" aria-hidden="true"></div><div class="comet" aria-hidden="true"></div>
+    ${puncte.map(btn).join('\n    ')}
+    <span class="pt ${azi.parte} end p-azi" aria-hidden="true"><span class="lb"><b>azi</b></span></span>
+  </div>
+  <p class="badge" aria-live="polite"><span class="def"><b>${nAni}</b> ${esc(deAni(nAni) + P.eticheta_ani)}</span><span class="role"></span></p>
+</figure>`;
+
+  // parcursul ca listă, cel mai nou primul; punctul are culoarea de pe orbită
+  const cls = new Map(puncte.map(p => [p.y, p.cls]));
+  const lista = `<ol class="roles">${roluri.map(r => `<li class="${cls.get(r.de_la)}${r.acum ? ' now' : ''}"><span class="yrs">${esc(r.ani)}${r.acum ? '<em>acum</em>' : ''}</span><b>${esc(r.rol)}</b>${r.organizatie ? `<span class="org">${esc(r.organizatie)}</span>` : ''}${r.descriere ? `<p>${esc(r.descriere)}</p>` : ''}</li>`).join('')}</ol>`;
+  const edu = formare.length ? `<div class="edu"><h3 class="cap">${esc(P.formareTitlu)}</h3><ul>${formare.map(e => `<li><b>${esc(e.titlu)}</b>${e.unde ? `<span>${esc(e.unde)}</span>` : ''}</li>`).join('')}</ul></div>` : '';
+  const parcurs = `<section class="path w glass-read" id="parcurs" aria-labelledby="parcursH">
+  <header><h2 id="parcursH">${esc(P.titlu)}</h2>${P.intro ? `<p>${esc(P.intro)}</p>` : ''}</header>
+  ${lista}
+  ${edu}
 </section>`;
 
-  // treci cu mouse-ul peste un rând: i se aprinde arcul și discul (CSS :has, fără JavaScript)
-  // lumina: stă pe „azi”; cu JavaScript și fără „reduce motion”, pornește de la primul an și face o singură trecere (4,5 s, ease-out)
-  css.push(`.despre .orb .light{transform:rotate(${f(ang(AZI))}deg)}`,
-    `@keyframes drum{from{transform:rotate(${f(ang(Y0))}deg)}to{transform:rotate(${f(ang(AZI))}deg)}}`,
-    `@media (prefers-reduced-motion:no-preference){body:not(.no-js) .despre .orb:not(.drum) .light{transform:rotate(${f(ang(Y0))}deg)}body:not(.no-js) .despre .orb.drum .light{animation:drum 4.5s cubic-bezier(.16,1,.3,1) both}}`);
-  css.push('.despre .orb:has(li:hover) .arc{opacity:.3}');
-  roluri.forEach((_, i) => css.push(`.despre .orb:has(.s${i + 1}:hover) .a${i + 1}{opacity:1}`, `.despre .orb:has(.s${i + 1}:hover) path.a${i + 1}{stroke-width:13}`, `.despre .orb:has(.s${i + 1}:hover) .r${i + 1}{transform:translate(-50%,-50%) scale(1.18);background:var(--pressed-bg);color:var(--pressed-fg)}`));
-  formare.forEach((_, i) => css.push(`.despre .orb:has(.t${i + 1}:hover) .e${i + 1}{transform:translate(-50%,-50%) scale(1.18);background:var(--pressed-bg);color:var(--pressed-fg)}`));
-  return { html, css: `/* Orbita drumului: pozițiile și hover-ul, generate de site/orbita.mjs din content/despre.md */\n${css.join('\n')}\n` };
+  const css = [
+    `.despre .orbit{--A0:${A0}deg;--azi:${f(aziO)}deg}`,
+    `@keyframes despre-trece{0%{transform:rotate(${A0}deg);opacity:0}4%{opacity:1}58%{transform:rotate(${f(A0 + aziO)}deg);opacity:1}66%,100%{transform:rotate(${f(A0 + aziO)}deg);opacity:0}}`,
+    ...toate.map(p => `.despre .pt.${p.cls}{--o:${f(p.o)}deg;--dy:${dy[p.cls].tel}px${p.rs.length ? `;--n:${p.rs.length};--c:${culoare(p.o)};--d:${f(p.o / aziO * TRECERE)}s` : ''}}`),
+    ...puncte.map(p => `.despre .roles .${p.cls}{--c:${culoare(p.o)}}`), // lista: același punct colorat ca pe orbită
+    `@media (min-width:761px){${toate.map(p => `.despre .pt.${p.cls}{--dy:${dy[p.cls].mare}px}`).join('')}}`
+  ];
+  return { figure, parcurs, css: `/* Orbita din primul card al paginii Despre: unghiuri, culori și etichete, generate de site/orbita.mjs din content/despre.md */\n${css.join('\n')}\n` };
 }

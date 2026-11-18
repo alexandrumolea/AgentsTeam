@@ -2,21 +2,24 @@
 titlu: "Despre mine"
 rol: "Systemic Coach & Team Coach"
 poza: "alex-cerc.jpg"
-# lentila = poza rotundă în rama de sticlă (D-060); gol = dreptunghiul 3 : 4. Pentru lentilă, poza e pătrată, cu fața în centru.
-poza_forma: "lentila"
+# Poza stă în lentila de sticlă (D-060), în centrul orbitei din primul card: pătrată, cu fața în centru.
 poza_alt: "Alex, zâmbind, pe o alee cu copaci de toamnă"
-# Cele trei cărți de sticlă care se rotesc lângă misiune (ca pe vechiul site) și cele trei cuvinte scrise sub ele (D-063).
+# „Acum”, pe primul card (Alex, 2026-11-18, cuvintele lui).
+acum: "Fondator la BEMORE LS, Leadership Trainer la Innersis, colaborator la LIFT, fondator Wise Teams de un an."
+# Cele trei cărți de sticlă care se rotesc lângă misiune (ca pe vechiul site), cu cuvântul scris pe fiecare.
 # Se folosesc primele trei.
 valori: ["Rezultate", "Colaborare", "Umanitate"]
 
-# Parcursul: din lista asta se desenează Orbita drumului și lista de lângă ea (D-063).
-# Pentru fiecare rol: rol, organizatie (poate lipsi), de_la (anul), pana_la (anul sau „prezent”), descriere (poate lipsi).
-# Ordinea nu contează: pe site rolurile apar de la cel mai vechi la cel mai nou și primesc numerele 01, 02…
-# Un rol fără de_la apare pe orbită doar ca punct „azi”.
+# Parcursul: din lista asta se fac orbita din primul card și lista „Parcursul meu profesional”.
+# Pentru fiecare rol: rol, organizatie (poate lipsi), de_la (anul, obligatoriu), pana_la (anul sau „prezent”),
+# descriere (poate lipsi), scurt (numele de lângă punctul de pe orbită; dacă lipsește, se ia organizatie, apoi rol).
+# Pe orbită, fiecare an de început e un punct, pus după an; rolurile începute în același an împart punctul (inel dublu).
+# Rolurile cu „prezent” au inelul portocaliu și „acum” în listă. Ordinea nu contează: lista arată cel mai nou rol primul
+# (în același an, în ordinea de aici).
 parcurs:
   titlu: "Parcursul meu profesional"
   intro: "Rolurile care mi-au format modul de a lucra cu oamenii și cu învățarea."
-  centru: "ani de drum"          # sub numărul din centrul orbitei; numărul se calculează din primul an
+  eticheta_ani: "ani de drum"    # eticheta de sub orbită, după numărul de ani (se calculează din primul an)
   roluri:
     - rol: "Fondator"
       organizatie: "Youth ONG"
@@ -30,15 +33,22 @@ parcurs:
       descriere: "Dezvoltarea echipelor de vânzări performante."
     - rol: "HR Learning Solutions Lead"
       organizatie: "Vodafone"
+      scurt: "Vodafone HR"
       de_la: 2012
       pana_la: 2012
       descriere: "Centralizarea și dezvoltarea echipei de traineri în HR și coaching pentru o parte din liderii organizației, ambele în contextul proiectului de schimbare culturală."
     - rol: "Founder"
       organizatie: "BEMORE Learning Studio"
+      scurt: "BEMORE LS"
       de_la: 2013
-      pana_la: 2025
+      pana_la: prezent
       descriere: "Dezvoltare de specialiști Learning & Development. Training design și coaching pentru mediul corporate."
+    - rol: "Fondator"
+      organizatie: "Wise Teams"
+      de_la: 2025                  # Alex, 2026-11-18: „Fondator Wise Teams de un an”
+      pana_la: prezent
     - rol: "Coach & Team Coach"
+      scurt: "Coaching"
       de_la: 2023
       pana_la: prezent
       descriere: "Lucrez pentru dezvoltarea strategiei și armonizarea echipelor în direcția unui scop comun."
@@ -49,12 +59,12 @@ parcurs:
       descriere: "Inovație în training și calitate în livrarea programelor de training."
     - rol: "Colaborator"
       organizatie: "LIFT"
-      pana_la: prezent             # anul de început: de confirmat de Alex
+      de_la: 2025                  # Alex, 2026-11-18
+      pana_la: prezent
 
-# Formarea: orbita din interior, cu literele A, B, C…
+# Formarea: lista de lângă parcurs, în ordinea de aici.
 formare:
   titlu: "Formare"
-  nota: "Orbita din interior: ce stă la baza drumului."
   lista:
     - titlu: "Licență în Management"
       unde: "ASE București"
