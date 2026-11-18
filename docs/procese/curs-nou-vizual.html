@@ -1,4 +1,4 @@
-<title>Cum construim un curs</title>
+<title>Procesul de training design cu AI</title>
 <meta name="claude:viewport-fit-sides" content="cover">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -61,6 +61,11 @@ section>header p{color:var(--muted);max-width:64ch}
 .final em{font-style:normal;color:var(--muted);font-size:14px}
 .faza.c>.nume::before{border-color:var(--portocaliu)}
 .faza.c .pas{background:var(--gate-bg);border-color:transparent}
+.ai{display:inline-flex;align-items:center;gap:6px;width:fit-content;font-size:12.5px;color:var(--muted)}
+.ai>span{font:600 10.5px/1 var(--f-text);letter-spacing:.08em;text-transform:uppercase;padding:4px 7px;border-radius:999px;background:var(--cer);color:#fff}
+.ai-leg{font-size:14px;color:var(--muted);display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+.ai-mic{font:600 10px/1 var(--f-text);font-style:normal;letter-spacing:.08em;text-transform:uppercase;padding:3px 6px;border-radius:999px;background:var(--cer);color:#fff;vertical-align:middle;margin-left:4px}
+.bara em.fix{font-style:normal;font-weight:600;font-size:11.5px;color:var(--portocaliu);display:block;margin-top:2px}
 .ciclu{position:relative;display:grid;gap:14px;border:2px solid var(--lavanda);border-radius:20px;padding:16px;margin-left:-14px;background:color-mix(in srgb,var(--a-bg) 35%,transparent)}
 .ciclu-cap{display:flex;gap:14px;align-items:center}
 .ciclu-cap svg{flex:none;width:96px;height:45px}
@@ -86,7 +91,7 @@ section>header p{color:var(--muted);max-width:64ch}
 
 /* ziua */
 .zi{display:grid;gap:10px}
-.bara{display:flex;height:74px;border-radius:14px;overflow:hidden;border:1px solid var(--line)}
+.bara{display:flex;min-height:84px;border-radius:14px;overflow:hidden;border:1px solid var(--line)}
 .bara>div{display:grid;place-content:center;text-align:center;padding:4px;font-size:13px;min-width:0}
 .bara b{font:400 15px/1.2 var(--f-titlu)}
 .bara .bloc{background:var(--a-bg)}
@@ -110,15 +115,15 @@ code{font-size:.9em;background:var(--bg);border:1px solid var(--line);border-rad
 
 <div class="wrap">
 <header class="hero">
-  <p class="eyebrow"><span class="dot"></span>&nbsp; BEMORE Learning Studio · procesul echipei Learning Studio</p>
-  <h1>Cum construim un curs</h1>
+  <p class="eyebrow"><span class="dot"></span>&nbsp; BEMORE Learning Studio</p>
+  <h1>Procesul de training design cu AI</h1>
   <p class="lead">Drumul pe care îl parcurge echipa Learning Studio pentru fiecare curs, până la un curs stabilizat. Viziunea și Laboratorul se întăresc reciproc într-un ciclu; în Laborator trainerul devine practician pe subiect. Din harvest alegem și facem firul roșu. Abia apoi producem. Bucla se repetă la fiecare livrare.</p>
-  <div class="acum"><span class="puls" aria-hidden="true"></span>Acum: Change Agility e în ciclul A ⇄ B, în Laborator, spre harvest</div>
 </header>
 
 <section aria-labelledby="h-traseu">
   <header>
     <p class="eyebrow">Traseul</p>
+    <p class="ai-leg"><span class="ai"><span>Agent AI</span></span> arată unde lucrează agenții AI ai echipei, alături de oameni.</p>
     <h2 id="h-traseu">Ciclul A ⇄ B, harvest, firul roșu, producția</h2>
   </header>
 
@@ -128,8 +133,8 @@ code{font-size:.9em;background:var(--bg);border:1px solid var(--line);border-rad
     <div class="faza">
       <div class="nume"><h3>Etapa A · Viziune și obiective</h3><span>spre ce transformare și pentru cine</span></div>
       <div class="pasi">
-        <article class="pas"><p class="nr">2</p><h3>Diagnosticare</h3><p>Unde sunt participanții: un chestionar anonim de 3–5 întrebări și o piesă de diagnostic la deschidere.</p><dl><dt>Cine</dt><dd>Daria</dd><dt>Alex</dt><dd>aprobă și trimite chestionarul</dd></dl></article>
-        <article class="pas"><p class="nr">3</p><h3>Viziune și obiective</h3><p><strong>Viziunea</strong> e transformarea dorită: clară și simplă, într-o propoziție. <strong>Obiectivele</strong>, cel mult patru, duc spre ea; fiecare are cel puțin o piesă în harvest.</p><dl><dt>Cine</dt><dd>Daria</dd><dt>Alex</dt><dd>formulează viziunea, aprobă lista</dd></dl></article>
+        <article class="pas"><p class="nr">2</p><h3>Diagnosticare</h3><p class="ai"><span>Agent AI</span>Daria</p><p>Unde sunt participanții: un chestionar anonim de 3–5 întrebări și o piesă de diagnostic la deschidere.</p><dl><dt>Cine</dt><dd>Daria</dd><dt>Alex</dt><dd>aprobă și trimite chestionarul</dd></dl></article>
+        <article class="pas"><p class="nr">3</p><h3>Viziune și obiective</h3><p class="ai"><span>Agent AI</span>Daria</p><p><strong>Viziunea</strong> e transformarea dorită: clară și simplă, într-o propoziție. <strong>Obiectivele</strong>, cel mult patru, duc spre ea; fiecare are cel puțin o piesă în harvest.</p><dl><dt>Cine</dt><dd>Daria</dd><dt>Alex</dt><dd>formulează viziunea, aprobă lista</dd></dl></article>
       </div>
     </div>
 
@@ -139,8 +144,8 @@ code{font-size:.9em;background:var(--bg);border:1px solid var(--line);border-rad
       <div class="gate-box" style="background:var(--alex-bg)"><strong>Cine livrează trebuie să fie practician, nu doar curios.</strong><span>Scopul Laboratorului: piese de conținut diverse, valoroase, relevante, gata de folosit.</span></div>
       <div class="pasi">
         <article class="pas alex"><p class="tag">practicianul</p><h3>Trainerul care își asumă subiectul</h3><p>Îl trăiește o lună, cu atenția adusă conștient. Iese conectat la subiect, gata de conversații profunde cu publicul, cu provocări pe teme concrete din activitatea lor și cu povești din practica proprie.</p><dl><dt>Azi</dt><dd>Alex</dd></dl></article>
-        <article class="pas"><p class="nr">1</p><h3>Researcherul</h3><p>Modele, studii și exemple, cu surse. Din ele ies piese pentru harvest.</p><dl><dt>Cine</dt><dd>Irina</dd><dt>Alex</dt><dd>citește rezumatul de 5 rânduri</dd></dl></article>
-        <article class="pas"><p class="nr">↔</p><h3>Parteneri de gândire</h3><p>Un AI, plus oameni reprezentativi pentru publicul țintă și colegi (peers). Cu ei se testează ideile și pornesc dezbaterile. În harvest intră doar ideea, fără nume.</p><dl><dt>Cine</dt><dd>practicianul îi alege</dd></dl></article>
+        <article class="pas"><p class="nr">1</p><h3>Researcherul</h3><p class="ai"><span>Agent AI</span>Irina</p><p>Modele, studii și exemple, cu surse. Din ele ies piese pentru harvest.</p><dl><dt>Cine</dt><dd>Irina</dd><dt>Alex</dt><dd>citește rezumatul de 5 rânduri</dd></dl></article>
+        <article class="pas"><p class="nr">↔</p><h3>Parteneri de gândire</h3><p class="ai"><span>AI</span>un AI în dezbateri</p><p>Un AI, plus oameni reprezentativi pentru publicul țintă și colegi (peers). Cu ei se testează ideile și pornesc dezbaterile. În harvest intră doar ideea, fără nume.</p><dl><dt>Cine</dt><dd>practicianul îi alege</dd></dl></article>
       </div>
       <div class="final"><span>Finalul etapei</span><strong>Harvest-ul</strong><em>exerciții · knowledge bites · experiences</em></div>
     </div>
@@ -150,9 +155,9 @@ code{font-size:.9em;background:var(--bg);border:1px solid var(--line);border-rad
     <div class="faza c">
       <div class="nume"><h3>Etapa C · Harvest, Curate, Flow</h3><span>în vederea Harvest din materialul trainerului, o linie pe piesă</span></div>
       <div class="pasi">
-        <article class="pas"><p class="nr">C1</p><h3>Harvest</h3><p>Tot ce a ieșit din Laborator, dintr-o privire: exerciții, knowledge bites, experiences.</p><dl><dt>Verdict</dt><dd>nou</dd></dl></article>
-        <article class="pas"><p class="nr">C2</p><h3>Curate</h3><p>Alegem ce e suficient de actual și cu sens ca să rămână în Bibliotecă.</p><dl><dt>Alex</dt><dd>Da · Poate · Nu</dd></dl></article>
-        <article class="pas"><p class="nr">C3</p><h3>Flow</h3><p>Începem firul roșu: piesele „da” se așază în cele 4 blocuri ale zilei. Daria verifică timpii și obiectivele, Andrei verifică firul.</p><dl><dt>Alex</dt><dd>ordonează</dd></dl></article>
+        <article class="pas"><p class="nr">C1</p><h3>Harvest</h3><p class="ai"><span>Agent AI</span>Irina, Daria</p><p>Tot ce a ieșit din Laborator, dintr-o privire: exerciții, knowledge bites, experiences.</p><dl><dt>Verdict</dt><dd>nou</dd></dl></article>
+        <article class="pas"><p class="nr">C2</p><h3>Curate</h3><p class="ai"><span>Agent AI</span>Andrei</p><p>Alegem ce e suficient de actual și cu sens ca să rămână în Bibliotecă.</p><dl><dt>Alex</dt><dd>Da · Poate · Nu</dd></dl></article>
+        <article class="pas"><p class="nr">C3</p><h3>Flow</h3><p class="ai"><span>Agent AI</span>Daria, Andrei</p><p>Începem firul roșu: piesele „da” se așază în cele 4 blocuri ale zilei. Daria verifică timpii și obiectivele, Andrei verifică firul.</p><dl><dt>Alex</dt><dd>ordonează</dd></dl></article>
       </div>
       <div class="final"><span>Finalul etapei</span><strong>Firul roșu</strong><em>ziua, bloc cu bloc</em></div>
     </div>
@@ -165,19 +170,19 @@ code{font-size:.9em;background:var(--bg);border:1px solid var(--line);border-rad
     <div class="faza b">
       <div class="nume"><h3>Etapa D · Producția</h3><span>doar pentru piesele „da”</span></div>
       <div class="pasi">
-        <article class="pas"><p class="nr">D</p><h3>Piesele prind viață</h3><p>Ecranele din sală (slide-uri v2, nota comună A · Lumi), scheme, note de trainer, banca de exerciții. „Trimite în agendă” face din firul roșu agenda ediției.</p><dl><dt>Cine</dt><dd>Matei, cu Daria și Irina; Ioana pe vizual</dd></dl></article>
-        <article class="pas"><p class="nr">D</p><h3>Schița</h3><p>Ziua dintr-o privire, pe o pagină: blocurile, piesele din firul roșu, orele și obiectivele de bifat pe parcurs. Stă în materialul trainerului (vederea Schița, și în modul Prezintă) și se tipărește.</p><dl><dt>Din</dt><dd>firul roșu</dd><dt>Cine</dt><dd>se generează; designul final: Alex cu Ioana</dd></dl></article>
-        <article class="pas"><p class="nr">6</p><h3>Livrare flexibilă</h3><p>Ziua în sală. Alternativele și Biblioteca permit schimbări pe loc, din materialul trainerului.</p><dl><dt>Cine</dt><dd>Alex; Mike pe generator</dd></dl></article>
+        <article class="pas"><p class="nr">D</p><h3>Piesele prind viață</h3><p class="ai"><span>Agent AI</span>Matei, Ioana</p><p>Ecranele din sală (slide-uri v2, nota comună A · Lumi), scheme, note de trainer, banca de exerciții. „Trimite în agendă” face din firul roșu agenda ediției.</p><dl><dt>Cine</dt><dd>Matei, cu Daria și Irina; Ioana pe vizual</dd></dl></article>
+        <article class="pas"><p class="nr">D</p><h3>Schița</h3><p class="ai"><span>Agent AI</span>Mike</p><p>Ziua dintr-o privire, pe o pagină: blocurile, piesele din firul roșu, orele și obiectivele de bifat pe parcurs. Stă în materialul trainerului (vederea Schița, și în modul Prezintă) și se tipărește.</p><dl><dt>Din</dt><dd>firul roșu</dd><dt>Cine</dt><dd>se generează; designul final: Alex cu Ioana</dd></dl></article>
+        <article class="pas"><p class="nr">6</p><h3>Livrare flexibilă</h3><p class="ai"><span>Agent AI</span>Mike</p><p>Ziua în sală. Alternativele și Biblioteca permit schimbări pe loc, din materialul trainerului.</p><dl><dt>Cine</dt><dd>Alex; Mike pe generator</dd></dl></article>
       </div>
     </div>
 
     <div class="faza dupa">
       <div class="nume"><h3>După livrare</h3><span>ce învățăm și ce rămâne</span></div>
       <div class="pasi">
-        <article class="pas"><p class="nr">7</p><h3>Feedbackul trainerului</h3><p>Cinci întrebări, în 10 minute, în aceeași zi.</p><dl><dt>Cine</dt><dd>Alex; Andrei preia</dd></dl></article>
-        <article class="pas"><p class="nr">8</p><h3>Curs online</h3><p>Același conținut, fără note de trainer și fără exercițiile din sală. Pe site, prin PR aprobat de Alex.</p><dl><dt>Stare</dt><dd>amânat până e gata cursul</dd></dl></article>
-        <article class="pas"><p class="nr">9</p><h3>Feedback către participanți</h3><p>Mulțumire, linkul cursului și 3 întrebări: ce iei cu tine, ce aplici luni, ce ai schimba.</p><dl><dt>Cine</dt><dd>Daria (draft)</dd><dt>Alex</dt><dd>trimite în 1–3 zile</dd></dl></article>
-        <article class="pas"><p class="nr">10</p><h3>Verificare centralizată</h3><p>Lunar: concluziile din toate feedbackurile, lecțiile generale, harta cursurilor la zi.</p><dl><dt>Cine</dt><dd>Andrei, cu Elena</dd></dl></article>
+        <article class="pas"><p class="nr">7</p><h3>Feedbackul trainerului</h3><p class="ai"><span>Agent AI</span>Andrei</p><p>Cinci întrebări, în 10 minute, în aceeași zi.</p><dl><dt>Cine</dt><dd>Alex; Andrei preia</dd></dl></article>
+        <article class="pas"><p class="nr">8</p><h3>Curs online</h3><p class="ai"><span>Agent AI</span>Matei, Mike</p><p>Același conținut, fără note de trainer și fără exercițiile din sală. Pe site, prin PR aprobat de Alex.</p><dl><dt>Stare</dt><dd>amânat până e gata cursul</dd></dl></article>
+        <article class="pas"><p class="nr">9</p><h3>Feedback către participanți</h3><p class="ai"><span>Agent AI</span>Daria</p><p>Mulțumire, linkul cursului și 3 întrebări: ce iei cu tine, ce aplici luni, ce ai schimba.</p><dl><dt>Cine</dt><dd>Daria (draft)</dd><dt>Alex</dt><dd>trimite în 1–3 zile</dd></dl></article>
+        <article class="pas"><p class="nr">10</p><h3>Verificare centralizată</h3><p class="ai"><span>Agent AI</span>Andrei, Elena</p><p>Lunar: concluziile din toate feedbackurile, lecțiile generale, harta cursurilor la zi.</p><dl><dt>Cine</dt><dd>Andrei, cu Elena</dd></dl></article>
       </div>
     </div>
   </div>
@@ -222,13 +227,13 @@ code{font-size:.9em;background:var(--bg);border:1px solid var(--line);border-rad
   </header>
   <div class="zi">
     <div class="bara" role="img" aria-label="Bloc 1 90 minute, pauză 15, bloc 2 90 minute, prânz 60, bloc 3 90 minute, pauză 15, bloc 4 120 minute">
-      <div class="bloc" style="flex:90"><b>Bloc 1</b>90 min</div>
+      <div class="bloc" style="flex:90"><b>Bloc 1</b>90 min<em class="fix">începe cu Learning Contract</em></div>
       <div class="pz" style="flex:15">pauză</div>
       <div class="bloc" style="flex:90"><b>Bloc 2</b>90 min</div>
       <div class="pz" style="flex:60">prânz</div>
       <div class="bloc" style="flex:90"><b>Bloc 3</b>90 min</div>
       <div class="pz" style="flex:15">pauză</div>
-      <div class="bloc" style="flex:120"><b>Bloc 4</b>120 min</div>
+      <div class="bloc" style="flex:120"><b>Bloc 4</b>120 min<em class="fix">se încheie cu Closing</em></div>
     </div>
     <div class="ore"><span>9:30</span><span>11:00</span><span>12:45</span><span>13:45</span><span>15:15</span><span>17:30</span></div>
     <p class="nota">Blocurile 1–3 au câte 90 de minute, blocul 4 are 120. Materialul trainerului arată totalul pe bloc și orice depășire.</p>
@@ -259,18 +264,16 @@ code{font-size:.9em;background:var(--bg);border:1px solid var(--line);border-rad
   </header>
   <div class="echipa">
     <div class="om"><b>Alex</b><span>practicianul, verdicte, aprobă firul roșu, livrează</span></div>
-    <div class="om"><b>Andrei</b><span>DRI pe proces, verifică firul roșu, concluziile lunare</span></div>
-    <div class="om"><b>Daria</b><span>diagnostic, obiective, flow, timpi</span></div>
-    <div class="om"><b>Irina</b><span>research cu surse, piese pentru harvest</span></div>
-    <div class="om"><b>Matei</b><span>producția pieselor</span></div>
-    <div class="om"><b>Ioana</b><span>limbajul vizual al ecranelor</span></div>
-    <div class="om"><b>Mike</b><span>generatorul și editorul</span></div>
-    <div class="om"><b>Elena</b><span>retro și lecții</span></div>
+    <div class="om"><b>Peers experți</b><span>colegi care testează ideile și provoacă practicianul</span></div>
+    <div class="om"><b>Publicul țintă</b><span>oameni reprezentativi, parteneri de gândire în Laborator</span></div>
+    <div class="om agent"><b>Andrei <i class="ai-mic">Agent AI</i></b><span>DRI pe proces, verifică firul roșu, concluziile lunare</span></div>
+    <div class="om agent"><b>Daria <i class="ai-mic">Agent AI</i></b><span>diagnostic, obiective, flow, timpi</span></div>
+    <div class="om agent"><b>Irina <i class="ai-mic">Agent AI</i></b><span>research cu surse, piese pentru harvest</span></div>
+    <div class="om agent"><b>Matei <i class="ai-mic">Agent AI</i></b><span>producția pieselor</span></div>
+    <div class="om agent"><b>Ioana <i class="ai-mic">Agent AI</i></b><span>limbajul vizual al ecranelor</span></div>
+    <div class="om agent"><b>Mike <i class="ai-mic">Agent AI</i></b><span>generatorul și editorul</span></div>
+    <div class="om agent"><b>Elena <i class="ai-mic">Agent AI</i></b><span>retro și lecții</span></div>
   </div>
 </section>
 
-<footer>
-  <p>Sursa textului: <code>docs/procese/curs-nou.md</code> (DRI: Andrei). Când procesul se schimbă, se schimbă întâi acolo, apoi această pagină.</p>
-  <p>Actualizat 2026-11-18.</p>
-</footer>
 </div>
