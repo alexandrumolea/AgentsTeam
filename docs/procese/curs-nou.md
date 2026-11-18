@@ -5,8 +5,22 @@
 **Vizual:** pagina `docs/procese/curs-nou-vizual.html`, publicată la https://claude.ai/artifact/26Jm98isMEfzt5khrN5qU3. Sursa rămâne acest fișier: când procesul se schimbă, se schimbă întâi aici, apoi pagina.
 **Unde stă cursul:** sursa în repo-ul privat BEMORE-STUDIO, clonat în `privat/cursuri/<curs>/` (D-050). Generatorul e în `curs/` (`curs/README.md`). În repo-ul public intră doar procesul.
 
-## Regula de bază: întâi Laboratorul, apoi producția (Alex, 2026-11-18)
-- **Etapa A se numește Laboratorul.** Timp de aproximativ o lună, echipa se imersează în subiect: învață, observă, pornește dezbateri. **Scopul:** piese de conținut diverse, valoroase, relevante și gata de folosit.
+## Etapele (Alex, 2026-11-18)
+**A · Viziune și obiective ⇄ B · Laboratorul → poarta → C · Producția.**
+
+### Ciclul A ⇄ B: se întăresc reciproc
+- A și B nu sunt pași unul după altul, ci un ciclu. Merg în paralel și se hrănesc reciproc.
+- **Viziunea dă direcție Laboratorului:** ce căutăm, ce observăm, ce dezbatem.
+- **Laboratorul clarifică viziunea:** ce descoperă practicianul o face mai clară și mai simplă și poate schimba obiectivele.
+- Ciclul se oprește când viziunea e clară, obiectivele stau pe loc, iar masa are piese pentru fiecare obiectiv.
+
+### Etapa A · Viziune și obiective
+- **Viziunea:** transformarea dorită, într-o propoziție clară și simplă.
+- **Obiectivele:** cel mult 4, scurte, care duc spre viziune.
+- Ambele stau în `curs.yml`.
+
+### Etapa B · Laboratorul (fosta etapă A)
+- **Ce e:** aproximativ o lună de imersie în subiect. Învățăm, observăm, pornim dezbateri. **Scopul:** piese de conținut diverse, valoroase, relevante și gata de folosit.
 - **Cine intră în Laborator:**
   - **Practicianul**, adică trainerul care își asumă subiectul și îl va livra. **Esențial:** cel care livrează trebuie să fie la nivel de practician, nu doar curios.
   - **Researcherul** (Irina): modele, studii, exemple, cu surse.
@@ -15,34 +29,34 @@
   - se simte conectat la subiect;
   - poate intra în conversații profunde cu publicul țintă și îi poate provoca pe teme concrete din activitatea lor;
   - are exemple și povești din practica lui personală, din luna în care și-a adus atenția mai conștient pe subiect.
-- **Masa e panoul Laboratorului.** Fiecare piesă descoperită devine o linie în `privat/cursuri/<curs>/masa.yml`. Spre finalul Laboratorului, piesele trec prin trei pași: **colectate → filtrate → ordonate**. Fluxul: Masa → Biblioteca → Agenda. Ce primește „Da” ajunge în Bibliotecă; ce ordonăm în blocuri face agenda.
-- **Poarta: masa aprobată de Alex.** Fără ea nu se produce nimic.
-- **Laboratorul continuă în paralel cu etapa B** (Alex, 2026-11-18). Poarta deschide producția pentru piesele aprobate, dar practicianul rămâne în imersie: ce descoperă intră pe masă cu verdict „nou”, trece prin aceeași filtrare și, dacă primește „Da”, intră în producție pentru ediția curentă sau pentru următoarea.
-- **Etapa B, producția.** Slide-uri, scheme, curs online, note de trainer, banca de exerciții, numai pentru piesele cu verdict „da”. Butonul „Trimite în agendă” face agenda ediției.
+- **Masa e panoul Laboratorului.** Fiecare piesă descoperită devine o linie în `privat/cursuri/<curs>/masa.yml`. Piesele trec prin trei pași: **colectate → filtrate → ordonate**. Fluxul: Masa → Biblioteca → Agenda. Ce primește „Da” ajunge în Bibliotecă; ce ordonăm în blocuri face agenda.
+
+### Poarta: masa aprobată de Alex
+Fără ea nu se produce nimic.
+
+### Etapa C · Producția (fosta etapă B)
+- **Ce include:** slide-uri, scheme, curs online, note de trainer, banca de exerciții.
+- **Pentru ce piese:** numai pentru cele cu verdict „da”.
+- Butonul „Trimite în agendă” face agenda ediției.
 
 ## Schema
-Bucla Research → Viziune și obiective → Piese → Flow Logic → Livrare flexibilă se repetă la fiecare livrare, până cursul se stabilizează (Alex, 2026-11-17). Piese și Flow Logic se fac în Laborator (etapa A).
+Bucla mare (A ⇄ B → C → livrare → feedback → înapoi în A) se repetă la fiecare livrare, până cursul se stabilizează (Alex, 2026-11-17).
 
 ```mermaid
 flowchart LR
-  D[2. Diagnosticare<br/>la fiecare ediție] --> O
+  D[Diagnosticare<br/>la fiecare ediție] --> A
   subgraph Bucla["Bucla, până la stabilizare"]
-    R[1. Research] --> O[3. Viziune și obiective]
-    subgraph A["Laboratorul, ~o lună: masa.yml"]
-      P[4. Piese<br/>colectate → filtrate] --> F[5. Flow Logic<br/>ordonate în 4 blocuri]
+    subgraph Ciclu["Ciclul A ⇄ B: se întăresc reciproc"]
+      A[A · Viziune și obiective] <--> B[B · Laboratorul, ~o lună<br/>practician, researcher, parteneri de gândire<br/>masa: colectate → filtrate → ordonate]
     end
-    O --> P
-    R --> PR[Practicianul + parteneri de gândire<br/>AI, oameni din public, peers]
-    PR --> P
-    F --> G{Masa aprobată<br/>de Alex?}
-    G -- nu --> P
-    G -- da --> B[Etapa B: producția<br/>doar piesele „da”] --> L[6. Livrare flexibilă]
-    PR -. continuă în paralel .-> B
+    B --> G{Masa aprobată<br/>de Alex?}
+    G -- nu --> B
+    G -- da --> C[C · Producția<br/>doar piesele „da”] --> L[Livrare flexibilă]
   end
-  L --> T[7. Feedbackul trainerului] --> R
-  L --> C[8. Curs online]
-  L --> FP[9. Feedback către participanți] --> V[10. Verificare centralizată, lunar]
-  V --> R
+  L --> T[Feedbackul trainerului] --> A
+  L --> CO[Curs online]
+  L --> FP[Feedback către participanți] --> V[Verificare centralizată, lunar]
+  V --> A
 ```
 
 ## Masa (`masa.yml`)
@@ -71,10 +85,10 @@ Pauzele de 15 minute sunt presupunerea noastră; Alex le poate corecta.
 | 1 | **Research** | modele, studii, exemple cu surse în `research.md` + piese candidate în `masa.yml` | Irina | citește rezumatul de 5 rânduri |
 | 2 | **Diagnosticare** (la fiecare ediție) | chestionar anonim de 3–5 întrebări înainte + o piesă de diagnostic la deschidere. Rezumatul, fără nume, în `editii/<data>.yml` (`nota_trainer`) | Daria | aprobă și **trimite** chestionarul |
 | 2b | **Practicianul în Laborator** (~o lună, în paralel cu 1–5) | trainerul care va livra învață, observă și dezbate cu partenerii de gândire (AI, oameni din publicul țintă, peers); descoperirile, exemplele și poveștile din practica lui intră pe masă ca piese candidate (`sursa: practică` / `conversație`), fără nume | trainerul care livrează (azi Alex). Daria le notează pe masă | trăiește subiectul, spune ce a aflat |
-| 3 | **Viziune și obiective** | **Viziunea:** transformarea dorită, într-o propoziție clară și simplă (Alex, 2026-11-18). **Obiectivele:** cel mult 4, scurte, care duc spre viziune. Ambele în `curs.yml` (sau în ediție) | Daria | formulează viziunea, aprobă lista |
-| 4 | **Piese** (Laborator) | candidate colectate și filtrate în `masa.yml` | Daria (Irina) | dă verdictele |
-| 5 | **Flow Logic** (Laborator) | piesele „da” ordonate în cele 4 blocuri | Daria. Andrei verifică | ordonează și **aprobă masa** |
-| – | **Producția** (etapa B) | `piese/<id>.md` cu ecrane (`:::sala`), scheme, note de trainer; „Trimite în agendă” face `agenda` din `editii/<data>.yml` | Matei (Daria, Irina) | Biblioteca de piese, vederile Ziua și Schița |
+| 3 | **Viziune și obiective** (A) | **Viziunea:** transformarea dorită, într-o propoziție clară și simplă (Alex, 2026-11-18). **Obiectivele:** cel mult 4, scurte, care duc spre viziune. Ambele în `curs.yml` (sau în ediție) | Daria | formulează viziunea, aprobă lista |
+| 4 | **Piese** (B · Laborator) | candidate colectate și filtrate în `masa.yml` | Daria (Irina) | dă verdictele |
+| 5 | **Flow Logic** (B · Laborator) | piesele „da” ordonate în cele 4 blocuri | Daria. Andrei verifică | ordonează și **aprobă masa** |
+| – | **Producția** (C) | `piese/<id>.md` cu ecrane (`:::sala`), scheme, note de trainer; „Trimite în agendă” face `agenda` din `editii/<data>.yml` | Matei (Daria, Irina) | Biblioteca de piese, vederile Ziua și Schița |
 | 6 | **Livrare flexibilă** | ziua în sală; alternativele și Biblioteca permit schimbări | Alex. Mike pentru generator | – |
 | 7 | **Feedbackul trainerului** | `editii/<data>-trainer.md`, în 10 minute, în aceeași zi | Alex sau co-trainerul. Andrei preia | îl scrie |
 | 8 | **Curs online** | exportul `<slug>-participanti.json`, fără note de trainer și fără nume; pe site prin PR | Matei. Mike pentru PR | aprobă PR-ul |
