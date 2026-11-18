@@ -19,7 +19,7 @@ valori: ["Rezultate", "Colaborare", "Umanitate"]
 parcurs:
   titlu: "Parcursul meu profesional"
   intro: "Rolurile care mi-au format modul de a lucra cu oamenii și cu învățarea."
-  eticheta_ani: "ani de drum"    # eticheta de sub orbită, după numărul de ani (se calculează din primul an)
+  eticheta_ani: "ani de învățare"    # Alex, 2026-11-18. Eticheta de sub orbită, după numărul de ani (se calculează din primul an)
   roluri:
     - rol: "Fondator"
       organizatie: "Youth ONG"

@@ -7,7 +7,7 @@
 // îl atinge lumina (--d) și o mică deplasare a etichetei (--dy), ca etichetele apropiate să nu se suprapună.
 // Pagina pune punctele cu sin() / cos() în site/src/site.css. JavaScript (site/src/despre.js) doar arată rolul jos.
 
-const A0 = 220, SPAN = 280;                 // unghiul primului an (ceas: 0 = sus) și deschiderea inelului; golul de jos ține „19 ani de drum”
+const A0 = 220, SPAN = 280;                 // unghiul primului an (ceas: 0 = sus) și deschiderea inelului; golul de jos ține „19 ani de învățare”
 const R = { tel: 108, mare: 196 };          // raza inelului pe telefon și de la 761 px în sus (la fel în site.css)
 const LINIE = 22, SPATIU = 3;               // înălțimea unei etichete și spațiul minim dintre două etichete
 const TRECERE = 6.96;                       // câte secunde îi ia luminii să ajungă la „azi” (58 % din tura de 12 s)
@@ -52,7 +52,7 @@ export function citesteParcurs(data, now = Date.now()){
   });
   const Y0 = Math.min(...roluri.map(r => r.de_la));
   return {
-    titlu: String(p.titlu || 'Parcursul meu profesional'), intro: String(p.intro || ''), eticheta_ani: String(p.eticheta_ani || 'ani de drum'),
+    titlu: String(p.titlu || 'Parcursul meu profesional'), intro: String(p.intro || ''), eticheta_ani: String(p.eticheta_ani || 'ani de învățare'),
     formareTitlu: String(fm.titlu || 'Formare'), roluri, formare, Y0, AZI, an
   };
 }
