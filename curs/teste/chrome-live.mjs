@@ -38,7 +38,7 @@ try {
 
   // Prezintă „Curba de pe podea” (alternativă, nu e în agendă) din Bibliotecă
   await b.click(c, '[data-vedere="banca"]');
-  ok(await b.evaluate(c, 'document.querySelectorAll("details.ex .prezinta-piesa").length === document.querySelectorAll("details.ex").length'), 'fiecare piesă din Bibliotecă are „Prezintă”');
+  ok(await b.evaluate(c, 'document.querySelectorAll("details.ex .prezinta-piesa").length === document.querySelectorAll("details.ex:not(.ex-de-produs)").length && !document.querySelector(".ex-de-produs .prezinta-piesa")'), 'fiecare piesă produsă din Bibliotecă are „Prezintă” (cele „de produs” nu)');
   await b.click(c, '#ex-plimbare-curba .prezinta-piesa'); await pauza(300);
   let s = await stare();
   ok(s.vedere === 'prezinta' && s.id === 'plimbare-curba~live#1', `„Prezintă” sare la primul ecran al piesei (${s.id})`);

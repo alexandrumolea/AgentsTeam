@@ -486,3 +486,26 @@ main > section#masa { max-width: 1440px; }
 @media (max-width: 640px) { .masa-coloane { grid-template-columns: minmax(0, 1fr); } }
 @media (pointer: coarse) { .mc-verdict button { min-height: 40px; min-width: 44px; } .masa-maner { width: 40px; height: 40px; } .masa-carte { padding-left: 3rem; } }
 @media print { .masa-bara, .masa-ajutor, .masa-maner, .mc-verdict { display: none; } }
+
+/* Masa ca panou de control (Alex, 2026-11-18): rezumatul de sus, compact, ca Biblioteca. Fiecare cifră e un link spre vederea ei. */
+.masa-rezumat { display: flex; flex-wrap: wrap; gap: .5rem 1.25rem; align-items: center; padding: .6rem .8rem; margin: 0 0 1rem; background: var(--t-suprafata); border: 1px solid var(--t-linie); border-radius: 12px; }
+.rz-grup { display: flex; flex-wrap: wrap; align-items: center; gap: .25rem; }
+.rz-eticheta { font-size: .72rem; letter-spacing: .06em; text-transform: uppercase; color: var(--t-sters); margin-right: .2rem; }
+.rz { font-size: .85rem; padding: .15rem .6rem; border-radius: 999px; font-variant-numeric: tabular-nums; min-height: 30px; }
+.rz b { font-weight: 650; }
+.rz-mic { font-size: .78rem; padding: .1rem .5rem; }
+.rz.depasire, .rz.lipsa, .rz.atentie { border-color: var(--cronometru-gata); color: var(--cronometru-gata); }
+.rz.lipsa { border-style: dashed; }
+.rz-lipsa { color: var(--cronometru-gata); text-transform: none; letter-spacing: 0; font-weight: 600; }
+.rz-stare { font-size: .85rem; }
+.rz-stare.atentie { color: var(--cronometru-gata); font-weight: 600; }
+.rz-stare.ramas::before { content: "✓ "; color: var(--t-accent); }
+.rz-principal { background: var(--t-accent); color: var(--t-pe-accent); border-color: var(--t-accent); }
+.masa-grup + .masa-grup { margin-top: .8rem; }
+.masa-sub { margin: 0 0 .15rem; font-size: .8rem; font-weight: 600; color: var(--t-sters); }
+@media (pointer: coarse) { .rz { min-height: 44px; } }
+@media print { .masa-rezumat { display: none; } }
+
+/* Biblioteca: piesele „de produs” (cu „Da” pe masă, fără piese/<id>.md) */
+details.ex-de-produs { border-style: dashed; background: transparent; }
+.de-produs-semn { font-size: .75rem; font-weight: 600; color: var(--cronometru-gata); border: 1px dashed currentColor; border-radius: 999px; padding: 0 .5rem; white-space: nowrap; }

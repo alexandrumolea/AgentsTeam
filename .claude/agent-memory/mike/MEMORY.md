@@ -30,6 +30,8 @@ Păstrează sub 150 de rânduri. Comprimă când crește. Fapte, nu povești.
 
 - 2026-11-18: când o funcție nouă schimbă exemplul comun al testelor, multe așteptări vechi se mută (totaluri, id-uri). Pune funcția nouă în teste separate (copie modificată) și lasă exemplul cât mai stabil.
 
+- 2026-11-18: Alex gândește în fluxuri (Masa → Biblioteca → Agenda). Înainte să construiesc o vedere nouă, întreb unde stă ea în flux și ce e „panoul de control”; altfel reconstruiesc aceeași zi.
+
 ## Fișiere de memorie
 - [Stack și găzduire](project_stack-hosting.md) — GitHub Pages (D-036–D-038), CNAME ignorat la Actions; fapte Netlify/Cloudflare/Vercel
 - [Generatorul paginii echipei](generator-echipa.md) — Mike îl deține; puncte fragile tăcute; 2026-11-17: panoul de control, maparea statusurilor

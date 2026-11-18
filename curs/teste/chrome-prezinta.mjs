@@ -32,7 +32,7 @@ try {
 
   // Biblioteca de piese (Banca v2 a Ioanei + familie și tip, v1.2): listă compactă, căutare, filtre-chip.
   await b.click(ctrl, '[data-vedere="banca"]');
-  const vizibile = () => b.evaluate(ctrl, '[...document.querySelectorAll("details.ex")].filter(a => !a.hidden).length');
+  const vizibile = () => b.evaluate(ctrl, '[...document.querySelectorAll("details.ex:not(.ex-de-produs)")].filter(a => !a.hidden).length');
   const chip = (f, v) => b.click(ctrl, `.chip[data-filtru="${f}"][data-valoare="${v}"]`);
   ok((await vizibile()) === 7, 'Biblioteca arată toate cele 7 piese');
   await chip('familie', 'continut');

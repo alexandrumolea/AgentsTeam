@@ -446,22 +446,24 @@ const MASA = (f) => (e) => e('masa.yml', f);
 test('masa.yml: candidatele ajung în material, cu „produsă” și blocul lor', () => {
   const r = cu(() => {}); ok(r);
   const m = date(r).masa;
-  assert.equal(m.exista, true); assert.equal(m.propunere, false); assert.equal(m.candidate.length, 11);
+  assert.equal(m.exista, true); assert.equal(m.propunere, false); assert.equal(m.candidate.length, 13, '11 din masa.yml + 2 piese vechi din Bibliotecă');
   const x = Object.fromEntries(m.candidate.map((c) => [c.id, c]));
   assert.deepEqual([x.curba.produsa, x['ridica-te-daca'].produsa, x['harta-emotiilor'].produsa], [true, true, false], 'modul sau piesă = produsă');
-  assert.deepEqual(['nou', 'da', 'poate', 'nu'].map((v) => m.candidate.filter((c) => c.verdict === v).length), [2, 6, 2, 1]);
+  assert.deepEqual(['nou', 'da', 'poate', 'nu'].map((v) => m.candidate.filter((c) => c.verdict === v).length), [2, 8, 2, 1]);
+  assert.deepEqual(m.candidate.filter((c) => c.virtuala).map((c) => [c.id, c.verdict, c.bloc]), [['model-curba', 'da', null], ['perechi-curba', 'da', null]], 'piesele cu fișier care nu sunt pe masă intră cu „da” (o singură listă)');
   assert.match(html(r), /<button data-vedere="masa">Masa<\/button>/);
   assert.ok(!exportul(r).includes('Harta emoțiilor'), 'masa nu ajunge în cursul participanților');
 });
 test('masa.yml: lipsa lui nu e eroare; Masa propune din agenda de azi', () => {
   const r2 = cu(MASA(() => 'candidate: []\n')); ok(r2);
-  assert.equal(date(r2).masa.candidate.length, 0, 'o masă goală e o masă goală, nu o propunere');
+  assert.ok(date(r2).masa.candidate.every((c) => c.virtuala && c.verdict === 'da') && date(r2).masa.candidate.length === 6, 'o masă goală are doar piesele din Bibliotecă (fără pauze), nu o propunere');
   const r3 = cu((e, f) => rmSync(f('masa.yml'))); ok(r3);
   const m = date(r3).masa;
   assert.equal(m.propunere, true);
-  assert.deepEqual(m.candidate.filter((c) => c.verdict === 'da').map((c) => [c.id, c.bloc, c.ordine]),
+  assert.deepEqual(m.candidate.filter((c) => c.verdict === 'da' && c.bloc).map((c) => [c.id, c.bloc, c.ordine]),
     [['deschidere', 1, 1], ['curba', 1, 2], ['ridica-te-daca', 1, 3], ['pasul-de-luni', 2, 1], ['inchidere', 2, 2]]);
-  assert.ok(m.candidate.some((c) => c.id === 'plimbare-curba' && c.verdict === 'nou'), 'restul bibliotecii stă la Colectate');
+  assert.ok(m.candidate.some((c) => c.id === 'plimbare-curba' && c.verdict === 'da' && c.bloc == null), 'restul bibliotecii stă în Bibliotecă (da, fără bloc)');
+  assert.ok(m.candidate.some((c) => c.id === 'model-curba' && c.verdict === 'da'), 'și piesele din module');
   assert.ok(!m.candidate.some((c) => c.id === 'pauza-cafea'), 'pauzele nu sunt candidate');
 });
 test('masa.yml: id-uri unice, verdict valid, durata un număr', () => {
@@ -497,6 +499,32 @@ test('textMasa: scris și citit înapoi dă aceleași candidate', () => {
   const r = cu(() => {}); ok(r);
   const c = date(r).masa.candidate, t = textMasa(c);
   const r2 = cu(MASA(() => t)); ok(r2);
-  const fara = (l) => l.map(({ produsa, ...x }) => x);
+  const fara = (l) => l.map(({ produsa, virtuala, ...x }) => x);
   assert.deepEqual(fara(date(r2).masa.candidate), fara(c));
+});
+
+// Masa → Biblioteca → Agenda (Alex, 2026-11-18)
+test('Biblioteca arată și piesele „de produs” de pe masă: fără ecrane, fără „Prezintă”', () => {
+  const r = cu(() => {}); ok(r);
+  const h = html(r);
+  const rand = h.match(/<details class="ex ex-de-produs" id="ex-harta-emotiilor"[\s\S]*?<\/details>/);
+  assert.ok(rand, 'harta-emotiilor (da, fără fișier) e în Bibliotecă');
+  assert.match(rand[0], /data-stare="de-produs"/); assert.match(rand[0], /de produs/); assert.match(rand[0], /Harta emoțiilor din echipă/);
+  assert.match(rand[0], /Ce simte grupul, pe un perete/, 'cu scopul');
+  assert.ok(!/prezinta-piesa|class="cadru/.test(rand[0]), 'fără „Prezintă” și fără ecrane');
+  assert.ok(!h.includes('id="ex-studiu-adaptare"'), '„nou” nu e în Bibliotecă');
+  assert.ok(!h.includes('id="ex-test-personalitate"'), '„nu” nu e în Bibliotecă');
+  assert.match(h, /data-filtru="stare" data-valoare="de-produs"/, 'filtrul „de produs”');
+  assert.equal(date(r).biblioteca['harta-emotiilor'], undefined, 'nimic de prezentat');
+});
+test('Masa e vederea implicită și are rezumatul; obiectivele intră în date', () => {
+  const r = cu(() => {}); ok(r);
+  const h = html(r), d = date(r);
+  assert.match(h, /<section id="masa" hidden>[\s\S]*id="masa-rezumat"/);
+  assert.match(h, /\$\('masa'\) \? 'masa' : 'ziua'/, 'fără hash, pagina deschide Masa');
+  assert.equal(d.obiective.length, 4);
+  assert.deepEqual(d.module.filter((m) => m.fixa).map((m) => m.bloc), [1]);
+  assert.ok(d.masa.candidate.find((c) => c.id === 'curba').obFisier.includes(1), 'obiectivele din fișier ajung la candidată');
+  const fara = cu((e, f) => rmSync(f('masa.yml'))); ok(fara);
+  assert.ok(html(fara).includes('<section id="masa"'), 'și fără masa.yml, Masa (propunerea) e acolo');
 });

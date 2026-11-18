@@ -260,7 +260,7 @@
   // Durata e un prag: un singur chip apăsat odată.
   function normal(s) { return String(s).normalize('NFD').replace(/[̀-ͯ]/g, '').toLowerCase().replace(/[^a-z0-9]+/g, ' ').trim(); }
   function filtreaza() {
-    var f = { familie: [], tip: [], format: [], energie: [], durata: [], modul: [], eticheta: [] }, l = document.querySelectorAll('.chip[aria-pressed="true"]');
+    var f = { familie: [], tip: [], format: [], energie: [], durata: [], modul: [], eticheta: [], stare: [] }, l = document.querySelectorAll('.chip[aria-pressed="true"]');
     for (var k = 0; k < l.length; k++) f[l[k].getAttribute('data-filtru')].push(l[k].getAttribute('data-valoare'));
     var c = $('banca-cauta'), q = c ? normal(c.value) : '', cuvinte = q ? q.split(' ') : [];
     var ex = document.querySelectorAll('details.ex'), n = 0;
@@ -273,6 +273,7 @@
         (!f.energie.length || f.energie.indexOf(a.getAttribute('data-energie')) >= 0) &&
         (!f.durata.length || +a.getAttribute('data-durata') <= +f.durata[0]) &&
         (!f.modul.length || !mod || f.modul.some(function (m) { return (' ' + mod + ' ').indexOf(' ' + m + ' ') >= 0; })) &&
+        (!f.stare.length || f.stare.indexOf(a.getAttribute('data-stare')) >= 0) &&
         (!f.eticheta.length || f.eticheta.some(function (t) { return (a.getAttribute('data-etichete') || '').indexOf('|' + t + '|') >= 0; }));
       for (var w = 0; ok && w < cuvinte.length; w++) if (text.indexOf(cuvinte[w]) < 0) ok = false;
       a.hidden = !ok; if (ok) n++;
@@ -728,7 +729,8 @@
     var dex = document.querySelectorAll('details.ex'); for (var z = 0; z < dex.length; z++) dex[z].open = true;
     hidrateaza(document);
   } else {
-    arata(['masa', 'ziua', 'modul', 'schita', 'banca', 'ecrane', 'prezinta'].indexOf(h) >= 0 && $(h) ? h : 'ziua');
+    // Masa e panoul de control al cursului (Alex, 2026-11-18): vederea de la deschidere, când cursul o are.
+    arata(['masa', 'ziua', 'modul', 'schita', 'banca', 'ecrane', 'prezinta'].indexOf(h) >= 0 && $(h) ? h : $('masa') ? 'masa' : 'ziua');
     hidrateaza(document);
   }
   window.__curs = { stare: function () { return { id: ECRANE[st.i] ? ECRANE[st.i].id : null, ordine: ECRANE.map(function (x) { return x.id; }), i: st.i, negru: negru, salaDeschisa: salaDeschisa(), aici: aici, cron: { total: cron.total, ramas: cronRamas(), pornit: !!cron.pornit }, vedere: vedere }; } };

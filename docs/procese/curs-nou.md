@@ -5,6 +5,7 @@
 **Unde stă cursul:** sursa în repo-ul privat BEMORE-STUDIO, clonat în `privat/cursuri/<curs>/` (D-050). Generatorul e în `curs/` (`curs/README.md`). În repo-ul public intră doar procesul.
 
 ## Regula de bază: întâi conținutul, apoi producția (Alex, 2026-11-18)
+- **Fluxul: Masa → Biblioteca → Agenda** (Alex, 2026-11-18). Masa e brainstormingul (toate candidatele); ce primește „Da” ajunge în Bibliotecă (produs sau „de produs”); ce ordonăm în blocuri face agenda. Masa e panoul de control al cursului.
 - **Etapa A, conținutul, pe masă.** Gândim schița și tot conținutul înainte de orice slide. Se lucrează doar în `privat/cursuri/<curs>/masa.yml`: o linie pe piesă candidată. Trei pași: **colectate → filtrate → ordonate**.
 - **Poarta: masa aprobată de Alex.** Fără ea nu se produce nimic.
 - **Etapa B, producția.** Slide-uri, scheme, curs online, note de trainer, banca de exerciții, numai pentru piesele cu verdict „da”. Butonul „Trimite în agendă” face agenda ediției.

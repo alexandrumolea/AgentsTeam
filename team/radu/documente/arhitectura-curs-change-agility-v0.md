@@ -421,11 +421,15 @@ Cererile lui Alex: „programul unui curs este 9:30 - 17:30. Pauză la 11:00, pa
 - O piesă nu se rupe peste o pauză: dacă nu încape, build-ul dă avertisment și arată depășirea, iar pauza începe după ea. Build-ul nu se oprește.
 - Ziua și Schița arată pe fiecare bloc „X din Y min” și „liber / plin / depășire”. Rândurile `pauza: N` rămân pauze suplimentare.
 
-**B. Masa: etapa A, conținutul înainte de producție**
-- **Sursa:** `masa.yml`, un fișier mic pe curs: `candidate:` cu `id`, `titlu`, `scop`, `durata`, `tip`, `sursa`, `verdict` (nou / da / poate / nu), `bloc` (1–4 sau gol), `ordine`; opțional `obiective`, `nota`. Fără text de slide. Lipsa fișierului nu e eroare: Masa propune din agenda de azi și din bibliotecă.
-- **Vederea Masa** (materialul trainerului și editorul local): Colectate (nou), Filtrate (da / poate; „nu” ascuns, cu filtru), Ordonate (blocurile zilei, cu pauzele fixe între ele și „X din Y min”, recalculat pe loc). Cartonașe compacte ca în Bibliotecă; Da / Poate / Nu; tragere cu mouse-ul și cu degetul; tastatura (`D` `P` `N`, `1`–`4`, `0`, `↑` `↓`). Un cartonaș cu `piese/<id>.md` (sau modul) e „produsă”.
-- **Salvarea:** în editorul local, direct în `masa.yml`, prin același server și token, cu copie în `.editor-istoric/` și verificare de concurență; offline, în browser, cu „Copiază masa.yml”.
-- **Legătura cu producția:** „Trimite în agendă” face agenda ediției din blocurile Ordonate: intră piesele cu „Da” care au fișier produs; celelalte sunt listate „de produs” (Da) și „nehotărâte” (Poate). În editor scrie doar cheia `agenda:` din `editii/<data>.yml`, cu copie de siguranță; offline, copiază textul.
+**B. Masa: panoul de control al cursului**
+Precizarea lui Alex (2026-11-18): „Masa este înainte să decidem ce rămâne sau nu în bibliotecă, da? Este rezultatul brainstorming-urilor. Apoi tot ce filtrăm, ajunge și în bibliotecă, apoi tot ce ordonăm crează agenda. Acest masa, aș vrea să fie panoul de control.”
+- **Fluxul: Masa → Biblioteca → Agenda.** Masa = brainstormingul, toate candidatele, ca linii în `masa.yml` (`id`, `titlu`, `scop`, `durata`, `tip`, `sursa`, `verdict` nou / da / poate / nu, `bloc`, `ordine`; opțional `obiective`, `nota`; fără text de slide). „Da” = în Bibliotecă; „Poate” rămâne pe masă; „Nu” se ascunde. Ordinea din blocuri face agenda.
+- **O singură listă:** piesele vechi (cu fișier în `piese/`, dar nu pe masă) apar pe masă cu „Da” și intră în `masa.yml` la prima schimbare.
+- **Biblioteca** arată toate piesele cu „Da”: cele produse ca până acum, iar cele fără `piese/<id>.md` cu titlu, scop și durată, marcate „de produs”, fără ecrane și fără „Prezintă”.
+- **Masa e prima vedere** (în editor și offline). Sus, un rezumat compact, cu fiecare cifră link spre vederea ei: candidatele (nou / poate / nu), Biblioteca (produse / de produs), agenda de pe masă pe blocuri față de timpul zilei, obiectivele acoperite (unul neacoperit e marcat), starea agendei ediției față de masă, cu „Trimite în agendă”.
+- **Coloanele** sunt etapele: 1 · Brainstorming, 2 · Bibliotecă, 3 · Agendă (blocurile, cu pauzele fixe și „X din Y min” recalculat pe loc). Da / Poate / Nu, tragere cu mouse-ul și cu degetul, tastatura (`D` `P` `N`, `1`–`4`, `0`, `↑` `↓`).
+- **Salvarea:** în editorul local, direct în `masa.yml` (același server și token, copie în `.editor-istoric/`, verificare de concurență); offline, în browser, cu „Copiază masa.yml”.
+- **„Trimite în agendă”:** intră în agenda ediției piesele cu „Da” și fișier produs din blocuri; celelalte sunt listate „de produs” (Da) și „nehotărâte” (Poate). În editor scrie doar cheia `agenda:` din `editii/<data>.yml`, cu copie de siguranță; offline, copiază textul.
 - **Validare:** id-uri unice, verdict valid, durata un număr (opresc build-ul). Bloc inexistent: avertisment.
 
 ## 2. Cum se leagă de ce există
@@ -594,3 +598,4 @@ Taste simple: săgeți sau telecomanda de prezentare pentru ecranul următor, `C
 | 2026-11-17 | v1.1: D-048–D-051 aprobate. Alex a aprobat formatul pentru banca de exerciții (I-021): secțiunea 1.8, agenda în ediție (înlocuiește `sari_peste`), `durata` modulului fără exerciții, exemplul cu exercițiu implicit și alternativ, verificările noi. Editorul cu drag and drop vine după 23. |
 | 2026-11-17 | v1.2: întrebarea lui Alex despre modularitate. Secțiunea 1.9 propune piesa de workshop ca unitate de bază (conținut, activitate, punte), modulul ca secvență subțire, piese locale pe curs acum și bibliotecă comună după 25, piese singure în agendă. De decis de Alex. |
 | 2026-11-18 | 1.13: pauzele la ore fixe (blocurile zilei) și vederea Masa (etapa A: colectate, filtrate, ordonate; „Trimite în agendă”). Aprobate de Alex („Da, construim”), construite de Mike. |
+| 2026-11-18 | 1.13 B, precizarea lui Alex: Masa e panoul de control și prima vedere; fluxul Masa → Biblioteca → Agenda; Biblioteca arată și piesele „de produs”; rezumat cu obiectivele acoperite și starea agendei. Construit de Mike. |

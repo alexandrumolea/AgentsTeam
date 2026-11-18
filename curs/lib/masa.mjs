@@ -59,10 +59,30 @@ export function citesteMasa(c, erori, avertismente) {
   let v;
   try { v = parseYaml(text) ?? {}; } catch (e) { erori.push(`${FISIER}: YAML greșit (${e.message.split('\n')[0]})`); return { exista: true, propunere: false, hash: hash(text), candidate: [] }; }
   if (typeof v !== 'object' || Array.isArray(v)) { erori.push(`${FISIER}: are forma „candidate: [ … ]”`); return { exista: true, propunere: false, hash: hash(text), candidate: [] }; }
-  return { exista: true, propunere: false, hash: hash(text), candidate: verificaCandidate(v.candidate ?? [], c, erori, avertismente) };
+  return { exista: true, propunere: false, hash: hash(text), candidate: completeaza(verificaCandidate(v.candidate ?? [], c, erori, avertismente), c) };
 }
 
-/** Propunerea de pornire: ce e azi în agendă (da, cu blocul și ordinea lui), apoi restul bibliotecii (colectate).
+/** Obiectivele din fișierul piesei sau al modulului (pentru rezumat; nu se scriu în masa.yml). */
+function obiectiveDin(c, id) {
+  const f = c.piese.get(id) ?? c.module.find((m) => m.id === id);
+  return f?.obiective ?? [];
+}
+/**
+ * Fluxul (Alex, 2026-11-18): Masa → Biblioteca → Agenda, o singură listă. Piesele care au deja fișier în piese/, dar nu sunt
+ * pe masă (piesele vechi), apar pe masă cu „da”, adică în Bibliotecă. Sunt „virtuale”: intră în masa.yml abia când le schimbi
+ * ceva în editor (sau cu „Copiază masa.yml”). Pauzele nu sunt candidate.
+ */
+export function completeaza(candidate, c) {
+  const are = new Set(candidate.map((x) => x.id));
+  const out = candidate.map((x) => ({ ...x, obFisier: obiectiveDin(c, x.id) }));
+  for (const p of c.piese.values()) {
+    if (are.has(p.id) || p.tip === 'pauza') continue;
+    out.push({ id: p.id, titlu: p.titlu, scop: p.obiectiv || p.ancora || '', durata: p.durata, tip: p.tip, sursa: 'bibliotecă', verdict: 'da', bloc: null, ordine: null, obiective: [], nota: '', produsa: true, virtuala: true, obFisier: p.obiective ?? [] });
+  }
+  return out;
+}
+
+/** Propunerea de pornire: ce e azi în agendă (da, cu blocul și ordinea lui), apoi restul bibliotecii (da, fără bloc: e în Bibliotecă).
  *  Piesele alese într-un modul vin cu modulul; pauzele (rânduri sau piese) nu sunt candidate. */
 export function propunere(c) {
   const out = [], pus = new Set(), ordine = new Map();
@@ -76,10 +96,10 @@ export function propunere(c) {
     out.push({ id: f.id, titlu: f.titlu, scop: f.ancora || f.obiectiv || '', durata: r.durata, tip: f.tip, sursa: 'curs', verdict: 'da', bloc: r.bloc, ordine: n, obiective: f.obiective ?? [], nota: '', produsa: true });
   }
   for (const p of c.piese.values()) {
-    if (pus.has(p.id) || p.tip === 'pauza') continue;
-    out.push({ id: p.id, titlu: p.titlu, scop: p.obiectiv || p.ancora || '', durata: p.durata, tip: p.tip, sursa: 'bibliotecă', verdict: 'nou', bloc: null, ordine: null, obiective: p.obiective ?? [], nota: '', produsa: true });
+    if (out.some((x) => x.id === p.id) || p.tip === 'pauza') continue; // și piesele din module: sunt în Bibliotecă
+    out.push({ id: p.id, titlu: p.titlu, scop: p.obiectiv || p.ancora || '', durata: p.durata, tip: p.tip, sursa: 'bibliotecă', verdict: 'da', bloc: null, ordine: null, obiective: p.obiective ?? [], nota: '', produsa: true });
   }
-  return out;
+  return out.map((x) => ({ ...x, obFisier: obiectiveDin(c, x.id) }));
 }
 
 const q = (t) => (/^[\p{L}\p{N} .,;()–-]*$/u.test(t) && !/^[\s-]|\s$|^(da|nu|true|false|null|yes|no)$/i.test(t) && t !== '' && !/^\d/.test(t) ? t : JSON.stringify(t));
@@ -173,8 +193,14 @@ export function scrieMasa(c, schimbari, hashCitit) {
   const lista = doc.get('candidate');
   if (!lista || !Array.isArray(lista.items)) throw new EroareEditor('masa.yml nu are lista „candidate”.', 422);
   for (const s of schimbari) {
-    const item = lista.items.find((n) => n && typeof n.get === 'function' && String(n.get('id')) === String(s?.id));
-    if (!item) throw new EroareEditor(`nu găsesc candidata „${s?.id}” în masa.yml`, 404);
+    let item = lista.items.find((n) => n && typeof n.get === 'function' && String(n.get('id')) === String(s?.id));
+    if (!item) {
+      // O piesă din Bibliotecă care nu era încă pe masă (virtuală): intră acum în masa.yml, la final.
+      const p = c.piese.get(String(s?.id));
+      if (!p || p.tip === 'pauza') throw new EroareEditor(`nu găsesc candidata „${s?.id}” în masa.yml`, 404);
+      item = doc.createNode({ id: p.id, titlu: p.titlu, ...(p.obiectiv || p.ancora ? { scop: p.obiectiv || p.ancora } : {}), durata: p.durata, tip: p.tip, sursa: 'bibliotecă', verdict: 'da' });
+      lista.items.push(item);
+    }
     if ('verdict' in s) { if (!VERDICTE.includes(s.verdict)) throw new EroareEditor(`verdict „${s.verdict}” necunoscut`); item.set('verdict', s.verdict); }
     if ('bloc' in s) { if (s.bloc == null) item.delete('bloc'); else if (Number.isInteger(s.bloc) && s.bloc > 0) item.set('bloc', s.bloc); else throw new EroareEditor(`bloc „${s.bloc}” greșit`); }
     if ('ordine' in s) { if (s.ordine == null) item.delete('ordine'); else if (Number.isInteger(s.ordine) && s.ordine > 0) item.set('ordine', s.ordine); else throw new EroareEditor(`ordine „${s.ordine}” greșită`); }

@@ -1,5 +1,6 @@
 // Vederea „Masa” (etapa A, Alex, 2026-11-18): piesele candidate din masa.yml, în trei coloane.
-// Colectate (verdict nou) → Filtrate (da / poate; „nu” ascuns, cu filtru) → Ordonate (blocurile zilei, cu pauzele fixe între ele).
+// Fluxul (Alex, 2026-11-18): Masa → Biblioteca → Agenda. Coloanele: 1 Brainstorming (nou; „poate” rămâne pe masă; „nu” ascuns),
+// 2 Bibliotecă (da, produse sau de produs), 3 Agendă (blocurile zilei, cu pauzele fixe între ele). Sus, rezumatul: panoul de control.
 // Offline: schimbările stau în acest browser, iar „Copiază masa.yml” dă fișierul. În editorul local (curs/editor.mjs), fiecare
 // schimbare se scrie direct în masa.yml, prin window.__masaEditor, pe care îl pune doar pagina servită de editor. Fără biblioteci, fără internet.
 (function () {
@@ -68,7 +69,7 @@
     });
   }
   function scoate(id) { schimba(function () { var x = ID[id]; x.bloc = null; x.ordine = null; if (x.verdict === 'nou') x.verdict = 'da'; }); }
-  /** ↑ ↓ în Ordonate: un loc mai sus sau mai jos; la marginea blocului, trece în blocul vecin. */
+  /** ↑ ↓ în Agendă: un loc mai sus sau mai jos; la marginea blocului, trece în blocul vecin. */
   function muta(id, pas) {
     var x = ID[id]; if (!inOrdonate(x)) return false;
     var lista = dinBloc(x.bloc), i = lista.indexOf(x), k = x.bloc;
@@ -137,12 +138,16 @@
     return '<span class="masa-bloc-nume"><b>Blocul ' + b.nr + '</b>' + (b.start != null && b.sfarsit != null ? ' <span class="sters">' + oraDin(b.start) + '–' + oraDin(b.sfarsit) + '</span>' : '') + '</span>' +
       '<span class="masa-bloc-total">' + t.text + '</span>' + (t.stare ? '<span class="masa-bloc-stare">' + t.stare + '</span>' : '');
   }
+  var grup = function (lista, tip, titlu, ajutor, carti) {
+    return '<div class="masa-grup" data-grup="' + tip + '">' + (titlu ? '<p class="masa-sub" id="masa-h-' + tip + '">' + titlu + ' <span class="banca-grup-nr">' + carti.length + '</span></p>' : '') +
+      (ajutor ? '<p class="masa-col-ajutor sters">' + ajutor + '</p>' : '') +
+      '<ol class="masa-lista" data-lista="' + tip + '"' + (titlu ? ' aria-labelledby="masa-h-' + tip + '"' : '') + '>' + carti.map(carte).join('') + '</ol></div>';
+  };
   function randeaza() {
     var col = $('masa-coloane'); if (!col) return;
-    var colectate = cand.filter(function (x) { return x.verdict === 'nou' && x.bloc == null; });
-    var filtrate = cand.filter(function (x) { return (x.verdict === 'da' || x.verdict === 'poate') && x.bloc == null; });
+    var fara = function (v) { return cand.filter(function (x) { return x.verdict === v && x.bloc == null; }); };
+    var noi = fara('nou'), poate = fara('poate'), biblioteca = fara('da');
     var nu = cand.filter(function (x) { return x.verdict === 'nu'; });
-    var arataNu = respinse ? nu : [];
     var nOrd = 0;
     var blocuri = BLOCURI.map(function (b) {
       var ale = dinBloc(b.nr); nOrd += ale.length;
@@ -152,27 +157,87 @@
         '<ol class="masa-lista" data-lista="bloc" data-bloc="' + b.nr + '" aria-labelledby="masa-cap-' + b.nr + '">' + ale.map(carte).join('') + '</ol></div>' +
         (p ? '<p class="masa-pauza"><span class="semn-mic fel-pauza" aria-hidden="true"></span>' + oraDin(p.la) + ' · ' + esc(p.titlu) + ' · ' + p.min + ' min</p>' : '');
     }).join('');
+    // Cele trei etape (Alex, 2026-11-18): Brainstorming → Bibliotecă → Agendă. „Poate” rămâne pe masă; „Nu” se ascunde.
     col.innerHTML =
-      '<section class="masa-col masa-col-simpla" data-col="colectate" aria-labelledby="masa-h-c"><h3 class="eticheta" id="masa-h-c">Colectate <span class="banca-grup-nr">' + colectate.length + '</span></h3>' +
-      '<p class="masa-col-ajutor sters">Tot ce ar putea intra. Fără verdict încă.</p><ol class="masa-lista" data-lista="colectate" aria-labelledby="masa-h-c">' + colectate.map(carte).join('') + '</ol></section>' +
-      '<section class="masa-col masa-col-simpla" data-col="filtrate" aria-labelledby="masa-h-f"><h3 class="eticheta" id="masa-h-f">Filtrate <span class="banca-grup-nr">' + filtrate.length + '</span></h3>' +
-      '<p class="masa-col-ajutor sters">Bune de pus în zi: da sau poate.' + (nu.length && !respinse ? ' ' + nu.length + ' cu „Nu”, ascunse.' : '') + '</p><ol class="masa-lista" data-lista="filtrate" aria-labelledby="masa-h-f">' + filtrate.concat(arataNu).map(carte).join('') + '</ol></section>' +
-      '<section class="masa-col masa-ordonate" data-col="ordonate" aria-labelledby="masa-h-o"><h3 class="eticheta" id="masa-h-o">Ordonate <span class="banca-grup-nr">' + nOrd + '</span></h3>' + blocuri + '</section>';
+      '<section class="masa-col" data-col="brainstorming" aria-labelledby="masa-h-b"><h3 class="eticheta" id="masa-h-b">1 · Brainstorming <span class="banca-grup-nr">' + (noi.length + poate.length) + '</span></h3>' +
+      grup(noi, 'nou', '', 'Tot ce a ieșit din brainstorming. Fără verdict încă.', noi) +
+      grup(poate, 'poate', 'Poate', 'Rămân pe masă, nu intră încă în Bibliotecă.', poate) +
+      (respinse ? grup(nu, 'nu', 'Nu', 'Respinse. Nu intră nicăieri.', nu) : '') + '</section>' +
+      '<section class="masa-col" data-col="biblioteca" aria-labelledby="masa-h-l"><h3 class="eticheta" id="masa-h-l">2 · Bibliotecă <span class="banca-grup-nr">' + biblioteca.length + '</span></h3>' +
+      grup(biblioteca, 'biblioteca', '', 'Ce a trecut de filtru („Da”), produs sau de produs. Cele puse în zi stau la Agendă.', biblioteca) + '</section>' +
+      '<section class="masa-col masa-ordonate" data-col="agenda" aria-labelledby="masa-h-o"><h3 class="eticheta" id="masa-h-o">3 · Agendă <span class="banca-grup-nr">' + nOrd + '</span></h3>' + blocuri + '</section>';
     var r = $('masa-respinse'); r.setAttribute('aria-pressed', respinse ? 'true' : 'false'); r.textContent = respinse ? 'Ascunde „Nu” (' + nu.length + ')' : 'Arată și „Nu” (' + nu.length + ')'; r.disabled = !nu.length && !respinse;
     $('masa-reset').hidden = !!editor() || !local;
     $('masa-agenda').disabled = blocat();
-    stare();
+    rezumat(); stare();
     if (fokus) { var f = col.querySelector('.masa-carte[data-id="' + fokus + '"]'); if (f) f.focus({ preventScroll: false }); }
   }
   var ultimaStare = '';
   function stare(t) {
     if (t != null) ultimaStare = t;
-    var n = function (f) { return cand.filter(f).length; };
     var s = $('masa-stare'); if (!s) return;
-    s.textContent = cand.length + ' candidate · ' + n(function (x) { return x.verdict === 'nou' && x.bloc == null; }) + ' colectate · ' +
-      n(function (x) { return (x.verdict === 'da' || x.verdict === 'poate') && x.bloc == null; }) + ' filtrate · ' + n(inOrdonate) + ' ordonate' +
-      (n(function (x) { return x.verdict === 'nu'; }) ? ' · ' + n(function (x) { return x.verdict === 'nu'; }) + ' cu „Nu”' : '') +
-      (editor() ? (ultimaStare ? ' · ' + ultimaStare : '') : local ? ' · schimbări salvate în acest browser' : '');
+    s.textContent = editor() ? (M.propunere ? 'propunere, încă fără masa.yml' : ultimaStare || 'se salvează în masa.yml') : local ? 'schimbări salvate în acest browser' : 'ca în masa.yml';
+  }
+
+  // ---------- rezumatul: panoul de control al cursului (Alex, 2026-11-18) ----------
+  // Fiecare cifră duce la vederea ei. Agenda „de pe masă” = cartonașele din blocuri; „agenda ediției” = ce e acum în ediție (DATA.module).
+  var OBIECTIVE = DATA.obiective || [];
+  var obiectiveDe = function (x) { var o = {}; (x.obiective || []).concat(x.obFisier || []).forEach(function (n) { o[n] = 1; }); return o; };
+  /** Agenda de pe masă, ca perechi id + bloc (doar ce intră la „Trimite”: Da și produsă), față de agenda ediției. */
+  function sincronizata() {
+    var masa = [], editie = [];
+    BLOCURI.forEach(function (b) { dinBloc(b.nr).forEach(function (x) { if (x.verdict === 'da' && x.produsa) masa.push(x.id + '@' + b.nr); }); });
+    DATA.module.forEach(function (m) { if (m.id && m.tip !== 'pauza' && !m.live) editie.push(m.id + '@' + (m.bloc || 1)); });
+    return masa.join(' ') === editie.join(' ');
+  }
+  function rezumat() {
+    var z = $('masa-rezumat'); if (!z) return;
+    var n = function (f) { return cand.filter(f).length; };
+    var da = cand.filter(function (x) { return x.verdict === 'da'; });
+    var prod = da.filter(function (x) { return x.produsa; }).length;
+    var inZi = cand.filter(inOrdonate), deZi = inZi.filter(function (x) { return x.verdict === 'da'; });
+    var min = inZi.reduce(function (a, x) { return a + (+x.durata || 0); }, 0);
+    var disp = BLOCURI.reduce(function (a, b) { return a + (b.disponibil || 0); }, 0);
+    var b = function (rz, html, titlu, extra) { return '<button type="button" class="rz' + (extra ? ' ' + extra : '') + '" data-rz="' + rz + '"' + (titlu ? ' title="' + esc(titlu) + '"' : '') + '>' + html + '</button>'; };
+    var cifra = function (k) { return '<b>' + k + '</b>'; };
+    var blocuri = BLOCURI.length > 1 ? BLOCURI.map(function (bl) {
+      var t = totalBloc(bl, dinBloc(bl.nr).map(function (x) { return x.id; }));
+      return b('bloc-' + bl.nr, 'B' + bl.nr + ' ' + t.text.replace(' din ', '/').replace(' min', ''), 'Blocul ' + bl.nr + ': ' + t.text + (t.stare ? ', ' + t.stare : ''), 'rz-mic ' + t.clasa);
+    }).join('') : '';
+    var ob = OBIECTIVE.map(function (text, i) {
+      var k = deZi.filter(function (x) { return obiectiveDe(x)[i + 1]; }).length;
+      return b('obiective', (i + 1) + ': ' + cifra(k), 'Obiectivul ' + (i + 1) + ': ' + text + ' · ' + (k ? k + (k === 1 ? ' piesă' : ' piese') + ' în agendă' : 'neacoperit'), 'rz-mic ' + (k ? 'ramas' : 'lipsa'));
+    }).join('');
+    var neacoperite = OBIECTIVE.filter(function (t, i) { return !deZi.some(function (x) { return obiectiveDe(x)[i + 1]; }); }).length;
+    var sinc = sincronizata();
+    z.innerHTML =
+      '<div class="rz-grup"><span class="rz-eticheta">Masa</span>' + b('nou', cifra(n(function (x) { return x.verdict === 'nou' && x.bloc == null; })) + ' noi') + b('poate', cifra(n(function (x) { return x.verdict === 'poate'; })) + ' poate') + b('nu', cifra(n(function (x) { return x.verdict === 'nu'; })) + ' nu') + '</div>' +
+      '<div class="rz-grup"><span class="rz-eticheta">Bibliotecă</span>' + b('biblioteca', cifra(da.length) + ' piese') + b('produse', cifra(prod) + ' produse') + b('de-produs', cifra(da.length - prod) + ' de produs', '', da.length - prod ? 'atentie' : '') + '</div>' +
+      '<div class="rz-grup"><span class="rz-eticheta">Agendă</span>' + b('agenda', cifra(inZi.length) + ' piese · ' + cifra(min) + ' din ' + disp + ' min', 'Din ' + (DATA.total && DATA.total.durataZi || 'ziua cursului') + ', fără pauzele fixe') + blocuri + '</div>' +
+      (OBIECTIVE.length ? '<div class="rz-grup"><span class="rz-eticheta">Obiective' + (neacoperite ? ' <span class="rz-lipsa">' + neacoperite + ' neacoperit' + (neacoperite === 1 ? '' : 'e') + '</span>' : '') + '</span>' + ob + '</div>' : '') +
+      '<div class="rz-grup"><span class="rz-eticheta">Ediția</span><span class="rz-stare ' + (sinc ? 'ramas' : 'atentie') + '" id="masa-sinc">' + (sinc ? 'agenda e la zi cu masa' : 'agenda diferă de masă') + '</span>' + (sinc ? '' : b('trimite', 'Trimite în agendă', '', 'rz-principal')) + '</div>';
+  }
+  function mergiLa(v) { var n = document.querySelector('[data-vedere="' + v + '"]'); if (n) n.click(); window.scrollTo(0, 0); }
+  function laRezumat(rz) {
+    if (rz === 'trimite') { trimiteInAgenda(); return; }
+    if (rz === 'nou' || rz === 'poate' || rz === 'nu') {
+      if (rz === 'nu' && !respinse) { respinse = true; randeaza(); }
+      var g = document.querySelector('.masa-grup[data-grup="' + rz + '"]'); if (g) g.scrollIntoView({ block: 'start' });
+      return;
+    }
+    if (rz === 'biblioteca' || rz === 'produse' || rz === 'de-produs') {
+      mergiLa('banca');
+      var sterge = $('banca-sterge'); if (sterge && !sterge.hidden) sterge.click();
+      var chip = rz === 'biblioteca' ? null : document.querySelector('.chip[data-filtru="stare"][data-valoare="' + (rz === 'produse' ? 'produsa' : 'de-produs') + '"]');
+      if (chip && chip.getAttribute('aria-pressed') !== 'true') chip.click();
+      return;
+    }
+    if (rz === 'obiective') { mergiLa('schita'); return; }
+    if (rz === 'agenda' || /^bloc-/.test(rz)) {
+      mergiLa('ziua');
+      var tr = /^bloc-/.test(rz) ? document.querySelector('#ziua tr.bloc-cap[data-bloc="' + rz.slice(5) + '"]') : null;
+      if (tr) tr.scrollIntoView({ block: 'start' });
+    }
   }
   function mesaj(t, eroare) { var m = $('masa-mesaj'); if (m) { m.textContent = t; m.classList.toggle('eroare', !!eroare); } }
   /** În timpul tragerii, totalurile blocurilor urmăresc cartonașul. */
@@ -239,7 +304,7 @@
     var a = agendaDinMasa();
     var rest = (a.deProdus.length ? 'De produs (au „Da”, dar nu au încă fișier în piese/): ' + listaTitluri(a.deProdus) + '. ' : '') +
       (a.nehotarate.length ? 'Nehotărâte („Poate”, nu intră): ' + listaTitluri(a.nehotarate) + '.' : '');
-    if (!a.linii.some(function (l) { return l.indexOf('- bloc:') !== 0; })) { mesaj('Nicio piesă cu „Da” și fișier produs în blocurile din Ordonate, deci nu am ce trimite în agendă. ' + rest, true); return; }
+    if (!a.linii.some(function (l) { return l.indexOf('- bloc:') !== 0; })) { mesaj('Nicio piesă cu „Da” și fișier produs în blocurile din Agendă, deci nu am ce trimite în agendă. ' + rest, true); return; }
     var ed = editor();
     if (!ed) {
       var d = new Date(), text = 'agenda:                 # din Masa, ' + d.getFullYear() + '-' + pad(d.getMonth() + 1) + '-' + pad(d.getDate()) + '\n' + a.linii.map(function (l) { return '  ' + l; }).join('\n') + '\n' +
@@ -266,7 +331,7 @@
     var p = $('masa-propunere');
     if (M.propunere) {
       p.hidden = false;
-      p.innerHTML = 'Cursul nu are încă <code>masa.yml</code>. Ce vezi e o propunere: piesele din agenda de azi (cu „Da”, în blocurile lor) și restul bibliotecii (la Colectate). ' +
+      p.innerHTML = 'Cursul nu are încă <code>masa.yml</code>. Ce vezi e o propunere: piesele din agenda de azi (cu „Da”, în blocurile lor) și restul bibliotecii (cu „Da”, în Bibliotecă). ' +
         (editor() ? '<button type="button" class="principal" id="masa-creeaza">Creează masa.yml</button>' : 'Lucrezi în acest browser; „Copiază masa.yml” îți dă fișierul.');
       if ($('masa-creeaza')) $('masa-creeaza').addEventListener('click', function () {
         this.disabled = true;
@@ -283,6 +348,7 @@
     $('masa-reset').addEventListener('click', reseteaza);
     $('masa-copiaza').addEventListener('click', copiazaMasa);
     $('masa-agenda').addEventListener('click', trimiteInAgenda);
+    $('masa-rezumat').addEventListener('click', function (ev) { var b = ev.target.closest('[data-rz]'); if (b) laRezumat(b.getAttribute('data-rz')); });
     col.addEventListener('click', function (ev) {
       var b = ev.target.closest('button[data-v]'); if (!b) return;
       var li = b.closest('.masa-carte'); fokus = li.getAttribute('data-id');
@@ -319,7 +385,7 @@
       if (ev.clientY < 50) window.scrollBy(0, -12); else if (ev.clientY > window.innerHeight - 50) window.scrollBy(0, 12);
       var sub = document.elementFromPoint(ev.clientX, ev.clientY); if (!sub || !sub.closest) return;
       var lista = sub.closest('.masa-lista');
-      if (!lista) { var z = sub.closest('.masa-bloc') || sub.closest('.masa-col-simpla'); lista = z ? z.querySelector('.masa-lista') : null; }
+      if (!lista) { var z = sub.closest('.masa-bloc') || sub.closest('.masa-grup') || sub.closest('.masa-col'); lista = z ? z.querySelector('.masa-lista') : null; }
       if (!lista) return;
       var tinta = sub.closest('.masa-carte');
       if (tinta && tinta !== tr.li && tinta.parentNode === lista) {
@@ -345,8 +411,8 @@
           var tip = ol.getAttribute('data-lista'), k = +ol.getAttribute('data-bloc');
           [].forEach.call(ol.querySelectorAll('.masa-carte'), function (li, i) {
             var x = ID[li.getAttribute('data-id')]; if (!x) return;
-            if (tip === 'colectate') { x.verdict = 'nou'; x.bloc = null; x.ordine = null; }
-            else if (tip === 'filtrate') { if (x.verdict === 'nou') x.verdict = 'da'; x.bloc = null; x.ordine = null; }
+            if (tip === 'nou' || tip === 'poate' || tip === 'nu') { x.verdict = tip; x.bloc = null; x.ordine = null; }
+            else if (tip === 'biblioteca') { x.verdict = 'da'; x.bloc = null; x.ordine = null; }
             else { if (x.verdict === 'nou' || x.verdict === 'nu') x.verdict = 'da'; x.bloc = k; x.ordine = i + 1; }
           });
         });

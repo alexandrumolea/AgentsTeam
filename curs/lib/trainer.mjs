@@ -356,7 +356,9 @@ ${desfasoara(r).filter((s) => s.strat !== 'piesa-inceput' && s.strat !== 'piesa-
 function vedereaBanca(c) {
   const randeaza = creeazaRandare({ atribut: 'data-img' });
   const toate = [...c.piese.values()];
-  if (!toate.length) return '<h2>Biblioteca de piese</h2><p class="sters">Cursul nu are încă piese în piese/.</p>';
+  // Fluxul Masa → Biblioteca → Agenda (Alex, 2026-11-18): ce are „Da” pe masă e în Bibliotecă, produs sau nu.
+  const deProdus = (c.masa?.candidate ?? []).filter((x) => x.verdict === 'da' && !x.produsa);
+  if (!toate.length && !deProdus.length) return '<h2>Biblioteca de piese</h2><p class="sters">Cursul nu are încă piese în piese/ și nicio piesă cu „Da” pe masă.</p>';
   // Unde e folosită azi: rândurile din agendă (pentru oră și titlu), în ordinea agendei. O piesă poate apărea de mai multe ori.
   const azi = new Map();
   c.agenda.forEach((r) => {
@@ -382,7 +384,7 @@ function vedereaBanca(c) {
       ? `<ul class="unde">${mod.map((m) => `<li>${e(m.titlu)} <span class="sters">· ${rolLa(x, m)}${randuriAzi.some((r) => r.modul === m) ? ', aleasă azi' : ''}</span></li>`).join('')}</ul>`
       : '<p>Oriunde în zi.</p>';
     const detalii = `${NUME_FAMILIE[x.familie] ?? ''} · ${TIP[x.tip] ?? e(x.tip)} · ${x.durata} min${x.familie === 'activitate' ? ` · ${e(x.format)} · ${ENERGIE[x.energie] ?? e(x.energie)}` : ''}`;
-    return `<details class="ex" id="ex-${e(x.id)}" data-familie="${e(x.familie ?? '')}" data-tip="${e(x.tip)}" data-format="${e(x.format ?? '')}" data-energie="${e(x.energie ?? '')}" data-durata="${x.durata}" data-folosit="${randuriAzi.length ? 1 : 0}" data-module="${mod.map((m) => e(m.id)).join(' ')}" data-etichete="|${x.etichete.map((t) => e(t.cheie)).join('|')}|" data-cauta="${e(cauta)}">
+    return `<details class="ex" id="ex-${e(x.id)}" data-familie="${e(x.familie ?? '')}" data-tip="${e(x.tip)}" data-format="${e(x.format ?? '')}" data-energie="${e(x.energie ?? '')}" data-durata="${x.durata}" data-stare="produsa" data-folosit="${randuriAzi.length ? 1 : 0}" data-module="${mod.map((m) => e(m.id)).join(' ')}" data-etichete="|${x.etichete.map((t) => e(t.cheie)).join('|')}|" data-cauta="${e(cauta)}">
 <summary><span class="ex-rand"><span class="ex-durata"><b>${x.durata}</b> min</span>
 <span class="ex-cap"><span class="ex-titlu">${e(x.titlu)}</span>${x.obiectiv || x.ancora ? `<span class="ex-obiectiv">${e(x.obiectiv || x.ancora)}</span>` : ''}${badgeAzi}${x.etichete.length ? `<span class="ex-etichete">${x.etichete.map((t) => `<button type="button" class="et-chip" data-eticheta="${e(t.cheie)}" title="Arată toate piesele cu eticheta „${e(t.text)}”">${e(t.text)}</button>`).join('')}</span>` : ''}</span>
 <span class="ex-meta">${x.format ? `<span class="ex-format">${e(x.format)}</span>` : ''}${energie}${x.tip !== 'exercitiu' ? `<span class="ex-tip ex-tip-${e(x.familie ?? '')}">${TIP[x.tip] ?? e(x.tip)}</span>` : ''}</span><button type="button" class="prezinta-piesa" data-prezinta="${e(x.id)}" aria-label="Prezintă piesa ${e(x.titlu)}" title="Pune ecranele piesei după ecranul de acum și sari la ele">Prezintă</button><span class="ex-semn" aria-hidden="true"></span></span></summary>
@@ -399,7 +401,21 @@ ${x.segmente.map((s) => piesa(s, sursaPiesa(x), randeaza, x.id, c.curs.marca)).j
   const primaAzi = (x) => c.agenda.indexOf(azi.get(x.id)[0]);
   const deAzi = toate.filter((x) => azi.has(x.id)).sort((a, b) => primaAzi(a) - primaAzi(b));
   const rest = toate.filter((x) => !azi.has(x.id)).sort((a, b) => a.durata - b.durata || a.titlu.localeCompare(b.titlu, 'ro'));
-  const grup = (titlu, lista, dupa = '') => (lista.length ? `<div class="banca-grup"><h3 class="eticheta">${titlu} <span class="banca-grup-nr">${lista.length}</span>${dupa}</h3>${lista.map(rand).join('\n')}</div>` : '');
+  const grup = (titlu, lista, dupa = '', f = rand) => (lista.length ? `<div class="banca-grup"><h3 class="eticheta">${titlu} <span class="banca-grup-nr">${lista.length}</span>${dupa}</h3>${lista.map(f).join('\n')}</div>` : '');
+  // O piesă „de produs”: doar ce e pe masă (titlu, scop, durată). Fără ecrane și fără „Prezintă”, până are piese/<id>.md.
+  const randDeProdus = (x) => {
+    const familie = FAMILIE[x.tip] ?? '';
+    const cauta = normal([x.titlu, x.scop, x.sursa, x.nota, TIP[x.tip] ?? x.tip, NUME_FAMILIE[familie] ?? '', 'de produs'].join(' '));
+    return `<details class="ex ex-de-produs" id="ex-${e(x.id)}" data-familie="${e(familie)}" data-tip="${e(x.tip)}" data-format="" data-energie="" data-durata="${x.durata}" data-stare="de-produs" data-folosit="0" data-module="" data-etichete="||" data-cauta="${e(cauta)}">
+<summary><span class="ex-rand"><span class="ex-durata"><b>${x.durata}</b> min</span>
+<span class="ex-cap"><span class="ex-titlu">${e(x.titlu)}</span>${x.scop ? `<span class="ex-obiectiv">${e(x.scop)}</span>` : ''}</span>
+<span class="ex-meta"><span class="de-produs-semn">de produs</span>${x.tip ? `<span class="ex-tip ex-tip-${e(familie)}">${TIP[x.tip] ?? e(x.tip)}</span>` : ''}</span><span class="ex-semn" aria-hidden="true"></span></span></summary>
+<div class="ex-detalii"><div class="ex-fise">
+<div><p class="eticheta">Pe masă</p><p>Sursa: ${x.sursa ? e(x.sursa) : '<span class="sters">–</span>'}${x.bloc ? ` · blocul ${x.bloc}` : ''}</p></div>
+<div><p class="eticheta">De produs</p><p>Nu are încă fișierul <code>piese/${e(x.id)}.md</code>, deci nici ecrane.</p></div>
+${x.nota ? `<div><p class="eticheta">Notă</p><p>${e(x.nota)}</p></div>` : ''}
+</div></div></details>`;
+  };
   const chip = (filtru, valoare, eticheta, extra = '') => `<button type="button" class="chip" data-filtru="${filtru}" data-valoare="${e(valoare)}" aria-pressed="false"${extra}>${eticheta}</button>`;
   const rand_filtre = (eticheta, chipuri) => `<div class="filtre-rand" role="group" aria-label="${eticheta}"><span class="filtre-eticheta">${eticheta}</span><div class="chipuri">${chipuri}</div></div>`;
   // Familia și tipul: doar valorile care există în bibliotecă, în ordinea din 1.9.
@@ -415,6 +431,7 @@ ${rand_filtre('Familie și tip', familii.map((f) => chip('familie', f, `<b>${NUM
 ${rand_filtre('Format', FORMATE.map((v) => chip('format', v, e(v))).join(''))}
 ${rand_filtre('Energie', ENERGII.map((v) => chip('energie', v, `<span class="energie" data-n="${N_ENERGIE[v]}"><i></i><i></i><i></i></span> ${e(v)}`)).join(''))}
 ${rand_filtre('Durata', [10, 15, 20, 30].map((v) => chip('durata', v, `≤ ${v} min`)).join(''))}
+${deProdus.length ? rand_filtre('Stare', chip('stare', 'produsa', `produse <span class="chip-nr">${toate.length}</span>`) + chip('stare', 'de-produs', `de produs <span class="chip-nr">${deProdus.length}</span>`)) : ''}
 ${eticheteFiltru.length ? rand_filtre('Etichete', eticheteFiltru.map((t) => chip('eticheta', t.cheie, `${e(t.text)} <span class="chip-nr">${t.piese}</span>`)).join('')) : ''}
 ${moduleChip.length ? rand_filtre('Modulul', moduleChip.map((m) => chip('modul', m.id, e(m.titlu), ` title="${e(m.titlu)}"`)).join('')) : ''}
 <p class="filtre-nota sters">Format și energie privesc doar activitățile.</p>
@@ -423,17 +440,19 @@ ${moduleChip.length ? rand_filtre('Modulul', moduleChip.map((m) => chip('modul',
 <div class="banca-lista">
 ${grup('Azi în agendă', deAzi, `<span class="banca-grup-timp"> · ${minAzi} min, ${Math.round((minAzi / ziua) * 100)}% din zi</span>`)}
 ${grup(deAzi.length ? 'Restul bibliotecii' : 'Toate piesele', rest)}
+${grup('De produs (de pe masă)', deProdus, '', randDeProdus)}
 <p class="banca-gol" id="banca-gol" hidden>Nicio piesă nu se potrivește. <button type="button" id="banca-gol-sterge">Șterge filtrele</button></p>
 </div>
 <p class="sters banca-nota">Ca să schimbi o piesă în agendă: editează „agenda” din ediție și rulează din nou build-ul. Orele se recalculează singure.</p>`;
 }
 
-/** Masa (etapa A, Alex, 2026-11-18): scheletul vederii. Cartonașele le face lib/masa.js din DATA.masa, ca totalurile să se
- *  recalculeze pe loc. Trei coloane: Colectate (nou), Filtrate (da / poate; „nu” ascuns), Ordonate (blocurile zilei). */
+/** Masa (Alex, 2026-11-18): panoul de control al cursului și prima vedere. Scheletul; rezumatul și cartonașele le face lib/masa.js
+ *  din DATA.masa, ca totul să se recalculeze pe loc. Trei coloane, cele trei etape: Brainstorming, Bibliotecă, Agendă. */
 function vedereaMasa(c) {
   return `<div class="banca-cap"><h2>Masa</h2><p class="sters" id="masa-stare" role="status"></p></div>
-<p class="sters masa-ajutor">Etapa A: întâi conținutul, apoi producția. Colectezi piesele, le filtrezi (<i>are they good enough?</i>), apoi le ordonezi în blocurile zilei.
-Trage un cartonaș (pe tabletă, de mânerul ⠿) sau, pe cartonașul selectat: <kbd>D</kbd> da · <kbd>P</kbd> poate · <kbd>N</kbd> nu · <kbd>1</kbd>–<kbd>${c.blocuri.length}</kbd> în blocul ales · <kbd>0</kbd> scoate din bloc · <kbd>↑</kbd> <kbd>↓</kbd> mută în Ordonate.</p>
+<p class="sters masa-ajutor">Panoul de control al cursului. Fluxul: <b>Masa → Biblioteca → Agenda</b>. Brainstormingul pune candidatele pe masă; „Da” le trece în Bibliotecă (produse sau de produs); ordinea din blocuri face agenda.
+Trage un cartonaș (pe tabletă, de mânerul ⠿) sau, pe cartonașul selectat: <kbd>D</kbd> da · <kbd>P</kbd> poate · <kbd>N</kbd> nu · <kbd>1</kbd>–<kbd>${c.blocuri.length}</kbd> în blocul ales · <kbd>0</kbd> scoate din bloc · <kbd>↑</kbd> <kbd>↓</kbd> mută în Agendă.</p>
+<div class="masa-rezumat" id="masa-rezumat" aria-label="Rezumatul cursului"></div>
 <p class="masa-propunere" id="masa-propunere" hidden></p>
 <div class="masa-bara">
   <button type="button" id="masa-respinse" aria-pressed="false">Arată și „Nu”</button>
@@ -482,7 +501,7 @@ export function construiesteTrainer(c, ecrane = pregatesteEcrane(c).ecrane) {
     // „module” = rândurile din agenda ediției (module, piese singure și pauze), în ordine, cu orele calculate.
     module: c.agenda.map((r) => ({
       id: r.fel === 'modul' ? r.modul.id : r.fel === 'piesa' ? r.piesa.id : null, titlu: titluR(r),
-      tip: r.fel === 'pauza' ? 'pauza' : r.fel === 'piesa' ? r.piesa.tip : r.modul.tip, durata: r.durata, start: r.start, sfarsit: r.sfarsit,
+      tip: r.fel === 'pauza' ? 'pauza' : r.fel === 'piesa' ? r.piesa.tip : r.modul.tip, durata: r.durata, start: r.start, sfarsit: r.sfarsit, bloc: r.bloc ?? null, ...(r.fixa ? { fixa: true } : {}),
       alternative: r.fel === 'modul' ? alternativeHtml(c, r.modul, r.piese) : '',
     })),
     ecrane,
@@ -490,6 +509,7 @@ export function construiesteTrainer(c, ecrane = pregatesteEcrane(c).ecrane) {
     agendaYaml: agendaYaml(c),
     total: { ...c.total, start: c.editie.start, ziSfarsit: c.curs.zi_sfarsit, durataZi: String(c.curs.durata_zi ?? '') },
     blocuri: c.blocuri,
+    obiective: c.obiective,
     // Masa (etapa A, Alex, 2026-11-18): candidatele din masa.yml (sau propunerea, dacă fișierul lipsește). Doar în materialul trainerului.
     masa: c.masa ? { ...c.masa, fisier: 'masa.yml', editie: c.editie.fisier ?? null, data: c.editie.data } : null,
   };

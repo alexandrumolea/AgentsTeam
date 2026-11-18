@@ -136,6 +136,10 @@ test('serverul: Masa scrie în masa.yml (comentariile rămân), cu concurență 
     assert.equal((await cere(e, { metoda: 'POST', cale: '/api/masa', token: e.token, corp: { hash: s.json.hash, schimbari: [{ id: 'nu-exista', verdict: 'da' }] } })).cod, 404);
     assert.equal(citeste(d, 'masa.yml'), t, 'cererile refuzate nu ating fișierul');
     assert.equal((await cere(e, { metoda: 'POST', cale: '/api/masa/creeaza', token: e.token, corp: {} })).cod, 409, 'masa.yml există deja');
+    // O piesă veche (are fișier, nu era pe masă): la prima schimbare intră în masa.yml
+    const v = await cere(e, { metoda: 'POST', cale: '/api/masa', token: e.token, corp: { hash: hash(citeste(d, 'masa.yml')), schimbari: [{ id: 'model-curba', bloc: 1, ordine: 5 }] } });
+    assert.equal(v.cod, 200, v.text);
+    assert.match(citeste(d, 'masa.yml'), /  - id: model-curba\n    titlu: Curba schimbării\n    scop: Curba, nu linia\n    durata: 20\n    tip: model\n    sursa: bibliotecă\n    verdict: da\n    bloc: 1\n    ordine: 5\n$/);
   } finally { await e.inchide(); }
 });
 test('serverul: „Trimite în agendă” scrie doar agenda ediției, cu copie; „Creează masa.yml” pornește din agenda de azi', async () => {
