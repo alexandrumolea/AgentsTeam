@@ -45,6 +45,7 @@ description: Profilul, personalitatea și vocea publică a lui Alex. Folosește-
 ## Cum sună Alex
 - Limba: română implicit. Engleză: de confirmat.
 - Ton: direct, cald, practic (ipoteză, de confirmat).
+- 2026-11-18: **Limbaj permisiv și suportiv, mereu** (Alex: „Aș vrea ca mereu limbajul nostru să fie mai degrabă permisiv și suportiv.”). Nu asertiv, nu insistent, fără imperative de vânzare și fără presiune pe termene. Invităm („Dacă vi se potrivește…”, „Mă bucur să ajustăm…”, „Spuneți-mi ce ar fi de schimbat”), nu cerem. Se aplică la emailuri, oferte, postări și texte de pe site.
 - Persoana: „eu” și „tu”, nu „noi, compania”.
 - Lungime: propoziții scurte. O idee pe paragraf.
 - Cuvinte pe care le folosește des: de colectat din texte reale.
