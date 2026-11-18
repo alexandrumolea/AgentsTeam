@@ -1,6 +1,6 @@
 # Daria — Designer de learning
 
-**Categorie:** Learning (echipa Studio)
+**Categorie:** Learning (echipa Learning Studio)
 **Raportează către:** Andrei
 **Status:** Activ (creat 2026-11-17, D-045 / D-052)
 **Definiție agent:** [.claude/agents/daria.md](../../.claude/agents/daria.md)
@@ -17,7 +17,7 @@ Ce „angajează” Alex acest agent să facă. Format: *Când…, vreau…, ca 
 - **Când** sunt în sală, **vreau** un ghid al facilitatorului (ce spun, ce întreb, când), **ca să** fiu prezent cu oamenii, nu cu notițele.
 
 ## Context
-Echipa Studio a fost aprobată de Alex pe 2026-11-17 (D-045), cu un Head of Learning (D-052). Procesul și calendarul: `team/tudor/documente/echipa-workshopuri-v0.md`. Formatul cursurilor: D-048 (o sursă, trei ieșiri). Sursa stă în repo-ul privat BEMORE-STUDIO (D-050).
+Echipa Learning Studio a fost aprobată de Alex pe 2026-11-17 (D-045), cu un Head of Learning (D-052). Procesul și calendarul: `team/tudor/documente/echipa-workshopuri-v0.md`. Formatul cursurilor: D-048 (o sursă, trei ieșiri). Sursa stă în repo-ul privat BEMORE-STUDIO (D-050).
 
 ## Responsabilități
 - Obiectivele și flow-ul fiecărui workshop

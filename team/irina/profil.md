@@ -1,6 +1,6 @@
 # Irina — Cercetare de conținut
 
-**Categorie:** Learning (echipa Studio)
+**Categorie:** Learning (echipa Learning Studio)
 **Raportează către:** Andrei
 **Status:** Activ (creat 2026-11-17, D-045 / D-052)
 **Definiție agent:** [.claude/agents/irina.md](../../.claude/agents/irina.md)
@@ -17,7 +17,7 @@ Ce „angajează” Alex acest agent să facă. Format: *Când…, vreau…, ca 
 - **Când** lucrez despre AI, **vreau** exemple și unelte testate recent, **ca să** nu prezint ceva depășit.
 
 ## Context
-Echipa Studio a fost aprobată de Alex pe 2026-11-17 (D-045), cu un Head of Learning (D-052). Procesul și calendarul: `team/tudor/documente/echipa-workshopuri-v0.md`. Formatul cursurilor: D-048 (o sursă, trei ieșiri). Sursa stă în repo-ul privat BEMORE-STUDIO (D-050).
+Echipa Learning Studio a fost aprobată de Alex pe 2026-11-17 (D-045), cu un Head of Learning (D-052). Procesul și calendarul: `team/tudor/documente/echipa-workshopuri-v0.md`. Formatul cursurilor: D-048 (o sursă, trei ieșiri). Sursa stă în repo-ul privat BEMORE-STUDIO (D-050).
 
 ## Responsabilități
 - Nota de conținut pentru fiecare curs (cu surse)

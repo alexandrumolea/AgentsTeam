@@ -1,30 +1,37 @@
 # Proces: curs nou
 
-**DRI:** Andrei. **Echipa:** Studio (Daria, Matei, Irina), plus Mike pentru generator și Alex în sală.
+**DRI:** Andrei. **Echipa:** Learning Studio (Daria, Matei, Irina), plus Mike pentru generator și Alex în sală.
 **Scop:** un flow simplu de care ne ținem la fiecare curs, de la prima idee până la concluziile din feedback (Alex, 2026-11-17).
 **Vizual:** pagina `docs/procese/curs-nou-vizual.html`, publicată la https://claude.ai/artifact/26Jm98isMEfzt5khrN5qU3. Sursa rămâne acest fișier: când procesul se schimbă, se schimbă întâi aici, apoi pagina.
 **Unde stă cursul:** sursa în repo-ul privat BEMORE-STUDIO, clonat în `privat/cursuri/<curs>/` (D-050). Generatorul e în `curs/` (`curs/README.md`). În repo-ul public intră doar procesul.
 
-## Regula de bază: întâi conținutul, apoi producția (Alex, 2026-11-18)
-- **Fluxul: Masa → Biblioteca → Agenda** (Alex, 2026-11-18). Masa e brainstormingul (toate candidatele); ce primește „Da” ajunge în Bibliotecă (produs sau „de produs”); ce ordonăm în blocuri face agenda. Masa e panoul de control al cursului.
-- **Etapa A, conținutul, pe masă.** Gândim schița și tot conținutul înainte de orice slide. Se lucrează doar în `privat/cursuri/<curs>/masa.yml`: o linie pe piesă candidată. Trei pași: **colectate → filtrate → ordonate**.
-- **În paralel cu masa, Alex devine practician pe subiect** (Alex, 2026-11-18). Aplică el însuși ce urmează să predea și are conversații pe subiect cu oameni apropiați. Așa îl poate explica mai departe din experiență, nu doar din research. Ce descoperă intră pe masă ca piese candidate, cu `sursa: practică` sau `sursa: conversație`.
+## Regula de bază: întâi Laboratorul, apoi producția (Alex, 2026-11-18)
+- **Etapa A se numește Laboratorul.** Timp de aproximativ o lună, echipa se imersează în subiect: învață, observă, pornește dezbateri. **Scopul:** piese de conținut diverse, valoroase, relevante și gata de folosit.
+- **Cine intră în Laborator:**
+  - **Practicianul**, adică trainerul care își asumă subiectul și îl va livra. **Esențial:** cel care livrează trebuie să fie la nivel de practician, nu doar curios.
+  - **Researcherul** (Irina): modele, studii, exemple, cu surse.
+  - **Partenerii de gândire:** un AI, plus mai mulți oameni reprezentativi pentru publicul țintă sau colegi (peers).
+- **Ce câștigă practicianul din Laborator:**
+  - se simte conectat la subiect;
+  - poate intra în conversații profunde cu publicul țintă și îi poate provoca pe teme concrete din activitatea lor;
+  - are exemple și povești din practica lui personală, din luna în care și-a adus atenția mai conștient pe subiect.
+- **Masa e panoul Laboratorului.** Fiecare piesă descoperită devine o linie în `privat/cursuri/<curs>/masa.yml`. Spre finalul Laboratorului, piesele trec prin trei pași: **colectate → filtrate → ordonate**. Fluxul: Masa → Biblioteca → Agenda. Ce primește „Da” ajunge în Bibliotecă; ce ordonăm în blocuri face agenda.
 - **Poarta: masa aprobată de Alex.** Fără ea nu se produce nimic.
 - **Etapa B, producția.** Slide-uri, scheme, curs online, note de trainer, banca de exerciții, numai pentru piesele cu verdict „da”. Butonul „Trimite în agendă” face agenda ediției.
 
 ## Schema
-Bucla Research → Obiective → Piese → Flow Logic → Livrare flexibilă se repetă la fiecare livrare, până cursul se stabilizează (Alex, 2026-11-17). Piese și Flow Logic sunt etapa A.
+Bucla Research → Obiective → Piese → Flow Logic → Livrare flexibilă se repetă la fiecare livrare, până cursul se stabilizează (Alex, 2026-11-17). Piese și Flow Logic se fac în Laborator (etapa A).
 
 ```mermaid
 flowchart LR
   D[2. Diagnosticare<br/>la fiecare ediție] --> O
   subgraph Bucla["Bucla, până la stabilizare"]
     R[1. Research] --> O[3. Obiective]
-    subgraph A["Etapa A: masa.yml"]
+    subgraph A["Laboratorul, ~o lună: masa.yml"]
       P[4. Piese<br/>colectate → filtrate] --> F[5. Flow Logic<br/>ordonate în 4 blocuri]
     end
     O --> P
-    R --> PR[Practician: Alex aplică subiectul<br/>+ conversații cu oameni apropiați]
+    R --> PR[Practicianul + parteneri de gândire<br/>AI, oameni din public, peers]
     PR --> P
     F --> G{Masa aprobată<br/>de Alex?}
     G -- nu --> P
@@ -61,10 +68,10 @@ Pauzele de 15 minute sunt presupunerea noastră; Alex le poate corecta.
 |---|---|---|---|---|
 | 1 | **Research** | modele, studii, exemple cu surse în `research.md` + piese candidate în `masa.yml` | Irina | citește rezumatul de 5 rânduri |
 | 2 | **Diagnosticare** (la fiecare ediție) | chestionar anonim de 3–5 întrebări înainte + o piesă de diagnostic la deschidere. Rezumatul, fără nume, în `editii/<data>.yml` (`nota_trainer`) | Daria | aprobă și **trimite** chestionarul |
-| 2b | **Practician** (în paralel cu 1–5) | Alex aplică subiectul pe sine și îl discută cu oameni apropiați; descoperirile intră pe masă ca piese candidate (`sursa: practică` / `conversație`), fără nume | Alex. Daria le notează pe masă | trăiește subiectul, spune ce a aflat |
+| 2b | **Practicianul în Laborator** (~o lună, în paralel cu 1–5) | trainerul care va livra învață, observă și dezbate cu partenerii de gândire (AI, oameni din publicul țintă, peers); descoperirile, exemplele și poveștile din practica lui intră pe masă ca piese candidate (`sursa: practică` / `conversație`), fără nume | trainerul care livrează (azi Alex). Daria le notează pe masă | trăiește subiectul, spune ce a aflat |
 | 3 | **Obiective** | cel mult 4, scurte, în `curs.yml` (sau în ediție) | Daria | aprobă lista |
-| 4 | **Piese** (etapa A) | candidate colectate și filtrate în `masa.yml` | Daria (Irina) | dă verdictele |
-| 5 | **Flow Logic** (etapa A) | piesele „da” ordonate în cele 4 blocuri | Daria. Andrei verifică | ordonează și **aprobă masa** |
+| 4 | **Piese** (Laborator) | candidate colectate și filtrate în `masa.yml` | Daria (Irina) | dă verdictele |
+| 5 | **Flow Logic** (Laborator) | piesele „da” ordonate în cele 4 blocuri | Daria. Andrei verifică | ordonează și **aprobă masa** |
 | – | **Producția** (etapa B) | `piese/<id>.md` cu ecrane (`:::sala`), scheme, note de trainer; „Trimite în agendă” face `agenda` din `editii/<data>.yml` | Matei (Daria, Irina) | Biblioteca de piese, vederile Ziua și Schița |
 | 6 | **Livrare flexibilă** | ziua în sală; alternativele și Biblioteca permit schimbări | Alex. Mike pentru generator | – |
 | 7 | **Feedbackul trainerului** | `editii/<data>-trainer.md`, în 10 minute, în aceeași zi | Alex sau co-trainerul. Andrei preia | îl scrie |
@@ -89,8 +96,8 @@ Modulul „Toleranță și capacitate”, contractul și closing-urile au fost p
 ## Reguli
 - Nimic nu pleacă la participanți sau la client fără Alex. Echipa face doar draft-uri.
 - Fără date personale și fără numele clientului în repo-ul public.
-- Conversațiile lui Alex rămân private: pe masă intră doar ideea, fără numele sau detaliile oamenilor.
-- În etapa A agenții nu produc slide-uri, scheme sau ecrane.
+- Conversațiile practicianului rămân private: pe masă intră doar ideea, fără numele sau detaliile oamenilor.
+- În Laborator agenții nu produc slide-uri, scheme sau ecrane.
 
 ## Ce mai trebuie ca procesul să meargă
 1. Vederea „Masa” și butonul „Trimite în agendă”. **DRI: Mike** (în lucru).

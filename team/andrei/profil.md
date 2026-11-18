@@ -1,6 +1,6 @@
 # Andrei — Head of Learning
 
-**Categorie:** Learning (echipa Studio)
+**Categorie:** Learning (echipa Learning Studio)
 **Raportează către:** Tudor
 **Status:** Activ (creat 2026-11-17, D-045 / D-052)
 **Definiție agent:** [.claude/agents/andrei.md](../../.claude/agents/andrei.md)
@@ -18,12 +18,12 @@ Ce „angajează” Alex acest agent să facă. Format: *Când…, vreau…, ca 
 - **Când** am un workshop în calendar, **vreau** o echipă care îl duce cap-coadă, **ca să** eu doar verific și livrez.
 
 ## Context
-Echipa Studio a fost aprobată de Alex pe 2026-11-17 (D-045), cu un Head of Learning (D-052). Procesul și calendarul: `team/tudor/documente/echipa-workshopuri-v0.md`. Formatul cursurilor: D-048 (o sursă, trei ieșiri). Sursa stă în repo-ul privat BEMORE-STUDIO (D-050).
+Echipa Learning Studio a fost aprobată de Alex pe 2026-11-17 (D-045), cu un Head of Learning (D-052). Procesul și calendarul: `team/tudor/documente/echipa-workshopuri-v0.md`. Formatul cursurilor: D-048 (o sursă, trei ieșiri). Sursa stă în repo-ul privat BEMORE-STUDIO (D-050).
 
 ## Responsabilități
 - Harta cursurilor (inovație / util / de retras), revăzută trimestrial
 - Planul trimestrial: cursuri noi, transformări, renunțări
-- Conducerea echipei Studio: taskuri, verificare, calendarul livrărilor
+- Conducerea echipei Learning Studio: taskuri, verificare, calendarul livrărilor
 - Legătura cu CORE: Maria (poziționare), Radu (format și site), Elena (retrospective)
 
 ## Claude skills și unelte
