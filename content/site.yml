@@ -40,6 +40,8 @@ in_pregatire: "În pregătire. Atelierul e deschis, camera asta se construiește
 # Obiectul din centrul scenei: „Desfă invenția”. Gol = fără obiect în centru și fără card.
 # Acum e chiar site-ul: singura invenție reală din atelier azi. Straturile, de sus în jos (exact 5 pentru obiectul actual).
 in_centru:
+  # false = ascuns chiar și cu Innovations vizibil (2026-11-18). Arătarea lui pe prima pagină o decid Alex și Ioana.
+  vizibil: false
   eticheta: "Din atelier · în lucru"
   titlu: "Site-ul pe care îl vezi"
   text: "Prima inovație din atelier. Desfă-l și vezi cum funcționează pe dinăuntru."

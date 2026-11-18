@@ -15,7 +15,14 @@ Conținutul (texte, categorii, business-uri) se schimbă în `content/`, nu aici
 
 `vizibil: true` în `content/categorii.yml`. O singură linie de schimbat (D-056).
 O secțiune cu `vizibil: false` nu apare nicăieri: meniu, legendă, scena 3D, pagină, sitemap, `api/continut.json`, linkurile din alte pagini. Adresa ei duce la prima pagină. Cât timp Live e ascuns, nici luminițele echipei și nici `api/live.json` nu se publică; `live/echipa/` rămâne generată, nelegată din meniu.
-Scena se adaptează singură: cu cel mult 3 obiecte, orbita se strânge și obiectele cresc. „Desfă inovația” (obiectul din centru, `in_centru` din `content/site.yml`) apare doar când Innovations e vizibil; altfel, în centru stă punctul paletei.
+Scena se adaptează singură: cu cel mult 3 obiecte, orbita se strânge și obiectele cresc. „Desfă inovația” (obiectul din centru, `in_centru` din `content/site.yml`) apare doar când Innovations e vizibil; altfel, în centru stă punctul paletei. Cu `in_centru.vizibil: false` rămâne ascuns și când Innovations e vizibil (așa e din 2026-11-18).
+
+## Cum pui un element într-o secțiune (ex.: Innovations)
+
+În `content/categorii.yml`, la secțiune, lista `elemente`: `titlu`, `fraza` și fie `link: https://…`, fie `pagina` + `slug`.
+Cu `pagina` (un fișier `.html` din repo, ca `docs/procese/curs-nou-vizual.html`), build-ul publică pagina la `<secțiune>/<slug>/`, cu antetul și subsolul site-ului. **Sursa e una singură:** editezi fișierul din repo, iar site-ul îl preia la următorul build.
+Ce face build-ul cu pagina (`site/pagina-html.mjs`): scoate `<title>`, `<meta>` și `<link>` (fonturile de pe Google Fonts; site-ul are Sora și Inter Tight locale), prefixează clasele cu `pr-`, închide stilul sub `main.proces` și transformă `style="…"` în clase (CSP-ul are `style-src 'self'`). Stilul ajunge în `assets/pagini/<slug>.css`.
+Build-ul se oprește dacă pagina are `<script>`, `@import` sau resurse de pe alt site.
 
 ## Pagina Despre
 

@@ -16,6 +16,7 @@ import { parse as parseYaml } from 'yaml';
 import { marked } from 'marked';
 import { loadTema, checkUsage } from './tema.mjs';
 import { citesteParcurs, orbita } from './orbita.mjs';
+import { citestePagina } from './pagina-html.mjs';
 
 const HERE = dirname(fileURLToPath(import.meta.url));
 const ROOT = resolve(HERE, '..');
@@ -88,6 +89,32 @@ if (!CATS.length) fail('content/categorii.yml: nicio secțiune nu e vizibilă. P
 { let n = 0; for (const c of CATS) if (c.pe_orbita !== false) c.nr = ++n; }
 const C = Object.fromEntries(CATS.map(c => [c.cheie, c]));
 
+// Elementele unei secțiuni (câmpul `elemente` din categorii.yml), ex.: Innovations → „Procesul de training design cu AI”.
+// Fiecare are pagina lui, la <secțiune>/<slug>/. Cu `pagina`, conținutul vine direct dintr-un fișier HTML din repo
+// (o singură sursă: ce se schimbă acolo apare pe site la următorul build). Fără `pagina`, `link` duce în altă parte.
+for (const c of CATS){
+  if (c.elemente === undefined) continue;
+  if (!Array.isArray(c.elemente)) fail(`content/categorii.yml: „${c.cheie}” are elemente care nu sunt o listă.`);
+  const slugs = new Set();
+  c.elemente = c.elemente.map((e, i) => {
+    const w = `content/categorii.yml: „${c.cheie}”, elementul ${i + 1}`;
+    if (!e || !e.titlu || !e.fraza) fail(`${w}: are nevoie de titlu și fraza.`);
+    if (!e.pagina === !e.link) fail(`${w}: completează fie „pagina” (un fișier .html din repo), fie „link”.`);
+    if (e.link && !/^https:\/\//.test(e.link)) fail(`${w}: „link” trebuie să înceapă cu https://.`);
+    if (e.pagina){
+      if (!/^[a-z0-9]+(-[a-z0-9]+)*$/.test(e.slug || '')) fail(`${w}: „slug” lipsește sau are alte caractere decât litere mici, cifre și cratimă.`);
+      if (slugs.has(e.slug)) fail(`${w}: slug-ul „${e.slug}” apare de două ori.`);
+      slugs.add(e.slug);
+      if (!/\.html$/.test(e.pagina) || !existsSync(join(ROOT, e.pagina))) fail(`${w}: nu găsesc pagina ${e.pagina}.`);
+      try { e = { ...e, ...citestePagina(read(e.pagina), { scope: '.proces', where: e.pagina }) }; } catch (er) { fail(er.message); }
+      // locul paginii între antet și subsol, ca la celelalte pagini (lățimea ei de lucru e 980 px, plus marginile)
+      e.css = `main.proces{width:min(1060px,calc(100% - 2 * var(--gut)));margin:28px auto 0;overflow:hidden}\n${e.css}`;
+      e.url = `${c.url}/${e.slug}/`;
+    }
+    return e;
+  });
+}
+
 const nevoiSlugs = new Set(nevoi.map(n => n.slug));
 const BUSINESS = existsSync(join(ROOT, 'content/business')) ? readdirSync(join(ROOT, 'content/business')).filter(f => f.endsWith('.md')).map(f => {
   const { data } = mdFile(`content/business/${f}`);
@@ -100,7 +127,8 @@ const BUSINESS = existsSync(join(ROOT, 'content/business')) ? readdirSync(join(R
 const rezervare = String(site.rezervare || '').trim();
 if (rezervare && !/^https:\/\//.test(rezervare)) fail('content/site.yml: „rezervare” trebuie să fie un link https://.');
 // „Desfă inovația” ține de Innovations: fără Innovations vizibil, centrul scenei rămâne liber.
-const centru = site.in_centru && site.in_centru.titlu && C.inventii ? site.in_centru : null;
+// `in_centru.vizibil: false` îl ține ascuns și când Innovations e vizibil (Innovations are elemente, nucleul nu e încă reproiectat).
+const centru = site.in_centru && site.in_centru.titlu && site.in_centru.vizibil !== false && C.inventii ? site.in_centru : null;
 if (centru && (centru.straturi || []).length !== 5) fail('content/site.yml: in_centru.straturi are nevoie de exact 5 straturi (obiectul 3D actual are 5).');
 
 // ---------- echipa (I-001): din team/<agent>/profil.md ----------
@@ -289,6 +317,8 @@ const podHtml = c => c.pod ? `<p class="pod">${esc(c.pod)}</p>` : '';
 // Câmpul opțional `detalii` din categorii.yml: perechi eticheta / text, ca listă (ex.: coaching).
 const detaliiHtml = c => Array.isArray(c.detalii) && c.detalii.length ? `<ul class="list facts">${c.detalii.filter(d => d && d.eticheta && d.text).map(d => `<li><b>${esc(d.eticheta)}</b><span>${esc(d.text)}</span></li>`).join('')}</ul>` : '';
 const bookBtn = cls => rezervare ? `<a class="btn book ${cls || ''}" href="${esc(rezervare)}" rel="noopener">Rezervă<span class="pv-long"> o sesiune</span></a>` : '';
+// lista elementelor unei secțiuni: același rând ca în „Atelierul, la vedere” (ul.list), titlul ca link și fraza
+const elementeHtml = c => Array.isArray(c.elemente) && c.elemente.length ? `<ul class="list items">${c.elemente.map(e => `<li><a href="${esc(e.url ? u(e.url) : e.link)}"${e.link ? ' rel="noopener"' : ''}>${esc(e.titlu)}</a><span>${esc(e.fraza)}</span></li>`).join('')}</ul>` : '';
 const businessList = () => BUSINESS.length ? `<ul class="list biz">${BUSINESS.map(b => `<li><b>${b.link ? `<a href="${esc(b.link)}" rel="noopener">${esc(b.nume)}</a>` : esc(b.nume)}</b>${b.nevoie ? `<span>${esc(b.nevoie)}</span>` : ''}${b.rol ? `<small>${esc(b.rol)}</small>` : ''}${b.pod ? `<small class="pod">${esc(b.pod)}</small>` : ''}</li>`).join('')}</ul>` : '';
 // Despre (compoziția v2 a Ioanei, varianta A „Orbita în jurul lentilei”, aprobată de Alex pe 2026-11-18):
 // corpul din content/despre.md dă prima propoziție și misiunea; antetul dă „Acum”, cărțile, parcursul și formarea.
@@ -378,8 +408,8 @@ const footer = () => `<footer class="foot glass">
   <p>Actualizat ${esc(fLongDay(NOW))}, ${esc(fTime(NOW))}. Datele: <a href="${u('api/continut.json')}">continut.json</a>${C.live ? ` · <a href="${u('api/live.json')}">live.json</a>` : ''}</p>
 </footer>`;
 
-function page({ cheie, title, description, path, bodyHtml, mainClass = 'wrap glass-read', bodyClass = '', scripts = '' }){
-  return `${head({ title, description, path })}
+function page({ cheie, title, description, path, bodyHtml, mainClass = 'wrap glass-read', bodyClass = '', scripts = '', extraHead = '' }){
+  return `${head({ title, description, path, extra: extraHead })}
 <body class="page${bodyClass ? ' ' + bodyClass : ''}">
 <div class="bg" aria-hidden="true"></div>
 ${topNav(cheie)}
@@ -417,7 +447,7 @@ function panelBody(c){
   <p class="note">${esc(site.in_pregatire || '')}</p>
   ${C.live ? `<p class="actions"><a class="btn ink" href="${pageUrl(C.live)}" data-go="live">Vezi ce se lucrează acum →</a></p>` : ''}</div>`;
   return `<p class="eyebrow">${esc(c.eticheta)} · ${fam}</p><h2 id="pH">${esc(c.eticheta)}</h2>
-  <p class="lead">${esc(c.fraza)}</p>${podHtml(c)}${detaliiHtml(c)}${stateHtml(c)}${extra}
+  <p class="lead">${esc(c.fraza)}</p>${podHtml(c)}${detaliiHtml(c)}${elementeHtml(c)}${stateHtml(c)}${extra}
   <p class="actions"><a class="btn" href="${pageUrl(c)}">Deschide pagina →</a>${C.live ? `<a class="btn ghost" href="${pageUrl(C.live)}" data-go="live">Vezi ce se lucrează acum</a>` : ''}</p>`;
 }
 
@@ -546,7 +576,7 @@ ${events.length ? [...days].map(([, list]) => `<h3 class="day">${esc(fLongDay(li
 </section>
 <p class="actions"><a class="btn" href="${u('live/echipa/')}">Echipa de agenți →</a><a class="btn ghost" href="${u('api/live.json')}">Datele, ca JSON</a></p>`;
   } else {
-    inner = `${podHtml(c)}${detaliiHtml(c)}${stateHtml(c)}${c.cheie === 'companie' ? businessList() : ''}${c.cheie === 'coaching' && rezervare ? `<p><a class="btn" href="${esc(rezervare)}" rel="noopener">Alege o oră →</a></p>` : ''}
+    inner = `${podHtml(c)}${detaliiHtml(c)}${elementeHtml(c)}${stateHtml(c)}${c.cheie === 'companie' ? businessList() : ''}${c.cheie === 'coaching' && rezervare ? `<p><a class="btn" href="${esc(rezervare)}" rel="noopener">Alege o oră →</a></p>` : ''}
 ${C.live ? `<p class="actions"><a class="btn" href="${pageUrl(C.live)}">Vezi ce se lucrează acum →</a></p>` : ''}`;
   }
   return page({ cheie: c.cheie, title: c.eticheta, description: `${c.eticheta}: ${c.fraza}`, path: c.url + '/', bodyHtml: `<h1>${esc(c.eticheta)}</h1><p class="kicker">${esc(c.fraza)}</p>\n${inner}` });
@@ -576,6 +606,14 @@ function desprePage(c){
 </section>`;
   const bodyHtml = `${hero}\n${mission}\n${ORBITA.parcurs}\n${next}`;
   return page({ cheie: c.cheie, title: c.eticheta, description: site.descriere, path: c.url + '/', bodyHtml, mainClass: 'despre', bodyClass: 'no-js', scripts: `\n<script src="${u('assets/despre.js')}?v=${cssV}" defer></script>` });
+}
+
+// Pagina unui element cu `pagina`: antetul și subsolul site-ului, iar între ele pagina din repo, cu designul ei.
+// Stilul ei e în assets/pagini/<slug>.css, închis sub .proces (vezi site/pagina-html.mjs).
+function elementPage(c, e){
+  return page({ cheie: c.cheie, title: e.titlu, description: `${e.titlu}: ${e.fraza}`, path: e.url, mainClass: 'proces glass-read',
+    extraHead: `<link rel="stylesheet" href="${u(`assets/pagini/${e.slug}.css`)}?v=${createHash('sha256').update(e.css).digest('hex').slice(0, 10)}">`,
+    bodyHtml: e.html });
 }
 
 function teamPage(){
@@ -653,6 +691,8 @@ write('favicon.svg', TEMA.fill(readFileSync(join(HERE, 'src/favicon.svg'), 'utf8
 const importmap = JSON.stringify({ imports: { three: u('assets/three/three.module.min.js'), 'three/addons/': u('assets/three/addons/') } });
 write('index.html', indexHtml(importmap));
 for (const c of CATS) write(`${c.url}/index.html`, categoryPage(c));
+const PAGINI = CATS.flatMap(c => (c.elemente || []).filter(e => e.pagina).map(e => [c, e]));
+for (const [c, e] of PAGINI){ write(`${e.url}index.html`, elementPage(c, e)); write(`assets/pagini/${e.slug}.css`, e.css); }
 write('live/echipa/index.html', teamPage());
 const visibleUrl = to => CATS.some(c => c.url === to) ? u(to + '/') : u();
 for (const c of HIDDEN) if (!CATS.some(v => v.url === c.url)) write(`${c.url}/index.html`, redirect(u()));
@@ -661,14 +701,14 @@ write('404.html', page({ title: 'Pagina nu există', path: '404.html', bodyHtml:
 write('.nojekyll', '');
 if (domeniu) write('CNAME', domeniu + '\n');
 write('robots.txt', `User-agent: *\nAllow: /\n${SITE_URL ? `Sitemap: ${abs('sitemap.xml')}\n` : ''}`);
-if (SITE_URL) write('sitemap.xml', `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${['', ...CATS.map(c => c.url + '/'), 'live/echipa/'].map(p => `  <url><loc>${esc(abs(p))}</loc></url>`).join('\n')}\n</urlset>\n`);
+if (SITE_URL) write('sitemap.xml', `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${['', ...CATS.map(c => c.url + '/'), ...PAGINI.map(([, e]) => e.url), 'live/echipa/'].map(p => `  <url><loc>${esc(abs(p))}</loc></url>`).join('\n')}\n</urlset>\n`);
 
 // API: același conținut pentru site și pentru o viitoare aplicație (D-030)
 if (C.live) write('api/live.json', JSON.stringify(liveJson, null, 2) + '\n'); // Live ascuns: fără jurnal public
 write('api/continut.json', JSON.stringify({
   generat: new Date(NOW).toISOString(),
   site: { titlu: site.titlu, descriere: site.descriere, github: GH, rezervare: rezervare || null, intro: site.intro, in_pregatire: site.in_pregatire, in_centru: centru },
-  familii, categorii: CATS.map(c => ({ ...c, url: pageUrl(c) })),
+  familii, categorii: CATS.map(c => ({ ...c, url: pageUrl(c), ...(c.elemente ? { elemente: c.elemente.map(({ titlu, fraza, url, link, pagina }) => ({ titlu, fraza, url: url ? u(url) : link, ...(pagina ? { sursa: pagina } : {}) })) } : {}) })),
   ...(C.companie ? { business: BUSINESS } : {}), nevoi,
   despre: { titlu: despre.data.titlu || 'Despre mine', markdown: despre.body, valori,
     acum: despre.data.acum || null,

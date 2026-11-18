@@ -39,6 +39,8 @@ Păstrează sub 150 de rânduri. Comprimă când crește. Fapte, nu povești.
 - 2026-11-18: Despre v2 (orbita în jurul lentilei): pe site clasele globale `.hero`, `.st`, `.lead` sunt nescopate (prima pagină, Live); în pagini noi folosesc alte nume (`.prim`, `.pt`). Valorile per element (unghi, culoare, întârziere) merg ca CSS generat pe clase, nu style=. checkUsage din tema.mjs trebuie să vadă și CSS-ul generat. Testez etichetele cu dreptunghiuri (getBoundingClientRect) la 320/360/375/761/1440, inclusiv cu fiecare punct apăsat: starea apăsată lărgește eticheta și abia acolo ieșea din card.
 - 2026-11-18: Alex vrea mișcare continuă (cărțile, lumina orbitei) și NU vrea butonul „Oprește mișcarea” (scos în aceeași zi). Doar prefers-reduced-motion oprește mișcarea; riscul WCAG 2.2.2 îl raportez, decizia e a lui. Fundalurile decorative: pete radial `closest-side` care se sting înainte de marginea zonei, altfel se văd dungi tăiate („ca nuca în perete”).
 
+- 2026-11-18: o pagină HTML din repo (fragment cu <style>, ca un artifact) devine pagină de site fără copie: site/pagina-html.mjs prefixează clasele (pr-), închide stilul sub main.proces, transformă style= în clase !important. Elementele unei secțiuni: `elemente` în categorii.yml. A face Innovations vizibil pornea „Desfă inovația” din centru: l-am oprit cu in_centru.vizibil: false (efect secundar ascuns, verifică-l mereu). Portul 4399 e ocupat local; folosesc 4517.
+
 ## Fișiere de memorie
 - [Stack și găzduire](project_stack-hosting.md) — GitHub Pages (D-036–D-038), CNAME ignorat la Actions; fapte Netlify/Cloudflare/Vercel
 - [Generatorul paginii echipei](generator-echipa.md) — Mike îl deține; puncte fragile tăcute; 2026-11-17: panoul de control, maparea statusurilor

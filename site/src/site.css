@@ -67,6 +67,9 @@ ul.list li span{color:var(--muted);text-align:right;font-size:16px}
 ul.list li b{font-weight:500}
 ul.list a,.feed .task a{color:var(--accent);text-decoration:underline;text-decoration-color:rgb(var(--accent-rgb) / .45);text-underline-offset:4px;text-decoration-thickness:1px}
 ul.list.biz li{flex-wrap:wrap}
+/* elementele unei secțiuni (Innovations): fraza e lungă, deci stă sub titlu, nu în dreapta */
+ul.list.items li{flex-direction:column;gap:4px}
+ul.list.items li span{text-align:left}
 ul.list.biz li small{flex-basis:100%;color:var(--muted);font-size:15px}
 
 /* ---------- Live: un singur sens pe culoare ---------- */

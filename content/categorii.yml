@@ -59,7 +59,7 @@ categorii:
     pod: ""
 
   - cheie: inventii
-    vizibil: false
+    vizibil: true
     eticheta: "Innovations"
     fraza: "Tool-uri, aplicații și cursuri de încercat."
     url: innovations
@@ -67,8 +67,16 @@ categorii:
     dimensiune: inovatie
     ordine: 1
     pe_orbita: true
-    stare: in-pregatire
+    stare: deschis
     pod: ""
+    # Elementele secțiunii (Alex, 2026-11-18). Fiecare apare ca un rând: titlul (link) și fraza.
+    # `pagina`: un fișier .html din repo, publicat la innovations/<slug>/ cu antetul și subsolul site-ului.
+    #   Sursa e una singură: ce schimbi în fișier apare pe site la următorul build. (Sau `link: https://…` spre altă adresă.)
+    elemente:
+      - titlu: "Procesul de training design cu AI"
+        fraza: "Cum construim un training cu o echipă de agenți AI și oameni: viziune, Laborator, harvest, firul roșu."
+        slug: procesul-de-training-design-cu-ai
+        pagina: docs/procese/curs-nou-vizual.html
 
   - cheie: live
     vizibil: false
