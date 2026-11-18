@@ -7,6 +7,7 @@
 ## Regula de bază: întâi conținutul, apoi producția (Alex, 2026-11-18)
 - **Fluxul: Masa → Biblioteca → Agenda** (Alex, 2026-11-18). Masa e brainstormingul (toate candidatele); ce primește „Da” ajunge în Bibliotecă (produs sau „de produs”); ce ordonăm în blocuri face agenda. Masa e panoul de control al cursului.
 - **Etapa A, conținutul, pe masă.** Gândim schița și tot conținutul înainte de orice slide. Se lucrează doar în `privat/cursuri/<curs>/masa.yml`: o linie pe piesă candidată. Trei pași: **colectate → filtrate → ordonate**.
+- **În paralel cu masa, Alex devine practician pe subiect** (Alex, 2026-11-18). Aplică el însuși ce urmează să predea și are conversații pe subiect cu oameni apropiați. Așa îl poate explica mai departe din experiență, nu doar din research. Ce descoperă intră pe masă ca piese candidate, cu `sursa: practică` sau `sursa: conversație`.
 - **Poarta: masa aprobată de Alex.** Fără ea nu se produce nimic.
 - **Etapa B, producția.** Slide-uri, scheme, curs online, note de trainer, banca de exerciții, numai pentru piesele cu verdict „da”. Butonul „Trimite în agendă” face agenda ediției.
 
@@ -22,6 +23,8 @@ flowchart LR
       P[4. Piese<br/>colectate → filtrate] --> F[5. Flow Logic<br/>ordonate în 4 blocuri]
     end
     O --> P
+    R --> PR[Practician: Alex aplică subiectul<br/>+ conversații cu oameni apropiați]
+    PR --> P
     F --> G{Masa aprobată<br/>de Alex?}
     G -- nu --> P
     G -- da --> B[Etapa B: producția<br/>doar piesele „da”] --> L[6. Livrare flexibilă]
@@ -57,6 +60,7 @@ Pauzele de 15 minute sunt presupunerea noastră; Alex le poate corecta.
 |---|---|---|---|---|
 | 1 | **Research** | modele, studii, exemple cu surse în `research.md` + piese candidate în `masa.yml` | Irina | citește rezumatul de 5 rânduri |
 | 2 | **Diagnosticare** (la fiecare ediție) | chestionar anonim de 3–5 întrebări înainte + o piesă de diagnostic la deschidere. Rezumatul, fără nume, în `editii/<data>.yml` (`nota_trainer`) | Daria | aprobă și **trimite** chestionarul |
+| 2b | **Practician** (în paralel cu 1–5) | Alex aplică subiectul pe sine și îl discută cu oameni apropiați; descoperirile intră pe masă ca piese candidate (`sursa: practică` / `conversație`), fără nume | Alex. Daria le notează pe masă | trăiește subiectul, spune ce a aflat |
 | 3 | **Obiective** | cel mult 4, scurte, în `curs.yml` (sau în ediție) | Daria | aprobă lista |
 | 4 | **Piese** (etapa A) | candidate colectate și filtrate în `masa.yml` | Daria (Irina) | dă verdictele |
 | 5 | **Flow Logic** (etapa A) | piesele „da” ordonate în cele 4 blocuri | Daria. Andrei verifică | ordonează și **aprobă masa** |
@@ -84,6 +88,7 @@ Modulul „Toleranță și capacitate”, contractul și closing-urile au fost p
 ## Reguli
 - Nimic nu pleacă la participanți sau la client fără Alex. Echipa face doar draft-uri.
 - Fără date personale și fără numele clientului în repo-ul public.
+- Conversațiile lui Alex rămân private: pe masă intră doar ideea, fără numele sau detaliile oamenilor.
 - În etapa A agenții nu produc slide-uri, scheme sau ecrane.
 
 ## Ce mai trebuie ca procesul să meargă
