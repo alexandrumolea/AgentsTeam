@@ -61,7 +61,7 @@ flowchart LR
 
 ## Masa (`masa.yml`)
 - **O piesă candidată = o singură linie:** `id`, `titlu`, `scop`, `durata`, `tip`, `sursa`, `verdict` (nou / da / poate / nu), `bloc` (1–4), `ordine`. Fără text de slide, fără desene, fără ecrane. Așa consumăm puțini tokeni și Alex vede tot dintr-o privire.
-- **Colectate:** Irina (din research), Daria (din obiective și diagnostic) și Alex adaugă candidate cu verdict „nou”. Research-ul Irinei produce candidate în masă plus nota ei de surse (`research.md`), nu piese gata.
+- **Colectate = tot ce iese din Laborator** (Alex, 2026-11-18). Trei feluri de piese: **exerciții**, **knowledge bites** (bucăți scurte de cunoaștere: un model, un studiu, o idee) și **experiences** (experiențe și povești din practica practicianului și din dezbateri). Le adaugă practicianul, Irina (din research) și Daria (din obiective și diagnostic), cu verdict „nou”. Research-ul Irinei produce candidate în masă plus nota ei de surse (`research.md`), nu piese gata.
 - **Filtrate:** Alex dă Da / Poate / Nu. Întrebarea lui: „are they good enough?”
 - **Ordonate:** Alex trage piesele „da” în cele 4 blocuri ale zilei. Daria verifică timpii (fiecare bloc încape) și că fiecare obiectiv are cel puțin o piesă. Andrei verifică masa înainte să ajungă la Alex.
 - **Vederea „Masa”** (Mike): în materialul trainerului și în editorul local.
