@@ -13,7 +13,7 @@ Păstrează sub 150 de rânduri. Comprimă când crește. Fapte, nu povești.
 
 ## Preferințe confirmate
 - [Scrisul mic](feedback_scris-mic.md) — 2026-11-17: sub 16 px doar etichete; ce se apasă ≥16 px; Alex observă
-- [Element în pagina întreagă](feedback_element-in-pagina.md) — 2026-11-18: un element cerut se gândește în povestea paginii, nu „pus undeva”
+- [Element în pagina întreagă](feedback_element-in-pagina.md) — 2026-11-18: element în povestea paginii; densitate 16/12 px, primul ecran plin, un strat
 - [Inovație, nu calm](feedback_inovatie-nu-calm.md) — „prea banale” (2026-11-15); vrea viitor, un wow clar; a11y și viteza sunt limite
 - 2026-11-15: Alex a ales **Spațiu** (D-023): „Ioana a făcut treabă bună acum.”
 - 2026-11-17: Îi place **Planșa** (luminos, desen tehnic, aerisit). Întrebările le vrea ca să descopăr un stil nou pentru el, nu ca să aleagă între variantele mele.
@@ -44,7 +44,7 @@ Păstrează sub 150 de rânduri. Comprimă când crește. Fapte, nu povești.
 
 ## Proiecte și referințe
 - [Manual de brand BEMORE](project_manual-brand.md) — 2026-11-17: D-057 Sora = noul BEMORE; §7 lentila Despre; §8 portretul = lentila (D-060)
-- 2026-11-18: Despre ca întreg (`despre-compozitie-v1.html`): Alex a ales A; runda 2 = fond unitar (fără bandă: „fragmentat”) + parcurs ca linie a timpului sau Orbita drumului (recomandat). Aștept alegerea; Mike construiește.
+- 2026-11-18: Despre runda 3 (`despre-compozitie-v2.html`): A Orbita în jurul lentilei (recomandat) / B Banda de lumină. Aștept alegerea; Mike construiește. v1 rămâne (D-063, site.css o citează).
 - [Design v2 și v3](project_design-v2.md) — 2026-11-17: D-054 Sora (font + paletă); v3.1 = 3 prime pagini; aștept alegerea
 - [Culori v1](project_culori-v1.md) — 2026-11-17: diagnostic + A/B/C; înlocuit de design v2 (regulile de sens rămân)
 - [Spațiu v2](project_spatial-v2.md) — prototipul curent; deschise: rândurile din Live, propoziția „pod”, test pe telefon

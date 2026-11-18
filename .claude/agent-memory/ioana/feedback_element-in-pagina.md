@@ -20,3 +20,10 @@ Adăugat: 2026-11-18
 
 2026-11-18 (runda 2): Alex a ales A, dar „background-ul este fragmentat și arată ciudat”: banda cu gradient propriu, cu margini tăiate, peste gradientul paginii. Regula: **un singur câmp de lumină pe toată pagina**. Momentul unei secțiuni îl fac cu lumină care se intensifică (pete radiale mult mai mari decât secțiunea, care se sting înainte de margini), spațiu și lățime, nu cu o bandă. Granulația trebuie să stea deasupra luminii.
 2026-11-18: Linia timpului i s-a părut „nu suficient de imaginativă, dar nu rea”. Varianta nouă: Orbita drumului (cadran la scară, arce cât a durat rolul, numere de reper în discuri de sticlă, formarea pe orbita interioară, lista cu tot textul alături). Aștept alegerea.
+
+2026-11-18 (runda 3): Despre publicat (A + Orbita) i s-a părut „prea complexă”, cu „spații prea mari” și „despre mine e prea gol”. Reguli noi:
+- **Densitatea se măsoară, nu se simte.** Spațiul dintre blocuri = cel dintre bară și primul card (16 px desktop, 12 px telefon). Momentul îl face conținutul, nu golul. Golurile de 120 px din runda 2 („aer” pentru misiune) au fost greșeala.
+- **Primul ecran plin:** cine e, poza și fapte concrete (acum, cu cine lucrează, formarea, butonul) deasupra pliului; următorul bloc începe vizibil. Mock-urile au linia pliului (900 / 844 px).
+- **Un element vizual = un singur strat de informație.** Fără numere și litere de referință, fără două orbite; textul lung stă într-o listă alături.
+- Ce îi place sigur: lentila cu poza („lupa”), orbita ca idee (nouă, nu banală), compactul.
+- Unealtă: `?solo=a` în mock + CDP cu `setDeviceMetricsOverride` și un script care măsoară golurile, overflow-ul și coliziunile etichetelor.
