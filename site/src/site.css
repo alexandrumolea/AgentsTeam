@@ -336,10 +336,6 @@ body.page > .top{position:sticky;z-index:5}
 .foot p{margin:0 0 6px}
 .foot p:last-child{margin:0}
 .foot a{color:var(--accent);text-underline-offset:4px}
-/* Despre: poza lui Alex (content/despre.md → poza) */
-.me{float:right;width:min(300px,40%);margin:6px 0 24px 36px}
-.me img{display:block;width:100%;height:auto;border-radius:22px;border:1px solid var(--glass-edge);box-shadow:0 24px 50px -28px rgb(var(--umbra-rgb) / .55)}
-.me figcaption{margin-top:12px;font:500 13px/1.4 var(--sans);letter-spacing:.14em;text-transform:uppercase;color:var(--muted)}
 @media (max-width:760px){
   .top{top:10px;padding:6px 6px 6px 18px}
   .top .brand{letter-spacing:.12em}
@@ -353,23 +349,20 @@ body.page > .top{position:sticky;z-index:5}
   .team li a{grid-column:2;grid-row:1/4}
   .cols,.feed li{grid-template-columns:52px 1fr auto}
 }
-@media (max-width:640px){.me{float:none;width:min(260px,72%);margin:0 0 24px}}
 /* Despre: lentila (D-060, poza-forme-v1.html, varianta C). Rama e sticlă, haloul respiră, punctul e semnătura */
-.me-lens{width:280px;text-align:center}
-.lens{position:relative;width:280px;height:280px;margin:0 auto}
-.lens .halo{position:absolute;inset:-6px;border-radius:50%;background:linear-gradient(135deg,var(--cer) 0%,var(--lavanda) 52%,var(--piersica) 82%,var(--portocaliu) 100%);filter:blur(16px);opacity:.78;animation:breathe 8s ease-in-out infinite}
-.lens .bezel{position:absolute;inset:0;padding:12px;border-radius:50%;background:rgb(255 255 255 / .42);border:1px solid rgb(255 255 255 / .75);box-shadow:inset 0 1px 0 rgb(255 255 255 / .95),inset 0 -1px 0 rgb(255 255 255 / .3),0 24px 50px -26px rgb(var(--umbra-rgb) / .6);-webkit-backdrop-filter:blur(16px) saturate(150%);backdrop-filter:blur(16px) saturate(150%)}
-.lens .ph{position:relative;overflow:hidden;width:100%;height:100%;border-radius:50%;background:var(--lavanda);box-shadow:0 0 0 1px rgb(255 255 255 / .9)}
+.lens{position:relative;width:280px;height:280px;flex:none}
+.lens .halo{position:absolute;inset:-6px;border-radius:50%;background:linear-gradient(135deg,var(--cer) 0%,var(--lavanda) 52%,var(--piersica) 82%,var(--portocaliu) 100%);filter:blur(16px);opacity:.78}
+/* haloul stă pe loc; respiră doar cât ții cursorul sau focusul pe poză (WCAG 2.2.2: nimic nu se mișcă singur la nesfârșit) */
+.lens:hover .halo,.me:focus-within .halo{animation:breathe 4s ease-in-out infinite}
+.lens .bezel{position:absolute;inset:0;padding:12px;border-radius:50%;background:rgb(var(--sticla-rgb) / .42);border:1px solid rgb(var(--sticla-rgb) / .75);box-shadow:inset 0 1px 0 rgb(var(--sticla-rgb) / .95),inset 0 -1px 0 rgb(var(--sticla-rgb) / .3),0 24px 50px -26px rgb(var(--umbra-rgb) / .6);-webkit-backdrop-filter:blur(16px) saturate(150%);backdrop-filter:blur(16px) saturate(150%)}
+.lens .ph{position:relative;overflow:hidden;width:100%;height:100%;border-radius:50%;background:var(--lavanda);box-shadow:0 0 0 1px rgb(var(--sticla-rgb) / .9)}
 .me-lens .lens img{display:block;width:100%;height:100%;object-fit:cover;border:0;border-radius:0;box-shadow:none}
 .lens .sig{position:absolute;width:12px;height:12px;left:calc(85.36% - 10px);top:calc(85.36% - 10px)}
-.me-lens figcaption{margin-top:20px}
 @keyframes breathe{50%{transform:scale(1.035);opacity:.9}}
-@supports not ((backdrop-filter:blur(1px)) or (-webkit-backdrop-filter:blur(1px))){.lens .bezel{background:rgb(255 255 255 / .82)}}
-@media (prefers-reduced-transparency:reduce){.lens .bezel{background:#fff;-webkit-backdrop-filter:none;backdrop-filter:none}.lens .halo{opacity:.5}}
+@supports not ((backdrop-filter:blur(1px)) or (-webkit-backdrop-filter:blur(1px))){.lens .bezel{background:rgb(var(--sticla-rgb) / .82)}}
+@media (prefers-reduced-transparency:reduce){.lens .bezel{background:var(--surface);-webkit-backdrop-filter:none;backdrop-filter:none}.lens .halo{opacity:.5}}
 @media (max-width:760px){
-  .me-lens{float:none;width:auto;display:flex;align-items:center;gap:20px;margin:0 0 26px;text-align:left}
-  .me-lens figcaption{margin:0;max-width:12ch}
-  .lens{width:152px;height:152px;margin:0;flex:none}
+  .lens{width:152px;height:152px}
   .lens .bezel{padding:8px}
   .lens .halo{inset:-4px;filter:blur(10px)}
   .lens .sig{width:10px;height:10px;left:calc(85.36% - 8px);top:calc(85.36% - 8px)}
@@ -380,18 +373,133 @@ body.page > .top{position:sticky;z-index:5}
   .inscription{opacity:1}
 }
 
-/* Despre: valorile ca pachet de trei cărți de sticlă care se rotește (din vechiul site, în culorile BEMORE; Alex, 2026-11-18) */
-.values{clear:both;perspective:1150px;display:flex;justify-content:center;align-items:center;height:320px;margin:24px 0 8px}
-.deck{position:relative;width:208px;height:250px;transform-style:preserve-3d;animation:spinY 20s linear infinite}
-.deck:hover{animation-play-state:paused}
-.vcard{position:absolute;inset:0;border-radius:22px;transform-style:preserve-3d;border:1px solid rgb(var(--accent-rgb) / .18);box-shadow:inset 0 1px 0 rgb(255 255 255 / .8),0 30px 60px -22px rgb(var(--accent-rgb) / .35)}
-.vcard span{position:absolute;left:12px;right:12px;text-align:center;font:500 18px/1.2 var(--sans);letter-spacing:.16em;text-transform:uppercase;color:var(--text);backface-visibility:hidden;-webkit-backface-visibility:hidden}
-.v1{transform:translateZ(62px);background:linear-gradient(150deg,rgb(var(--cer-deschis-rgb) / .42),rgb(var(--cer-rgb) / .18))}
-.v2{transform:translateZ(0);background:linear-gradient(150deg,rgb(var(--lavanda-rgb) / .55),rgb(var(--lavanda-rgb) / .22))}
-.v3{transform:translateZ(-62px);background:linear-gradient(150deg,rgb(var(--piersica-rgb) / .6),rgb(var(--portocaliu-rgb) / .3))}
-.v1 span{bottom:28px}.v3 span{top:28px}.v2 span{top:50%;transform:translateY(-50%)}
-.v1 .b,.v3 .b{transform:rotateY(180deg)}
-.v2 .b{transform:translateY(-50%) rotateY(180deg)}
+/* ---------- Despre (D-063): compoziția A cu Orbita drumului ----------
+   Mostra: team/ioana/documente/despre-compozitie-v1.html (varianta „A · Orbita drumului”).
+   Capul pe sticlă, misiunea pe lumina paginii (fără bandă), cărțile alături, orbita cu lista, pasul următor.
+   Pozițiile de pe orbită și hover-ul pe rânduri le scrie build-ul la finalul fișierului (site/orbita.mjs). */
+.despre .w{width:min(1200px,calc(100% - 2 * var(--gut)));margin:28px auto 0}
+.despre ~ .foot{width:min(1200px,calc(100% - 2 * var(--gut)));margin:28px auto 48px}
+.despre h1{margin:4px 0 18px;font:200 clamp(36px,4.7vw,68px)/1.04 var(--display);letter-spacing:-.03em;text-wrap:balance}
+.despre h2{margin:0 0 12px;font:200 clamp(28px,2.6vw,34px)/1.15 var(--display);letter-spacing:-.015em;text-wrap:balance}
+.despre h2.eyebrow{margin:0 0 12px;font:500 13px/1.35 var(--sans);letter-spacing:.16em;text-transform:uppercase;color:var(--accent)}
+.despre p{margin:0 0 14px}
+.despre .lede{margin:0;font-size:20px;line-height:1.5;color:var(--muted);max-width:40ch}
+.despre a:not(.btn){color:var(--accent);text-decoration-color:rgb(var(--accent-rgb) / .45);text-underline-offset:4px;text-decoration-thickness:1px}
+
+/* 1 · capul: titlul și prima propoziție, lentila cu rolul dedesubt */
+.despre .who{display:flex;align-items:center;justify-content:space-between;gap:40px;padding:64px 80px 64px 72px}
+.despre .who .me{display:flex;flex-direction:column;align-items:center;gap:22px;margin:0;text-align:center}
+.despre .who .me .cap{margin:0}
+.despre .me-lens .lens img{display:block;width:100%;height:100%;object-fit:cover}
+.despre .me-rect img{display:block;width:240px;height:auto;border-radius:22px;border:1px solid var(--glass-edge);box-shadow:0 24px 50px -28px rgb(var(--umbra-rgb) / .55)}
+
+/* 2 · misiunea: aceeași lumină a paginii, mai intensă aici. Petele se sting mult înainte de marginea stratului,
+   deci nu se vede nicio cusătură. Granulația stă deasupra luminii (altfel lumina e o pată netedă), cu aceeași mască. */
+.despre .band{position:relative;margin-top:28px;padding:120px 0;overflow:hidden;overflow:clip}
+.despre .glow{--glow:radial-gradient(32% 28% at 64% 50%,rgb(var(--piersica-rgb) / 1) 0%,rgb(var(--piersica-rgb) / 0) 70%),radial-gradient(36% 32% at 50% 54%,rgb(var(--lavanda-rgb) / 1) 0%,rgb(var(--lavanda-rgb) / 0) 70%),radial-gradient(30% 26% at 38% 44%,rgb(var(--cer-deschis-rgb) / .9) 0%,rgb(var(--cer-deschis-rgb) / 0) 70%);
+  position:absolute;left:50%;top:50%;width:130%;height:190%;transform:translate(-50%,-50%);pointer-events:none;background:var(--glow)}
+.despre .glow::after{content:"";position:absolute;inset:0;background:url(grain.png);opacity:.38;mix-blend-mode:overlay;-webkit-mask-image:var(--glow);mask-image:var(--glow)}
+@media (pointer:coarse){.despre .glow::after{mix-blend-mode:normal;opacity:.12}}
+.despre .band-in{position:relative;z-index:1;width:min(1200px,calc(100% - 2 * var(--gut)));margin:0 auto;display:grid;gap:40px;align-items:center}
+.despre .mission{padding:56px 64px}
+.despre .statement{margin:0 0 22px;font:200 52px/1.1 var(--display);letter-spacing:-.025em;text-wrap:balance}
+.despre .mission p:not(.statement){font-size:19px;line-height:1.65}
+.despre .mission p:last-child{margin:0}
+/* valorile: pachetul de cărți (buton de pauză) și cele trei cuvinte scrise */
+.despre .values{display:flex;flex-direction:column;align-items:center;gap:6px}
+.despre .stage{appearance:none;border:0;background:none;padding:0;cursor:pointer;perspective:1150px;display:flex;justify-content:center;align-items:center;width:100%;height:420px;border-radius:24px}
+.despre .stage:disabled{cursor:default}
+.despre .stage:focus-visible{border-radius:24px;outline-offset:-2px}
+.despre .deck{position:relative;display:block;width:236px;height:286px;transform-style:preserve-3d;animation:spinY 20s linear infinite}
+.despre .stage[aria-pressed="true"] .deck,.despre .stage:hover .deck{animation-play-state:paused}
+.no-js .deck{animation:none;transform:rotateY(-24deg)}
+.despre .vc{position:absolute;inset:0;display:block;border-radius:22px;transform-style:preserve-3d;border:1px solid rgb(var(--sticla-rgb) / .75);box-shadow:inset 0 1px 0 rgb(var(--sticla-rgb) / .85),0 30px 60px -22px rgb(var(--accent-rgb) / .35)}
+.despre .vc span{position:absolute;left:10px;right:10px;text-align:center;font:500 18px/1.2 var(--sans);letter-spacing:.16em;text-transform:uppercase;color:var(--text);backface-visibility:hidden;-webkit-backface-visibility:hidden}
+.despre .vc1{transform:translateZ(72px);background:linear-gradient(150deg,rgb(var(--cer-deschis-rgb) / .62),rgb(var(--cer-rgb) / .3))}
+.despre .vc2{transform:translateZ(0);background:linear-gradient(150deg,rgb(var(--lavanda-rgb) / .66),rgb(var(--lavanda-rgb) / .3))}
+.despre .vc3{transform:translateZ(-72px);background:linear-gradient(150deg,rgb(var(--piersica-rgb) / .72),rgb(var(--portocaliu-rgb) / .34))}
+.despre .vc1 span{bottom:26px}.despre .vc3 span{top:26px}.despre .vc2 span{top:50%;transform:translateY(-50%)}
+.despre .vc1 .b,.despre .vc3 .b{transform:rotateY(180deg)}
+.despre .vc2 .b{transform:translateY(-50%) rotateY(180deg)}
 @keyframes spinY{to{transform:rotateY(360deg)}}
-@media (prefers-reduced-motion:reduce){.deck{animation:none;transform:rotateY(-24deg)}}
-@media (max-width:640px){.values{height:290px;margin:12px 0 0}}
+.despre .vlist{display:flex;align-items:center;gap:10px;margin:0;padding:8px 16px;list-style:none;border-radius:999px;font:500 13px/1.3 var(--sans);letter-spacing:.16em;text-transform:uppercase}
+.despre .vlist li{display:flex;align-items:center;gap:10px}
+.despre .vlist li+li::before{content:"";width:5px;height:5px;border-radius:50%;background:var(--punct-inel)}
+
+/* 3 · Orbita drumului: cadranul la scară (primul an jos în stânga, azi jos în dreapta), rolurile ca arce,
+   formarea pe orbita din interior, lista alături. Hover pe un rând îi aprinde arcul (CSS :has, fără JavaScript). */
+.despre .orb{display:grid;gap:22px;grid-template-areas:"head" "dial" "st" "edu";padding:64px 72px}
+.despre .orb-head{grid-area:head}.despre .orb .dial{grid-area:dial}.despre .orb > .stations{grid-area:st}.despre .orb .edu-b{grid-area:edu}
+.despre .orb-head .lede{max-width:52ch}
+.despre .orb .dial{position:relative;width:100%;max-width:500px;aspect-ratio:1;margin:4px auto 0}
+.despre .orb svg{position:absolute;inset:0;width:100%;height:100%;overflow:visible}
+.despre .orb .track{fill:none;stroke:rgb(var(--accent-rgb) / .28);stroke-width:1;stroke-dasharray:2 6}
+.despre .orb .ticks line{stroke:rgb(var(--muted-rgb) / .6);stroke-width:1.2}
+.despre .orb .arc{fill:none;stroke:var(--cer);stroke-width:9;stroke-linecap:round;opacity:.92;transition:opacity .3s,stroke-width .3s}
+.despre .orb .arc.l2,.despre .orb .arc.l3{stroke:var(--lavanda)}
+.despre .orb .arc.now{stroke:var(--portocaliu)}
+.despre .orb circle.arc{fill:var(--portocaliu);stroke:var(--sticla);stroke-width:2}
+/* lumina orbitei: o singură trecere de la primul an la „azi” când orbita intră în ecran (clasa .drum, din despre.js), apoi stă pe „azi”.
+   Fără JavaScript sau cu „reduce motion” stă direct pe „azi”. Unghiurile le scrie build-ul (site/orbita.mjs). */
+.despre .orb .light{transform-box:view-box;transform-origin:50% 50%}
+.despre .orb .light circle{fill:var(--punct);stroke:var(--sticla);stroke-width:1.5}
+.despre .orb .ref{display:grid;place-items:center;width:32px;height:32px;border-radius:50%;background:rgb(var(--sticla-rgb) / .94);box-shadow:inset 0 0 0 1px rgb(var(--accent-rgb) / .5),0 6px 14px -8px rgb(var(--umbra-rgb) / .6);font:500 15px/1 var(--sans);color:var(--accent);font-variant-numeric:tabular-nums;transition:transform .3s var(--ease),background .3s,color .3s}
+.despre .orb .ref.now{box-shadow:inset 0 0 0 1.5px var(--punct-inel),0 6px 14px -8px rgb(var(--umbra-rgb) / .6)}
+.despre .orb .ref.edu-ref{background:color-mix(in srgb,var(--lavanda) 26%,var(--sticla));box-shadow:inset 0 0 0 1px rgb(var(--accent-rgb) / .3)}
+.despre .orb .dial .ref{position:absolute;transform:translate(-50%,-50%)}
+.despre .orb .tick{position:absolute;transform:translate(-50%,-50%);font:500 12px/1 var(--sans);letter-spacing:.12em;text-transform:uppercase;color:var(--muted);font-variant-numeric:tabular-nums}
+.despre .orb .tick.azi{color:var(--accent)}
+.despre .orb .core{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);text-align:center}
+.despre .orb .core .big{display:block;font:200 72px/1 var(--display);letter-spacing:-.03em}
+.despre .orb .core .cap{margin:0;font-size:12px}
+.despre .orb .stations{list-style:none;margin:0;padding:0}
+.despre .orb .stations li{display:grid;grid-template-columns:32px 1fr;gap:18px;padding:16px 0;border-top:1px solid var(--line)}
+.despre .orb .stations li .ref{margin-top:1px}
+.despre .orb .stations b{display:block;font-weight:500;font-size:18px;line-height:1.35}
+.despre .orb .stations .meta{display:block;color:var(--muted);font-size:16px}
+.despre .orb .stations p{margin:6px 0 0;font-size:16px;line-height:1.55;max-width:56ch}
+.despre .orb .edu-b{margin-top:12px}
+.despre .orb .hint{color:var(--muted);font-size:16px;margin:0 0 6px}
+
+/* 4 · pasul următor: singurul buton plin al paginii */
+.despre .next{display:grid;grid-template-columns:1.2fr .8fr;align-items:center;gap:40px;padding:44px 72px}
+.despre .next p{max-width:52ch;margin:0}
+.despre .next .actions{justify-content:flex-end;align-items:center;gap:12px 20px;margin:0}
+.despre .next .gh{font-size:16px;padding:10px 0}
+
+@media (min-width:1100px){
+  .despre .band-in{grid-template-columns:1.15fr .85fr}
+  .despre .orb{grid-template-columns:500px 1fr;grid-template-areas:"head head" "dial st" "edu st";gap:28px 64px;align-items:start}
+  .despre .orb .dial{margin:4px 0 0}
+}
+@media (max-width:1099px){.despre .band-in{max-width:760px}}
+@media (max-width:760px){
+  .despre .w{margin-top:14px}
+  .despre ~ .foot{margin:14px auto 30px}
+  .despre .lede{font-size:18px}
+  .despre .who{flex-direction:column;align-items:stretch;gap:22px;padding:28px 22px}
+  .despre .who .me{flex-direction:row;order:-1;gap:18px;text-align:left}
+  .despre .who .me figcaption{max-width:17ch}
+  .despre .who h1{margin-top:0}
+  .despre .band{margin-top:14px;padding:44px 0 48px}
+  .despre .glow{width:200%}
+  .despre .band-in{gap:10px}
+  .despre .mission{padding:26px 22px}
+  .despre .statement{font-size:34px;margin-bottom:16px}
+  .despre .mission p:not(.statement){font-size:17px;line-height:1.6}
+  .despre .stage{height:300px}
+  .despre .deck{width:196px;height:236px}
+  .despre .vc1{transform:translateZ(60px)}.despre .vc3{transform:translateZ(-60px)}
+  .despre .vc span{font-size:17px}
+  .despre .orb{padding:28px 22px}
+  .despre .orb .dial{max-width:330px}
+  .despre .orb .ref{width:28px;height:28px;font-size:13px}
+  .despre .orb .stations li{grid-template-columns:28px 1fr;gap:14px;padding:14px 0}
+  .despre .orb .tick{font-size:11px}
+  .despre .orb .core .big{font-size:44px}
+  .despre .orb .core .cap{font-size:11px}
+  .despre .orb .edu-b{margin-top:0}
+  .despre .next{grid-template-columns:1fr;gap:20px;padding:28px 22px}
+  .despre .next .actions{justify-content:flex-start}
+}
+@media (prefers-reduced-motion:reduce){.despre .deck{transform:rotateY(-24deg)}}

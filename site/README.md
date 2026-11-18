@@ -17,6 +17,14 @@ Conținutul (texte, categorii, business-uri) se schimbă în `content/`, nu aici
 O secțiune cu `vizibil: false` nu apare nicăieri: meniu, legendă, scena 3D, pagină, sitemap, `api/continut.json`, linkurile din alte pagini. Adresa ei duce la prima pagină. Cât timp Live e ascuns, nici luminițele echipei și nici `api/live.json` nu se publică; `live/echipa/` rămâne generată, nelegată din meniu.
 Scena se adaptează singură: cu cel mult 3 obiecte, orbita se strânge și obiectele cresc. „Desfă inovația” (obiectul din centru, `in_centru` din `content/site.yml`) apare doar când Innovations e vizibil; altfel, în centru stă punctul paletei.
 
+## Pagina Despre
+
+**Un singur loc: `content/despre.md`** (D-063, compoziția A cu Orbita drumului).
+- Corpul: prima propoziție, apoi `## Misiunea mea` cu citatul (titlul în bold, apoi textul).
+- Antetul: `valori` (cele trei cărți), `parcurs.roluri` (rol, organizatie, de_la, pana_la sau „prezent”, descriere) și `formare.lista` (titlu, unde).
+- Din roluri, `site/orbita.mjs` desenează la build Orbita drumului: arcele la scară, culoarele când rolurile se suprapun, numerele, „azi”, numărul de ani din centru. Pagina nu are nevoie de JavaScript pentru ea.
+- Un an greșit, un rol care se termină înainte să înceapă sau mai mult de trei roluri în paralel opresc build-ul, cu mesaj clar.
+
 ## Cum schimbi culorile și fonturile
 
 **Un singur loc: `content/tema.yml`.** De acolo pleacă tot: CSS-ul, gradientul de fundal, fonturile, scena 3D, culoarea barei de adrese pe telefon (`theme-color`), favicon-ul și imaginea de previzualizare. Din D-057 e brandingul BEMORE: aceiași tokeni îi folosește și tema cursurilor.

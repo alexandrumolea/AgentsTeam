@@ -1,0 +1,75 @@
+<!doctype html>
+<html lang="ro">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Despre, mostră și site</title>
+<style>
+:root{--bg:#F3F1F7;--panel:#FFFFFF;--fg:#14161F;--muted:#4E5263;--accent:#2B44B8;--line:rgb(20 22 31 / .12);color-scheme:light dark}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#14151C;--panel:#1D1F28;--fg:#ECEAF3;--muted:#A8AABA;--accent:#A9B8FF;--line:rgb(236 234 243 / .14)}}
+:root[data-theme="dark"]{--bg:#14151C;--panel:#1D1F28;--fg:#ECEAF3;--muted:#A8AABA;--accent:#A9B8FF;--line:rgb(236 234 243 / .14)}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--fg);font:400 17px/1.55 system-ui,-apple-system,"Segoe UI",sans-serif}
+.page{max-width:1600px;margin:0 auto;padding:40px 16px 80px}
+h1{margin:0 0 10px;font-weight:300;font-size:clamp(30px,4vw,48px);letter-spacing:-.02em}
+h2{margin:48px 0 8px;font-weight:400;font-size:26px}
+p,li{max-width:72ch}
+.kick{margin:0 0 8px;font-size:13px;letter-spacing:.14em;text-transform:uppercase;color:var(--accent);font-weight:600}
+.pair{display:grid;gap:20px;grid-template-columns:minmax(0,1fr);align-items:start}
+@media (min-width:900px){.pair{grid-template-columns:minmax(0,1fr) minmax(0,1fr)}}
+.phones{display:grid;gap:20px;grid-template-columns:repeat(auto-fit,minmax(min(100%,260px),340px));align-items:start}
+figure{margin:0;padding:12px;border-radius:16px;background:var(--panel);border:1px solid var(--line)}
+figcaption{margin:0 0 10px;font-size:14px;color:var(--muted)}
+figcaption b{color:var(--fg);font-weight:600}
+img{display:block;width:100%;height:auto;border-radius:8px}
+ul{padding-left:20px}
+li+li{margin-top:6px}
+code{font-size:.9em}
+</style>
+</head>
+<body>
+<div class="page">
+<p class="kick">Mike · verificare · 18 noiembrie 2026</p>
+<h1>Pagina Despre: mostra Ioanei și site-ul construit</h1>
+<p>Stânga: varianta „A · Orbita drumului” din <code>team/ioana/documente/despre-compozitie-v1.html</code> (D-063). Dreapta: site-ul local (<code>site/dist</code>), din build. Capturi din Chrome headless, pagina întreagă, cu animațiile oprite în același moment. Nimic nu e publicat încă.</p>
+
+<h2>Desktop · 1440 px</h2>
+<div class="pair">
+  <figure><figcaption><b>Mostra</b></figcaption><img src="despre-orbita-capturi/mostra-1440.jpg" alt="Mostra Ioanei la 1440 px, pagina întreagă" loading="lazy"></figure>
+  <figure><figcaption><b>Site</b></figcaption><img src="despre-orbita-capturi/site-1440.jpg" alt="Pagina Despre construită, la 1440 px, pagina întreagă" loading="lazy"></figure>
+</div>
+
+<h2>Telefon · 390 px</h2>
+<div class="phones">
+  <figure><figcaption><b>Mostra</b></figcaption><img src="despre-orbita-capturi/mostra-390.jpg" alt="Mostra Ioanei la 390 px" loading="lazy"></figure>
+  <figure><figcaption><b>Site</b></figcaption><img src="despre-orbita-capturi/site-390.jpg" alt="Pagina Despre la 390 px" loading="lazy"></figure>
+  <figure><figcaption><b>Site · 375 px</b>, fără derulare laterală</figcaption><img src="despre-orbita-capturi/site-375.jpg" alt="Pagina Despre la 375 px" loading="lazy"></figure>
+</div>
+
+<h2>Hover pe un rând (CSS <code>:has</code>, fără JavaScript)</h2>
+<div class="pair">
+  <figure><figcaption><b>Rolul 04, Founder</b>: arcul se îngroașă, discul se umple, restul arcelor se sting</figcaption><img src="despre-orbita-capturi/hover-1440.jpg" alt="Orbita cu rândul 04 sub cursor" loading="lazy"></figure>
+  <figure><figcaption><b>Formarea C</b>: litera de pe orbita din interior se aprinde</figcaption><img src="despre-orbita-capturi/hover-formare-1440.jpg" alt="Orbita cu rândul de formare C sub cursor" loading="lazy"></figure>
+</div>
+
+<h2>Fără mișcare, fără JavaScript, fără transparență</h2>
+<div class="pair">
+  <figure><figcaption><b>prefers-reduced-motion</b>: pachetul stă la −24°, lumina orbitei stă pe loc, butonul e inactiv</figcaption><img src="despre-orbita-capturi/reduced-motion-1440.jpg" alt="Pagina cu mișcarea redusă" loading="lazy"></figure>
+  <figure><figcaption><b>Fără JavaScript</b>: orbita e întreagă (desenată la build), pachetul stă la −24°</figcaption><img src="despre-orbita-capturi/fara-js-1440.jpg" alt="Pagina fără JavaScript" loading="lazy"></figure>
+  <figure><figcaption><b>prefers-reduced-transparency</b>: sticla devine plină</figcaption><img src="despre-orbita-capturi/reduced-transparency-1440.jpg" alt="Pagina cu transparența redusă" loading="lazy"></figure>
+  <figure><figcaption><b>900 px</b> (între telefon și desktop): misiunea și orbita trec pe o coloană</figcaption><img src="despre-orbita-capturi/site-900.jpg" alt="Pagina la 900 px" loading="lazy"></figure>
+</div>
+
+<h2>Unde diferă site-ul de mostră și de ce</h2>
+<ul>
+  <li><b>Granulația e mai fină pe tot site-ul.</b> În mostră, granulația stă peste toată pagina, inclusiv peste panouri. Pe site stă sub sticlă, ca până acum. Peste lumina misiunii am pus același strat, decupat cu forma luminii, ca să nu apară pată netedă. Măsurat: zgomotul în lumină e 0,62, pe fondul simplu 0,28.</li>
+  <li><b>Marginile laterale pe telefon au 16 px</b>, ca bara de sus a site-ului; în mostră sunt 12 px. Pagina iese cu circa 90 px mai lungă.</li>
+  <li><b>Subsolul</b> e cel al site-ului (două rânduri, cu data actualizării), lățit la 1200 px doar pe Despre.</li>
+  <li><b>Butonul pachetului își păstrează eticheta</b> („Oprește rotirea cărților”), iar starea o spune <code>aria-pressed</code>. Mostra schimba și eticheta, ceea ce cititorul de ecran anunța de două ori.</li>
+  <li><b>Fără JavaScript sau cu mișcarea redusă</b>, pachetul nu se rotește deloc și butonul e inactiv. Altfel ar fi existat mișcare fără buton de pauză.</li>
+  <li><b>Între 761 și 1099 px</b> (mostra nu acoperă lățimea asta): misiunea și cărțile, apoi cadranul și lista, stau pe o singură coloană.</li>
+  <li><b>„Azi” se calculează la build</b> (acum 2026,88; mostra avea 2026,9), la fel ca numărul din centru. De la 2027, centrul arată „20 de ani de drum”.</li>
+</ul>
+</div>
+</body>
+</html>

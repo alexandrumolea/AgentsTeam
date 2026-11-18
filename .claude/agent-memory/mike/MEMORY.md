@@ -32,6 +32,11 @@ Păstrează sub 150 de rânduri. Comprimă când crește. Fapte, nu povești.
 
 - 2026-11-18: Alex gândește în fluxuri (Masa → Biblioteca → Agenda). Înainte să construiesc o vedere nouă, întreb unde stă ea în flux și ce e „panoul de control”; altfel reconstruiesc aceeași zi.
 
+- 2026-11-18: D-063 Despre (Orbita drumului): pe paginile interioare CSP-ul are style-src 'self', deci fără atribute style=. Pozițiile calculate la build (orbita) merg ca CSS generat, lipit la finalul site.css. Clasele noi le scopez sub clasa paginii (.despre): `.who` și `.lead` existau deja pe prima pagină cu alt sens și îmi stricau capul paginii.
+- 2026-11-18: compar cu mostra Ioanei randând template-ul ei separat (lățimea fixă, Chrome headless, animațiile oprite în același moment cu getAnimations), apoi măsor în pixeli (zgomot, înălțimi) în loc să judec după ochi. Fără PIL pe Mac: canvas în Chrome.
+
+- 2026-11-18: review Ioana pe Despre, WCAG 2.2.2 e blocant: nimic decorativ nu se mișcă singur la nesfârșit (lumina orbitei = o trecere de 4,5 s, pornită când intră în ecran; haloul respiră doar la hover). Întreabă din prima: „se oprește singur în 5 s?”.
+
 ## Fișiere de memorie
 - [Stack și găzduire](project_stack-hosting.md) — GitHub Pages (D-036–D-038), CNAME ignorat la Actions; fapte Netlify/Cloudflare/Vercel
 - [Generatorul paginii echipei](generator-echipa.md) — Mike îl deține; puncte fragile tăcute; 2026-11-17: panoul de control, maparea statusurilor

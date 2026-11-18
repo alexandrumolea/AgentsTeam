@@ -15,6 +15,7 @@ import { deflateSync } from 'node:zlib';
 import { parse as parseYaml } from 'yaml';
 import { marked } from 'marked';
 import { loadTema, checkUsage } from './tema.mjs';
+import { citesteParcurs, orbita } from './orbita.mjs';
 
 const HERE = dirname(fileURLToPath(import.meta.url));
 const ROOT = resolve(HERE, '..');
@@ -289,10 +290,32 @@ const podHtml = c => c.pod ? `<p class="pod">${esc(c.pod)}</p>` : '';
 const detaliiHtml = c => Array.isArray(c.detalii) && c.detalii.length ? `<ul class="list facts">${c.detalii.filter(d => d && d.eticheta && d.text).map(d => `<li><b>${esc(d.eticheta)}</b><span>${esc(d.text)}</span></li>`).join('')}</ul>` : '';
 const bookBtn = cls => rezervare ? `<a class="btn book ${cls || ''}" href="${esc(rezervare)}" rel="noopener">Rezervă<span class="pv-long"> o sesiune</span></a>` : '';
 const businessList = () => BUSINESS.length ? `<ul class="list biz">${BUSINESS.map(b => `<li><b>${b.link ? `<a href="${esc(b.link)}" rel="noopener">${esc(b.nume)}</a>` : esc(b.nume)}</b>${b.nevoie ? `<span>${esc(b.nevoie)}</span>` : ''}${b.rol ? `<small>${esc(b.rol)}</small>` : ''}${b.pod ? `<small class="pod">${esc(b.pod)}</small>` : ''}</li>`).join('')}</ul>` : '';
-const valoriHtml = Array.isArray(despre.data.valori) && despre.data.valori.length
-  ? `<div class="values" role="list" aria-label="${esc(despre.data.valori.join(', '))}"><div class="deck">${despre.data.valori.slice(0, 3).map((v, i) => `<div class="vcard v${i + 1}" role="listitem"><span class="f">${esc(v)}</span><span class="b" aria-hidden="true">${esc(v)}</span></div>`).join('')}</div></div>` : '';
-// valorile (pachetul de cărți de sticlă, ca pe vechiul site, în culorile BEMORE) stau imediat după misiune
-const despreHtml = (() => { const h = marked.parse(despre.body || ''); return valoriHtml && h.includes('</blockquote>') ? h.replace('</blockquote>', '</blockquote>' + valoriHtml) : h + valoriHtml; })();
+// Despre (D-063, compoziția A cu Orbita drumului): corpul din content/despre.md dă prima propoziție și misiunea;
+// parcursul și formarea sunt date în antet și devin orbita și lista de lângă ea (site/orbita.mjs).
+const despreParti = (() => {
+  const toks = marked.lexer(despre.body || '').filter(t => t.type !== 'space');
+  const k = toks.findIndex(t => t.type === 'heading');
+  const intro = k < 0 ? toks : toks.slice(0, k), rest = k < 0 ? [] : toks.slice(k + 1);
+  const bq = rest.find(t => t.type === 'blockquote');
+  const paras = (bq ? bq.tokens : rest).filter(t => t.type === 'paragraph').map(t => t.text);
+  if (toks.filter(t => t.type === 'heading').length > 1 || rest.some(t => t !== bq && t.type !== 'paragraph')) warn('content/despre.md: după „## Misiunea mea” pagina arată doar citatul. Parcursul și formarea stau în antet (parcurs, formare).');
+  const statement = paras.length > 1 ? paras[0].replace(/^\*\*([\s\S]*)\*\*$/, '$1') : '';
+  return {
+    lead: intro.filter(t => t.type === 'paragraph').map(t => marked.parseInline(t.text)).join(' '),
+    eticheta: k < 0 ? '' : toks[k].text,
+    statement: statement ? marked.parseInline(statement) : '',
+    text: (paras.length > 1 ? paras.slice(1) : paras).map(p => `<p>${marked.parseInline(p)}</p>`).join('')
+  };
+})();
+let PARCURS; try { PARCURS = citesteParcurs(despre.data, NOW); } catch (e) { fail(e.message); }
+const ORBITA = orbita(PARCURS, esc);
+// valorile: pachetul de trei cărți de sticlă care se rotește (ca pe vechiul site), apoi cele trei cuvinte scrise.
+// Pachetul e un buton: click sau Enter pune pauză (WCAG 2.2.2). Fără JavaScript sau cu „reduce motion”, stă pe loc la −24°.
+const valori = (Array.isArray(despre.data.valori) ? despre.data.valori : []).slice(0, 3).map(String);
+const valoriHtml = valori.length ? `<div class="values">
+  <button class="stage" type="button" aria-pressed="false" aria-label="Oprește rotirea cărților" disabled><span class="deck" aria-hidden="true">${valori.map((v, i) => `<span class="vc vc${i + 1}"><span class="f">${esc(v)}</span><span class="b">${esc(v)}</span></span>`).join('')}</span></button>
+  <ul class="vlist glass" aria-label="Valorile mele">${valori.map(v => `<li>${esc(v)}</li>`).join('')}</ul>
+</div>` : '';
 const misiune = (site.intro && site.intro.inscriptie) || [];
 
 const CSS_HASHLESS = 'assets/site.css';
@@ -355,15 +378,15 @@ const footer = () => `<footer class="foot glass">
   <p>Actualizat ${esc(fLongDay(NOW))}, ${esc(fTime(NOW))}. Datele: <a href="${u('api/continut.json')}">continut.json</a>${C.live ? ` · <a href="${u('api/live.json')}">live.json</a>` : ''}</p>
 </footer>`;
 
-function page({ cheie, title, description, path, bodyHtml }){
+function page({ cheie, title, description, path, bodyHtml, mainClass = 'wrap glass-read', bodyClass = '', scripts = '' }){
   return `${head({ title, description, path })}
-<body class="page">
+<body class="page${bodyClass ? ' ' + bodyClass : ''}">
 <div class="bg" aria-hidden="true"></div>
 ${topNav(cheie)}
-<main id="main" class="wrap glass-read">
+<main id="main" class="${mainClass}">
 ${bodyHtml}
 </main>
-${footer()}
+${footer()}${scripts}
 </body>
 </html>
 `;
@@ -510,6 +533,7 @@ ${templates}
 
 /* ---------- paginile ---------- */
 function categoryPage(c){
+  if (c.cheie === 'despre') return desprePage(c);
   let inner = '';
   if (c.cheie === 'live'){
     const days = new Map();
@@ -521,23 +545,34 @@ ${events.length ? [...days].map(([, list]) => `<h3 class="day">${esc(fLongDay(li
   `<li class="commit"><span class="id">${e.ora_reala ? esc(fTime(e._t)) : ''}</span><span class="who"><i>salvat în repo</i></span><span class="st"></span><span class="task">${e.link ? `<a href="${esc(e.link)}" rel="noopener">${esc(e.titlu)}</a>` : esc(e.titlu)}</span></li>`).join('')}</ol>`).join('') : '<p>Liniște în atelier acum.</p>'}
 </section>
 <p class="actions"><a class="btn" href="${u('live/echipa/')}">Echipa de agenți →</a><a class="btn ghost" href="${u('api/live.json')}">Datele, ca JSON</a></p>`;
-  } else if (c.cheie === 'despre'){
-    // poza_forma: lentila (D-060, Ioana: poza-forme-v1.html, varianta C) sau gol = dreptunghiul 3 : 4 de dinainte
-    const d = despre.data, lens = d.poza_forma === 'lentila';
-    const img = d.poza ? `<img src="${u(d.poza)}" alt="${esc(d.poza_alt || 'Alex')}" width="${lens ? 560 : 900}" height="${lens ? 560 : 1200}" loading="eager" decoding="async">` : '';
-    const poza = !img ? '' : lens
-      ? `<figure class="me me-lens"><div class="lens"><span class="halo" aria-hidden="true"></span><div class="bezel"><div class="ph">${img}</div></div><span class="dot sig" aria-hidden="true"></span></div><figcaption>${esc(d.rol || '')}</figcaption></figure>`
-      : `<figure class="me">${img}<figcaption>${esc(d.rol || '')}</figcaption></figure>`;
-    inner = `${poza}<div class="prose">${despreHtml}</div>
-<h2>Atelierul, la vedere</h2>
-<p>Lucrez cu o echipă de agenți AI, iar munca noastră e publică. ${C.live ? `<a href="${u('live/echipa/')}">Vezi echipa și procesele</a> sau <a href="${pageUrl(C.live)}">ce construim acum</a>.` : `Totul e în <a href="${esc(GH)}" rel="noopener">repo-ul public pe GitHub</a>.`}</p>
-<h2>Contact</h2><p>Mă găsești pe <a href="${esc(GH)}" rel="noopener">GitHub</a>.</p>`;
   } else {
     inner = `${podHtml(c)}${detaliiHtml(c)}${stateHtml(c)}${c.cheie === 'companie' ? businessList() : ''}${c.cheie === 'coaching' && rezervare ? `<p><a class="btn" href="${esc(rezervare)}" rel="noopener">Alege o oră →</a></p>` : ''}
 ${C.live ? `<p class="actions"><a class="btn" href="${pageUrl(C.live)}">Vezi ce se lucrează acum →</a></p>` : ''}`;
   }
-  const lead = c.cheie === 'despre' ? '' : `<p class="kicker">${esc(c.fraza)}</p>`;
-  return page({ cheie: c.cheie, title: c.eticheta, description: c.cheie === 'despre' ? site.descriere : `${c.eticheta}: ${c.fraza}`, path: c.url + '/', bodyHtml: `<h1>${esc(c.cheie === 'despre' ? c.eticheta : c.eticheta)}</h1>${lead}\n${inner}` });
+  return page({ cheie: c.cheie, title: c.eticheta, description: `${c.eticheta}: ${c.fraza}`, path: c.url + '/', bodyHtml: `<h1>${esc(c.eticheta)}</h1><p class="kicker">${esc(c.fraza)}</p>\n${inner}` });
+}
+
+// Despre (D-063): capul pe sticlă, misiunea pe lumina paginii cu cărțile alături, Orbita drumului, pasul următor.
+// Mostra: team/ioana/documente/despre-compozitie-v1.html, varianta „A · Orbita drumului”.
+function desprePage(c){
+  // poza_forma: lentila (D-060, Ioana: poza-forme-v1.html, varianta C) sau gol = dreptunghiul 3 : 4 de dinainte
+  const d = despre.data, lens = d.poza_forma === 'lentila', P = despreParti;
+  const img = d.poza ? `<img src="${u(d.poza)}" alt="${esc(d.poza_alt || 'Alex')}" width="${lens ? 560 : 900}" height="${lens ? 560 : 1200}" loading="eager" decoding="async">` : '';
+  const poza = !img ? '' : lens
+    ? `<figure class="me me-lens"><div class="lens"><span class="halo" aria-hidden="true"></span><div class="bezel"><div class="ph">${img}</div></div><span class="dot sig" aria-hidden="true"></span></div>${d.rol ? `<figcaption class="cap">${esc(d.rol)}</figcaption>` : ''}</figure>`
+    : `<figure class="me me-rect">${img}${d.rol ? `<figcaption class="cap">${esc(d.rol)}</figcaption>` : ''}</figure>`;
+  const mission = P.statement || P.text ? `<section class="band" aria-labelledby="misiuneH"><div class="glow" aria-hidden="true"></div>
+<div class="band-in${valoriHtml ? '' : ' solo'}"><div class="mission glass-read">${P.eticheta ? `<h2 class="eyebrow" id="misiuneH">${esc(P.eticheta)}</h2>` : ''}${P.statement ? `<p class="statement">${P.statement}</p>` : ''}${P.text}</div>
+${valoriHtml}</div></section>` : '';
+  const next = `<section class="next w glass" aria-labelledby="atelierH">
+  <div><h2 id="atelierH">Atelierul, la vedere</h2><p>Lucrez cu o echipă de agenți AI, iar munca noastră e publică. ${C.live ? `<a href="${u('live/echipa/')}">Vezi echipa și procesele</a> sau <a href="${pageUrl(C.live)}">ce construim acum</a>.` : `Totul e în <a href="${esc(GH)}" rel="noopener">repo-ul public pe GitHub</a>.`}</p></div>
+  <div class="actions">${C.coaching ? `<a class="btn" href="${pageUrl(C.coaching)}">${esc(C.coaching.eticheta)} →</a>` : ''}${GH ? `<a class="gh" href="${esc(GH)}" rel="noopener">Mă găsești pe GitHub</a>` : ''}</div>
+</section>`;
+  const bodyHtml = `<section class="who w glass-read"><div class="who-t"><h1>${esc(c.eticheta)}</h1>${P.lead ? `<p class="lede">${P.lead}</p>` : ''}</div>${poza}</section>
+${mission}
+${PARCURS.roluri.length || PARCURS.formare.length ? ORBITA.html : ''}
+${next}`;
+  return page({ cheie: c.cheie, title: c.eticheta, description: site.descriere, path: c.url + '/', bodyHtml, mainClass: 'despre', bodyClass: 'no-js', scripts: `\n<script src="${u('assets/despre.js')}?v=${cssV}" defer></script>` });
 }
 
 function teamPage(){
@@ -595,10 +630,12 @@ const fontFaces = Object.values(TEMA.fonturi).filter((f, i, all) => all.findInde
     return block.replace(/font-family:\s*'[^']*'/, `font-family:"${f.nume}"`).replace(/url\(\.\/files\//, 'url(fonts/').replace(/format\('woff2-variations'\)/, 'format("woff2")').replace(/\s*\n\s*/g, '');
   }).join('\n');
 }).join('\n');
-const css = TEMA.css() + fontFaces + '\n' + cssSrc; // :root cu culorile și fonturile din content/tema.yml, apoi restul stilului
-cssV = createHash('sha256').update(css + js).digest('hex').slice(0, 10);
+const css = TEMA.css() + fontFaces + '\n' + cssSrc + ORBITA.css; // :root cu culorile și fonturile din content/tema.yml, apoi restul stilului
+const despreJs = readFileSync(join(HERE, 'src/despre.js'), 'utf8');
+cssV = createHash('sha256').update(css + js + despreJs).digest('hex').slice(0, 10);
 write('assets/site.css', css);
 write('assets/scena.js', js);
+write('assets/despre.js', despreJs);
 cpSync(join(NM, 'three/build/three.module.min.js'), join(OUT, 'assets/three/three.module.min.js'));
 cpSync(join(NM, 'three/examples/jsm/environments/RoomEnvironment.js'), join(OUT, 'assets/three/addons/environments/RoomEnvironment.js'));
 cpSync(join(NM, 'three/LICENSE'), join(OUT, 'assets/three/LICENSE'));
@@ -630,7 +667,9 @@ write('api/continut.json', JSON.stringify({
   site: { titlu: site.titlu, descriere: site.descriere, github: GH, rezervare: rezervare || null, intro: site.intro, in_pregatire: site.in_pregatire, in_centru: centru },
   familii, categorii: CATS.map(c => ({ ...c, url: pageUrl(c) })),
   ...(C.companie ? { business: BUSINESS } : {}), nevoi,
-  despre: { titlu: despre.data.titlu || 'Despre mine', markdown: despre.body },
+  despre: { titlu: despre.data.titlu || 'Despre mine', markdown: despre.body, valori,
+    parcurs: PARCURS.roluri.map(({ rol, organizatie, de_la, pana_la, ani, descriere }) => ({ rol, organizatie, de_la, pana_la, ani, descriere })),
+    formare: PARCURS.formare },
   echipa: { ...(site.echipa || {}), agenti: AGENTS.map(({ status, ...a }) => a), procese: PROCESE }
 }, null, 2) + '\n');
 
