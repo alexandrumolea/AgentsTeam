@@ -25,7 +25,7 @@ O ofertă bună nu e o listă de prețuri. E răspunsul la întrebarea clientulu
 4. **De ce funcționează / de ce noi**: ce s-a dovedit deja (pilotul, experiența lui Alex, metoda), concret, fără superlative.
 5. **Investiția**: tabel simplu, cu cantitate × preț unitar = total, fiecare sumă „+ TVA” (sau mențiunea clară sus că sumele nu includ TVA). Total la final, vizibil. Prețul per participant când ajută la înțelegere.
 6. **Ce e inclus / ce nu** (transport, cazare, limba rapoartelor etc.): onest, fără surprize mai târziu.
-7. **Pasul următor**: o acțiune concretă și simplă („confirmați pe email și programăm primele date”), plus valabilitatea ofertei (de exemplu 30 de zile).
+7. **Dacă vi se potrivește**: o invitație deschisă, fără să presupună acceptul („mă bucur să ajustăm propunerea”), plus valabilitatea ofertei, spusă blând (de exemplu 30 de zile).
 
 ## 3. Tonul
 - Vocea lui Alex (skill `vocea-alex`): cald, direct, în română, fără jargon și fără presiune. Vânzare prin claritate și prin rezultat, nu prin adjective.
@@ -43,7 +43,7 @@ O ofertă bună nu e o listă de prețuri. E răspunsul la întrebarea clientulu
 - **Limitele de lungime:** titlul are cel mult 10 cuvinte; exact 3 pași (cel mult 25 de cuvinte fiecare); exact 3 motive; tabelul are cel mult 4 rânduri cu preț, plus rândurile incluse cu 0 EUR (compacte, cel mult 4). Citatul clientului din „Ce am înțeles” e opțional: doar dacă adaugă sens, nu dacă repetă textul. „+ TVA” la fiecare sumă, în afară de rândurile incluse, care au doar „0 EUR” (Alex, 2026-11-18).
 - **PDF:** `"/Applications/Google Chrome.app/Contents/MacOS/Google Chrome" --headless=new --no-pdf-header-footer --print-to-pdf=oferta.pdf oferta.html`.
 - **Verificarea formei:** numărul de pagini din PDF = numărul de foi; fiecare pagină privită ca imagine (într-un folder propriu din scratchpad); HTML-ul la 375 px fără derulare laterală (Chrome headless nu coboară sub 500 px: testezi într-un iframe de 375 px). Dacă o foaie trece pe pagina următoare, scurtezi textul tău, nu stilul și nu textele scrise de Alex.
-- **Emailul care o însoțește:** scurt și cald (vezi Tonul): ce e atașat, totalul o dată, o invitație deschisă la discuție.
+- **Emailul care o însoțește:** scurt și cald (vezi Tonul): ce e atașat, într-o frază, și deschiderea de a ajusta împreună. Fără sumă (prețul stă în document, lângă valoare) și fără pas de programare (nu presupunem că oferta e acceptată).
 
 ## 5. Verificarea înainte de predare
 - [ ] Aritmetica verificată de două ori; totalurile se potrivesc cu tabelul.
@@ -60,7 +60,8 @@ O ofertă bună nu e o listă de prețuri. E răspunsul la întrebarea clientulu
 - 2026-11-18: Când varianta e aleasă, nu mai oferim alternative; prezentăm alegerea ca recomandare clară.
 - 2026-11-18: Dovada pentru „De ce funcționează” se caută și în afara firului comercial: rezumatele trimise după livrare (pe zile, cu scorul de la final) sunt mai convingătoare decât orice argument. Se citează fapte, nu adjective.
 - 2026-11-18: Ce nu e inclus și ce ține de client (limba rapoartelor, acordul părinților, sesiuni care nu sunt în ofertă) se spune onest într-o secțiune „Bine de știut”, fără preț pentru extra-uri nedecise de Alex.
-- 2026-11-18: Alex a corectat tonul unui email de ofertă: îl simțea „asertiv, chiar agresiv”. Emailul de ofertă e scurt și cald: ce e atașat, cifra totală o dată, o invitație deschisă la discuție.
+- 2026-11-18: Alex a corectat tonul unui email de ofertă: îl simțea „asertiv, chiar agresiv”. Emailul de ofertă e scurt și cald. (Partea „cifra totală o dată” e înlocuită de lecția de mai jos.)
+- 2026-11-18: Alex a scos din emailul de ofertă suma și fraza „putem stabili împreună datele”. Lecția: emailul nu vinde și nu închide. Spune ce e atașat și lasă loc clientului: „Dacă ar fi ceva de schimbat, de clarificat sau modificat, mă bucur să ajustăm și să vorbim.” Prețul se citește în document, în contextul valorii, nu ca cifră goală în email; nu presupunem acceptul (fără programare, fără „oricând vă e comod”).
 - 2026-11-18: Fără referințe la alți clienți, la grupe sau la pilote anterioare în ofertă, dacă Alex nu le cere explicit. „De ce funcționează” se construiește atunci din metodă (cum e gândit programul), fără promisiuni.
 - 2026-11-18: Materialele pe care participanții le pot refolosi după formare sunt o parte valoroasă a ofertei: le numim concret, ca parte inclusă, fără să inventăm formate sau număr de pagini neconfirmate de Alex.
 - 2026-11-18: Ana și Ioana lucrează împreună la forma ofertelor: Ana scrie conținutul în șablon, iar orice schimbare vizuală a șablonului o face Ioana. Dacă textul nu încape, îl scurtează Ana, nu umblă la stil.

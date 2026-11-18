@@ -20,3 +20,4 @@ Doar lecții generale. Clienții, sumele și ofertele stau în `.claude/agent-me
 - 2026-11-18: Pachetul trebuie să pară cât mai bogat: tot ce primește clientul e rând în Investiția; ce e inclus fără cost apare cu 0 EUR.
 - 2026-11-18: Nu schimb titlul (sau alte secțiuni) din proprie inițiativă după o rescriere a lui Alex în altă parte; un titlu care a mers rămâne.
 - 2026-11-18: Citatul clientului doar dacă adaugă sens, nu dacă repetă textul.
+- 2026-11-18: Emailul de ofertă: fără sumă și fără pas de programare. Doar ce e atașat și deschiderea de a ajusta împreună (Alex a rescris așa emailul trimis). Înlocuiește regula „totalul o dată în email”.
