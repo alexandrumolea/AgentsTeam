@@ -1,0 +1,46 @@
+---
+name: oferte
+description: Metoda echipei pentru oferte comerciale către clienții lui Alex (training, workshop-uri, coaching, evaluări precum CliftonStrengths). Folosește-o înainte de orice ofertă, email de ofertă sau follow-up comercial. Lecții generale, fără date de clienți.
+---
+
+# Cum facem o ofertă relevantă (metoda Anei)
+
+Adăugat: 2026-11-18. Proprietar: Ana. Se îmbunătățește după fiecare feedback al lui Alex (cu dată).
+
+O ofertă bună nu e o listă de prețuri. E răspunsul la întrebarea clientului: „De ce să facem asta, de ce acum și de ce cu Alex?”, urmat de ce primește și cât investește.
+
+## 1. Înainte de a scrie: ascultă
+- Citește tot firul de email cu clientul. Notează, în cuvintele lui: problema, ce a cerut exact, termenele, cine decide, ce obiecții a avut.
+- Ce s-a întâmplat deja împreună (pilot, livrări anterioare, rezultate, feedback)? Asta e dovada cea mai puternică.
+- Ce a decis deja Alex (variantă, tarif, format)? Ce a ales clientul se prezintă ca recomandare, nu ca meniu.
+- Ce lipsește? Listează pentru Alex; nu ghici prețuri, termene sau cine livrează.
+
+## 2. Structura ofertei (1–2 pagini)
+1. **Titlu cu rezultatul**, nu cu produsul. „Profesori care lucrează cu talentele elevilor”, nu „Ofertă CliftonStrengths”.
+2. **Ce am înțeles** (2–3 rânduri): problema și obiectivul clientului, în cuvintele lui. Clientul trebuie să se recunoască.
+3. **Propunerea**: ce facem, pe pași, cu un mic calendar. Fiecare pas spune ce primește clientul, nu doar ce facem noi.
+4. **De ce funcționează / de ce noi**: ce s-a dovedit deja (pilotul, experiența lui Alex, metoda), concret, fără superlative.
+5. **Investiția**: tabel simplu, cu cantitate × preț unitar = total, fiecare sumă „+ TVA” (sau mențiunea clară sus că sumele nu includ TVA). Total la final, vizibil. Prețul per participant când ajută la înțelegere.
+6. **Ce e inclus / ce nu** (transport, cazare, limba rapoartelor etc.): onest, fără surprize mai târziu.
+7. **Pasul următor**: o acțiune concretă și simplă („confirmați pe email și programăm primele date”), plus valabilitatea ofertei (de exemplu 30 de zile).
+
+## 3. Tonul
+- Vocea lui Alex (skill `vocea-alex`): cald, direct, în română, fără jargon și fără presiune. Vânzare prin claritate și prin rezultat, nu prin adjective.
+- Fraze scurte. Verbe la persoana I („vă propun”, „lucrăm”), cu „dumneavoastră” sau „voi” după cum vorbește Alex deja cu clientul în email.
+- Nu promite ce nu controlăm (rezultate garantate, termene ale altora).
+
+## 4. Forma
+- Brandul se alege după skill-ul `brand-bemore` („Ce brand poartă un material”). Oferta e un document scurt (HTML → PDF), lizibil pe telefon și la tipar.
+- Plus emailul care o însoțește: 5–8 rânduri, cu esențialul (ce, cât, pasul următor) și oferta atașată.
+
+## 5. Verificarea înainte de predare
+- [ ] Aritmetica verificată de două ori; totalurile se potrivesc cu tabelul.
+- [ ] „+ TVA” peste tot (sau mențiunea clară).
+- [ ] Numele, rolurile și cifrele vin din surse (email, Alex), nu inventate.
+- [ ] Ce lipsește e în „Am nevoie de la Alex”, nu ascuns în ofertă.
+- [ ] Nimic din ofertă nu ajunge în repo-ul public.
+
+## 6. Lecții (cu dată, generale)
+- 2026-11-18: Alex vrea „+ TVA” la fiecare sumă sau mențiunea clară că oferta nu include TVA.
+- 2026-11-18: Alex vrea ofertele să „sune a sales”: pornesc din problema clientului și din ce s-a dovedit deja, nu din lista de produse.
+- 2026-11-18: Când varianta e aleasă, nu mai oferim alternative; prezentăm alegerea ca recomandare clară.

@@ -49,6 +49,7 @@ flowchart TD
 | Maria | Strategie | Personal Branding | Brand coerent, relevant, recognoscibil. | Activ | [profil](team/maria/profil.md) | [scorecard](team/maria/scorecard.md) |
 | Sofia | Comunicare | Social Media | Prezență constantă și autentică. | Probă 30 zile | [profil](team/sofia/profil.md) | [scorecard](team/sofia/scorecard.md) |
 | Victor* | Strategie | Impresar | Alex în contextele potrivite. | Activ | [profil](team/victor/profil.md) | [scorecard](team/victor/scorecard.md) |
+| Ana* | Business | Ofertare și clienți | Oferte relevante și follow-up, doar privat. | Activ | [profil](team/ana/profil.md) | [scorecard](team/ana/scorecard.md) |
 | Elena* | Calitate | Coach extern | Sistemul se îmbunătățește lunar. | Activ | [profil](team/elena/profil.md) | [scorecard](team/elena/scorecard.md) |
 | Andrei | Learning Studio | Head of Learning | Strategia și portofoliul de cursuri; conduce Learning Studio. | Activ (2026-11-17, D-052) | [profil](team/andrei/profil.md) | [scorecard](team/andrei/scorecard.md) |
 | Daria | Learning Studio | Designer de learning | Brief → obiective, flow Excel, ghidul facilitatorului. | Activ (2026-11-17, D-045) | [profil](team/daria/profil.md) | [scorecard](team/daria/scorecard.md) |
@@ -88,7 +89,7 @@ flowchart TD
 | 2026-11-15 | Rol viitor: **Editor de carte** (structură, ritm de scriere, redactare) | Cartea e un proiect de luni de zile, cu nevoi diferite de social media | Tudor | în așteptare |
 | 2026-11-15 | Rol viitor: **Product manager pentru tool-uri** (dacă tool-urile devin multe) | Lansarea și întreținerea aplicațiilor e o muncă separată de site | Tudor | în așteptare |
 | 2026-11-17 | Rol nou: **Head of Learning** (D-052), strategia și portofoliul de cursuri, șeful echipei Learning Studio | Cererea lui Alex: cursuri noi constant, cursurile vechi transformate în materiale care rămân și se vând, inovație, renunțări după trenduri | Alex, Tudor | aprobat 2026-11-17: Andrei creat |
-| 2026-11-17 | Rol nou: **Ofertare și clienți** (account manager). Ține evidența clienților și a discuțiilor, pregătește oferte din istoricul de email și din tarifele lui Alex, urmărește follow-up-ul. Lucrează doar privat: datele clienților nu intră în repo-ul public (depinde de D-043). Nu trimite nimic: Alex trimite (nivelul 3) | Alex a întrebat „Cine lucrează cu clienții?”. Azi nimeni din echipă; ofertele le face Tudor ad-hoc, iar contractele și facturile le face Roxana (BEMORE) | Tudor | în așteptare |
+| 2026-11-17 | Rol nou: **Ofertare și clienți** (account manager). Ține evidența clienților și a discuțiilor, pregătește oferte din istoricul de email și din tarifele lui Alex, urmărește follow-up-ul. Lucrează doar privat: datele clienților nu intră în repo-ul public (depinde de D-043). Nu trimite nimic: Alex trimite (nivelul 3) | Alex a întrebat „Cine lucrează cu clienții?”. Azi nimeni din echipă; ofertele le face Tudor ad-hoc, iar contractele și facturile le face Roxana (BEMORE) | Tudor | aprobat 2026-11-18: Ana creată (Alex: „Aș vrea să învețe agentul care se ocupă de asta cum să facă oferte relevante”) |
 
 ## Cum adăugăm un agent nou
 1. Copiază un fișier din `.claude/agents/` și schimbă `name`, `description` și misiunea.
