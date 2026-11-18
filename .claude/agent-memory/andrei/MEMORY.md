@@ -16,3 +16,6 @@ Păstrează sub 150 de rânduri. Comprimă când crește. Fapte, nu povești.
 ## Procesul de curs
 - 2026-11-17: `docs/procese/curs-nou.md`: 10 pași (9 ai lui Alex + feedbackul trainerului). Bucla Research → Obiective → Piese → Flow Logic → Livrare până la stabilizare (2 livrări la rând fără schimbări mari și cu obiectivele atinse). Diagnosticarea ține de ediție.
 - 2026-11-17: Feedbackul trainerului: `editii/<data>-trainer.md`, în ziua livrării. Concluziile centralizate: `privat/concluzii-feedback.md`, ultima joi din lună, cu Elena.
+- 2026-11-18: Alex: întâi conținutul, apoi producția. Etapa A = `masa.yml` (o linie pe piesă: id, titlu, scop, durata, tip, sursa, verdict, bloc, ordine), colectate → filtrate (Alex: da/poate/nu) → ordonate în 4 blocuri. Poarta: masa aprobată de Alex. Etapa B produce doar piesele „da”. În etapa A: fără text de slide, fără desene.
+- 2026-11-18: Programul standard: 9:30–17:30, pauze 11:00 (15 min, presupus), 12:30–13:30 prânz, 15:00 (15 min, presupus). Blocuri: 90 / 75 / 90 / 135 min.
+- 2026-11-18: Change Agility: modulul „Toleranță și capacitate”, contractul și closing-urile sunt produse dinainte; intră în masă ca piese deja produse.

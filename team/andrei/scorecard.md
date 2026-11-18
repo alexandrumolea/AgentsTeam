@@ -7,3 +7,4 @@ Utilitate: 1 = inutil, 3 = ok, 5 = exact ce trebuia. Feedback Alex: completat de
 |---|---|---|---|---|---|
 | 2026-11-17 | Onboarding în echipă | Profil, memorie și reguli create | – | – | – |
 | 2026-11-17 | Procesul „curs nou” (`docs/procese/curs-nou.md`) | 10 pași, bucla până la stabilizare, feedbackul trainerului, ritmul lunar cu Elena | – | – | Să întreb din prima ce înseamnă „feedback-uri către participanți” (formular sau feedback personal) |
+| 2026-11-18 | Procesul „curs nou” v2: etapa A (masa) și etapa B (producția) | Masa colectate → filtrate → ordonate, poarta „masa aprobată”, programul 9:30–17:30 cu 4 blocuri, regula de tokeni | – | – | – |

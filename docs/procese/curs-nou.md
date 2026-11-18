@@ -4,14 +4,26 @@
 **Scop:** un flow simplu de care ne ținem la fiecare curs, de la prima idee până la concluziile din feedback (Alex, 2026-11-17).
 **Unde stă cursul:** sursa în repo-ul privat BEMORE-STUDIO, clonat în `privat/cursuri/<curs>/` (D-050). Generatorul e în `curs/` (`curs/README.md`). În repo-ul public intră doar procesul.
 
+## Regula de bază: întâi conținutul, apoi producția (Alex, 2026-11-18)
+- **Etapa A, conținutul, pe masă.** Gândim schița și tot conținutul înainte de orice slide. Se lucrează doar în `privat/cursuri/<curs>/masa.yml`: o linie pe piesă candidată. Trei pași: **colectate → filtrate → ordonate**.
+- **Poarta: masa aprobată de Alex.** Fără ea nu se produce nimic.
+- **Etapa B, producția.** Slide-uri, scheme, curs online, note de trainer, banca de exerciții, numai pentru piesele cu verdict „da”. Butonul „Trimite în agendă” face agenda ediției.
+
 ## Schema
-Research, Obiective, Piese, Flow Logic și Livrare flexibilă se repetă la fiecare livrare, până cursul se stabilizează (Alex, 2026-11-17). Restul pașilor țin de fiecare ediție.
+Bucla Research → Obiective → Piese → Flow Logic → Livrare flexibilă se repetă la fiecare livrare, până cursul se stabilizează (Alex, 2026-11-17). Piese și Flow Logic sunt etapa A.
 
 ```mermaid
 flowchart LR
   D[2. Diagnosticare<br/>la fiecare ediție] --> O
   subgraph Bucla["Bucla, până la stabilizare"]
-    R[1. Research] --> O[3. Obiective] --> P[4. Piese] --> F[5. Flow Logic] --> L[6. Livrare flexibilă]
+    R[1. Research] --> O[3. Obiective]
+    subgraph A["Etapa A: masa.yml"]
+      P[4. Piese<br/>colectate → filtrate] --> F[5. Flow Logic<br/>ordonate în 4 blocuri]
+    end
+    O --> P
+    F --> G{Masa aprobată<br/>de Alex?}
+    G -- nu --> P
+    G -- da --> B[Etapa B: producția<br/>doar piesele „da”] --> L[6. Livrare flexibilă]
   end
   L --> T[7. Feedbackul trainerului] --> R
   L --> C[8. Curs online]
@@ -19,48 +31,62 @@ flowchart LR
   V --> R
 ```
 
-Varianta text: **Diagnosticare** (la fiecare ediție) → [ **Research → Obiective → Piese → Flow Logic → Livrare flexibilă** ] → **Feedbackul trainerului**, care se întoarce în Research. După livrare pleacă și **Cursul online** și **Feedbackul către participanți**. Lunar, **Verificarea centralizată** trimite concluziile tot în Research.
+## Masa (`masa.yml`)
+- **O piesă candidată = o singură linie:** `id`, `titlu`, `scop`, `durata`, `tip`, `sursa`, `verdict` (nou / da / poate / nu), `bloc` (1–4), `ordine`. Fără text de slide, fără desene, fără ecrane. Așa consumăm puțini tokeni și Alex vede tot dintr-o privire.
+- **Colectate:** Irina (din research), Daria (din obiective și diagnostic) și Alex adaugă candidate cu verdict „nou”. Research-ul Irinei produce candidate în masă plus nota ei de surse (`research.md`), nu piese gata.
+- **Filtrate:** Alex dă Da / Poate / Nu. Întrebarea lui: „are they good enough?”
+- **Ordonate:** Alex trage piesele „da” în cele 4 blocuri ale zilei. Daria verifică timpii (fiecare bloc încape) și că fiecare obiectiv are cel puțin o piesă. Andrei verifică masa înainte să ajungă la Alex.
+- **Vederea „Masa”** (Mike): în materialul trainerului și în editorul local.
 
-**De ce intră diagnosticarea acolo.** Research-ul ține de curs, iar diagnosticarea ține de grup. Ea nu schimbă cursul. Schimbă obiectivele și agenda unei ediții (ediția poate avea propriul `obiective`). De aceea intră la fiecare ediție, înainte de Obiective, și după stabilizare.
+**Programul standard al zilei:** 9:30–17:30.
+| Bloc | Interval | Durata |
+|---|---|---|
+| 1 | 9:30–11:00 | 90 min |
+| pauză | 11:00–11:15 | 15 min |
+| 2 | 11:15–12:30 | 75 min |
+| prânz | 12:30–13:30 | 60 min |
+| 3 | 13:30–15:00 | 90 min |
+| pauză | 15:00–15:15 | 15 min |
+| 4 | 15:15–17:30 | 135 min |
+
+Pauzele de 15 minute sunt presupunerea noastră; Alex le poate corecta.
 
 ## Pașii
-| # | Pas (numele lui Alex) | Ce intră | Ce iese (livrabilul) | DRI | Unde verifică Alex |
-|---|---|---|---|---|---|
-| 1 | **Research** | brief-ul, harta cursurilor, notele trainerului și concluziile din feedback de până acum | modele, studii și exemple cu surse, în `privat/cursuri/<curs>/research.md` | Irina | citește rezumatul de 5 rânduri din raport |
-| 2 | **Diagnosticare** (pe unde sunt participanții) | brief-ul ediției | a) un chestionar scurt înainte, de 3–5 întrebări, anonim: experiența cu tema, ce așteaptă, o situație reală; b) o piesă de diagnostic în sală, la deschidere (de exemplu „ridică-te dacă…” sau o scală pe podea). Rezumatul, fără nume, intră în `editii/<data>.yml`, la `nota_trainer` | Daria | aprobă chestionarul. **Îl trimite Alex** |
-| 3 | **Obiective** | research și diagnostic | câmpul `obiective` din `curs.yml` (sau din ediție), cel mult 4, scurte. Apar cu bife în Schiță | Daria | aprobă lista |
-| 4 | **Piese** (fiecare cu scopul ei clar) | obiectivele | `piese/<id>.md`: titlu, durată, tip, scop (`obiectiv`) și `obiective: [..]` pe care le servește. Matei face ecranele (`:::sala`), Irina conținutul cu surse | Daria (Matei, Irina) | Biblioteca de piese din materialul trainerului |
-| 5 | **Flow Logic** care livrează obiectivul | piesele | `agenda` din `editii/<data>.yml`. Totalul și depășirea zilei apar în material. Fiecare obiectiv are cel puțin o piesă | Daria. Andrei verifică | vederile Ziua și Schița |
-| 6 | **Livrare flexibilă** | materialul trainerului (`node build.mjs …`) | ziua în sală. Alternativele din fiecare modul și Biblioteca de piese permit schimbări. Schimbi agenda și rulezi build-ul | Alex în sală. Mike pentru generator | – |
-| 7 | **Feedbackul trainerului** (pas adăugat de Alex) | ziua livrată | `editii/<data>-trainer.md`, scris în 10 minute, în aceeași zi (șablonul e mai jos). Închide bucla: intră în următorul Research | Alex sau co-trainerul. Andrei îl preia | îl scrie chiar el |
-| 8 | **Curs online** (servește și ca material pentru participanți) | ediția livrată | exportul `<slug>-participanti.json`, fără note de trainer și fără nume (build-ul verifică). Ajunge pe site prin PR | Matei. Mike pentru PR | aprobă PR-ul. **Nimic nu pleacă fără el** |
-| 9 | **Plecare feedback-uri către participanți** | ediția livrată | un draft de mesaj: mulțumire, linkul spre cursul online și formularul de feedback (3 întrebări: ce iei cu tine, ce aplici luni, ce ai schimba). Pleacă în 1–3 zile. Răspunsurile stau în `privat/cursuri/<curs>/feedback/<data>.md` | Daria scrie draftul | **Trimite Alex** |
-| 10 | **Verificare feedback**, centralizată | notele trainerului și feedbackul, din toate cursurile | concluziile, într-un singur loc: `privat/concluzii-feedback.md`. Ce e general, fără client, intră în `team/elena/documente/lectii.md`. Eticheta din harta cursurilor se actualizează | Andrei, cu Elena | în raportul lunar |
+| # | Pas | Ce iese | DRI | Alex |
+|---|---|---|---|---|
+| 1 | **Research** | modele, studii, exemple cu surse în `research.md` + piese candidate în `masa.yml` | Irina | citește rezumatul de 5 rânduri |
+| 2 | **Diagnosticare** (la fiecare ediție) | chestionar anonim de 3–5 întrebări înainte + o piesă de diagnostic la deschidere. Rezumatul, fără nume, în `editii/<data>.yml` (`nota_trainer`) | Daria | aprobă și **trimite** chestionarul |
+| 3 | **Obiective** | cel mult 4, scurte, în `curs.yml` (sau în ediție) | Daria | aprobă lista |
+| 4 | **Piese** (etapa A) | candidate colectate și filtrate în `masa.yml` | Daria (Irina) | dă verdictele |
+| 5 | **Flow Logic** (etapa A) | piesele „da” ordonate în cele 4 blocuri | Daria. Andrei verifică | ordonează și **aprobă masa** |
+| – | **Producția** (etapa B) | `piese/<id>.md` cu ecrane (`:::sala`), scheme, note de trainer; „Trimite în agendă” face `agenda` din `editii/<data>.yml` | Matei (Daria, Irina) | Biblioteca de piese, vederile Ziua și Schița |
+| 6 | **Livrare flexibilă** | ziua în sală; alternativele și Biblioteca permit schimbări | Alex. Mike pentru generator | – |
+| 7 | **Feedbackul trainerului** | `editii/<data>-trainer.md`, în 10 minute, în aceeași zi | Alex sau co-trainerul. Andrei preia | îl scrie |
+| 8 | **Curs online** | exportul `<slug>-participanti.json`, fără note de trainer și fără nume; pe site prin PR | Matei. Mike pentru PR | aprobă PR-ul |
+| 9 | **Feedback către participanți** | draft: mulțumire, linkul cursului online, formular de 3 întrebări (ce iei cu tine, ce aplici luni, ce ai schimba). Răspunsurile în `feedback/<data>.md` | Daria | **trimite**, în 1–3 zile |
+| 10 | **Verificare centralizată**, lunar | concluziile în `privat/concluzii-feedback.md`; ce e general merge în `team/elena/documente/lectii.md`; harta cursurilor se actualizează | Andrei, cu Elena | în raportul lunar |
 
 ## Două piese pe care le are orice curs
-- **Contractul.** E o piesă `contract` (tip `deschidere`), făcută după un șablon comun: de ce suntem aici, cum lucrăm, ce rămâne în sală, ce ne cerem unii altora. Se personalizează pentru fiecare curs.
-- **Closing-ul.** Piesele de tip `inchidere` se aleg dintr-un set predefinit. Fiecare are ecranele gata, în `:::sala`, deci se pun direct în agendă.
-  Întrebările de closing nu sunt fixe: Daria le adaptează la curs și la grup, pentru că nu au mereu sens așa cum sunt (Alex, 2026-11-17). Structura piesei rămâne, întrebările se potrivesc.
-- Daria scrie acum primele piese: contractul și trei closing-uri. Ele sunt primii candidați pentru biblioteca comună `comun/`, după 25 noiembrie.
+- **Contractul** (`contract`, tip `deschidere`): după un șablon comun, personalizat pe curs.
+- **Closing-ul** (tip `inchidere`): ales dintr-un set predefinit; Daria adaptează întrebările la curs și la grup (Alex, 2026-11-17).
+Pe masă intră ca orice piesă, cu `sursa: comun`.
 
-## Șablonul pentru feedbackul trainerului (`editii/<data>-trainer.md`)
-1. Ce a mers? (una-două piese și de ce)
-2. Ce a lipsit sau a mers greu? (unde a scăzut energia, unde n-a ajuns timpul)
-3. Ce piese schimb, scot sau adaug data viitoare?
-4. Ce obiective s-au atins? (bifele din Schiță: câte și care nu)
-5. Ce am aflat despre grup și n-am știut din diagnostic?
+## Ce e deja făcut în Change Agility
+Modulul „Toleranță și capacitate”, contractul și closing-urile au fost produse înainte de regula din 2026-11-18. Rămân. La primul pas pe masă intră și ele în `masa.yml`, ca piese deja produse, și trec prin verdict și ordonare ca toate celelalte.
+
+## Feedbackul trainerului (`editii/<data>-trainer.md`)
+1. Ce a mers? 2. Ce a lipsit sau a mers greu? 3. Ce piese schimb, scot sau adaug? 4. Ce obiective s-au atins? 5. Ce am aflat despre grup și n-am știut din diagnostic?
 
 ## Când e un curs stabilizat
-**Criteriul:** 2 livrări la rând fără schimbări mari în agendă (nicio piesă nouă de conținut, cel mult o piesă schimbată pe modul) și cu obiectivele atinse (bifate în Schiță și confirmate în feedback).
-**Ce se schimbă după aceea:** bucla se oprește. Research-ul se face doar la revizia trimestrială a hărții cursurilor. La fiecare ediție rămân diagnosticarea, ajustările de agendă (alternative, piese din Bibliotecă), feedbackul trainerului și feedbackul participanților. Bucla se redeschide dacă feedbackul scade două ediții la rând sau dacă harta schimbă eticheta cursului.
+2 livrări la rând fără schimbări mari în agendă (nicio piesă nouă de conținut, cel mult o piesă schimbată pe bloc) și cu obiectivele atinse. După aceea bucla se oprește: research doar la revizia trimestrială a hărții. Rămân diagnosticarea, ajustările de agendă și cele două feedbackuri. Bucla se redeschide dacă feedbackul scade două ediții la rând sau dacă harta schimbă eticheta cursului.
 
 ## Reguli
-- Nimic nu pleacă la participanți sau la client fără Alex: chestionarul, mesajul de feedback, cursul online. Echipa face doar draft-uri.
-- Fără date personale și fără numele clientului în repo-ul public. Răspunsurile, notele și edițiile stau în `privat/`.
+- Nimic nu pleacă la participanți sau la client fără Alex. Echipa face doar draft-uri.
+- Fără date personale și fără numele clientului în repo-ul public.
+- În etapa A agenții nu produc slide-uri, scheme sau ecrane.
 
 ## Ce mai trebuie ca procesul să meargă
-1. Șablonul contractului și primele trei closing-uri. **DRI: Daria** (în lucru).
-2. Formularul de feedback și chestionarul de diagnostic: unde le facem (de exemplu Google Forms) și cum ajung răspunsurile în `privat/`, fără nume. **DRI: Daria**. Alegerea uneltei e a lui Alex.
-3. Câmpul `scop` la piese: azi doar activitățile au `obiectiv` obligatoriu. Îl cerem la toate piesele? **DRI: Mike**, după acordul lui Alex.
-4. Șablonul `editii/<data>-trainer.md` și `privat/concluzii-feedback.md`, create în repo-ul privat. **DRI: Andrei**.
-5. Primul test complet pe ediția din 23 noiembrie, apoi corectăm procesul. **DRI: Andrei**, cu Elena la retro.
+1. Vederea „Masa” și butonul „Trimite în agendă”. **DRI: Mike** (în lucru).
+2. Formularul de feedback și chestionarul: unealta o alege Alex. **DRI: Daria**.
+3. Șablonul `editii/<data>-trainer.md` și `privat/concluzii-feedback.md`. **DRI: Andrei**.
+4. Primul test complet: masa pentru Change Agility, apoi ediția din 23 noiembrie. **DRI: Andrei**, cu Elena la retro.
