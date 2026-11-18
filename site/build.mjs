@@ -289,7 +289,10 @@ const podHtml = c => c.pod ? `<p class="pod">${esc(c.pod)}</p>` : '';
 const detaliiHtml = c => Array.isArray(c.detalii) && c.detalii.length ? `<ul class="list facts">${c.detalii.filter(d => d && d.eticheta && d.text).map(d => `<li><b>${esc(d.eticheta)}</b><span>${esc(d.text)}</span></li>`).join('')}</ul>` : '';
 const bookBtn = cls => rezervare ? `<a class="btn book ${cls || ''}" href="${esc(rezervare)}" rel="noopener">Rezervă<span class="pv-long"> o sesiune</span></a>` : '';
 const businessList = () => BUSINESS.length ? `<ul class="list biz">${BUSINESS.map(b => `<li><b>${b.link ? `<a href="${esc(b.link)}" rel="noopener">${esc(b.nume)}</a>` : esc(b.nume)}</b>${b.nevoie ? `<span>${esc(b.nevoie)}</span>` : ''}${b.rol ? `<small>${esc(b.rol)}</small>` : ''}${b.pod ? `<small class="pod">${esc(b.pod)}</small>` : ''}</li>`).join('')}</ul>` : '';
-const despreHtml = marked.parse(despre.body || '');
+const valoriHtml = Array.isArray(despre.data.valori) && despre.data.valori.length
+  ? `<div class="values" role="list" aria-label="${esc(despre.data.valori.join(', '))}"><div class="deck">${despre.data.valori.slice(0, 3).map((v, i) => `<div class="vcard v${i + 1}" role="listitem"><span class="f">${esc(v)}</span><span class="b" aria-hidden="true">${esc(v)}</span></div>`).join('')}</div></div>` : '';
+// valorile (pachetul de cărți de sticlă, ca pe vechiul site, în culorile BEMORE) stau imediat după misiune
+const despreHtml = (() => { const h = marked.parse(despre.body || ''); return valoriHtml && h.includes('</blockquote>') ? h.replace('</blockquote>', '</blockquote>' + valoriHtml) : h + valoriHtml; })();
 const misiune = (site.intro && site.intro.inscriptie) || [];
 
 const CSS_HASHLESS = 'assets/site.css';

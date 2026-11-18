@@ -5,6 +5,7 @@ poza: "alex-cerc.jpg"
 # lentila = poza rotundă în rama de sticlă (D-060); gol = dreptunghiul 3 : 4. Pentru lentilă, poza e pătrată, cu fața în centru.
 poza_forma: "lentila"
 poza_alt: "Alex, zâmbind, pe o alee cu copaci de toamnă"
+valori: ["Rezultate", "Colaborare", "Umanitate"]   # cele trei cărți de sticlă care se rotesc sub misiune (ca pe vechiul site)
 ---
 Construiesc unelte pentru oameni care vor să crească. Sunt Alex: coach, fondator și inventator.
 
@@ -14,7 +15,6 @@ Construiesc unelte pentru oameni care vor să crească. Sunt Alex: coach, fondat
 >
 > Îmi place să aduc la suprafață lucruri invizibile pentru a umple goluri sau a micșora distanța dintre oameni, în așa fel încât să reușim să facem mai multe lucruri împreună, să ne facem mai puțin rău reciproc și să ne provocăm mai puțin stres.
 
-Rezultate. Colaborare. Umanitate.
 
 ## Parcursul meu profesional
 
