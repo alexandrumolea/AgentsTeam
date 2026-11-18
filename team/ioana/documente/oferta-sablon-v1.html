@@ -77,18 +77,11 @@ a{color:var(--accent);text-underline-offset:3px;text-decoration-thickness:1px}
 .dot{display:inline-block;flex:none;width:8px;height:8px;border-radius:50%;background:var(--punct);box-shadow:0 0 0 1px var(--punct-inel)}
 .meta{font-size:15px;color:var(--muted)}
 
-/* primul card: rezultatul + „Pe scurt” (investiția se vede de pe prima pagină) */
+/* primul card: rezultatul */
 .hero{padding:40px 40px 32px}
 .hero h1{margin:0 0 14px;font-weight:200;font-size:52px;line-height:1.05;letter-spacing:-.035em;text-wrap:balance}
 .hero h1 em{font-style:normal;color:var(--accent)}
 .lead{margin:0;max-width:40em;font-size:19px;color:var(--muted)}
-.scurt{display:grid;grid-template-columns:1fr 1fr 1.15fr;gap:0;margin:28px 0 0;border-top:1px solid var(--line)}
-.scurt > div{padding:16px 20px 0 0}
-.scurt > div + div{padding-left:20px;border-left:1px solid var(--line)}
-.scurt dt{margin:0 0 4px;font:500 13px/1.35 "Inter Tight",sans-serif;letter-spacing:.14em;text-transform:uppercase;color:var(--muted)}
-.scurt dd{margin:0;font-size:17px;line-height:1.4}
-.scurt .bani dd{font:300 24px/1.15 "Sora",sans-serif;letter-spacing:-.01em}
-.scurt .bani dd small{display:block;margin-top:4px;font:400 15px/1.3 "Inter Tight",sans-serif;letter-spacing:0;color:var(--muted)}
 
 /* Ce am înțeles: cuvintele clientului */
 .inteles .citat{margin:12px 0 0;padding:2px 0 2px 16px;border-left:2px solid var(--punct);font-size:18px}
@@ -108,11 +101,9 @@ a{color:var(--accent);text-underline-offset:3px;text-decoration-thickness:1px}
 .dece li + li{padding-left:20px;border-left:1px solid var(--line)}
 .dece li b{display:block;margin:0 0 4px;font-size:17px;color:var(--text)}
 
-/* Ce rămâne după · Ce e inclus · Bine de știut */
-.trei{display:grid;grid-template-columns:repeat(3,1fr);gap:var(--gap)}
-.trei .bloc{padding:24px 24px}
-.trei h2{font-size:22px}
-.trei li{font-size:16px;line-height:1.45}
+/* Ce rămâne după: lista pe două coloane, ca să țină foaia 1 compactă */
+.mat ul{columns:2;column-gap:40px;margin-top:4px}
+.mat li{break-inside:avoid}
 
 /* Investiția: tabelul și totalul pe banda închisă */
 .investitie .capul{display:flex;justify-content:space-between;align-items:baseline;gap:8px 16px;flex-wrap:wrap}
@@ -125,10 +116,11 @@ th:last-child,td:last-child{padding-right:0}
 .n{text-align:right;white-space:nowrap}
 td small{display:block;color:var(--muted);font-size:15px;line-height:1.4}
 td small.calc-m{display:none}
-.total{display:flex;justify-content:space-between;align-items:center;gap:12px;margin:16px 0 0;padding:18px 24px;border-radius:18px;background:var(--text);color:#fff}
-.total .cap{margin:0;color:rgb(255 255 255 / .82)}
+.total{display:flex;justify-content:space-between;align-items:center;gap:12px;margin:16px 0 0;padding:16px 24px;border-radius:18px;border:2px solid transparent;color:var(--text);
+  background:linear-gradient(120deg,#EAF4FE 0%,#F1ECFC 55%,#FEF0E8 100%) padding-box,var(--sora) border-box}
+.total .cap{margin:0;color:var(--accent)}
 .total .suma{font-weight:300;font-size:34px;line-height:1;letter-spacing:-.02em;white-space:nowrap}
-.total .suma small{font:400 16px/1 "Inter Tight",sans-serif;letter-spacing:0;margin-left:6px}
+.total .suma small{font:400 16px/1 "Inter Tight",sans-serif;letter-spacing:0;margin-left:6px;color:var(--muted)}
 .notamica{margin:12px 0 0;font-size:15px;color:var(--muted)}
 
 /* finalul: lentila cu Alex, lângă pasul următor și semnătură (ca pe pagina Despre) */
@@ -144,8 +136,7 @@ td small.calc-m{display:none}
 .semn .nume{font-weight:300;font-size:26px;letter-spacing:-.01em}
 .semn .rol{color:var(--muted);font-size:15px}
 
-.jos,.tipar{display:none}
-.scurt .bani a{display:inline-block;padding:12px 0;margin:-12px 0}
+.jos{display:none}
 
 /* ---------- telefon ---------- */
 @media (max-width:640px){
@@ -157,12 +148,9 @@ td small.calc-m{display:none}
   .bloc,.hero,.final{padding:22px 20px}
   .hero h1{font-size:34px}
   .lead{font-size:17px}
-  .scurt{grid-template-columns:1fr;margin-top:20px}
-  .scurt > div,.scurt > div + div{padding:12px 0;border-left:0}
-  .scurt > div + div{border-top:1px solid var(--line)}
   h2{font-size:24px}
-  .doua,.trei{grid-template-columns:1fr;gap:var(--gap)}
-  .trei .bloc{padding:22px 20px}
+  .doua{grid-template-columns:1fr;gap:var(--gap)}
+  .mat ul{columns:1}
   .dece ul{grid-template-columns:1fr}
   .dece li,.dece li + li{padding:12px 0 0;border-left:0}
   .dece li + li{margin-top:12px;border-top:1px solid var(--line)}
@@ -187,7 +175,7 @@ td small.calc-m{display:none}
   *{-webkit-print-color-adjust:exact;print-color-adjust:exact}
   .camp{display:none}
   .oferta{display:block;max-width:none;margin:0;padding:0}
-  .foaie{width:210mm;min-height:297mm;padding:12mm 13mm 10mm;display:flex;flex-direction:column;gap:4mm;background:var(--camp);background-size:210mm 297mm;break-after:page;-webkit-box-decoration-break:clone;box-decoration-break:clone}
+  .foaie{width:210mm;min-height:297mm;padding:11mm 13mm 9mm;display:flex;flex-direction:column;gap:3.5mm;background:var(--camp);background-size:210mm 297mm;break-after:page;-webkit-box-decoration-break:clone;box-decoration-break:clone}
   .foaie:last-child{break-after:auto}
   .foaie.cald{background:var(--camp-cald);background-size:210mm 297mm}
   /* fără umbre la tipar: Chrome le rasterizează ca dreptunghiuri închise peste fundal */
@@ -196,19 +184,13 @@ td small.calc-m{display:none}
   .sus{border-radius:999px;padding:3mm 6mm}
   .marca{font-size:8.5pt}
   .meta{font-size:8.5pt}
-  .eticheta,.cap,.scurt dt,th{font-size:7pt}
+  .eticheta,.cap,th{font-size:7pt}
   .pasi .cand{font-size:6.8pt;padding:.8mm 2.4mm}
-  .bloc{padding:5.5mm 7mm}
-  .hero{padding:7.5mm 8mm 6mm}
+  .bloc{padding:5mm 7mm}
+  .hero{padding:7mm 8mm 5.5mm}
   .hero h1{font-size:28pt;margin-bottom:2.5mm}
   .lead{font-size:11.5pt}
-  .scurt{margin-top:5mm}
-  .scurt > div{padding:3.5mm 5mm 0 0}
-  .scurt > div + div{padding-left:5mm}
-  .scurt dd{font-size:10pt}
-  .scurt .bani dd{font-size:15pt}
-  .scurt .bani dd small{font-size:8.5pt}
-  h2{font-size:16pt;margin-bottom:2.5mm}
+  h2{font-size:16pt;margin-bottom:2mm}
   p{margin-bottom:2mm}
   li{margin-bottom:1.6mm}
   .inteles .citat{font-size:10.5pt;margin-top:3mm}
@@ -217,16 +199,14 @@ td small.calc-m{display:none}
   .dece ul{margin-top:2mm}
   .dece li{font-size:9.2pt;padding-right:5mm}.dece li + li{padding-left:5mm}
   .dece li b{font-size:10pt;margin-bottom:1mm}
-  .trei .bloc{padding:5mm 5.5mm}
-  .trei h2{font-size:12.5pt}
-  .trei li{font-size:9pt}
+  .mat ul{column-gap:10mm}
   .pasi h3{font-size:10.5pt}
   .pasi p{font-size:9.4pt}
   .pasi li{padding-right:5mm}.pasi li + li{padding-left:5mm}
   th,td{padding:2.2mm 1.5mm}
   td small{font-size:8.6pt}
   .tva,.notamica,.valabil,.semn .rol{font-size:8.6pt}
-  .total{margin-top:4mm;padding:4.5mm 6mm;border-radius:4mm}
+  .total{margin-top:4mm;padding:4mm 6mm;border-radius:4mm;border-width:.6mm}
   .total .suma{font-size:21pt}
   .total .suma small{font-size:9.5pt}
   .final{padding:7mm 8mm;gap:8mm}
@@ -236,14 +216,12 @@ td small.calc-m{display:none}
   .semn{margin-top:5mm;padding-top:4mm}
   .semn .nume{font-size:17pt}
   a{color:var(--accent);text-decoration:none}
-  .bloc,.hero,.final,table,.total,.pasi li,.trei{break-inside:avoid}
+  .bloc,.hero,.final,table,.total,.pasi li,.doua{break-inside:avoid}
   h2{break-after:avoid}
   /* subsolul fiecărei foi: o capsulă mică de sticlă, cu numărul foii */
   .foaie{counter-increment:foaie}
   .jos{display:flex;justify-content:space-between;gap:6mm;margin-top:auto;padding:2.2mm 5mm;border-radius:999px;background:rgb(255 255 255 / .9);font-size:7.6pt;color:var(--muted)}
   .jos .pg::after{content:counter(foaie)}
-  .tipar{display:inline}
-  .scurt .bani a{padding:0;margin:0}
 }
 </style>
 </head>
@@ -270,12 +248,6 @@ td small.calc-m{display:none}
     <h1 id="titlu">O echipă care decide <em>mai repede, împreună</em></h1>
     <!-- ANA: o frază: ce facem, pentru cine, în ce format. -->
     <p class="lead">Două zile de workshop pentru o echipă de 10 oameni, cu o evaluare înainte și o sesiune de follow-up după.</p>
-    <!-- ANA: „Pe scurt”: trei rânduri, fiecare cel mult 8 cuvinte. Totalul e același cu cel din Investiția. -->
-    <dl class="scurt">
-      <div><dt>Ce</dt><dd>Evaluare, 2 zile de workshop, follow-up</dd></div>
-      <div><dt>Când</dt><dd>Ianuarie 2027, datele le stabilim împreună</dd></div>
-      <div class="bani"><dt>Investiția</dt><dd>5.500 EUR + TVA<small><a href="#investitia">Vezi detaliile<span class="tipar">, la pagina 2</span></a></small></dd></div>
-    </dl>
   </section>
 
   <section class="bloc sticla inteles" aria-labelledby="h-inteles">
@@ -311,6 +283,16 @@ td small.calc-m{display:none}
       <li><b>Cu verificare.</b> Follow-up-ul arată ce a rămas și ce mai ajustăm.</li>
     </ul>
   </section>
+    <section class="bloc sticla mat" aria-labelledby="h-mat">
+      <h2 id="h-mat">Ce rămâne după</h2>
+      <!-- ANA: materialele pe care clientul le poate refolosi. Doar ce a confirmat Alex; fără formate sau număr de pagini inventate. Dacă nu sunt, șterge cardul. -->
+      <ul>
+        <li>formatul de ședință pentru decizii;</li>
+        <li>fișele de lucru din workshop;</li>
+        <li>rezumatul echipei;</li>
+        <li>notițele din follow-up.</li>
+      </ul>
+    </section>
 
   <footer class="jos" aria-hidden="true"><span>BEMORE Learning Studio · Ofertă pentru Client Exemplu</span><span class="pg"></span></footer>
 </section>
@@ -335,22 +317,13 @@ td small.calc-m{display:none}
         <tr><td>Follow-up<small>o sesiune online de 3 ore, după o lună</small><small class="calc-m">1 × 1.000 EUR</small></td><td class="n calc">1 × 1.000 EUR</td><td class="n">1.000 EUR + TVA</td></tr>
       </tbody>
     </table>
-    <!-- ANA: totalul, același ca în „Pe scurt” de pe pagina 1. -->
+    <!-- ANA: totalul: suma rândurilor de mai sus. Apare o singură dată în ofertă. -->
     <div class="total"><span class="cap">Total</span><span class="suma">5.500 EUR<small>+ TVA</small></span></div>
     <!-- ANA: opțional, prețul pe participant, dacă ajută la înțelegere. Altfel șterge paragraful. -->
     <p class="notamica">Înseamnă 550 EUR + TVA pe participant, cu tot programul inclus.</p>
   </section>
 
-  <div class="trei">
-    <section class="bloc sticla" aria-labelledby="h-mat">
-      <h2 id="h-mat">Ce rămâne după</h2>
-      <!-- ANA: materialele pe care clientul le poate refolosi. Doar ce a confirmat Alex; fără formate sau număr de pagini inventate. Dacă nu sunt, șterge cardul (rămân două coloane). -->
-      <ul>
-        <li>formatul de ședință pentru decizii;</li>
-        <li>fișele de lucru din workshop;</li>
-        <li>rezumatul echipei.</li>
-      </ul>
-    </section>
+  <div class="doua">
     <section class="bloc sticla" aria-labelledby="h-incl">
       <h2 id="h-incl">Ce e inclus</h2>
       <!-- ANA: tot ce e în preț, concret, 2–4 rânduri scurte. -->

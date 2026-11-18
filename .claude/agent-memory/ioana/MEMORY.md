@@ -47,7 +47,7 @@ Păstrează sub 150 de rânduri. Comprimă când crește. Fapte, nu povești.
 - 2026-11-18: Tipar din Chrome: umbrele cu blur mare ies ca dreptunghiuri închise (fără box-shadow la print); marginile @page taie fundalul, deci foi explicite de 210×297 mm cu @page margin 0 și fundal pe fiecare foaie. PDF → PNG: un script Swift cu PDFKit (fără pdftoppm pe Mac).
 
 ## Proiecte și referințe
-- 2026-11-18: Oferte (D-073): șablonul `team/ioana/documente/oferta-sablon-v1.html`, 2 foi A4 (povestea / înțelegerea), Ana îl umple prin comentariile ANA. Brand implicit BEMORE LS, fundalul site-ului, lentila la final.
+- 2026-11-18: Oferte (D-073): șablonul `team/ioana/documente/oferta-sablon-v1.html`, 2 foi A4 (povestea / înțelegerea), Ana îl umple prin comentariile ANA. Brand implicit BEMORE LS, fundalul site-ului, lentila la final. Alex (v3b): fără „Pe scurt” în primul card și fără bandă neagră la total (acum sticlă deschisă cu margine Sora); „Ce rămâne după” a urcat pe foaia 1.
 - [Contact v1](project_contact-v1.md) — 2026-11-18: doar iconițe-link; Alex a ales capsula, numită „Contact” (D-072); review build T-042
 - [Manual de brand BEMORE](project_manual-brand.md) — 2026-11-17: D-057 Sora = noul BEMORE; §7 lentila Despre; §8 portretul = lentila (D-060)
 - 2026-11-18: Despre: Alex a ales A (orbita). v2.1 în `despre-compozitie-v2.html`: orbita vie, cărțile rotitoare înapoi, „Acum” cu textul lui. Aștept reacția; Mike construiește. v1 rămâne (D-063).
