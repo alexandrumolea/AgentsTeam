@@ -33,6 +33,15 @@ Build-ul se oprește dacă pagina are `<script>`, `@import` sau resurse de pe al
 - Un rol fără `de_la`, un an greșit sau un rol care se termină înainte să înceapă opresc build-ul, cu mesaj clar.
 - Mișcarea (lumina de pe inel, punctele, cărțile) e doar CSS și e continuă (Alex, 2026-11-18: fără buton de oprire). O oprește doar „reduce motion” din sistem; fără JavaScript, pagina stă pe loc. `site/src/despre.js` arată rolul sub orbită.
 
+## Contactul (capsula „Contact”)
+
+**Un singur loc: `content/site.yml` → `contact`** (propunerea A a Ioanei, aleasă de Alex pe 2026-11-18).
+- Capsula stă în același colț pe toate paginile; panoul e un popover nativ (Esc și clicul în afară îl închid, merge și fără JavaScript). Butoanele de pe Coaching și din cardul de final de pe Despre deschid același panou.
+- Pe pagină se văd doar iconițele (SVG în linie, în `build.mjs`). Fiecare are numele accesibil din `nume`.
+- LinkedIn, Instagram și Substack au linkul în `site.yml` (doar `https://`). WhatsApp și emailul nu intră în repo: build-ul le ia din variabilele de mediu `CONTACT_WHATSAPP` (doar cifre, format internațional, fără „+”) și `CONTACT_EMAIL`, puse în workflow din secretele GitHub. Local, fără variabile, cele două iconițe lipsesc, fără eroare. O valoare greșită oprește build-ul (fără să o afișeze).
+- Test local cu valori de exemplu: `CONTACT_EMAIL=nume@example.com CONTACT_WHATSAPP=40700000000 npm run build`.
+- Dacă `rezervare` are link, primul rând din panou e „Rezervă o sesiune”.
+
 ## Cum schimbi culorile și fonturile
 
 **Un singur loc: `content/tema.yml`.** De acolo pleacă tot: CSS-ul, gradientul de fundal, fonturile, scena 3D, culoarea barei de adrese pe telefon (`theme-color`), favicon-ul și imaginea de previzualizare. Din D-057 e brandingul BEMORE: aceiași tokeni îi folosește și tema cursurilor.

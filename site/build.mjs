@@ -317,6 +317,65 @@ const podHtml = c => c.pod ? `<p class="pod">${esc(c.pod)}</p>` : '';
 // Câmpul opțional `detalii` din categorii.yml: perechi eticheta / text, ca listă (ex.: coaching).
 const detaliiHtml = c => Array.isArray(c.detalii) && c.detalii.length ? `<ul class="list facts">${c.detalii.filter(d => d && d.eticheta && d.text).map(d => `<li><b>${esc(d.eticheta)}</b><span>${esc(d.text)}</span></li>`).join('')}</ul>` : '';
 const bookBtn = cls => rezervare ? `<a class="btn book ${cls || ''}" href="${esc(rezervare)}" rel="noopener">Rezervă<span class="pv-long"> o sesiune</span></a>` : '';
+// Contactul (content/site.yml → contact): capsula „Contact” și panoul ei, aceleași pe toate paginile.
+// Mostra: team/ioana/documente/contact-propuneri-v1.html, varianta A „Capsula” (aleasă de Alex pe 2026-11-18).
+// Panoul e un popover nativ: se deschide și se închide fără JavaScript (Esc și clicul în afară îl închid),
+// focusul intră pe „Închide” (autofocus) și revine pe capsulă. Iconițele sunt SVG în linie: nimic extern.
+const ICON = {
+  bubble: '<path d="M7.5 4h9A3.5 3.5 0 0 1 20 7.5v5a3.5 3.5 0 0 1-3.5 3.5H12l-4.5 3.5V16A3.5 3.5 0 0 1 4 12.5v-5A3.5 3.5 0 0 1 7.5 4z"/><circle cx="8.6" cy="10" r=".6"/><circle cx="12" cy="10" r=".6"/><circle cx="15.4" cy="10" r=".6"/>',
+  whatsapp: '<path d="M12 3.6a8.4 8.4 0 0 0-7.2 12.7L3.6 20.4l4.2-1.1A8.4 8.4 0 1 0 12 3.6z"/><path d="M9.3 8.3c.4-.4.9-.3 1.1.2l.6 1.4c.1.3 0 .6-.2.8l-.5.5a5.6 5.6 0 0 0 2.6 2.6l.5-.5c.2-.2.5-.3.8-.2l1.4.6c.5.2.6.8.2 1.1l-.6.6c-.6.6-1.6.8-2.4.4a9 9 0 0 1-4.1-4.1c-.4-.8-.2-1.8.4-2.4z" stroke-width="1.4"/>',
+  email: '<rect x="3.5" y="5.5" width="17" height="13" rx="2.5"/><path d="M4.6 7.6 12 13l7.4-5.4"/>',
+  linkedin: '<rect x="3.5" y="3.5" width="17" height="17" rx="3.5"/><path d="M8 10.6v5.9M12 16.5v-5.9M12 13.3c0-1.7 1-2.8 2.5-2.8S17 11.6 17 13.3v3.2"/><circle cx="8" cy="7.7" r=".55"/>',
+  instagram: '<rect x="3.5" y="3.5" width="17" height="17" rx="5"/><circle cx="12" cy="12" r="3.9"/><circle cx="17.1" cy="6.9" r=".55"/>',
+  substack: '<path d="M5.5 4.5h13M5.5 8.5h13M5.5 12.5h13V20L12 16.4 5.5 20z"/>'
+};
+const svgIcon = k => `<svg class="i" viewBox="0 0 24 24" aria-hidden="true" focusable="false">${ICON[k]}</svg>`;
+// canalele cunoscute: numele scurt (apare la hover și la Tab) și, pentru WhatsApp și email, secretul din care vine linkul.
+// Doar aceste două variabile de mediu pot ajunge în pagină; site.yml nu poate cere altele.
+const CANALE = {
+  whatsapp: { scurt: 'WhatsApp', mediu: 'CONTACT_WHATSAPP', link: v => { if (!/^\d{8,15}$/.test(v)) fail('CONTACT_WHATSAPP: numărul trebuie scris doar cu cifre, în format internațional, fără „+” (8–15 cifre).'); return `https://wa.me/${v}`; } },
+  email: { scurt: 'Email', mediu: 'CONTACT_EMAIL', link: v => { if (!/^[^\s@<>"'()]+@[^\s@<>"'()]+\.[a-z]{2,}$/i.test(v)) fail('CONTACT_EMAIL: adresa nu arată ca un email (de forma nume@example.com).'); return `mailto:${v}`; } },
+  linkedin: { scurt: 'LinkedIn' }, instagram: { scurt: 'Instagram' }, substack: { scurt: 'Substack' }
+};
+const CONTACT = (() => {
+  const k = site.contact, F = 'content/site.yml: contact';
+  if (!k) return null;
+  const grupuri = (Array.isArray(k.grupuri) ? k.grupuri : []).map((g, gi) => {
+    const canale = (Array.isArray(g?.canale) ? g.canale : []).map((c, ci) => {
+      const unde = `${F}.grupuri[${gi + 1}].canale[${ci + 1}]`, def = CANALE[c?.canal];
+      if (!def) fail(`${unde}: canalul „${c?.canal}” nu există. Canalele cunoscute: ${Object.keys(CANALE).join(', ')}.`);
+      let link = '';
+      if (def.mediu){
+        if (c.link) fail(`${unde}: ${c.canal} nu se scrie în repo (e public). Linkul vine din secretul ${def.mediu}.`);
+        const v = String(process.env[def.mediu] || '').trim();
+        link = v ? def.link(v) : '';
+      } else {
+        link = String(c.link || '').trim();
+        if (link && !/^https:\/\//.test(link)) fail(`${unde}: linkul trebuie să înceapă cu https://.`);
+      }
+      const nume = String(c.nume || def.scurt).trim();
+      if (!nume.toLowerCase().includes(def.scurt.toLowerCase()) && !(c.canal === 'email' && /email/i.test(nume))) warn(`${unde}: „nume” ar trebui să conțină „${def.scurt}”, numele care apare la hover (WCAG 2.5.3).`);
+      return link ? { canal: c.canal, scurt: def.scurt, nume, link, profil: !def.mediu } : null;
+    }).filter(Boolean);
+    return canale.length ? { titlu: String(g.titlu || ''), canale } : null;
+  }).filter(Boolean);
+  if (!grupuri.length) return null;
+  const t = (key, dflt) => String(k[key] || dflt);
+  return { grupuri, buton: t('buton', 'Contact'), titlu: t('titlu', 'Hai să vorbim'), text: String(k.text || ''), rezervare: t('rezervare', 'Rezervă o sesiune'),
+    peCoaching: t('pe_coaching', 'Scrie-mi pentru prima conversație'), peCoachingDupa: t('pe_coaching_dupa_rezervare', 'Sau scrie-mi'), peDespre: t('pe_despre', 'Scrie-mi') };
+})();
+const contactBtn = (label, cls = 'btn') => CONTACT ? `<button class="${cls}" type="button" popovertarget="contact">${esc(label)}</button>` : '';
+const capsula = (cls = '') => CONTACT ? `<button class="capsula glass${cls}" type="button" popovertarget="contact"><span class="disc" aria-hidden="true">${svgIcon('bubble')}</span><span>${esc(CONTACT.buton)}</span></button>` : '';
+const contactPanel = () => CONTACT ? `<div class="contact glass-read" id="contact" popover role="dialog" aria-labelledby="contactH">
+  <div class="c-top"><h2 id="contactH">${esc(CONTACT.titlu)}</h2><button class="x" type="button" popovertarget="contact" popovertargetaction="hide" aria-label="Închide" autofocus>✕</button></div>
+  ${CONTACT.text ? `<p class="c-lead">${esc(CONTACT.text)}</p>` : ''}
+  ${rezervare ? `<a class="btn bk" href="${esc(rezervare)}" rel="noopener">${esc(CONTACT.rezervare)} <span aria-hidden="true">→</span></a>` : ''}
+  <div class="grps">${CONTACT.grupuri.map(g => `<div class="grp">${g.titlu ? `<p class="cap">${esc(g.titlu)}</p>` : ''}<ul class="ico-row">${g.canale.map(c => `<li><a class="ico" href="${esc(c.link)}" aria-label="${esc(c.nume)}" rel="${c.profil ? 'me noopener' : 'noopener'}">${svgIcon(c.canal)}<span class="tip" aria-hidden="true">${esc(c.scurt)}</span></a></li>`).join('')}</ul></div>`).join('')}</div>
+</div>` : '';
+// butoanele de pe Coaching (pagina și panoul de pe prima pagină): rezervarea, dacă are link, apoi contactul
+const coachingCta = () => rezervare
+  ? `<p class="actions"><a class="btn" href="${esc(rezervare)}" rel="noopener">Alege o oră <span aria-hidden="true">→</span></a>${CONTACT ? contactBtn(CONTACT.peCoachingDupa, 'btn ghost') : ''}</p>`
+  : CONTACT ? `<p class="actions">${contactBtn(CONTACT.peCoaching)}</p>` : '';
 // lista elementelor unei secțiuni: același rând ca în „Atelierul, la vedere” (ul.list), titlul ca link și fraza
 const elementeHtml = c => Array.isArray(c.elemente) && c.elemente.length ? `<ul class="list items">${c.elemente.map(e => `<li><a href="${esc(e.url ? u(e.url) : e.link)}"${e.link ? ' rel="noopener"' : ''}>${esc(e.titlu)}</a><span>${esc(e.fraza)}</span></li>`).join('')}</ul>` : '';
 const businessList = () => BUSINESS.length ? `<ul class="list biz">${BUSINESS.map(b => `<li><b>${b.link ? `<a href="${esc(b.link)}" rel="noopener">${esc(b.nume)}</a>` : esc(b.nume)}</b>${b.nevoie ? `<span>${esc(b.nevoie)}</span>` : ''}${b.rol ? `<small>${esc(b.rol)}</small>` : ''}${b.pod ? `<small class="pod">${esc(b.pod)}</small>` : ''}</li>`).join('')}</ul>` : '';
@@ -416,7 +475,8 @@ ${topNav(cheie)}
 <main id="main" class="${mainClass}">
 ${bodyHtml}
 </main>
-${footer()}${scripts}
+${footer()}
+${capsula()}${contactPanel()}${scripts}
 </body>
 </html>
 `;
@@ -441,7 +501,7 @@ function panelBody(c){
   <h3>Atelierul, la vedere</h3>
   <ul class="list">${C.live ? `<li><a href="${u('live/echipa/')}">Echipa mea de agenți AI</a><span>roluri și procese</span></li><li><a href="${pageUrl(C.live)}">Live</a><span>ce construim acum</span></li>` : ''}<li><a href="${esc(GH)}" rel="noopener">GitHub</a><span>contact și cod</span></li></ul>
   <a class="btn" href="${pageUrl(c)}">${esc(c.buton || 'Pagina Despre')} →</a>`;
-  const extra = c.cheie === 'companie' ? businessList() : c.cheie === 'coaching' && rezervare ? `<p><a class="btn" href="${esc(rezervare)}" rel="noopener">Alege o oră →</a></p>` : '';
+  const extra = c.cheie === 'companie' ? businessList() : c.cheie === 'coaching' ? coachingCta() : '';
   if (c.cheie === 'povesti') return `<div class="story"><p class="eyebrow">${esc(c.eticheta)} · ${fam}</p><h2 id="pH">${esc(c.eticheta)}</h2>
   <p class="season">${esc(c.fraza)}</p>${podHtml(c)}
   <p class="note">${esc(site.in_pregatire || '')}</p>
@@ -545,15 +605,17 @@ function indexHtml(importmap){
       <div id="pBody"></div>
     </aside>
     ${closebar}
+    ${CONTACT ? `<div class="cslot">${capsula()}</div>` : ''}
     ${roads}
   </div>
-  ${misiune.length ? `<p class="inscription glass">${misiune.map(esc).join('<br>')}</p>` : ''}
+  <div class="br">${misiune.length ? `<p class="inscription glass">${misiune.map(esc).join('<br>')}</p>` : ''}${capsula()}</div>
   <div id="tags" aria-hidden="true"></div>
   <div id="nodeTags" aria-hidden="true"></div>
   ${parts}
   <p class="sr" id="sr" aria-live="polite"></p>
 </div>
 ${templates}
+${contactPanel()}
 <script type="application/json" id="data">${json}</script>
 <script type="module" src="${u('assets/scena.js')}?v=${cssV}"></script>
 </body>
@@ -576,7 +638,7 @@ ${events.length ? [...days].map(([, list]) => `<h3 class="day">${esc(fLongDay(li
 </section>
 <p class="actions"><a class="btn" href="${u('live/echipa/')}">Echipa de agenți →</a><a class="btn ghost" href="${u('api/live.json')}">Datele, ca JSON</a></p>`;
   } else {
-    inner = `${podHtml(c)}${detaliiHtml(c)}${elementeHtml(c)}${stateHtml(c)}${c.cheie === 'companie' ? businessList() : ''}${c.cheie === 'coaching' && rezervare ? `<p><a class="btn" href="${esc(rezervare)}" rel="noopener">Alege o oră →</a></p>` : ''}
+    inner = `${podHtml(c)}${detaliiHtml(c)}${elementeHtml(c)}${stateHtml(c)}${c.cheie === 'companie' ? businessList() : ''}${c.cheie === 'coaching' ? coachingCta() : ''}
 ${C.live ? `<p class="actions"><a class="btn" href="${pageUrl(C.live)}">Vezi ce se lucrează acum →</a></p>` : ''}`;
   }
   return page({ cheie: c.cheie, title: c.eticheta, description: `${c.eticheta}: ${c.fraza}`, path: c.url + '/', bodyHtml: `<h1>${esc(c.eticheta)}</h1><p class="kicker">${esc(c.fraza)}</p>\n${inner}` });
@@ -602,7 +664,7 @@ function desprePage(c){
 </section>` : '';
   const next = `<section class="next w glass" aria-labelledby="atelierH">
   <div><h2 id="atelierH">Atelierul, la vedere</h2><p>${esc(despre.data.atelier || '')}${C.live ? ` <a href="${u('live/echipa/')}">Vezi echipa și procesele</a> sau <a href="${pageUrl(C.live)}">ce construim acum</a>.` : ''}</p></div>
-  <div class="actions">${C.coaching ? `<a class="btn" href="${pageUrl(C.coaching)}">${esc(C.coaching.eticheta)} <span aria-hidden="true">→</span></a>` : ''}${GH ? `<a href="${esc(GH)}" rel="noopener">Mă găsești pe GitHub</a>` : ''}</div>
+  <div class="actions">${C.coaching ? `<a class="btn" href="${pageUrl(C.coaching)}">${esc(C.coaching.eticheta)} <span aria-hidden="true">→</span></a>` : ''}${CONTACT ? contactBtn(CONTACT.peDespre, 'btn ghost') : ''}${GH ? `<a href="${esc(GH)}" rel="noopener">Mă găsești pe GitHub</a>` : ''}</div>
 </section>`;
   const bodyHtml = `${hero}\n${mission}\n${ORBITA.parcurs}\n${next}`;
   return page({ cheie: c.cheie, title: c.eticheta, description: site.descriere, path: c.url + '/', bodyHtml, mainClass: 'despre', bodyClass: 'no-js', scripts: `\n<script src="${u('assets/despre.js')}?v=${cssV}" defer></script>` });

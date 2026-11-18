@@ -16,11 +16,37 @@ domeniu: "alexandrumolea.com"
 # true = site-ul se publică la fiecare push, la adresa GitHub Pages. Când `domeniu` e completat, contează domeniul.
 publica_pe_link_github: true
 
-# Repo-ul public: contactul și „vezi cum se construiește” duc aici. Fără email, fără telefon.
+# Repo-ul public: „vezi cum se construiește” duce aici. Fără email, fără telefon (acelea vin din secrete, vezi `contact`).
 github: "https://github.com/alexandrumolea/AgentsTeam"
 
 # Linkul de rezervare (ex.: Cal.com). Gol = butonul „Rezervă o sesiune” e ascuns peste tot.
 rezervare: ""
+
+# Contactul: capsula „Contact” de pe toate paginile (propunerea A a Ioanei, aleasă de Alex pe 2026-11-18:
+# team/ioana/documente/contact-propuneri-v1.html). Pe pagină se văd doar iconițele, fără adrese sau numere.
+# Canalele: whatsapp, email, linkedin, instagram, substack (iconițele stau în cod, în site/build.mjs).
+# WhatsApp și emailul NU se scriu aici (repo-ul e public): build-ul le ia din secretele GitHub
+# CONTACT_WHATSAPP (numărul în format internațional, doar cifre, fără „+”) și CONTACT_EMAIL.
+# Fără ele (de exemplu la un build local), canalele acelea nu apar. Fără niciun canal, capsula nu apare.
+# Dacă `rezervare` are link, primul rând din panou e butonul de rezervare.
+contact:
+  buton: "Contact"                       # capsula din colț
+  titlu: "Hai să vorbim"
+  text: "Prima conversație e gratuită."
+  rezervare: "Rezervă o sesiune"         # primul rând din panou, doar când `rezervare` are link
+  pe_coaching: "Scrie-mi pentru prima conversație"   # butonul de pe Coaching (fără link de rezervare)
+  pe_coaching_dupa_rezervare: "Sau scrie-mi"         # butonul de lângă „Alege o oră” (cu link de rezervare)
+  pe_despre: "Scrie-mi"                  # butonul din cardul de final de pe Despre
+  grupuri:
+    - titlu: "Scrie-mi"
+      canale:
+        - { canal: whatsapp, nume: "Scrie-mi pe WhatsApp" }   # din CONTACT_WHATSAPP
+        - { canal: email, nume: "Trimite-mi un email" }       # din CONTACT_EMAIL
+    - titlu: "Urmărește-mă aici"
+      canale:
+        - { canal: linkedin, nume: "LinkedIn", link: "https://www.linkedin.com/in/alexandrumolea/" }
+        - { canal: instagram, nume: "Instagram", link: "https://www.instagram.com/alexandrumolea/" }
+        - { canal: substack, nume: "Substack", link: "https://alexandrumolea.substack.com" }
 
 # Introducerea, aprobată de Alex (vocea-alex, 2026-11-15). Nu se rescrie fără el.
 intro:
