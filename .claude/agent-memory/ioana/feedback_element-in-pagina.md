@@ -27,3 +27,7 @@ Adăugat: 2026-11-18
 - **Un element vizual = un singur strat de informație.** Fără numere și litere de referință, fără două orbite; textul lung stă într-o listă alături.
 - Ce îi place sigur: lentila cu poza („lupa”), orbita ca idee (nouă, nu banală), compactul.
 - Unealtă: `?solo=a` în mock + CDP cu `setDeviceMetricsOverride` și un script care măsoară golurile, overflow-ul și coliziunile etichetelor.
+
+2026-11-18 (runda 3.1): Alex a ales orbita, dar: „Acum lipsesc elementele dinamice… Nu înțeleg de ce mi-ai scoate elementul vizual care mi-a plăcut care este dinamic.” Regula: **ce i-a plăcut și se mișcă nu se face static**. Densitatea nu se obține tăind mișcarea. Mișcarea rămâne, cu oprire (un buton global „Oprește mișcarea”, plus pauză la clic pe element) și o variantă statică la reduced-motion.
+- Cuvintele de pe cărțile rotitoare: plăcuțe albe care plutesc în fața pachetului (translateZ până la aceeași adâncime), ca să nu se vadă niciodată prin sticlă.
+- Orbita vie: lumina (`conic-gradient` rotit) trece din 2007 până azi în 12 s, iar punctele se aprind cu aceeași animație și o întârziere din an; eticheta de jos arată rolul la hover, focus sau atingere.
