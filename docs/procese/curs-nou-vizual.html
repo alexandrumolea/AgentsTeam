@@ -63,6 +63,12 @@ section>header p{color:var(--muted);max-width:64ch}
 .tag{font:600 11px/1 var(--f-text);letter-spacing:.08em;text-transform:uppercase;padding:4px 8px;border-radius:999px;background:var(--portocaliu);color:#fff;width:fit-content}
 .gate-box{background:var(--gate-bg);border:1.5px dashed var(--portocaliu);border-radius:14px;padding:16px 18px;display:flex;flex-wrap:wrap;gap:8px 24px;align-items:center}
 .gate-box strong{font-family:var(--f-titlu);font-weight:400;font-size:20px}
+.final{display:flex;flex-wrap:wrap;align-items:baseline;gap:6px 14px;padding:12px 16px;border-radius:12px;border:1.5px solid var(--portocaliu);background:var(--surface)}
+.final span{font:600 11.5px/1 var(--f-text);letter-spacing:.12em;text-transform:uppercase;color:var(--portocaliu)}
+.final strong{font:400 22px/1.2 var(--f-titlu)}
+.final em{font-style:normal;color:var(--muted);font-size:14px}
+.faza.c>.nume::before{border-color:var(--portocaliu)}
+.faza.c .pas{background:var(--gate-bg);border-color:transparent}
 .ciclu{position:relative;display:grid;gap:14px;border:2px solid var(--lavanda);border-radius:20px;padding:16px;margin-left:-14px;background:color-mix(in srgb,var(--a-bg) 35%,transparent)}
 .ciclu-cap{display:flex;gap:14px;align-items:center}
 .ciclu-cap svg{flex:none;width:96px;height:45px}
@@ -114,24 +120,24 @@ code{font-size:.9em;background:var(--bg);border:1px solid var(--line);border-rad
 <header class="hero">
   <p class="eyebrow"><span class="dot"></span>&nbsp; BEMORE Learning Studio · procesul echipei Learning Studio</p>
   <h1>Cum construim un curs</h1>
-  <p class="lead">Drumul pe care îl parcurge echipa Learning Studio pentru fiecare curs, până la un curs stabilizat. Viziunea și Laboratorul se întăresc reciproc într-un ciclu; în Laborator trainerul devine practician pe subiect. Abia apoi producem. Bucla se repetă la fiecare livrare.</p>
-  <div class="acum"><span class="puls" aria-hidden="true"></span>Acum: Change Agility e în ciclul A ⇄ B, la pasul Colectate pe masă</div>
+  <p class="lead">Drumul pe care îl parcurge echipa Learning Studio pentru fiecare curs, până la un curs stabilizat. Viziunea și Laboratorul se întăresc reciproc într-un ciclu; în Laborator trainerul devine practician pe subiect. Din harvest alegem și facem firul roșu. Abia apoi producem. Bucla se repetă la fiecare livrare.</p>
+  <div class="acum"><span class="puls" aria-hidden="true"></span>Acum: Change Agility e în ciclul A ⇄ B, în Laborator, spre harvest</div>
 </header>
 
 <section aria-labelledby="h-traseu">
   <header>
     <p class="eyebrow">Traseul</p>
-    <h2 id="h-traseu">Un ciclu A ⇄ B, o poartă, producția</h2>
+    <h2 id="h-traseu">Ciclul A ⇄ B, harvest, firul roșu, producția</h2>
   </header>
 
   <div class="traseu">
     <div class="ciclu">
-    <div class="ciclu-cap"><svg viewBox="0 0 120 56" width="96" height="45" aria-hidden="true"><circle cx="38" cy="28" r="22" fill="none" stroke="var(--cer)" stroke-width="2"/><circle cx="82" cy="28" r="22" fill="none" stroke="var(--lavanda)" stroke-width="2"/><text x="38" y="33" text-anchor="middle" font-family="Sora" font-size="16" fill="var(--cer)">A</text><text x="82" y="33" text-anchor="middle" font-family="Sora" font-size="16" fill="var(--ink)">B</text><path d="M56 12 q4 -6 8 0" fill="none" stroke="var(--portocaliu)" stroke-width="2"/><path d="M64 44 q-4 6 -8 0" fill="none" stroke="var(--portocaliu)" stroke-width="2"/></svg><div><p class="eyebrow">Ciclul A ⇄ B</p><p><strong>Se întăresc reciproc.</strong> Merg în paralel și se repetă până când viziunea e clară, obiectivele stau pe loc și fiecare obiectiv are piese pe masă.</p></div></div>
+    <div class="ciclu-cap"><svg viewBox="0 0 120 56" width="96" height="45" aria-hidden="true"><circle cx="38" cy="28" r="22" fill="none" stroke="var(--cer)" stroke-width="2"/><circle cx="82" cy="28" r="22" fill="none" stroke="var(--lavanda)" stroke-width="2"/><text x="38" y="33" text-anchor="middle" font-family="Sora" font-size="16" fill="var(--cer)">A</text><text x="82" y="33" text-anchor="middle" font-family="Sora" font-size="16" fill="var(--ink)">B</text><path d="M56 12 q4 -6 8 0" fill="none" stroke="var(--portocaliu)" stroke-width="2"/><path d="M64 44 q-4 6 -8 0" fill="none" stroke="var(--portocaliu)" stroke-width="2"/></svg><div><p class="eyebrow">Ciclul A ⇄ B</p><p><strong>Se întăresc reciproc.</strong> Merg în paralel și se repetă până când viziunea e clară, obiectivele stau pe loc și fiecare obiectiv are piese în harvest.</p></div></div>
     <div class="faza">
       <div class="nume"><h3>Etapa A · Viziune și obiective</h3><span>spre ce transformare și pentru cine</span></div>
       <div class="pasi">
         <article class="pas"><p class="nr">2</p><h3>Diagnosticare</h3><p>Unde sunt participanții: un chestionar anonim de 3–5 întrebări și o piesă de diagnostic la deschidere.</p><dl><dt>Cine</dt><dd>Daria</dd><dt>Alex</dt><dd>aprobă și trimite chestionarul</dd></dl></article>
-        <article class="pas"><p class="nr">3</p><h3>Viziune și obiective</h3><p><strong>Viziunea</strong> e transformarea dorită: clară și simplă, într-o propoziție. <strong>Obiectivele</strong>, cel mult patru, duc spre ea; fiecare are cel puțin o piesă pe masă.</p><dl><dt>Cine</dt><dd>Daria</dd><dt>Alex</dt><dd>formulează viziunea, aprobă lista</dd></dl></article>
+        <article class="pas"><p class="nr">3</p><h3>Viziune și obiective</h3><p><strong>Viziunea</strong> e transformarea dorită: clară și simplă, într-o propoziție. <strong>Obiectivele</strong>, cel mult patru, duc spre ea; fiecare are cel puțin o piesă în harvest.</p><dl><dt>Cine</dt><dd>Daria</dd><dt>Alex</dt><dd>formulează viziunea, aprobă lista</dd></dl></article>
       </div>
     </div>
 
@@ -141,28 +147,33 @@ code{font-size:.9em;background:var(--bg);border:1px solid var(--line);border-rad
       <div class="gate-box" style="background:var(--alex-bg)"><strong>Cine livrează trebuie să fie practician, nu doar curios.</strong><span>Scopul Laboratorului: piese de conținut diverse, valoroase, relevante, gata de folosit.</span></div>
       <div class="pasi">
         <article class="pas alex"><p class="tag">practicianul</p><h3>Trainerul care își asumă subiectul</h3><p>Îl trăiește o lună, cu atenția adusă conștient. Iese conectat la subiect, gata de conversații profunde cu publicul, cu provocări pe teme concrete din activitatea lor și cu povești din practica proprie.</p><dl><dt>Azi</dt><dd>Alex</dd></dl></article>
-        <article class="pas"><p class="nr">1</p><h3>Researcherul</h3><p>Modele, studii și exemple, cu surse. Din ele ies piese candidate pentru masă.</p><dl><dt>Cine</dt><dd>Irina</dd><dt>Alex</dt><dd>citește rezumatul de 5 rânduri</dd></dl></article>
-        <article class="pas"><p class="nr">↔</p><h3>Parteneri de gândire</h3><p>Un AI, plus oameni reprezentativi pentru publicul țintă și colegi (peers). Cu ei se testează ideile și pornesc dezbaterile. Pe masă intră doar ideea, fără nume.</p><dl><dt>Cine</dt><dd>practicianul îi alege</dd></dl></article>
+        <article class="pas"><p class="nr">1</p><h3>Researcherul</h3><p>Modele, studii și exemple, cu surse. Din ele ies piese pentru harvest.</p><dl><dt>Cine</dt><dd>Irina</dd><dt>Alex</dt><dd>citește rezumatul de 5 rânduri</dd></dl></article>
+        <article class="pas"><p class="nr">↔</p><h3>Parteneri de gândire</h3><p>Un AI, plus oameni reprezentativi pentru publicul țintă și colegi (peers). Cu ei se testează ideile și pornesc dezbaterile. În harvest intră doar ideea, fără nume.</p><dl><dt>Cine</dt><dd>practicianul îi alege</dd></dl></article>
       </div>
-      <div class="nume" style="margin-top:6px"><h3 style="font-size:17px">Masa, panoul Laboratorului</h3><span>câte o linie pe piesă, fără slide-uri</span></div>
-      <div class="pasi">
-        <article class="pas"><p class="nr">4a</p><h3>Colectate</h3><p>Tot ce iese din Laborator: <strong>exerciții</strong>, <strong>knowledge bites</strong> și <strong>experiences</strong>.</p><dl><dt>Verdict</dt><dd>nou</dd></dl></article>
-        <article class="pas"><p class="nr">4b</p><h3>Filtrate</h3><p>„Are they good enough?” Ce primește Da intră în Bibliotecă.</p><dl><dt>Alex</dt><dd>Da · Poate · Nu</dd></dl></article>
-        <article class="pas"><p class="nr">5</p><h3>Ordonate · Flow Logic</h3><p>Piesele „da” se așază în cele 4 blocuri ale zilei și fac Agenda. Daria verifică timpii și obiectivele, Andrei verifică masa.</p><dl><dt>Alex</dt><dd>ordonează</dd></dl></article>
-      </div>
+      <div class="final"><span>Finalul etapei</span><strong>Harvest-ul</strong><em>exerciții · knowledge bites · experiences</em></div>
     </div>
 
+    </div>
+
+    <div class="faza c">
+      <div class="nume"><h3>Etapa C · Harvest, Curate, Flow</h3><span>în vederea Harvest din materialul trainerului, o linie pe piesă</span></div>
+      <div class="pasi">
+        <article class="pas"><p class="nr">C1</p><h3>Harvest</h3><p>Tot ce a ieșit din Laborator, dintr-o privire: exerciții, knowledge bites, experiences.</p><dl><dt>Verdict</dt><dd>nou</dd></dl></article>
+        <article class="pas"><p class="nr">C2</p><h3>Curate</h3><p>Alegem ce e suficient de actual și cu sens ca să rămână în Bibliotecă.</p><dl><dt>Alex</dt><dd>Da · Poate · Nu</dd></dl></article>
+        <article class="pas"><p class="nr">C3</p><h3>Flow</h3><p>Începem firul roșu: piesele „da” se așază în cele 4 blocuri ale zilei. Daria verifică timpii și obiectivele, Andrei verifică firul.</p><dl><dt>Alex</dt><dd>ordonează</dd></dl></article>
+      </div>
+      <div class="final"><span>Finalul etapei</span><strong>Firul roșu</strong><em>ziua, bloc cu bloc</em></div>
     </div>
 
     <div class="faza gate">
       <div class="nume"><h3>Poarta</h3></div>
-      <div class="gate-box"><strong>Alex aprobă masa</strong><span>Fără aprobare nu se produce nimic. Dacă nu e gata, ne întoarcem pe masă.</span></div>
+      <div class="gate-box"><strong>Alex aprobă firul roșu</strong><span>Fără aprobare nu se produce nimic. Dacă nu e gata, ne întoarcem la Curate sau Flow.</span></div>
     </div>
 
     <div class="faza b">
-      <div class="nume"><h3>Etapa C · Producția</h3><span>doar pentru piesele „da”</span></div>
+      <div class="nume"><h3>Etapa D · Producția</h3><span>doar pentru piesele „da”</span></div>
       <div class="pasi">
-        <article class="pas"><p class="nr">C</p><h3>Piesele prind viață</h3><p>Ecranele din sală (slide-uri v2, nota comună A · Lumi), scheme, note de trainer, banca de exerciții. „Trimite în agendă” face agenda ediției.</p><dl><dt>Cine</dt><dd>Matei, cu Daria și Irina; Ioana pe vizual</dd></dl></article>
+        <article class="pas"><p class="nr">D</p><h3>Piesele prind viață</h3><p>Ecranele din sală (slide-uri v2, nota comună A · Lumi), scheme, note de trainer, banca de exerciții. „Trimite în agendă” face din firul roșu agenda ediției.</p><dl><dt>Cine</dt><dd>Matei, cu Daria și Irina; Ioana pe vizual</dd></dl></article>
         <article class="pas"><p class="nr">6</p><h3>Livrare flexibilă</h3><p>Ziua în sală. Alternativele și Biblioteca permit schimbări pe loc, din materialul trainerului.</p><dl><dt>Cine</dt><dd>Alex; Mike pe generator</dd></dl></article>
       </div>
     </div>
@@ -178,37 +189,37 @@ code{font-size:.9em;background:var(--bg);border:1px solid var(--line);border-rad
     </div>
   </div>
 
-  <div class="bucla"><span class="sim" aria-hidden="true">↻</span><p><strong>Bucla mare:</strong> ciclul A ⇄ B → producția → livrarea → feedbackul → înapoi în A, la fiecare livrare. Cursul e stabilizat după 2 livrări la rând fără schimbări mari (cel mult o piesă schimbată pe bloc) și cu obiectivele atinse. Bucla se redeschide dacă feedbackul scade două ediții la rând.</p></div>
+  <div class="bucla"><span class="sim" aria-hidden="true">↻</span><p><strong>Bucla mare:</strong> ciclul A ⇄ B → harvest → firul roșu → producția → livrarea → feedbackul → înapoi în A, la fiecare livrare. Cursul e stabilizat după 2 livrări la rând fără schimbări mari (cel mult o piesă schimbată pe bloc) și cu obiectivele atinse. Bucla se redeschide dacă feedbackul scade două ediții la rând.</p></div>
 </section>
 
 <section aria-labelledby="h-masa">
   <header>
     <p class="eyebrow">Panoul de control</p>
-    <h2 id="h-masa">Masa → Biblioteca → Agenda</h2>
-    <p>Masa e panoul Laboratorului: aici gândim tot cursul înainte de orice slide. O piesă e o singură linie: titlu, scop, durată, tip, sursă. Puțini tokeni, totul dintr-o privire.</p>
+    <h2 id="h-masa">Harvest → Curate → Flow</h2>
+    <p>Vederea Harvest din materialul trainerului e panoul etapei C: aici gândim tot cursul înainte de orice slide. O piesă e o singură linie: titlu, scop, durată, tip, sursă. Puțini tokeni, totul dintr-o privire.</p>
   </header>
   <div class="masa">
-    <div class="col"><h3>1 · Brainstorming <small>colectate</small></h3>
-      <p class="intr">Toate candidatele, cu verdictul tău.</p>
+    <div class="col"><h3>1 · Harvest <small>din Laborator</small></h3>
+      <p class="intr">Toate piesele, cu verdictul tău.</p>
       <div class="card da">Toleranță vs capacitate <i>da</i></div>
       <div class="card">O piesă din practică <i>nou</i></div>
       <div class="card">O idee din research <i>poate</i></div>
       <div class="card nu">Exercițiu care nu servește obiectivul <i>nu</i></div>
     </div>
-    <div class="col"><h3>2 · Bibliotecă <small>filtrate</small></h3>
-      <p class="intr">Doar piesele „da”, produse sau de produs.</p>
+    <div class="col"><h3>2 · Curate <small>Biblioteca</small></h3>
+      <p class="intr">Ce e actual și cu sens rămâne: produse sau de produs.</p>
       <div class="card p">Contract <i>produsă</i></div>
       <div class="card p">Mesaj: predicții <i>produsă</i></div>
       <div class="card">Toleranță vs capacitate <i>de produs</i></div>
     </div>
-    <div class="col"><h3>3 · Agendă <small>ordonate</small></h3>
+    <div class="col"><h3>3 · Flow <small>firul roșu</small></h3>
       <p class="intr">Piesele așezate în cele 4 blocuri. „Trimite în agendă” face ziua.</p>
       <div class="card">Bloc 1 · Contract <i>20 min</i></div>
       <div class="card">Bloc 1 · Toleranță și capacitate <i>60 min</i></div>
       <div class="card">Bloc 4 · Closing <i>25 min</i></div>
     </div>
   </div>
-  <p class="nota">Exemple ilustrative. Masa reală e în materialul trainerului și în editorul local.</p>
+  <p class="nota">Exemple ilustrative. Harvest-ul real e în materialul trainerului și în editorul local.</p>
 </section>
 
 <section aria-labelledby="h-zi">
@@ -242,8 +253,8 @@ code{font-size:.9em;background:var(--bg);border:1px solid var(--line);border-rad
     <div class="box"><h3>Reguli</h3><ul>
       <li>Nimic nu pleacă la participanți sau la client fără Alex.</li>
       <li>Conținutul cursului stă în repo-ul privat; aici e doar procesul.</li>
-      <li>Conversațiile practicianului rămân private: pe masă intră doar ideea.</li>
-      <li>În Laborator nu se fac slide-uri, scheme sau ecrane.</li>
+      <li>Conversațiile practicianului rămân private: în harvest intră doar ideea.</li>
+      <li>Până la poartă nu se fac slide-uri, scheme sau ecrane.</li>
     </ul></div>
   </div>
 </section>
@@ -254,10 +265,10 @@ code{font-size:.9em;background:var(--bg);border:1px solid var(--line);border-rad
     <h2 id="h-echipa">Echipa Learning Studio</h2>
   </header>
   <div class="echipa">
-    <div class="om"><b>Alex</b><span>practicianul, verdicte, aprobă masa, livrează</span></div>
-    <div class="om"><b>Andrei</b><span>DRI pe proces, verifică masa, concluziile lunare</span></div>
+    <div class="om"><b>Alex</b><span>practicianul, verdicte, aprobă firul roșu, livrează</span></div>
+    <div class="om"><b>Andrei</b><span>DRI pe proces, verifică firul roșu, concluziile lunare</span></div>
     <div class="om"><b>Daria</b><span>diagnostic, obiective, flow, timpi</span></div>
-    <div class="om"><b>Irina</b><span>research cu surse, candidate pe masă</span></div>
+    <div class="om"><b>Irina</b><span>research cu surse, piese pentru harvest</span></div>
     <div class="om"><b>Matei</b><span>producția pieselor</span></div>
     <div class="om"><b>Ioana</b><span>limbajul vizual al ecranelor</span></div>
     <div class="om"><b>Mike</b><span>generatorul și editorul</span></div>
