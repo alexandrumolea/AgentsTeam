@@ -28,10 +28,12 @@ Păstrează sub 150 de rânduri. Comprimă când crește. Fapte, nu povești.
 - 2026-11-17: formele scenei (planșa Ioanei, design-v3 `SH`) stau în DOUĂ locuri care trebuie ținute la fel: `build` în site/src/scena.js și `SHAPES` în site/build.mjs. Testează cu toate secțiunile vizibile într-o copie (rsync în scratchpad + sed vizibil:true), nu doar cu ce e live: abia acolo apar suprapunerile. Ioana poate trimite specificații în timpul lucrului (lentila): lasă loc unei forme provizorii ușor de înlocuit.
 - 2026-11-17: poza de pe Despre: forma se alege din content/despre.md (`poza_forma: lentila` + `poza`). Decupajele le fac ca fișiere noi cu sips (`-c H W --cropOffset Y X`). sips păstrează un EXIF mic: îl scot cu un script Python care lasă doar profilul ICC (APP2).
 
+- 2026-11-18: când o funcție nouă schimbă exemplul comun al testelor, multe așteptări vechi se mută (totaluri, id-uri). Pune funcția nouă în teste separate (copie modificată) și lasă exemplul cât mai stabil.
+
 ## Fișiere de memorie
 - [Stack și găzduire](project_stack-hosting.md) — GitHub Pages (D-036–D-038), CNAME ignorat la Actions; fapte Netlify/Cloudflare/Vercel
 - [Generatorul paginii echipei](generator-echipa.md) — Mike îl deține; puncte fragile tăcute; 2026-11-17: panoul de control, maparea statusurilor
-- [Generatorul de curs](project_generator-curs.md) — 2026-11-17: curs/ v1.2 (piese, agenda, totaluri); Prezintă prin #sala + postMessage; Safari la Alex
+- [Generatorul de curs](project_generator-curs.md) — 2026-11-17: curs/ v1.2, Prezintă; 2026-11-18: pauze fixe/blocuri, Masa (masa.yml)
 - [Tema: culori, gradient, fonturi](project_tema-culori.md) — 2026-11-17: content/tema.yml → CSS, scenă, OG, contrast la build; branding BEMORE (D-057)
 
 ## Deschis

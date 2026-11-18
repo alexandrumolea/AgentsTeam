@@ -419,3 +419,70 @@ details.ex[open] .ex-obiectiv { display: none; }
 .total-zi.live .live-semn { margin-left: .3rem; }
 @media (pointer: coarse) { .prezinta-piesa { min-height: 44px; min-width: 44px; padding: .3rem .9rem; } }
 @media print { .prezinta-piesa { display: none; } }
+
+/* Programul zilei: blocurile dintre pauzele fixe (Alex, 2026-11-18). „X din Y min” pe fiecare bloc, depășirea marcată. */
+.ziua tr.bloc-cap td { padding: .9rem .5rem .35rem; border-bottom: 2px solid var(--t-text); font-size: .9rem; }
+.ziua tr.bloc-cap.depasire td, .schita li.bloc-cap.depasire, .masa-bloc.depasire .masa-bloc-cap { color: var(--cronometru-gata); }
+.ziua tr.bloc-cap.depasire td { border-bottom-color: var(--cronometru-gata); }
+.bloc-total { font-variant-numeric: tabular-nums; }
+.ziua tr.pauza.fixa td { background: color-mix(in srgb, var(--t-linie) 25%, transparent); }
+.ziua tr.reper td, .schita li.reper { opacity: .6; }
+.schita > li.bloc-cap { padding-bottom: .6rem; padding-top: .2rem; }
+.schita > li.bloc-cap::before { width: 13px; height: 3px; left: -7px; top: .75rem; border-radius: 0; background: var(--t-text); }
+.schita > li.bloc-cap.depasire::before { background: var(--cronometru-gata); }
+.schita li.bloc-cap.depasire .titlu-mic { color: var(--cronometru-gata); }
+.schita > li.pauza.fixa::before { background: var(--fel-pauza-accent); }
+
+/* Masa (etapa A, Alex, 2026-11-18): Colectate → Filtrate → Ordonate. Cartonașe compacte, ca în Biblioteca de piese. */
+main > section#masa { max-width: 1440px; }
+.masa-ajutor { margin: 0 0 .8rem; font-size: .88rem; max-width: 60rem; }
+.masa-ajutor kbd, .masa-propunere kbd { font: .78rem/1 var(--font); border: 1px solid var(--t-linie); border-radius: 4px; padding: .1rem .35rem; }
+.masa-propunere { margin: 0 0 1rem; padding: .6rem .9rem; border-radius: 8px; background: var(--t-nota-fundal); border-left: 3px solid var(--t-nota-linie); }
+.masa-propunere button { margin-left: .5rem; }
+.masa-bara { display: flex; flex-wrap: wrap; gap: .4rem; justify-content: space-between; align-items: center; margin-bottom: .6rem; }
+.masa-bara-dreapta { display: flex; flex-wrap: wrap; gap: .4rem; }
+#masa-respinse[aria-pressed="true"] { background: var(--t-text); color: var(--t-suprafata); border-color: var(--t-text); }
+#masa-mesaj.eroare { color: var(--cronometru-gata); }
+#masa-text-cutie { margin: .5rem 0 1rem; }
+#masa-text { width: 100%; font: .85rem/1.4 ui-monospace, Menlo, monospace; padding: .5rem; border: 1px solid var(--t-linie); border-radius: 6px; background: var(--t-suprafata); color: var(--t-text); }
+.masa-coloane { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) minmax(0, 1.25fr); gap: 1rem; align-items: start; }
+.masa-col { min-width: 0; }
+.masa-col > h3 { margin: 0 0 .15rem; }
+.masa-col-ajutor { margin: 0 0 .5rem; font-size: .8rem; }
+.masa-lista { list-style: none; margin: 0; padding: .35rem; min-height: 3.5rem; display: grid; gap: .4rem; border-radius: 12px; background: color-mix(in srgb, var(--t-linie) 22%, transparent); }
+.masa-lista:empty::after { content: "Trage aici"; display: grid; place-items: center; min-height: 2.8rem; font-size: .82rem; color: var(--t-sters); }
+.masa-carte { position: relative; display: grid; gap: .2rem; padding: .45rem .55rem .45rem 2.4rem; background: var(--t-suprafata); border: 1px solid var(--t-linie); border-radius: 10px; user-select: none; -webkit-user-select: none; cursor: grab; }
+.masa-carte:focus-visible { outline: 2px solid var(--t-accent); outline-offset: 2px; }
+.masa-carte.trage { opacity: .85; box-shadow: 0 0 0 2px var(--t-accent); pointer-events: none; cursor: grabbing; }
+.masa-carte.v-nu { opacity: .5; }
+.masa-carte.v-nu .mc-titlu { text-decoration: line-through; }
+.masa-carte.v-poate { border-style: dashed; }
+.masa-maner { top: 50%; transform: translateY(-50%); left: .25rem; width: 28px; height: 28px; font-size: 16px; }
+.mc-rand { display: grid; grid-template-columns: 3.1rem minmax(0, 1fr); gap: .5rem; align-items: center; }
+.mc-durata { font-size: .72rem; color: var(--t-sters); font-variant-numeric: tabular-nums; white-space: nowrap; }
+.mc-durata b { font-size: 1.25rem; font-weight: var(--font-greutate-titlu); color: var(--t-text); letter-spacing: -.02em; }
+.mc-cap { display: grid; min-width: 0; }
+.mc-titlu { font-weight: var(--font-greutate-accent); line-height: 1.25; }
+.mc-scop { font-size: .84rem; color: var(--t-sters); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.mc-jos { display: flex; flex-wrap: wrap; gap: .25rem .6rem; align-items: center; justify-content: space-between; }
+.mc-meta { display: flex; flex-wrap: wrap; gap: .2rem .55rem; align-items: center; font-size: .76rem; color: var(--t-sters); min-width: 0; }
+.mc-tip { display: inline-flex; align-items: center; gap: .3rem; white-space: nowrap; }
+.mc-produsa { color: var(--t-accent); font-weight: 600; }
+.mc-nota { text-decoration: underline dotted; text-underline-offset: 2px; cursor: help; }
+.mc-verdict { display: inline-flex; gap: 0; }
+.mc-verdict button { font-size: .74rem; padding: .1rem .5rem; border-radius: 0; margin-left: -1px; }
+.mc-verdict button:first-child { border-radius: 999px 0 0 999px; margin-left: 0; }
+.mc-verdict button:last-child { border-radius: 0 999px 999px 0; }
+.mc-verdict button[aria-pressed="true"] { background: var(--t-text); color: var(--t-suprafata); border-color: var(--t-text); position: relative; }
+.mc-verdict button[data-v="nu"][aria-pressed="true"] { background: var(--t-sters); border-color: var(--t-sters); }
+.masa-bloc { margin-bottom: .2rem; }
+.masa-bloc-cap { display: flex; flex-wrap: wrap; align-items: baseline; gap: .1rem .6rem; margin: .2rem 0 .3rem; font-size: .88rem; }
+.masa-bloc-nume { margin-right: auto; }
+.masa-bloc-total { font-variant-numeric: tabular-nums; font-weight: 600; }
+.masa-bloc-stare { font-size: .8rem; }
+.masa-bloc.depasire .masa-lista { box-shadow: inset 0 0 0 2px var(--cronometru-gata); }
+.masa-pauza { display: flex; align-items: center; gap: .45rem; margin: .5rem 0 .6rem; padding: .3rem .6rem; font-size: .82rem; color: var(--t-sters); border-top: 1px dashed var(--t-linie); border-bottom: 1px dashed var(--t-linie); }
+@media (max-width: 980px) { .masa-coloane { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); } .masa-ordonate { grid-column: 1 / -1; } }
+@media (max-width: 640px) { .masa-coloane { grid-template-columns: minmax(0, 1fr); } }
+@media (pointer: coarse) { .mc-verdict button { min-height: 40px; min-width: 44px; } .masa-maner { width: 40px; height: 40px; } .masa-carte { padding-left: 3rem; } }
+@media print { .masa-bara, .masa-ajutor, .masa-maner, .mc-verdict { display: none; } }

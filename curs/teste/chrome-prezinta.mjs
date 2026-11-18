@@ -26,8 +26,8 @@ try {
   const ctrl = await b.open(url);
   const stare = () => b.evaluate(ctrl, '__curs.stare()');
   const ecrane = await b.evaluate(ctrl, 'JSON.parse(document.getElementById("date-curs").textContent).ecrane.map(e=>({c:e.cronometru,t:!!e.titlu}))');
-  ok(ecrane.length === 15, `materialul are ${ecrane.length} ecrane în sală (aștept 15)`);
-  ok(/Total: 2 h 35 min/.test(await b.evaluate(ctrl, 'document.querySelector("#ziua .total-zi").textContent')) && /rămân 55 min/.test(await b.evaluate(ctrl, 'document.querySelector("#schita .total-zi").textContent')), 'Ziua și Schița arată totalul zilei și cât rămâne');
+  ok(ecrane.length === 16, `materialul are ${ecrane.length} ecrane în sală (aștept 16, cu pauza fixă de la 10:30)`);
+  ok(/Total: 2 h 55 min/.test(await b.evaluate(ctrl, 'document.querySelector("#ziua .total-zi").textContent')) && /rămân 35 min/.test(await b.evaluate(ctrl, 'document.querySelector("#schita .total-zi").textContent')), 'Ziua și Schița arată totalul zilei și cât rămâne');
   if (poze) for (const v of ['ziua', 'schita', 'modul', 'banca']) { await b.click(ctrl, `[data-vedere="${v}"]`); await b.screenshot(ctrl, join(poze, `vedere-${v}.png`)); }
 
   // Biblioteca de piese (Banca v2 a Ioanei + familie și tip, v1.2): listă compactă, căutare, filtre-chip.

@@ -2,13 +2,14 @@
 data: 2026-11-23
 ora_start: "9:00"
 # Agenda: ordinea zilei. Un rând = un modul (cu piesele implicite), un modul cu piesele alese,
-# o piesă singură (id-ul ei) sau o pauză scurtă fără fișier (pauza: <minute>).
+# o piesă singură (id-ul ei), o pauză scurtă fără fișier (pauza: <minute>) sau „bloc: N” (de aici, blocul N, după pauza fixă).
 agenda:
   - deschidere
   - modul: curba
     piese: [model-curba, perechi-curba]   # alternative: plimbare-curba, poveste-fuziune; [] = fără piese
   - pauza-cafea                           # piesă (tip: pauza)
   - ridica-te-daca                        # piesă singură, între module
+  - bloc: 2                               # restul după pauza fixă de la 10:30 (curs.yml); cele 5 minute rămase stau libere
   - pasul-de-luni
   - pauza: 10
   - inchidere

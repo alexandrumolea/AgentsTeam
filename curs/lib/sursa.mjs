@@ -25,6 +25,9 @@ const LIMBI = ['ro', 'en'];
 const PUBLIC = ['nu', 'link', 'da'];
 const ID_OK = /^[a-z0-9]+(-[a-z0-9]+)*$/;
 const MARCAJ = '::piese';
+// Programul zilei (Alex, 2026-11-18): „9:30–17:30. Pauză la 11:00, pauză de la 12:30 la 13:30, pauză la 15:00.”
+// Valoarea implicită când curs.yml și ediția nu au „pauze”. Cele de 15 minute sunt o presupunere; Alex le poate corecta.
+export const PAUZE_IMPLICITE = [{ la: '11:00', min: 15 }, { la: '12:30', min: 60, titlu: 'Prânz' }, { la: '15:00', min: 15 }];
 
 export const cuvinte = (s) => String(s).replace(/[*_`#>\[\]()!]/g, ' ').split(/\s+/).filter(Boolean).length;
 
@@ -267,6 +270,14 @@ function citesteAgenda(editie, module, piese, erori) {
       randuri.push({ fel: 'pauza', titlu: r.titlu ? String(r.titlu) : 'Pauză', durata: r.pauza });
       return;
     }
+    // „- bloc: 2”: de aici începe blocul 2, adică după pauza fixă dinaintea lui. Ce rămâne din blocul de dinainte stă liber.
+    if (obiect && 'bloc' in r) {
+      const necunoscute = Object.keys(r).filter((k) => k !== 'bloc');
+      if (necunoscute.length) erori.push(`${unde}: „bloc” stă singur pe rând (am găsit și „${necunoscute.join('”, „')}”)`);
+      if (!(Number.isInteger(r.bloc) && r.bloc > 0)) { erori.push(`${unde}: „bloc” e numărul blocului zilei (1, 2, 3…), de exemplu „- bloc: 2”`); return; }
+      randuri.push({ fel: 'bloc', bloc: r.bloc, rand: i + 1 });
+      return;
+    }
     let id, ids;
     if (typeof r === 'string') id = r;
     else if (obiect && 'modul' in r && !('pauza' in r)) {
@@ -278,7 +289,7 @@ function citesteAgenda(editie, module, piese, erori) {
         if (r.piese !== null && !Array.isArray(r.piese)) { erori.push(`${unde}: „piese” trebuie să fie o listă (sau [] pentru niciuna)`); return; }
         ids = (r.piese ?? []).map(String);
       }
-    } else { erori.push(`${unde}: un rând din agendă e un id (modul sau piesă), „modul: …” sau „pauza: <minute>”`); return; }
+    } else { erori.push(`${unde}: un rând din agendă e un id (modul sau piesă), „modul: …”, „pauza: <minute>” sau „bloc: <număr>”`); return; }
     if (comun(id, unde)) return;
     const m = dupaId.get(String(id));
     if (!m) {
@@ -294,6 +305,26 @@ function citesteAgenda(editie, module, piese, erori) {
     randuri.push({ fel: 'modul', modul: m, piese: alege(ids ?? m.implicite, ids ? unde : `${m.fisier} (implicite)`) });
   });
   return randuri;
+}
+
+/** `pauze: [{ la: "11:00", min: 15 }, { la: "12:30", min: 60, titlu: "Prânz" }]`: pauzele ancorate la oră, în ordinea orei. */
+function citestePauze(v, unde, erori) {
+  if (!Array.isArray(v)) { erori.push(`${unde}: „pauze” e o listă, de exemplu [{ la: "11:00", min: 15 }] (sau [] pentru niciuna)`); return []; }
+  const out = [];
+  v.forEach((p, i) => {
+    const loc = `${unde}, pauze, rândul ${i + 1}`;
+    if (!p || typeof p !== 'object' || Array.isArray(p)) { erori.push(`${loc}: o pauză are forma { la: "11:00", min: 15 }`); return; }
+    const necunoscute = Object.keys(p).filter((k) => !['la', 'min', 'titlu'].includes(k));
+    if (necunoscute.length) erori.push(`${loc}: câmp necunoscut („${necunoscute.join('”, „')}”); se pot: la, min, titlu`);
+    const la = typeof p.la === 'string' ? minute(p.la) : null;
+    if (la == null) { erori.push(`${loc}: „la” e ora pauzei, între ghilimele, de exemplu la: "11:00"`); return; }
+    if (!(Number.isInteger(p.min) && p.min > 0)) { erori.push(`${loc}: „min” e durata pauzei în minute`); return; }
+    if (p.titlu != null && typeof p.titlu !== 'string') { erori.push(`${loc}: „titlu” e un text`); return; }
+    out.push({ la, min: p.min, titlu: p.titlu?.trim() || 'Pauză' });
+  });
+  out.sort((a, b) => a.la - b.la);
+  out.forEach((p, i) => { const u = out[i + 1]; if (u && p.la + p.min > u.la) erori.push(`${unde}: pauza de la ${ora(p.la)} (${p.min} min) se suprapune cu cea de la ${ora(u.la)}`); });
+  return out;
 }
 
 export function citesteCurs(folder, { editie: numeEditie } = {}) {
@@ -363,17 +394,57 @@ export function citesteCurs(folder, { editie: numeEditie } = {}) {
   for (const x of piese.values()) for (const id of x.module) if (!iduriModule.has(id)) erori.push(`${x.fisier}: modulul „${id}” (din module) nu există`);
 
   // Agenda și orele: ora_start + duratele, în ordinea din agendă. Un modul durează cât el plus piesele alese.
-  const agenda = citesteAgenda(editie, module, piese, erori);
+  // Pauzele fixe (Alex, 2026-11-18) împart ziua în blocuri: agenda se așază în ele, iar pauza intră singură în agendă
+  // când ora ei a venit. O piesă nu se rupe peste o pauză: trece peste ea (avertisment), iar pauza începe după piesă.
+  // „- bloc: N” în agendă sare la blocul N; restul blocului de dinainte rămâne liber.
+  const sursaPauze = editie.pauze != null ? `ediția ${aleasa}` : curs.pauze != null ? 'curs.yml' : null;
+  const toatePauzele = citestePauze(editie.pauze ?? curs.pauze ?? PAUZE_IMPLICITE, sursaPauze ?? 'pauzele implicite', erori);
+  const fixe = toatePauzele.filter((p) => {
+    const inZi = (oraStart == null || p.la > oraStart) && (ziSfarsit == null || p.la < ziSfarsit);
+    if (!inZi && sursaPauze) avertismente.push(`${sursaPauze}: pauza de la ${ora(p.la)} e în afara zilei (${oraStart != null ? ora(oraStart) : '?'}–${ziSfarsit != null ? ora(ziSfarsit) : '?'}); o ignor`);
+    return inZi;
+  });
+  const randuri = citesteAgenda(editie, module, piese, erori);
   const nr = (x) => (Number.isInteger(x) ? x : 0);
-  let t = oraStart ?? 0;
-  for (const r of agenda) {
+  const agenda = [];
+  let t = oraStart ?? 0, k = 0;
+  const punePauza = () => {
+    const p = fixe[k++], start = Math.max(t, p.la);
+    // bloc: numărul pauzei (1 = cea dintre blocurile 1 și 2)
+    agenda.push({ fel: 'pauza', fixa: true, la: p.la, titlu: p.titlu, durata: p.min, start, sfarsit: start + p.min, bloc: k, intarziere: start - p.la });
+    t = start + p.min;
+  };
+  for (const r of randuri) {
+    if (r.fel === 'bloc') {
+      if (r.bloc > fixe.length + 1) { erori.push(`ediția ${aleasa}, agenda, rândul ${r.rand}: „bloc: ${r.bloc}” nu există; ziua are ${fixe.length + 1} ${fixe.length ? 'blocuri' : 'bloc (fără pauze fixe)'}`); continue; }
+      if (r.bloc < k + 1) { avertismente.push(`agenda, rândul ${r.rand}: „bloc: ${r.bloc}” vine după ce ziua a ajuns deja în blocul ${k + 1}; îl ignor`); continue; }
+      while (k < r.bloc - 1) punePauza();
+      continue;
+    }
+    while (k < fixe.length && t >= fixe[k].la) punePauza();
     if (r.fel === 'modul') {
       for (const x of r.piese) if (x.module.length && !x.module.includes(r.modul.id)) avertismente.push(`${x.fisier}: e aleasă la modulul „${r.modul.id}”, care nu e în lista ei „module”`);
       r.durataModul = nr(r.modul.durata);
       r.durataPiese = r.piese.reduce((s, x) => s + nr(x.durata), 0);
       r.durata = r.durataModul + r.durataPiese;
     } else if (r.fel === 'piesa') r.durata = nr(r.piesa.durata);
-    r.start = t; r.sfarsit = t + r.durata; t = r.sfarsit;
+    r.start = t; r.sfarsit = t + r.durata; r.bloc = k + 1; t = r.sfarsit;
+    agenda.push(r);
+  }
+  // Blocurile zilei: între începutul zilei, pauzele fixe și sfârșitul zilei. „X din Y min” = cât ocupă agenda din timpul blocului.
+  const blocuri = [];
+  for (let i = 0; i <= fixe.length; i++) {
+    const start = i === 0 ? (oraStart ?? 0) : fixe[i - 1].la + fixe[i - 1].min;
+    const sfarsit = i < fixe.length ? fixe[i].la : ziSfarsit;
+    const ale = agenda.filter((r) => !r.fixa && r.bloc === i + 1);
+    const final = ale.length ? ale.at(-1).sfarsit : start;
+    const b = { nr: i + 1, start, sfarsit, disponibil: sfarsit != null ? sfarsit - start : null, folosit: ale.reduce((s, r) => s + r.durata, 0), depasire: sfarsit != null ? Math.max(0, final - sfarsit) : 0, pauzaDupa: fixe[i] ? { la: fixe[i].la, min: fixe[i].min, titlu: fixe[i].titlu } : null };
+    blocuri.push(b);
+    // Ultimul bloc se termină odată cu ziua: depășirea lui are deja avertismentul zilei.
+    if (b.depasire && i < fixe.length) {
+      const peste = ale.find((r) => r.sfarsit > sfarsit);
+      avertismente.push(`agenda, blocul ${b.nr} (${ora(start)}–${ora(sfarsit)}): ${b.folosit} din ${b.disponibil} min${peste ? `; „${peste.fel === 'pauza' ? peste.titlu : peste.fel === 'piesa' ? peste.piesa.titlu : peste.modul.titlu}” trece peste pauza de la ${ora(sfarsit)}` : ''}, deci pauza începe la ${ora(sfarsit + b.depasire)} (depășire ${b.depasire} min). O piesă nu se rupe: scurtează sau mut-o după pauză (cu „- bloc: ${b.nr + 1}” în agendă)`);
+    }
   }
   const ePauza = (r) => r && (r.fel === 'pauza' || (r.fel === 'piesa' && r.piesa.tip === 'pauza') || (r.fel === 'modul' && r.modul.tip === 'pauza'));
   agenda.forEach((r, i) => {
@@ -404,7 +475,7 @@ export function citesteCurs(folder, { editie: numeEditie } = {}) {
   }
 
   const total = { agenda: t - (oraStart ?? 0), zi: ziStart != null && ziSfarsit != null ? ziSfarsit - ziStart : null, ramas: ziSfarsit != null ? ziSfarsit - t : null, sfarsit: t };
-  return { folder, curs: { ...curs, marca, zi_start: ziStart, zi_sfarsit: ziSfarsit }, editie: { ...editie, start: oraStart }, module, piese, agenda, total, obiective, etichete: [...etichete.values()].sort((a, b) => a.text.localeCompare(b.text, 'ro')), erori, avertismente };
+  return { folder, curs: { ...curs, marca, zi_start: ziStart, zi_sfarsit: ziSfarsit }, editie: { ...editie, start: oraStart }, module, piese, agenda, blocuri, pauze: fixe, total, obiective, etichete: [...etichete.values()].sort((a, b) => a.text.localeCompare(b.text, 'ro')), erori, avertismente };
 }
 
 /**

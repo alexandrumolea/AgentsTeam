@@ -14,7 +14,9 @@ import { build } from './build.mjs';
 import { citesteCurs } from './lib/sursa.mjs';
 import { ecranul } from './lib/trainer.mjs';
 import { creeazaRandare, escapeHtml } from './lib/randare.mjs';
-import { citesteBloc, scrieBloc, EroareEditor, citesteRef, caleSigura } from './lib/editor-sursa.mjs';
+import { citesteBloc, scrieBloc, EroareEditor, citesteRef, caleSigura, copieIstoric } from './lib/editor-sursa.mjs';
+import { citesteMasa, scrieMasa, agendaDinMasa, textAgenda, inlocuiesteAgenda, textMasa, propunere, FISIER as MASA } from './lib/masa.mjs';
+import { mkdirSync, rmSync } from 'node:fs';
 
 const AICI = dirname(fileURLToPath(import.meta.url));
 const IMPLICIT = join(AICI, '..', 'privat', 'cursuri', 'change-agility');
@@ -72,6 +74,58 @@ export async function pornesteEditor({ folder = IMPLICIT, port = 4747, deschide 
     return { fel: x.fel, html: x.html.replace(' data-cron>', '>') };
   }
 
+  // Masa (etapa A, Alex, 2026-11-18). Fiecare scriere: copie în .editor-istoric/, build; dacă build-ul refuză, fișierul revine.
+  function cuBuild(fisierRel, inainte, nou) {
+    const r = construieste();
+    if (r.ok) { ultim = r; return null; }
+    if (inainte == null) rmSync(caleSigura(folder, fisierRel), { force: true }); else writeFileSync(caleSigura(folder, fisierRel), inainte);
+    ultim = construieste();
+    return { cod: 422, corp: { eroare: `Build-ul a refuzat schimbarea, așa că ${fisierRel} a rămas cum era.`, erori: r.erori } };
+  }
+  function cursAcum() {
+    const c = citesteCurs(folder);
+    if (!c.piese) throw new EroareEditor('Cursul nu se poate citi (curs.yml).', 422);
+    return c;
+  }
+  function masaSchimba(date) {
+    const c = cursAcum();
+    const s = scrieMasa(c, date.schimbari, date.hash);
+    if (s.neschimbat) return { cod: 200, corp: { ok: true, hash: s.hash, neschimbat: true } };
+    const rau = cuBuild(MASA, s.inainte); if (rau) return rau;
+    log(`  masa: ${date.schimbari.length} ${date.schimbari.length === 1 ? 'schimbare' : 'schimbări'}; copie: ${s.copie}`);
+    return { cod: 200, corp: { ok: true, hash: s.hash, copie: s.copie } };
+  }
+  function masaCreeaza() {
+    const cale = caleSigura(folder, MASA);
+    if (existsSync(cale)) throw new EroareEditor('masa.yml există deja. Reîncarcă pagina.', 409);
+    writeFileSync(cale, textMasa(propunere(cursAcum())));
+    const rau = cuBuild(MASA, null); if (rau) return rau;
+    log(`  masa: am creat ${MASA} din agenda și biblioteca de azi`);
+    return { cod: 200, corp: { ok: true } };
+  }
+  function masaAgenda(date) {
+    const c = cursAcum();
+    const m = citesteMasa(c, [], []);
+    if (!m.exista) throw new EroareEditor('Cursul nu are încă masa.yml.', 404);
+    if (!date.hash || m.hash !== date.hash) throw new EroareEditor('masa.yml s-a schimbat pe disc între timp. Reîncarcă pagina și încearcă din nou.', 409);
+    const a = agendaDinMasa(m.candidate, c.blocuri);
+    const randuri = a.linii.filter((l) => !l.startsWith('- bloc:')).length;
+    if (!randuri) throw new EroareEditor('Nicio piesă cu „Da” și fișier produs în blocurile din Ordonate; agenda a rămas cum era.', 422);
+    const d = new Date(), azi = `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
+    const fisier = `editii/${c.editie.fisier ?? `${azi}.yml`}`;
+    const cale = caleSigura(folder, fisier);
+    const inainte = existsSync(cale) ? readFileSync(cale, 'utf8') : null;
+    const nou = inlocuiesteAgenda(inainte ?? `data: ${azi}\n`, textAgenda(a.linii, azi));
+    const copie = inainte != null ? copieIstoric(folder, fisier) : null;
+    mkdirSync(caleSigura(folder, 'editii'), { recursive: true });
+    writeFileSync(cale, nou);
+    const rau = cuBuild(fisier, inainte); if (rau) return rau;
+    log(`  masa → agenda: ${fisier} (${randuri} rânduri)${copie ? `; copie: ${copie}` : ''}`);
+    const scurt = (l) => l.map((x) => ({ id: x.id, titlu: x.titlu }));
+    return { cod: 200, corp: { ok: true, fisier, copie, randuri, linii: a.linii, deProdus: scurt(a.deProdus), nehotarate: scurt(a.nehotarate) } };
+  }
+  const MASA_API = { '/api/masa': masaSchimba, '/api/masa/creeaza': masaCreeaza, '/api/masa/agenda': masaAgenda };
+
   const server = createServer((req, res) => {
     const trimite = (cod, corp, tip = 'application/json; charset=utf-8') => {
       res.writeHead(cod, { 'Content-Type': tip, 'Cache-Control': 'no-store', 'X-Content-Type-Options': 'nosniff', 'Referrer-Policy': 'no-referrer' });
@@ -91,7 +145,7 @@ export async function pornesteEditor({ folder = IMPLICIT, port = 4747, deschide 
     if (req.method === 'GET' && u.pathname === '/api/bloc') {
       try { return trimite(200, citesteBloc(folder, u.searchParams.get('ref'))); } catch (e) { return trimite(e.cod ?? 500, { eroare: e.message }); }
     }
-    if (req.method !== 'POST' || !['/api/bloc', '/api/previzualizare'].includes(u.pathname)) return trimite(404, { eroare: 'nu există' });
+    if (req.method !== 'POST' || !['/api/bloc', '/api/previzualizare', ...Object.keys(MASA_API)].includes(u.pathname)) return trimite(404, { eroare: 'nu există' });
     if (!/^application\/json\b/.test(req.headers['content-type'] ?? '')) return trimite(415, { eroare: 'se trimite JSON' });
     let corp = '';
     req.setEncoding('utf8');
@@ -103,6 +157,9 @@ export async function pornesteEditor({ folder = IMPLICIT, port = 4747, deschide 
         if (u.pathname === '/api/previzualizare') return trimite(200, previzualizare(date.ref, String(date.md ?? '')));
         if (ocupat) return trimite(409, { eroare: 'Se salvează altceva chiar acum. Mai încearcă o dată.' });
         ocupat = true;
+        if (MASA_API[u.pathname]) {
+          try { const r = MASA_API[u.pathname](date ?? {}); return trimite(r.cod, r.corp); } finally { ocupat = false; }
+        }
         try {
           const s = scrieBloc(folder, date.ref, date.md, date.hash);
           if (s.neschimbat) return trimite(200, { ok: true, neschimbat: true, schimbate: schimbate() });

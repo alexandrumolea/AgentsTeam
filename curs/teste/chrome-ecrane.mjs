@@ -29,9 +29,9 @@ try {
   const carti = () => b.evaluate(c, '[...document.querySelectorAll("#grila-ecrane .ec-carte")].map(l => l.dataset.id + (l.classList.contains("ascuns") ? "!" : ""))');
   const prez = () => b.evaluate(c, '__curs.stare().ordine');
   const editie = await carti();
-  ok(editie.length === 15, `grila are ${editie.length} cărți (toate ecranele, și cel ascuns)`);
+  ok(editie.length === 16, `grila are ${editie.length} cărți (toate ecranele, și cel ascuns)`);
   ok(editie[3] === 'ridica-te-daca#1' && editie.includes('pasul-de-luni#1!'), 'grila pornește din ordinea ediției: mutarea și ascunderea din exemplu');
-  ok(!(await prez()).includes('pasul-de-luni#1') && (await prez()).length === 14, 'ecranul ascuns în ediție nu e în prezentare');
+  ok(!(await prez()).includes('pasul-de-luni#1') && (await prez()).length === 15, 'ecranul ascuns în ediție nu e în prezentare');
   ok(await b.evaluate(c, 'getComputedStyle(document.querySelector(\'[data-id="pasul-de-luni#1"]\')).opacity') < 1, 'ecranul ascuns rămâne în grilă, estompat');
   if (poze) await b.screenshot(c, join(poze, 'ecrane.png'));
 
@@ -113,7 +113,7 @@ try {
   ok((await b.evaluate(c, 'Object.keys(localStorage).filter(k => k.endsWith(":ecrane")).length')) === 0, 'și șterge ordinea salvată în browser');
   // Tiparul ecranelor sare peste cele ascunse
   const t = await b.open(url + '#tipar-ecrane'); await pauza(400);
-  ok((await b.evaluate(t, 'document.querySelectorAll("#tipar-ecrane-lista .ecran").length')) === 14, 'PDF-ul ecranelor (#tipar-ecrane) nu include ecranul ascuns');
+  ok((await b.evaluate(t, 'document.querySelectorAll("#tipar-ecrane-lista .ecran").length')) === 15, 'PDF-ul ecranelor (#tipar-ecrane) nu include ecranul ascuns');
   ok(b.exceptii.length === 0, `nicio eroare JavaScript${b.exceptii.length ? ': ' + b.exceptii.join(' | ') : ''}`);
   console.log(`\n${esecuri ? esecuri + ' verificări au picat.' : 'Toate verificările au trecut.'}`);
 } finally { b.close(); }

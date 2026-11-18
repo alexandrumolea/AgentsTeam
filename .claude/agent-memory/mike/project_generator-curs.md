@@ -1,6 +1,6 @@
 ---
 name: project-generator-curs
-description: Generatorul de curs din curs/ (T-022, 2026-11-17, v1.2 piese D-053): cum merge Prezintă din file://, modelul piese/agenda, ce e verificat, ce lipsește până la 23
+description: Generatorul de curs din curs/ (T-022): v1.2 piese (2026-11-17), Prezintă din file://, editor local, pauze fixe și blocuri, vederea Masa (2026-11-18)
 metadata:
   type: project
 ---
@@ -25,3 +25,7 @@ Adăugat: 2026-11-17
 2026-11-17: 1.10 mută/ascunde ecrane: `pregatesteEcrane(c)` (trainer.mjs) dă id-uri și aplică `ecrane:` din ediție; build-ul oprește la id greșit. În browser: TOATE (ordinea ediției) → ECRANE (ordine locală, fără ascunse); sala primește `id`, nu index; `st.id` ține ecranul curent. „Copiază pentru ediție” scrie mutări minime (LIS pe `nat`). Am ales: piesa cu toate ecranele ascunse rămâne în total, cu avertisment.
 2026-11-17: 1.11 editor local: `curs/editor.mjs` + `lib/editor-sursa.mjs` (găsește blocul după `id#n`/`id#notaN`, numărul vine din `s.nr` pus în sursa.mjs) + `lib/editor-client.js`/`editor.css` injectate doar la servire. Build eșuat după salvare → fișierul revine. Pagina cursului online pe site (A) și „Trimite spre site” (B) au fost ANULATE de Alex (2026-11-17): cursul nu e gata.
 2026-11-17: 1.12 Prezintă din Bibliotecă: build pune `DATA.biblioteca` (ecranele fiecărei piese, id `<piesă>~live#n`), `DATA.agendaYaml`, `DATA.total`. În browser: `ec.live = [{piesa, dupa}]` lângă ordine/ascunse; rânduri virtuale în DATA.module; sala caută și în BIB_ID. Editorul local care rulează la Alex trebuie repornit ca să vadă codul nou de build.
+2026-11-18: 1.13 (Alex: „Da, construim”). Pauzele fixe: `pauze` în curs.yml/ediție (implicit 11:00·15, 12:30·60 Prânz, 15:00·15); devin rânduri `{fel:'pauza', fixa:true}` în `c.agenda` (inserate în bucla de ore din sursa.mjs), deci Ziua, Schița, ecranele, banda și Ecrane le primesc fără cod nou. Id `pauza-HH-MM#pauza` (nu atinge `pauza#k`). `- bloc: N` în agendă = marcaj consumat la calcul; agendaYaml scrie pauza fixă înapoi ca `- bloc: N`. `c.blocuri` = {start, sfarsit, disponibil, folosit, depasire, pauzaDupa}. Totalul zilei rămâne intervalul (include minutele libere din blocuri).
+2026-11-18: Masa = `masa.yml` (`candidate:`) + lib/masa.mjs (node) + lib/masa.js (browser, aceleași reguli duplicate: textMasa, agendaDinMasa). Editorul scrie cu `parseDocument` din `yaml` (comentariile rămân); API: /api/masa, /api/masa/creeaza, /api/masa/agenda, toate cu copieIstoric (editor-sursa.mjs) și revenire dacă build-ul pică. Fără masa.yml: propunere din agendă (piesele din module vin cu modulul). Pauzele `pauza: N` nu sunt candidate: „Trimite în agendă” le pierde (documentat).
+2026-11-18: un text în fișierul offline care conține „__EDITOR” sau „editor-client” pică testul „HTML offline fără editor” (și din comentarii). Editorul local care rulează la Alex trebuie repornit după orice schimbare în curs/lib.
+

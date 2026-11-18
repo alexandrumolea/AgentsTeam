@@ -88,6 +88,9 @@ const despre = (x) => `${x.durata} min · ${x.familie === 'activitate' ? `${e(x.
 export const timp = (min) => { const a = Math.abs(min); return a >= 60 ? `${Math.floor(a / 60)} h${a % 60 ? ` ${a % 60} min` : ''}` : `${a} min`; };
 const ePauza = (r) => r.fel === 'pauza' || (r.fel === 'piesa' && r.piesa.tip === 'pauza') || (r.fel === 'modul' && r.modul.tip === 'pauza');
 
+/** Id-ul ecranului unei pauze fixe (Alex, 2026-11-18): după ora ei, „pauza-11-00#pauza”. Nu mută id-urile „pauza#k”. */
+export const idPauzaFixa = (la) => `pauza-${ora(la).replace(':', '-')}#pauza`;
+
 /** Ecranele din sală, din agenda ediției: titlul fiecărui modul (făcut singur), apoi câte unul pe bloc :::sala / :::sala-si-curs,
  *  cu piesele alese puse în locul lor. O pauză (rând sau piesă) e un ecran cu cronometru. O piesă singură fără ecrane primește unul cu titlul ei. */
 export function construiesteEcrane(c) {
@@ -106,7 +109,7 @@ export function construiesteEcrane(c) {
   const aparitii = new Map();
   let nr = 0, pauze = 0;
   c.agenda.forEach((r, ri) => {
-    if (r.fel === 'pauza') { pauza(ri, `pauza#${++pauze}`, r.titlu, r.durata); return; }
+    if (r.fel === 'pauza') { pauza(ri, r.fixa ? idPauzaFixa(r.la) : `pauza#${++pauze}`, r.titlu, r.durata); return; }
     if (r.fel === 'modul') {
       if (r.modul.tip === 'pauza') pauza(ri, `${r.modul.id}#titlu`, r.modul.titlu, r.durata);
       else { nr++; pune(ri, `${r.modul.id}#titlu`, sursaModul(r.modul), `<p class="ecran-numar">${String(nr).padStart(2, '0')}</p><h1>${e(r.modul.titlu)}</h1>`, 0, true); }
@@ -163,6 +166,7 @@ export function pregatesteEcrane(c) {
   const posibil = (id) => {
     const m = /^(.+?)(?:@\d+)?#(titlu|pauza|\d+)$/.exec(id); if (!m) return false;
     if (m[1] === 'pauza' && /^\d+$/.test(m[2])) return true;
+    if (/^pauza-\d{1,2}-\d{2}$/.test(m[1]) && m[2] === 'pauza') return true; // pauză fixă (poate fi azi în afara agendei)
     const f = c.module.find((x) => x.id === m[1]) ?? c.piese.get(m[1]);
     if (!f) return false;
     return m[2] === 'titlu' || m[2] === 'pauza' || (+m[2] >= 1 && +m[2] <= blocuriIn(f));
@@ -231,10 +235,30 @@ function totalZi(c) {
   return `<p class="total-zi ${clasa}" role="status"><b>Total: ${timp(t.agenda)}</b> din ${timp(t.zi)} (${e(String(c.curs.durata_zi))}) · ${stare}. Se termină la ${ora(t.sfarsit)}.</p>`;
 }
 
+/** Blocurile zilei (Alex, 2026-11-18): „X din Y min” pe fiecare bloc dintre pauzele fixe, cu depășirea marcată. */
+export const areBlocuri = (c) => c.blocuri.length > 1;
+function stareBloc(b) {
+  if (b.disponibil == null) return { clasa: '', text: `${b.folosit} min` };
+  const clasa = b.depasire ? 'depasire' : b.folosit === b.disponibil ? 'plin' : 'ramas';
+  const stare = b.depasire ? `<b>depășire ${timp(b.depasire)}</b>` : b.folosit === b.disponibil ? 'plin' : `liber ${timp(b.disponibil - b.folosit)}`;
+  return { clasa, text: `<b>Blocul ${b.nr}</b> · ${ora(b.start)}–${ora(b.sfarsit)} · <span class="bloc-total">${b.folosit} din ${b.disponibil} min</span> · ${stare}` };
+}
+/** Rândurile agendei, așezate pe blocuri: capul blocului, rândurile lui, apoi pauza fixă de după el. O pauză fixă care azi nu e
+ *  în agendă (agenda se termină înainte de ea) apare doar ca reper, fără ecran. */
+function peBlocuri(c, rand, cap, reper) {
+  if (!areBlocuri(c)) return c.agenda.map(rand).join('\n');
+  return c.blocuri.map((b) => {
+    const ale = c.agenda.map((r, i) => [r, i]).filter(([r]) => !r.fixa && r.bloc === b.nr).map(([r, i]) => rand(r, i)).join('\n');
+    const pi = c.agenda.findIndex((r) => r.fixa && r.bloc === b.nr);
+    return cap(b) + ale + (b.pauzaDupa ? (pi >= 0 ? rand(c.agenda[pi], pi) : reper(b.pauzaDupa, b.pauzaDupa.la + b.depasire)) : '');
+  }).join('\n');
+}
+const notaFixa = (r) => (r.fixa ? ` <span class="sters">· pauză fixă${r.intarziere ? `, începe cu ${r.intarziere} min mai târziu` : ''}</span>` : '');
+
 function vedereaZiua(c) {
   const randPiesa = (x, i, cls) => `<tr class="${cls}" data-modul="${i}"><td></td><td>↳ <a href="#ex-${e(x.id)}" data-banca>${e(x.titlu)}</a>${eticheteMici(x)}</td><td>${tipSemn(x.tip)}</td><td>${x.durata} min</td><td class="sters">${x.familie === 'activitate' ? `${e(x.format)} · ${ENERGIE[x.energie] ?? e(x.energie)}` : e(x.ancora)}</td><td>${x.materiale.map(e).join('<br>')}</td></tr>`;
-  const randuri = c.agenda.map((r, i) => {
-    if (r.fel === 'pauza') return `<tr data-modul="${i}" class="pauza"><td class="ora">${oraR(r)}</td><td>${e(r.titlu)}</td><td>${tipSemn('pauza')}</td><td>${r.durata} min</td><td></td><td></td></tr>`;
+  const rand = (r, i) => {
+    if (r.fel === 'pauza') return `<tr data-modul="${i}" class="pauza${r.fixa ? ' fixa' : ''}"><td class="ora">${oraR(r)}</td><td>${e(r.titlu)}${notaFixa(r)}</td><td>${tipSemn('pauza')}</td><td>${r.durata} min</td><td></td><td></td></tr>`;
     if (r.fel === 'piesa') {
       const x = r.piesa;
       return `<tr data-modul="${i}" class="${x.tip === 'pauza' ? 'pauza' : 'piesa-singura'}"><td class="ora">${oraR(r)}</td><td><a href="#ex-${e(x.id)}" data-banca>${e(x.titlu)}</a> <span class="sters">(piesă)</span>${eticheteMici(x)}</td><td>${tipSemn(x.tip)}</td><td>${r.durata} min</td><td>${e(x.ancora)}</td><td>${x.materiale.map(e).join('<br>') || '<span class="sters">–</span>'}</td></tr>`;
@@ -244,7 +268,10 @@ function vedereaZiua(c) {
     return `<tr data-modul="${i}"><td class="ora">${oraR(r)}</td><td><b>${e(m.titlu)}</b>${eticheteMici(m)}</td>
   <td>${tipSemn(m.tip)}</td><td><b>${r.durata} min</b>${calcul}</td><td>${e(m.ancora)}</td>
   <td>${m.materiale.map(e).join('<br>') || '<span class="sters">–</span>'}</td></tr>${r.piese.map((x) => randPiesa(x, i, 'exercitiu-rand')).join('')}`;
-  }).join('\n');
+  };
+  const cap = (b) => { const s = stareBloc(b); return `<tr class="bloc-cap ${s.clasa}" data-bloc="${b.nr}"><td colspan="6">${s.text}</td></tr>`; };
+  const reper = (p, start) => `<tr class="pauza fixa reper"><td class="ora">${ora(start)}–${ora(start + p.min)}</td><td>${e(p.titlu)} <span class="sters">· pauză fixă, după agenda de azi</span></td><td>${tipSemn('pauza')}</td><td>${p.min} min</td><td></td><td></td></tr>`;
+  const randuri = peBlocuri(c, rand, cap, reper);
   const nota = c.editie.nota_trainer ? `<p class="nota-editie"><span class="eticheta">Despre acest grup</span><br>${e(c.editie.nota_trainer)}</p>` : '';
   const afara = c.module.filter((m) => !m.inAgenda);
   return `<h2>Ziua</h2>${nota}${totalZi(c)}
@@ -270,13 +297,16 @@ function legendaObiective(c, r) {
 }
 
 export function listaSchita(c) {
-  return `<ol class="schita">${c.agenda.map((r, i) => {
-    if (ePauza(r)) return `<li data-modul="${i}" class="pauza"><span class="ora">${ora(r.start)}</span><div class="ancora">${e(titluR(r))}</div><div class="titlu-mic">${r.durata} min</div></li>`;
+  const rand = (r, i) => {
+    if (ePauza(r)) return `<li data-modul="${i}" class="pauza${r.fixa ? ' fixa' : ''}"><span class="ora">${ora(r.start)}</span><div class="ancora">${e(titluR(r))}</div><div class="titlu-mic">${r.durata} min${r.fixa ? ' · pauză fixă' : ''}</div></li>`;
     if (r.fel === 'piesa') return `<li data-modul="${i}" class="piesa-singura"><span class="ora">${ora(r.start)}</span><div class="ancora">${e(r.piesa.ancora || r.piesa.titlu)}</div><div class="titlu-mic">${e(r.piesa.titlu)} · ${TIP[r.piesa.tip] ?? e(r.piesa.tip)} · ${r.durata} min${legendaObiective(c, r)}</div></li>`;
     return `<li data-modul="${i}"><span class="ora">${ora(r.start)}</span>
   <div class="ancora">${e(r.modul.ancora)}</div><div class="titlu-mic">${e(r.modul.titlu)} · ${r.durata} min${r.piese.length ? ` (${r.durataModul} + ${r.piese.map((x) => x.durata).join(' + ')})` : ''}${legendaObiective(c, r)}</div>
   <ul>${r.modul.schita.map((p) => `<li>${e(p)}</li>`).join('')}</ul>${r.piese.length ? `<div class="titlu-mic">Piese: ${r.piese.map((x) => e(x.titlu)).join(', ')}</div>` : ''}</li>`;
-  }).join('\n')}</ol>`;
+  };
+  const cap = (b) => { const s = stareBloc(b); return `<li class="bloc-cap ${s.clasa}" data-bloc="${b.nr}"><span class="titlu-mic">${s.text}</span></li>`; };
+  const reper = (p, start) => `<li class="pauza fixa reper"><span class="ora">${ora(start)}</span><div class="ancora">${e(p.titlu)}</div><div class="titlu-mic">${p.min} min · pauză fixă, după agenda de azi</div></li>`;
+  return `<ol class="schita">${peBlocuri(c, rand, cap, reper)}</ol>`;
 }
 
 /** Un segment, cum apare în vederile Modul și Bibliotecă. */
@@ -398,6 +428,22 @@ ${grup(deAzi.length ? 'Restul bibliotecii' : 'Toate piesele', rest)}
 <p class="sters banca-nota">Ca să schimbi o piesă în agendă: editează „agenda” din ediție și rulează din nou build-ul. Orele se recalculează singure.</p>`;
 }
 
+/** Masa (etapa A, Alex, 2026-11-18): scheletul vederii. Cartonașele le face lib/masa.js din DATA.masa, ca totalurile să se
+ *  recalculeze pe loc. Trei coloane: Colectate (nou), Filtrate (da / poate; „nu” ascuns), Ordonate (blocurile zilei). */
+function vedereaMasa(c) {
+  return `<div class="banca-cap"><h2>Masa</h2><p class="sters" id="masa-stare" role="status"></p></div>
+<p class="sters masa-ajutor">Etapa A: întâi conținutul, apoi producția. Colectezi piesele, le filtrezi (<i>are they good enough?</i>), apoi le ordonezi în blocurile zilei.
+Trage un cartonaș (pe tabletă, de mânerul ⠿) sau, pe cartonașul selectat: <kbd>D</kbd> da · <kbd>P</kbd> poate · <kbd>N</kbd> nu · <kbd>1</kbd>–<kbd>${c.blocuri.length}</kbd> în blocul ales · <kbd>0</kbd> scoate din bloc · <kbd>↑</kbd> <kbd>↓</kbd> mută în Ordonate.</p>
+<p class="masa-propunere" id="masa-propunere" hidden></p>
+<div class="masa-bara">
+  <button type="button" id="masa-respinse" aria-pressed="false">Arată și „Nu”</button>
+  <span class="masa-bara-dreapta"><button type="button" id="masa-copiaza">Copiază masa.yml</button><button type="button" id="masa-reset" hidden>Resetează</button><button type="button" id="masa-agenda" class="principal">Trimite în agendă</button></span>
+</div>
+<p class="mesaj" id="masa-mesaj" role="status"></p>
+<div id="masa-text-cutie" hidden><label class="eticheta" for="masa-text" id="masa-text-eticheta"></label><textarea id="masa-text" rows="8" readonly spellcheck="false"></textarea></div>
+<div class="masa-coloane" id="masa-coloane"></div>`;
+}
+
 /**
  * „Prezintă” din Bibliotecă (1.12, Alex, 2026-11-17): ecranele fiecărei piese, gata de pus în prezentare chiar dacă piesa
  * nu e în agenda de azi. Aceleași ecrane ca pentru o piesă singură în agendă; id-urile au „~live” (<piesă>~live#1), ca să nu
@@ -417,6 +463,7 @@ function bibliotecaPrezinta(c) {
 function agendaYaml(c) {
   const q = (t) => (/^[a-z0-9-]+$/.test(t) ? t : JSON.stringify(t));
   return c.agenda.map((r) => {
+    if (r.fixa) return `- bloc: ${r.bloc + 1}   # după pauza fixă de la ${ora(r.la)}`;
     if (r.fel === 'pauza') return `- pauza: ${r.durata}${r.titlu && r.titlu !== 'Pauză' ? `\n    titlu: ${JSON.stringify(r.titlu)}` : ''}`;
     if (r.fel === 'piesa') return `- ${q(r.piesa.id)}`;
     const ids = r.piese.map((x) => x.id), impl = r.modul.implicite;
@@ -427,6 +474,7 @@ function agendaYaml(c) {
 export function construiesteTrainer(c, ecrane = pregatesteEcrane(c).ecrane) {
   const css = readFileSync(caleTema(c.curs.brand), 'utf8') + '\n' + readFileSync(join(AICI, 'stil.css'), 'utf8');
   const script = readFileSync(join(AICI, 'prezinta.js'), 'utf8');
+  const scriptMasa = readFileSync(join(AICI, 'masa.js'), 'utf8');
   const modul = vedereaModul(c);
   const date = {
     curs: { titlu: c.curs.titlu, slug: c.curs.slug, brand: c.curs.brand, marca: c.curs.marca, limba: c.curs.limba },
@@ -441,6 +489,9 @@ export function construiesteTrainer(c, ecrane = pregatesteEcrane(c).ecrane) {
     biblioteca: bibliotecaPrezinta(c),
     agendaYaml: agendaYaml(c),
     total: { ...c.total, start: c.editie.start, ziSfarsit: c.curs.zi_sfarsit, durataZi: String(c.curs.durata_zi ?? '') },
+    blocuri: c.blocuri,
+    // Masa (etapa A, Alex, 2026-11-18): candidatele din masa.yml (sau propunerea, dacă fișierul lipsește). Doar în materialul trainerului.
+    masa: c.masa ? { ...c.masa, fisier: 'masa.yml', editie: c.editie.fisier ?? null, data: c.editie.data } : null,
   };
   const titlu = `${c.curs.titlu} · materialul trainerului${c.editie.data ? ' · ' + c.editie.data : ''}`;
   return `<!doctype html>
@@ -456,6 +507,7 @@ export function construiesteTrainer(c, ecrane = pregatesteEcrane(c).ecrane) {
 <header class="bara">
   <div class="bara-titlu">${marcaHtml(c.curs.marca, 'bara-marca')}<h1>${e(c.curs.titlu)} <span class="sters">${c.editie.data ? e(c.editie.data) : ''}</span></h1></div>
   <nav aria-label="Vederi">
+    ${c.masa ? '<button data-vedere="masa">Masa</button>' : ''}
     <button data-vedere="ziua">Ziua</button>
     <button data-vedere="modul">Modulul</button>
     <button data-vedere="schita">Schița</button>
@@ -466,6 +518,7 @@ export function construiesteTrainer(c, ecrane = pregatesteEcrane(c).ecrane) {
 </header>
 <main>
 ${marcaHtml(c.curs.marca, 'tipar-marca')}
+${c.masa ? `<section id="masa" hidden>${vedereaMasa(c)}</section>` : ''}
 <section id="ziua">${vedereaZiua(c)}</section>
 <section id="schita" hidden><h2>Schița zilei</h2>${totalZi(c)}${blocObiective(c)}${listaSchita(c)}</section>
 <section id="modul" hidden>${modul}</section>
@@ -527,6 +580,7 @@ ${marcaHtml(c.curs.marca, 'tipar-marca')}
 <script type="application/json" id="date-curs">${json(date)}</script>
 <script type="application/json" id="imagini">${json(harta(c))}</script>
 <script>${script}</script>
+<script>${scriptMasa}</script>
 </body>
 </html>
 `;

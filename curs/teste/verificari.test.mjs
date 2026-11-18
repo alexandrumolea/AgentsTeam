@@ -2,7 +2,7 @@
 //   npm test
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
-import { cpSync, mkdtempSync, readFileSync, writeFileSync, existsSync } from 'node:fs';
+import { cpSync, mkdtempSync, readFileSync, writeFileSync, existsSync, rmSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { join, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
@@ -52,7 +52,7 @@ test('agenda nu încape în zi (modul prea lung): avertisment și depășirea î
   const r = cu((e) => e('04-pasul-de-luni.md', (s) => s.replace('durata: 40', 'durata: 140'))); ok(r);
   assert.ok(r.avertismente.some((a) => /nu încape/.test(a)));
   assert.match(html(r), /total-zi depasire/);
-  assert.match(html(r), /depășire 45 min/);
+  assert.match(html(r), /depășire 1 h 5 min/);
 });
 test('cronometru mai lung decât modulul', () => opreste((e) => e('01-deschidere.md', (s) => s.replace('cronometru=5', 'cronometru=25')), /mai lung decât durata/));
 test('imagine de pe internet', () => opreste((e) => e('04-pasul-de-luni.md', (s) => s.replace('**Ce faci luni, între 9 și 10?**', '![x](https://exemplu.ro/x.png)')), /e pe internet/));
@@ -72,15 +72,17 @@ const date = (r) => JSON.parse(readFileSync(r.fisiere[1], 'utf8').match(/<script
 const html = (r) => readFileSync(r.fisiere[1], 'utf8');
 const exportul = (r) => readFileSync(r.fisiere[0], 'utf8');
 const ok = (r) => assert.equal(r.ok, true, r.erori?.join('\n'));
+const FARA_PAUZE = (e) => e('editii/2026-11-23.yml', (s) => s + 'pauze: []\n');
 
-// Agenda exemplului: deschidere 20, curba 10 + 20 + 15 = 45, pauza-cafea 15, ridica-te-daca 5, pasul-de-luni 40, pauza 10, inchidere 20 = 155 din 210.
+// Agenda exemplului: deschidere 20, curba 10 + 20 + 15 = 45, pauza-cafea 15, ridica-te-daca 5 (blocul 1: 85 din 90),
+// pauza fixă 10:30–10:45, pasul-de-luni 40, pauza 10, inchidere 20 (blocul 2: 70 din 105) = 9:00–11:55, 175 din 210.
 test('totalurile: pe modul, pe zi și cât rămâne din durata_zi', () => {
   const r = cu(() => {}); ok(r);
   const d = date(r), h = html(r);
   assert.equal(d.module[1].durata, 45);
-  assert.deepEqual(d.module.map((m) => m.start), [540, 560, 605, 620, 625, 665, 675]);
-  assert.match(h, /Total: 2 h 35 min<\/b> din 3 h 30 min/);
-  assert.match(h, /rămân <b>55 min<\/b> până la 12:30/);
+  assert.deepEqual(d.module.map((m) => m.start), [540, 560, 605, 620, 630, 645, 685, 695]);
+  assert.match(h, /Total: 2 h 55 min<\/b> din 3 h 30 min/);
+  assert.match(h, /rămân <b>35 min<\/b> până la 12:30/);
   assert.match(h, /<span class="calcul">10 \+ 20 \+ 15<\/span>/);
   assert.match(h, /Azi · .*? · 5 min, 2% din zi/);
 });
@@ -97,7 +99,7 @@ test('un modul scos din agendă nu are ecrane și nu ocupă timp', () => {
 });
 test('agenda lipsă = toate modulele, cu piesele implicite', () => {
   const r = cu((e) => e('editii/2026-11-23.yml', (s) => s.replace(/agenda:[\s\S]*?\nnume_interzise/, 'nume_interzise'))); ok(r);
-  assert.equal(date(r).module.length, 4);
+  assert.equal(date(r).module.filter((m) => m.id).length, 4);
   assert.ok(exportul(r).includes('Unde sunt eu pe curbă'));
 });
 test('alternativa aleasă în ediție înlocuiește implicitele, iar orele se recalculează', () => {
@@ -182,7 +184,7 @@ test('avertisment: piesă aleasă la un modul care nu e în lista ei', () => {
   assert.ok(r.avertismente.some((a) => /nu e în lista ei „module”/.test(a)));
 });
 test('avertisment: modul de peste 90 de minute fără pauză după', () => {
-  const r = cu((e) => { e('02-curba-schimbarii.md', (s) => s.replace(/durata: 10 .*\n/, 'durata: 30\n')); AG('  - modul: curba\n    piese: [model-curba, perechi-curba, plimbare-curba, poveste-fuziune]\n  - inchidere')(e); }); ok(r);
+  const r = cu((e) => { e('02-curba-schimbarii.md', (s) => s.replace(/durata: 10 .*\n/, 'durata: 30\n')); AG('  - modul: curba\n    piese: [model-curba, perechi-curba, plimbare-curba, poveste-fuziune]\n  - inchidere')(e); FARA_PAUZE(e); }); ok(r);
   assert.ok(r.avertismente.some((a) => /nu are o pauză după/.test(a)));
 });
 test('fără avertisment când după modulul lung vine o piesă-pauză', () => {
@@ -282,7 +284,7 @@ const ECR = (bloc) => (e) => e('editii/2026-11-23.yml', (s) => s.replace(/ecrane
 const ordine = (r) => date(r).ecrane.map((x) => x.id + (x.ascuns ? '!' : ''));
 test('ecranele au id stabil: <piesă sau modul>#<n>, #titlu, #pauza, pauza#<k>', () => {
   const r = cu(ECR('')); ok(r);
-  assert.deepEqual(ordine(r), ['deschidere#titlu', 'deschidere#1', 'deschidere#2', 'curba#titlu', 'curba#1', 'model-curba#1', 'perechi-curba#1', 'pauza-cafea#pauza', 'ridica-te-daca#1', 'pasul-de-luni#titlu', 'pasul-de-luni#1', 'pasul-de-luni#2', 'pauza#1', 'inchidere#titlu', 'inchidere#1']);
+  assert.deepEqual(ordine(r), ['deschidere#titlu', 'deschidere#1', 'deschidere#2', 'curba#titlu', 'curba#1', 'model-curba#1', 'perechi-curba#1', 'pauza-cafea#pauza', 'ridica-te-daca#1', 'pauza-10-30#pauza', 'pasul-de-luni#titlu', 'pasul-de-luni#1', 'pasul-de-luni#2', 'pauza#1', 'inchidere#titlu', 'inchidere#1']);
 });
 test('id-urile nu se schimbă când se reordonează agenda', () => {
   const a = new Set(ordine(cu(ECR(''))));
@@ -322,7 +324,7 @@ test('ecrane: un ecran din curs care nu e azi în agendă dă doar avertisment',
 test('ecrane: toate ecranele unei piese ascunse → avertisment, durata rămâne în total', () => {
   const r = cu(ECR('ecrane:\n  ascunse: ["ridica-te-daca#1"]\n')); ok(r);
   assert.ok(r.avertismente.some((a) => /toate ecranele lui „Ridică-te dacă” sunt ascunse; durata \(5 min\) rămâne/.test(a)));
-  assert.match(html(r), /Total: 2 h 35 min/);
+  assert.match(html(r), /Total: 2 h 55 min/);
 });
 test('ecrane: cursul online nu se schimbă', () => {
   const a = exportul(cu(ECR(''))), b = exportul(cu(ECR('ecrane:\n  muta: ["inchidere#1 la început"]\n  ascunse: ["curba#1", "model-curba#1"]\n')));
@@ -374,7 +376,7 @@ test('biblioteca are ecranele fiecărei piese, cu id-uri ~live, separate de agen
 test('formatul copiat: agenda ediției, rând cu rând, gata de lipit (și cu o piesă adăugată live)', () => {
   const r = cu(() => {}); ok(r);
   const d = date(r);
-  assert.deepEqual(d.agendaYaml, ['- deschidere', '- curba', '- pauza-cafea', '- ridica-te-daca', '- pasul-de-luni', '- pauza: 10', '- inchidere']);
+  assert.deepEqual(d.agendaYaml, ['- deschidere', '- curba', '- pauza-cafea', '- ridica-te-daca', '- bloc: 2   # după pauza fixă de la 10:30', '- pasul-de-luni', '- pauza: 10', '- inchidere']);
   const r2 = cu(AG('  - modul: curba\n    piese: [plimbare-curba]\n  - pauza: 30\n    titlu: "Prânz"')); ok(r2);
   assert.deepEqual(date(r2).agendaYaml, ['- modul: curba\n    piese: [plimbare-curba]', '- pauza: 30\n    titlu: "Prânz"']);
   // Ce scrie „Copiază pentru ediție” când adaugi live „plimbare-curba” în modulul curba: agenda întreagă, cu rândul nou după curba.
@@ -382,5 +384,119 @@ test('formatul copiat: agenda ediției, rând cu rând, gata de lipit (și cu o 
   const r3 = cu((e) => e('editii/2026-11-23.yml', (s) => s.replace(/agenda:[\s\S]*?\n(?=ecrane:|nume_interzise)/, bloc + '\n'))); ok(r3);
   const m = date(r3).module.map((x) => x.id);
   assert.deepEqual(m.slice(0, 3), ['deschidere', 'curba', 'plimbare-curba']);
-  assert.match(html(r3), /Total: 2 h 55 min/, 'ziua crește cu cele 20 de minute ale piesei');
+  // Blocul 1 trece la 105 din 90, deci pauza fixă începe la 10:45 în loc de 10:30: cele 5 minute libere se pierd, ziua crește cu 15.
+  assert.match(html(r3), /Total: 3 h 10 min/, 'ziua crește cu piesa (minus cele 5 minute libere din blocul 1)');
+});
+
+// Programul zilei: pauzele la ore fixe și blocurile dintre ele (Alex, 2026-11-18)
+const PAUZE = (rand) => (e) => e('curs.yml', (s) => s.replace(/pauze:\n(  .*\n)*/, rand));
+const ZI = (zi) => (e) => e('curs.yml', (s) => s.replace('durata_zi: "9:00–12:30"', `durata_zi: "${zi}"`));
+test('pauze implicite: 11:00 (15), 12:30 Prânz (60), 15:00 (15), deci 4 blocuri în 9:30–17:30', () => {
+  const r = cu((e) => { PAUZE('')(e); ZI('9:30–17:30')(e); e('editii/2026-11-23.yml', (s) => s.replace('ora_start: "9:00"', 'ora_start: "9:30"').replace(/  - bloc: 2 .*\n/, '')); }); ok(r);
+  const b = date(r).blocuri;
+  assert.deepEqual(b.map((x) => [x.start, x.sfarsit, x.disponibil]), [[570, 660, 90], [675, 750, 75], [810, 900, 90], [915, 1050, 135]]);
+  assert.deepEqual(b.slice(0, 3).map((x) => [x.pauzaDupa.la, x.pauzaDupa.min, x.pauzaDupa.titlu]), [[660, 15, 'Pauză'], [750, 60, 'Prânz'], [900, 15, 'Pauză']]);
+  // Agenda: 9:30 deschidere 20, curba 45, pauza-cafea 15, ridica 5 = 85 (10:55), pasul 40 trece peste 11:00 → avertisment, pauza la 11:35
+  assert.ok(r.avertismente.some((a) => /blocul 1 \(9:30–11:00\): 125 din 90 min; „Pasul de luni” trece peste pauza de la 11:00, deci pauza începe la 11:35 \(depășire 35 min\)/.test(a)), r.avertismente.join('\n'));
+  const d = date(r), p = d.ecrane.find((x) => x.id === 'pauza-11-00#pauza');
+  assert.ok(p && p.cronometru === 15 && p.fel === 'pauza', 'pauza fixă e un ecran de pauză, cu cronometru');
+  assert.equal(d.module.find((m) => m.titlu === 'Pauză' && m.start === 695)?.durata, 15, 'pauza fixă e un rând în agendă (11:35, după piesa care a trecut peste)');
+  assert.ok(!d.ecrane.some((x) => x.id === 'pauza-12-30#pauza'), 'o pauză fixă de după agendă nu are ecran');
+  const h = html(r);
+  assert.match(h, /<tr class="bloc-cap depasire" data-bloc="1"><td colspan="6"><b>Blocul 1<\/b> · 9:30–11:00 · <span class="bloc-total">125 din 90 min<\/span> · <b>depășire 35 min<\/b>/);
+  assert.match(h, /<tr class="pauza fixa reper">.*Prânz/, 'Ziua arată și pauzele de după agendă, ca reper');
+  assert.match(h, /<li class="bloc-cap ramas" data-bloc="2">/, 'Schița are blocurile');
+});
+test('pauze: ediția le suprascrie, [] = niciuna', () => {
+  const r = cu((e) => e('editii/2026-11-23.yml', (s) => s.replace(/  - bloc: 2 .*\n/, '') + 'pauze: []\n')); ok(r);
+  assert.equal(date(r).blocuri.length, 1);
+  assert.ok(!date(r).ecrane.some((x) => /^pauza-\d/.test(x.id)));
+  assert.ok(!/class="bloc-cap/.test(html(r)), 'fără pauze fixe, fără capete de bloc');
+  const r2 = cu((e) => e('editii/2026-11-23.yml', (s) => s.replace(/  - bloc: 2 .*\n/, '') + 'pauze:\n  - { la: "10:00", min: 20, titlu: "Cafea" }\n')); ok(r2);
+  assert.deepEqual(date(r2).blocuri.map((b) => b.disponibil), [60, 130]);
+});
+test('bloc: N lasă restul blocului liber; o pauză fixă e verificată', () => {
+  const r = cu(() => {}); ok(r);
+  const b = date(r).blocuri;
+  assert.deepEqual(b.map((x) => [x.folosit, x.disponibil, x.depasire]), [[85, 90, 0], [70, 105, 0]]);
+  assert.match(html(r), /85 din 90 min<\/span> · liber 5 min/);
+  opreste(AG('  - deschidere\n  - bloc: 3'), /„bloc: 3” nu există; ziua are 2 blocuri/);
+  opreste(AG('  - deschidere\n  - bloc: doi'), /„bloc” e numărul blocului/);
+  opreste(PAUZE('pauze:\n  - { la: 10.30, min: 15 }\n'), /„la” e ora pauzei, între ghilimele/);
+  opreste(PAUZE('pauze:\n  - { la: "10:30", min: 45 }\n  - { la: "11:00", min: 10 }\n'), /se suprapune/);
+  opreste(PAUZE('pauze:\n  - { la: "10:30", durata: 15 }\n'), /câmp necunoscut/);
+  const r2 = cu(AG('  - pasul-de-luni\n  - bloc: 1\n  - deschidere')); ok(r2);
+  assert.ok(!r2.avertismente.some((a) => /bloc: 1/.test(a)), '„bloc: 1” în blocul 1 nu schimbă nimic');
+  const r3 = cu((e) => { PAUZE('pauze:\n  - { la: "13:00", min: 15 }\n')(e); e('editii/2026-11-23.yml', (s) => s.replace(/  - bloc: 2 .*\n/, '')); }); ok(r3);
+  assert.ok(r3.avertismente.some((a) => /pauza de la 13:00 e în afara zilei/.test(a)));
+});
+test('pauze fixe: id-urile celorlalte ecrane nu se schimbă; ecranul pauzei se poate muta și ascunde', () => {
+  const fara = new Set(ordine(cu((e) => { ECR('')(e); e('editii/2026-11-23.yml', (s) => s.replace(/  - bloc: 2 .*\n/, '') + 'pauze: []\n'); })));
+  const cu_ = ordine(cu(ECR('')));
+  assert.deepEqual(cu_.filter((x) => !x.startsWith('pauza-10-30')), [...fara], 'doar ecranul pauzei fixe e în plus');
+  const r = cu(ECR('ecrane:\n  muta: ["pauza-10-30#pauza după pasul-de-luni#1"]\n  ascunse: ["pauza-15-00#pauza"]\n')); ok(r);
+  assert.ok(ordine(r).indexOf('pauza-10-30#pauza') === ordine(r).indexOf('pasul-de-luni#1') + 1);
+  assert.ok(r.avertismente.some((a) => /„pauza-15-00#pauza” .*nu e în agenda de azi/.test(a)), 'o pauză fixă care azi nu există: doar avertisment');
+});
+
+// Masa (etapa A, Alex, 2026-11-18)
+import { agendaDinMasa, inlocuiesteAgenda, textAgenda, textMasa } from '../lib/masa.mjs';
+import { parse as parseYaml } from 'yaml';
+const MASA = (f) => (e) => e('masa.yml', f);
+test('masa.yml: candidatele ajung în material, cu „produsă” și blocul lor', () => {
+  const r = cu(() => {}); ok(r);
+  const m = date(r).masa;
+  assert.equal(m.exista, true); assert.equal(m.propunere, false); assert.equal(m.candidate.length, 11);
+  const x = Object.fromEntries(m.candidate.map((c) => [c.id, c]));
+  assert.deepEqual([x.curba.produsa, x['ridica-te-daca'].produsa, x['harta-emotiilor'].produsa], [true, true, false], 'modul sau piesă = produsă');
+  assert.deepEqual(['nou', 'da', 'poate', 'nu'].map((v) => m.candidate.filter((c) => c.verdict === v).length), [2, 6, 2, 1]);
+  assert.match(html(r), /<button data-vedere="masa">Masa<\/button>/);
+  assert.ok(!exportul(r).includes('Harta emoțiilor'), 'masa nu ajunge în cursul participanților');
+});
+test('masa.yml: lipsa lui nu e eroare; Masa propune din agenda de azi', () => {
+  const r2 = cu(MASA(() => 'candidate: []\n')); ok(r2);
+  assert.equal(date(r2).masa.candidate.length, 0, 'o masă goală e o masă goală, nu o propunere');
+  const r3 = cu((e, f) => rmSync(f('masa.yml'))); ok(r3);
+  const m = date(r3).masa;
+  assert.equal(m.propunere, true);
+  assert.deepEqual(m.candidate.filter((c) => c.verdict === 'da').map((c) => [c.id, c.bloc, c.ordine]),
+    [['deschidere', 1, 1], ['curba', 1, 2], ['ridica-te-daca', 1, 3], ['pasul-de-luni', 2, 1], ['inchidere', 2, 2]]);
+  assert.ok(m.candidate.some((c) => c.id === 'plimbare-curba' && c.verdict === 'nou'), 'restul bibliotecii stă la Colectate');
+  assert.ok(!m.candidate.some((c) => c.id === 'pauza-cafea'), 'pauzele nu sunt candidate');
+});
+test('masa.yml: id-uri unice, verdict valid, durata un număr', () => {
+  opreste(MASA((s) => s.replace('id: curba\n', 'id: deschidere\n')), /id „deschidere” apare de două ori/);
+  opreste(MASA((s) => s.replace('verdict: poate\n    bloc: 2', 'verdict: poatee\n    bloc: 2')), /verdict „poatee” necunoscut/);
+  opreste(MASA((s) => s.replace('durata: 15\n    tip: exercitiu', 'durata: "15 min"\n    tip: exercitiu')), /„durata” e un număr/);
+  opreste(MASA((s) => s.replace('id: curba\n', 'id: Curba Mare\n')), /„id” poate avea doar/);
+  opreste(MASA(() => 'candidate: [\n'), /masa.yml: YAML greșit/);
+  const r = cu(MASA((s) => s.replace('bloc: 2\n    ordine: 1', 'bloc: 7\n    ordine: 1'))); ok(r);
+  assert.ok(r.avertismente.some((a) => /bloc „7” nu există/.test(a)));
+  assert.equal(date(r).masa.candidate.find((c) => c.id === 'pasul-de-luni').bloc, null);
+});
+test('Trimite în agendă: da + produsă intră, bloc cu bloc; celelalte sunt listate', () => {
+  const r = cu(() => {}); ok(r);
+  const d = date(r), a = agendaDinMasa(d.masa.candidate, d.blocuri);
+  assert.deepEqual(a.linii, ['- deschidere', '- curba', '- ridica-te-daca', '- bloc: 2   # după pauza de la 10:30', '- pasul-de-luni', '- inchidere']);
+  assert.deepEqual(a.deProdus.map((x) => x.id), ['harta-emotiilor']);
+  assert.deepEqual(a.nehotarate.map((x) => x.id), ['poveste-fuziune']);
+  // Scris în ediție: doar agenda se schimbă, restul (ecrane, nume interzise, comentarii) rămâne; build-ul trece
+  const r2 = cu((e) => e('editii/2026-11-23.yml', (s) => {
+    const nou = inlocuiesteAgenda(s, textAgenda(a.linii, '2026-11-18'));
+    const A = s.split('\n'), B = nou.split('\n');
+    assert.deepEqual(B.slice(0, A.findIndex((l) => l.startsWith('agenda:'))), A.slice(0, A.findIndex((l) => l.startsWith('agenda:'))), 'antetul ediției rămâne');
+    assert.ok(nou.includes('# Ecranele din sală (1.10') && nou.includes('nume_interzise: ["Firma Exemplu", "Ion Exemplescu"]'));
+    assert.deepEqual(parseYaml(nou).agenda, ['deschidere', 'curba', 'ridica-te-daca', { bloc: 2 }, 'pasul-de-luni', 'inchidere']);
+    return nou;
+  })); ok(r2);
+  assert.deepEqual(date(r2).module.map((m) => m.id ?? m.titlu), ['deschidere', 'curba', 'ridica-te-daca', 'Pauză', 'pasul-de-luni', 'inchidere']);
+  assert.throws(() => inlocuiesteAgenda('data: 2026-11-23\nagenda:\n# comentariu la margine\n  - x\nnume_interzise: []\n', textAgenda(['- y'])), /Nu pot înlocui agenda/);
+  assert.match(inlocuiesteAgenda('data: 2026-11-23\n', textAgenda(['- y'])), /^data: 2026-11-23\n\nagenda: .*\n  - y\n$/);
+});
+test('textMasa: scris și citit înapoi dă aceleași candidate', () => {
+  const r = cu(() => {}); ok(r);
+  const c = date(r).masa.candidate, t = textMasa(c);
+  const r2 = cu(MASA(() => t)); ok(r2);
+  const fara = (l) => l.map(({ produsa, ...x }) => x);
+  assert.deepEqual(fara(date(r2).masa.candidate), fara(c));
 });

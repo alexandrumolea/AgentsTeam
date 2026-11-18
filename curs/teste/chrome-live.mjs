@@ -50,7 +50,7 @@ try {
   await b.key(sala, 'PageDown'); await pauza(150);
   ok((await stare()).id === 'model-curba#1' && (await inSala()) === 'model-curba#1', 'după ultimul ecran al piesei, prezentarea continuă de unde a rămas');
   const totalDupa = await b.evaluate(c, 'document.querySelector("#ziua .total-zi").textContent');
-  ok(/Total: 2 h 55 min/.test(totalDupa) && /rămân 35 min/.test(totalDupa) && /20 min adăugate live: Curba de pe podea/.test(totalDupa), `totalul zilei crește cu durata piesei și spune că e adăugată live (${totalInainte.match(/Total: [^d]+/)[0].trim()} → ${totalDupa.match(/Total: [^d]+/)[0].trim()})`);
+  ok(/Total: 3 h 15 min/.test(totalDupa) && /rămân 15 min/.test(totalDupa) && /20 min adăugate live: Curba de pe podea/.test(totalDupa), `totalul zilei crește cu durata piesei și spune că e adăugată live (${totalInainte.match(/Total: [^d]+/)[0].trim()} → ${totalDupa.match(/Total: [^d]+/)[0].trim()})`);
 
   // O piesă deja în agendă: fără duplicat, doar salt
   const n = (await stare()).ordine.length;

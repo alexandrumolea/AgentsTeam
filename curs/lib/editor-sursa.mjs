@@ -60,6 +60,18 @@ export function gasesteBloc(text, fel, n) {
   throw new EroareEditor(`nu găsesc blocul ${fel === 'trainer' ? ':::trainer' : ':::sala'} cu numărul ${n}`, 404);
 }
 
+/** Copia de siguranță a unui fișier al cursului, înainte să-l rescrie editorul: .editor-istoric/<data-ora>__<fișier>,
+ *  cu un .gitignore propriu (nu intră în niciun repo). Întoarce calea relativă a copiei. */
+export function copieIstoric(folder, fisier, acum = new Date()) {
+  const istoric = caleSigura(folder, '.editor-istoric');
+  mkdirSync(istoric, { recursive: true });
+  if (!existsSync(join(istoric, '.gitignore'))) writeFileSync(join(istoric, '.gitignore'), '*\n');
+  const marca = acum.toISOString().replace(/[:.]/g, '-');
+  const copie = join(istoric, `${marca}__${fisier.replace(/[\\/]/g, '__')}`);
+  copyFileSync(caleSigura(folder, fisier), copie);
+  return relative(resolve(folder), copie);
+}
+
 /** Textul nou al blocului: fără linii care ar strica structura fișierului. */
 export function verificaMd(md, fel) {
   const t = String(md ?? '').replace(/\r\n?/g, '\n').replace(/\s+$/, '');
@@ -99,13 +111,7 @@ export function scrieBloc(folder, ref, md, hashCitit, { acum = new Date() } = {}
   let dupa = linii.join('\n');
   if (crlf) dupa = dupa.replace(/\n/g, '\r\n');
   if (dupa === inainte) return { fisier, inainte, dupa, copie: null, neschimbat: true };
-  // Copia de siguranță: .editor-istoric/<data-ora>__<fișier>, cu un .gitignore propriu (nu intră în niciun repo).
-  const istoric = caleSigura(folder, '.editor-istoric');
-  mkdirSync(istoric, { recursive: true });
-  if (!existsSync(join(istoric, '.gitignore'))) writeFileSync(join(istoric, '.gitignore'), '*\n');
-  const marca = acum.toISOString().replace(/[:.]/g, '-');
-  const copie = join(istoric, `${marca}__${fisier.replace(/[\\/]/g, '__')}`);
-  copyFileSync(cale, copie);
+  const copie = copieIstoric(folder, fisier, acum);
   writeFileSync(cale, dupa);
-  return { fisier, inainte, dupa, copie: relative(resolve(folder), copie) };
+  return { fisier, inainte, dupa, copie };
 }

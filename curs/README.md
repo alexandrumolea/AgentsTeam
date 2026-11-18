@@ -6,7 +6,7 @@ Folderul unui curs (un fișier `.md` pe modul, piesele de workshop în `piese/`,
 | Ieșirea | Fișierul | Pentru cine |
 |---|---|---|
 | Cursul participanților | `<slug>-participanti.json` | site-ul, mai târziu, prin PR aprobat de Alex. Se face **dintr-o ediție**: modulele și piesele singure din agendă, în ordinea ei, doar cu piesele folosite care au `in_curs: da`. Fără `:::trainer`, `:::sala`, schiță, pauze, biblioteca nefolosită |
-| Materialul trainerului | `<slug>-trainer.html` | Alex. Un singur fișier, merge fără internet: vederile Ziua, Modulul, Schița, **Biblioteca de piese** (toate piesele, cu căutare și filtre) și **Prezintă**. Ziua și Schița arată totalul zilei și cât rămâne din `durata_zi` |
+| Materialul trainerului | `<slug>-trainer.html` | Alex. Un singur fișier, merge fără internet: vederile **Masa** (etapa A), Ziua, Modulul, Schița, **Biblioteca de piese** (toate piesele, cu căutare și filtre) și **Prezintă**. Ziua și Schița arată totalul zilei și cât rămâne din `durata_zi` |
 | PDF-uri (cu `--pdf`) | `<slug>-trainer.pdf`, `<slug>-ecrane.pdf` | plasa de siguranță: hârtie și ecranele din sală, câte unul pe pagină |
 
 ## Cum rulezi
@@ -58,6 +58,27 @@ Doar în cursul online.
 ```
 
 Primul ecran al fiecărui modul (numărul și titlul) se face singur. O pauză primește automat un cronometru cât durata ei.
+
+### Programul zilei: pauzele la ore fixe (Alex, 2026-11-18)
+
+- `pauze` în `curs.yml`: `[{ la: "11:00", min: 15 }, { la: "12:30", min: 60, titlu: "Prânz" }, { la: "15:00", min: 15 }]`. **Fără câmp, exact acestea sunt implicite** (cele de 15 minute sunt o presupunere: le corectezi aici). Ediția poate avea propriul `pauze`, care îl înlocuiește; `pauze: []` = niciuna. Ora se scrie între ghilimele.
+- Pauzele împart ziua în **blocuri** (de la `ora_start` la prima pauză, între pauze, de la ultima pauză la sfârșitul din `durata_zi`). Agenda se așază în ele, în ordine; pauza fixă intră singură în agendă când îi vine ora. O pauză fixă de după ultimul rând din agendă apare doar ca reper în Ziua și Schiță, fără ecran.
+- **`- bloc: 2`** în agendă: de aici începe blocul 2 (după pauza fixă dinaintea lui); restul blocului de dinainte rămâne liber. Un bloc care nu există oprește build-ul.
+- **O piesă nu se rupe peste o pauză.** Dacă un rând trece peste ora pauzei, build-ul dă avertisment (nu se oprește), iar pauza începe după rând: „blocul 1 (9:30–11:00): 103 din 90 min; „…” trece peste pauza de la 11:00, deci pauza începe la 11:13”.
+- **Unde se văd:** în Ziua și Schiță, un cap pe fiecare bloc cu „X din Y min” și „liber” / „plin” / „depășire” (marcată); pauza fixă e un rând (și un ecran de pauză cu cronometru, în banda zilei și în vederea Ecrane). Id-ul ecranului ține de oră: `pauza-11-00#pauza`, deci nu mută id-urile `pauza#k` ale rândurilor `pauza: N`, care rămân pauze suplimentare.
+- „Copiază pentru ediție” (1.12) scrie pauza fixă ca `- bloc: N`, ca agenda copiată să păstreze blocurile.
+
+### Masa: etapa A, conținutul înainte de producție (Alex, 2026-11-18)
+
+„Piesele să fie toate colectate, apoi filtrate (are they good enough?), apoi ordonate.” Întâi schița și conținutul, apoi producția (slide-uri, curs online).
+
+- **Sursa:** `masa.yml` în folderul cursului, o listă `candidate:` de obiecte mici: `id`, `titlu`, `scop`, `durata`, `tip`, `sursa` (Irina, Alex, bibliotecă…), `verdict` (nou / da / poate / nu), `bloc` (1, 2… sau gol), `ordine`; opțional `obiective`, `nota`. Fără text de slide. Exemplul: `exemple/change-agility-exemplu/masa.yml`.
+- **Vederea Masa** (primul buton din bară): trei coloane. **Colectate** (verdict nou), **Filtrate** (da / poate; „nu” e ascuns, cu butonul „Arată și Nu”), **Ordonate** (blocurile zilei, cu pauzele fixe între ele și „X din Y min” pe bloc, recalculat pe loc, și în timpul tragerii). Cartonașe compacte: titlu, scop pe un rând, durată, tip, sursa, „produsă” (are deja `piese/<id>.md` sau e un modul).
+- **Cum lucrezi:** Da / Poate / Nu pe cartonaș; tragere în și între blocuri (mouse de oriunde, deget de pe mânerul ⠿); pe cartonașul selectat: `D` `P` `N`, `1`–`4` (în blocul ales), `0` (scoate din bloc), `↑` `↓` (mută în Ordonate, și peste granița blocului). Tras în Colectate = verdict nou; tras într-un bloc = „Da” dacă era nou.
+- **Salvarea:** în **editorul local**, fiecare schimbare se scrie direct în `masa.yml` (același server, același token; comentariile din fișier rămân; copie în `.editor-istoric/`; dacă fișierul s-a schimbat pe disc, nu suprascrie), apoi materialul se reface. În **fișierul offline**, schimbările stau în browser (rezistă la refresh; „Resetează” revine la fișier), iar „Copiază masa.yml” dă fișierul întreg.
+- **Fără `masa.yml`** nu e eroare: Masa arată o propunere din agenda de azi (cu „Da”, în blocurile lor) și restul bibliotecii (la Colectate). În editor, butonul „Creează masa.yml” o scrie.
+- **„Trimite în agendă”:** din blocurile Ordonate, piesele cu „Da” care au fișier produs devin agenda ediției (cu `- bloc: N` între blocuri); celelalte sunt listate: „de produs” (Da, fără fișier) și „nehotărâte” (Poate). În editor scrie doar cheia `agenda:` din `editii/<data>.yml` (restul ediției rămâne identic, verificat), cu copie de siguranță, și reface materialul; offline, copiază blocul. Pauzele suplimentare (`pauza: N`) nu sunt candidate: le adaugi în agendă după.
+- **Ce oprește build-ul:** id dublat sau cu alte caractere decât litere mici, cifre, cratimă; verdict necunoscut; durată care nu e număr; YAML greșit. Un bloc care nu există azi și un tip necunoscut dau doar avertisment. Masa nu intră în cursul participanților.
 
 ### „Prezintă” din Bibliotecă (1.12, Alex, 2026-11-17)
 
@@ -111,7 +132,7 @@ Primul ecran al fiecărui modul (numărul și titlul) se face singur. O pauză p
 
 ## Ce oprește build-ul (nu scrie nimic)
 
-Agenda: id inexistent (nici modul, nici piesă), modul de două ori, rând care nu e modul, piesă sau pauză, pauză care nu e număr, `comun/…` (încă nu există), `sari_peste` și `exercitii` (vechi). Piese: `durata` lipsă (la orice piesă și la module), tip din afara listei, activitate fără `format`/`energie`/`obiectiv`, id folosit și de un modul, și de o piesă, id-uri inexistente în `implicite`/`alternative`/`module`, aceeași piesă și implicită, și alternativă, folderul vechi `exercitii/`, modul cu și `exercitii`, și `piese`, `::piese` greșit scris, de două ori sau într-o piesă. Apoi, ca în v1: bloc neînchis, bloc în bloc, bloc necunoscut (`:::traner`), atribut necunoscut; text din `:::trainer`, `:::sala` sau `nota_trainer` găsit în exportul pentru participanți (verificat pe rezultat, fragmente de minimum 4 cuvinte); un nume din `nume_interzise` în export (fără diacritice și majuscule); schiță cu peste 3 puncte sau un punct cu peste 8 cuvinte; module care nu încap în `durata_zi`; `cronometru` mai lung decât modulul; imagine de pe internet sau care nu e în `materiale/`; câmpuri lipsă, `id` dublat, `sari_peste` cu un id greșit. **Avertisment:** ecran din sală cu peste 30 de cuvinte, ancoră cu peste 3 cuvinte, piesă aleasă la un modul care nu e în `module` ei, modul de peste 90 de minute fără pauză după. Verificarea notelor trainerului se face pe toată biblioteca, nu doar pe ce e în agendă; titlurile modulelor și ale pieselor pot apărea în note (sunt publice).
+Agenda: id inexistent (nici modul, nici piesă), modul de două ori, rând care nu e modul, piesă, pauză sau `bloc`, `bloc: N` peste numărul de blocuri, pauze fixe greșite (oră fără ghilimele, durată, suprapuse), pauză care nu e număr, `comun/…` (încă nu există), `sari_peste` și `exercitii` (vechi). Piese: `durata` lipsă (la orice piesă și la module), tip din afara listei, activitate fără `format`/`energie`/`obiectiv`, id folosit și de un modul, și de o piesă, id-uri inexistente în `implicite`/`alternative`/`module`, aceeași piesă și implicită, și alternativă, folderul vechi `exercitii/`, modul cu și `exercitii`, și `piese`, `::piese` greșit scris, de două ori sau într-o piesă. Apoi, ca în v1: bloc neînchis, bloc în bloc, bloc necunoscut (`:::traner`), atribut necunoscut; text din `:::trainer`, `:::sala` sau `nota_trainer` găsit în exportul pentru participanți (verificat pe rezultat, fragmente de minimum 4 cuvinte); un nume din `nume_interzise` în export (fără diacritice și majuscule); schiță cu peste 3 puncte sau un punct cu peste 8 cuvinte; module care nu încap în `durata_zi`; `cronometru` mai lung decât modulul; imagine de pe internet sau care nu e în `materiale/`; câmpuri lipsă, `id` dublat, `sari_peste` cu un id greșit. **Avertisment:** ecran din sală cu peste 30 de cuvinte, ancoră cu peste 3 cuvinte, piesă aleasă la un modul care nu e în `module` ei, modul de peste 90 de minute fără pauză după. Verificarea notelor trainerului se face pe toată biblioteca, nu doar pe ce e în agendă; titlurile modulelor și ale pieselor pot apărea în note (sunt publice).
 
 ## Modul Prezintă: cum merge
 
@@ -146,9 +167,11 @@ Culorile și litera stau doar în teme (tokeni): `tema/innersis.css` (Innersis I
 | Fișier | Ce face |
 |---|---|
 | `build.mjs` | linia de comandă: citește, verifică, scrie, face PDF-urile |
-| `lib/sursa.mjs` | citește `curs.yml`, ediția, modulele și piesele; agenda, orele și totalurile; verificările pe sursă; `desfasoara()` pune piesele în modul |
+| `lib/sursa.mjs` | citește `curs.yml`, ediția, modulele și piesele; agenda, pauzele fixe, blocurile, orele și totalurile; verificările pe sursă; `desfasoara()` pune piesele în modul |
+| `lib/masa.mjs` | `masa.yml`: citire și verificare, propunerea de pornire, „Trimite în agendă”, scrierea din editor |
+| `lib/masa.js` | vederea Masa, în browser (offline și în editor) |
 | `lib/export.mjs` | cursul participanților și verificarea pe rezultat |
 | `lib/trainer.mjs` | materialul trainerului (HTML), ecranele din sală |
 | `lib/prezinta.js` | partea care rulează în browser (vederi, Prezintă, cronometru, tipar) |
 | `lib/randare.mjs` | Markdown → HTML; HTML-ul brut și linkurile `javascript:` devin text |
-| `teste/` | `verificari.test.mjs` (npm test), `chrome-prezinta.mjs` + `cdp.mjs` (Chrome comandat prin DevTools, fără dependențe) |
+| `teste/` | `verificari.test.mjs`, `editor.test.mjs` (npm test); `chrome-*.mjs` + `cdp.mjs` (Chrome comandat prin DevTools, fără dependențe), între ele `chrome-masa.mjs` |

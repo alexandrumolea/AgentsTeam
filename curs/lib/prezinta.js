@@ -724,11 +724,11 @@
     $('tipar-ecrane-lista').innerHTML = html; hidrateaza($('tipar-ecrane-lista'));
   } else if (h === 'tipar-trainer') {
     var st3 = document.createElement('style'); st3.textContent = '@page { size: A4; margin: 14mm; }'; document.head.appendChild(st3);
-    var sec = document.querySelectorAll('main > section'); for (var y = 0; y < sec.length; y++) sec[y].hidden = sec[y].id === 'prezinta' || sec[y].id === 'ecrane';
+    var sec = document.querySelectorAll('main > section'); for (var y = 0; y < sec.length; y++) sec[y].hidden = sec[y].id === 'prezinta' || sec[y].id === 'ecrane' || sec[y].id === 'masa';
     var dex = document.querySelectorAll('details.ex'); for (var z = 0; z < dex.length; z++) dex[z].open = true;
     hidrateaza(document);
   } else {
-    arata(['ziua', 'modul', 'schita', 'banca', 'ecrane', 'prezinta'].indexOf(h) >= 0 ? h : 'ziua');
+    arata(['masa', 'ziua', 'modul', 'schita', 'banca', 'ecrane', 'prezinta'].indexOf(h) >= 0 && $(h) ? h : 'ziua');
     hidrateaza(document);
   }
   window.__curs = { stare: function () { return { id: ECRANE[st.i] ? ECRANE[st.i].id : null, ordine: ECRANE.map(function (x) { return x.id; }), i: st.i, negru: negru, salaDeschisa: salaDeschisa(), aici: aici, cron: { total: cron.total, ramas: cronRamas(), pornit: !!cron.pornit }, vedere: vedere }; } };

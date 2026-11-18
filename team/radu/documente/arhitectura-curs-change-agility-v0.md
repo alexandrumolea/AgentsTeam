@@ -59,6 +59,7 @@ cursuri/                         locul privat (vezi secțiunea 3)
 | `public` | da | `nu` / `link` / `da` (decizia 2, secțiunea 6) |
 | `slug` | da | `change-agility`, devine adresa: `alexandrumolea.com/cursuri/change-agility/` |
 | `obiective` | nu | listă de texte scurte (cel mult ~12 cuvinte; peste, doar avertisment). Apar în Schiță ca checklist cu bife salvate local (nu se proiectează; la tipar, căsuțe goale) și în cursul participanților ca listă simplă. Ediția poate avea propriul `obiective`, care o înlocuiește pe a cursului. Un modul sau o piesă poate spune `obiective: [1, 3]` (indexuri de la 1), iar Schița arată „→ ob. 1, 3” **(Alex, 2026-11-17)** |
+| `pauze` | nu | pauzele la ore fixe, de exemplu `[{ la: "11:00", min: 15 }, { la: "12:30", min: 60, titlu: "Prânz" }, { la: "15:00", min: 15 }]` (valoarea implicită, când câmpul lipsește). Împart ziua în blocuri; ediția le poate înlocui, `[]` = niciuna. Vezi 1.13 **(Alex, 2026-11-18)** |
 
 ### 1.4 Un modul: straturile din același fișier
 Sunt trei locuri unde poate apărea ceva: **cursul online** (participanții, după), **ecranul din sală** (ce vede grupul când Alex dă „Prezintă”) și **vederea trainerului** (doar Alex). Fiecare strat spune unde apare:
@@ -218,7 +219,7 @@ agenda:
 nume_interzise: []        # numele clientului și al oamenilor; build-ul oprește cursul public dacă le găsește
 nota_trainer: ""          # ce e special la acest grup (doar în materialul trainerului)
 ```
-Orele se calculează singure: `ora_start` + duratele, în ordinea din agendă. Un modul care lipsește din agendă nu se face la această ediție (înlocuiește `sari_peste` din v1).
+Orele se calculează singure: `ora_start` + duratele, în ordinea din agendă. Din 2026-11-18 (1.13): pauzele fixe intră singure la ora lor, iar `- bloc: N` sare la blocul N. Un modul care lipsește din agendă nu se face la această ediție (înlocuiește `sari_peste` din v1).
 
 ### 1.8 Banca de exerciții (v1.1, I-021, doar formatul)
 Cerința lui Alex (2026-11-17): „Aș vrea să avem un fel de bancă de exerciții la fiecare curs, din care să-mi pot alege ușor și live și din timp. Și să-mi construiesc agenda cumva dinamic, poate chiar cu drag and drop.”
@@ -410,6 +411,23 @@ Cererea lui Alex: „Aș vrea să pot da present și din bibliotecă.”
 - **Salvare:** local, împreună cu mutările și ascunderile din 1.10 (`live: [{ piesa, dupa }]`). „Resetează la ordinea din curs” le scoate și pe ele.
 - **Spre sursă, fără mecanism nou:** „Copiază pentru ediție” dă toată `agenda:`, cu fiecare piesă adăugată ca rând de piesă singură după rândul în care a fost pusă. Poziția exactă în interiorul rândului se poate ajusta apoi din vederea Ecrane (1.10).
 
+### 1.13 Programul zilei și Masa (Alex, 2026-11-18)
+Cererile lui Alex: „programul unui curs este 9:30 - 17:30. Pauză la 11:00, pauză de la 12:30 la 13:30, pauză la 15:00.” și „Piesele să fie toate colectate, apoi filtrate - are they good enough? apoi ordonate.” Alex a aprobat construcția pe 2026-11-18 („Da, construim”). Construit de Mike; detaliile de folosire sunt în `curs/README.md`.
+
+**A. Pauzele la ore fixe și blocurile zilei**
+- `pauze` în `curs.yml` (tabelul din 1.3): `la` (ora, între ghilimele), `min`, `titlu` opțional. Implicit: 11:00 (15 min), 12:30 Prânz (60 min), 15:00 (15 min); cele de 15 minute sunt o presupunere. Ediția poate suprascrie câmpul.
+- Pauzele împart ziua în blocuri. Agenda se așază în ordine; o pauză fixă intră singură în agendă când îi vine ora, ca rând (ecran de pauză cu cronometru, în banda zilei și în vederea Ecrane), cu id după oră: `pauza-11-00#pauza`. Id-urile celorlalte ecrane, mutările, ascunderile și inserările live nu se schimbă.
+- `- bloc: N` în agendă: de aici începe blocul N; ce rămâne din blocul de dinainte stă liber.
+- O piesă nu se rupe peste o pauză: dacă nu încape, build-ul dă avertisment și arată depășirea, iar pauza începe după ea. Build-ul nu se oprește.
+- Ziua și Schița arată pe fiecare bloc „X din Y min” și „liber / plin / depășire”. Rândurile `pauza: N` rămân pauze suplimentare.
+
+**B. Masa: etapa A, conținutul înainte de producție**
+- **Sursa:** `masa.yml`, un fișier mic pe curs: `candidate:` cu `id`, `titlu`, `scop`, `durata`, `tip`, `sursa`, `verdict` (nou / da / poate / nu), `bloc` (1–4 sau gol), `ordine`; opțional `obiective`, `nota`. Fără text de slide. Lipsa fișierului nu e eroare: Masa propune din agenda de azi și din bibliotecă.
+- **Vederea Masa** (materialul trainerului și editorul local): Colectate (nou), Filtrate (da / poate; „nu” ascuns, cu filtru), Ordonate (blocurile zilei, cu pauzele fixe între ele și „X din Y min”, recalculat pe loc). Cartonașe compacte ca în Bibliotecă; Da / Poate / Nu; tragere cu mouse-ul și cu degetul; tastatura (`D` `P` `N`, `1`–`4`, `0`, `↑` `↓`). Un cartonaș cu `piese/<id>.md` (sau modul) e „produsă”.
+- **Salvarea:** în editorul local, direct în `masa.yml`, prin același server și token, cu copie în `.editor-istoric/` și verificare de concurență; offline, în browser, cu „Copiază masa.yml”.
+- **Legătura cu producția:** „Trimite în agendă” face agenda ediției din blocurile Ordonate: intră piesele cu „Da” care au fișier produs; celelalte sunt listate „de produs” (Da) și „nehotărâte” (Poate). În editor scrie doar cheia `agenda:` din `editii/<data>.yml`, cu copie de siguranță; offline, copiază textul.
+- **Validare:** id-uri unice, verdict valid, durata un număr (opresc build-ul). Bloc inexistent: avertisment.
+
 ## 2. Cum se leagă de ce există
 
 ```mermaid
@@ -575,3 +593,4 @@ Taste simple: săgeți sau telecomanda de prezentare pentru ecranul următor, `C
 | 2026-11-17 | v1: Alex a precizat că materialul trainerului trebuie să poată fi prezentat (pe tot ecranul sau într-o fereastră), cu exercițiile pentru sală, care nu intră în cursul online. Am adăugat straturile `:::sala` și `:::sala-si-curs`, modul Prezintă (4.2), rolul nou al slide-urilor Ive (2.2), verificările noi (1.6), calendarul și deciziile actualizate. |
 | 2026-11-17 | v1.1: D-048–D-051 aprobate. Alex a aprobat formatul pentru banca de exerciții (I-021): secțiunea 1.8, agenda în ediție (înlocuiește `sari_peste`), `durata` modulului fără exerciții, exemplul cu exercițiu implicit și alternativ, verificările noi. Editorul cu drag and drop vine după 23. |
 | 2026-11-17 | v1.2: întrebarea lui Alex despre modularitate. Secțiunea 1.9 propune piesa de workshop ca unitate de bază (conținut, activitate, punte), modulul ca secvență subțire, piese locale pe curs acum și bibliotecă comună după 25, piese singure în agendă. De decis de Alex. |
+| 2026-11-18 | 1.13: pauzele la ore fixe (blocurile zilei) și vederea Masa (etapa A: colectate, filtrate, ordonate; „Trimite în agendă”). Aprobate de Alex („Da, construim”), construite de Mike. |

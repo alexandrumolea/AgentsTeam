@@ -1,0 +1,97 @@
+# [EXEMPLU] Masa (etapa A, Alex, 2026-11-18): piesele candidate, înainte de producție. Fără text de slide aici.
+# verdict: nou / da / poate / nu · bloc: 1, 2… (blocurile dintre pauzele fixe) sau gol · ordine: locul în bloc.
+# O candidată cu fișier în piese/ (sau un modul cu același id) e „produsă”; „Trimite în agendă” le pune doar pe acestea.
+candidate:
+  - id: deschidere
+    titlu: "De ce suntem aici"
+    scop: "[EXEMPLU] Cine suntem, ce facem azi"
+    durata: 20
+    tip: mesaj
+    sursa: Alex
+    verdict: da
+    bloc: 1
+    ordine: 1
+  - id: curba
+    titlu: "Ce se întâmplă cu noi când se schimbă ceva"
+    scop: "[EXEMPLU] Curba schimbării, cu exemple"
+    durata: 45
+    tip: teorie
+    sursa: bibliotecă
+    verdict: da
+    bloc: 1
+    ordine: 2
+  - id: ridica-te-daca
+    titlu: "Ridică-te dacă"
+    scop: "[EXEMPLU] Energie după teorie"
+    durata: 5
+    tip: energizant
+    sursa: bibliotecă
+    verdict: da
+    bloc: 1
+    ordine: 3
+  - id: harta-emotiilor
+    titlu: "Harta emoțiilor din echipă"
+    scop: "[EXEMPLU] Ce simte grupul, pe un perete"
+    durata: 15
+    tip: exercitiu
+    sursa: Irina
+    verdict: da
+    bloc: 1
+    ordine: 4
+    nota: "[EXEMPLU] De scris piesa; Irina are două variante."
+  - id: pasul-de-luni
+    titlu: "Pasul de luni"
+    scop: "[EXEMPLU] Un pas mic, cu zi și oră"
+    durata: 40
+    tip: exercitiu
+    sursa: Alex
+    verdict: da
+    bloc: 2
+    ordine: 1
+    obiective: [3]
+  - id: poveste-fuziune
+    titlu: "Povestea unei fuziuni"
+    scop: "[EXEMPLU] Un caz scurt, spus de Alex"
+    durata: 10
+    tip: poveste
+    sursa: Alex
+    verdict: poate
+    bloc: 2
+    ordine: 2
+  - id: inchidere
+    titlu: "Ce iei cu tine"
+    scop: "[EXEMPLU] Cum pleacă fiecare"
+    durata: 20
+    tip: reflectie
+    sursa: Alex
+    verdict: da
+    bloc: 2
+    ordine: 3
+  - id: plimbare-curba
+    titlu: "Curba de pe podea"
+    scop: "[EXEMPLU] Curba, cu pași prin sală"
+    durata: 20
+    tip: exercitiu
+    sursa: bibliotecă
+    verdict: poate
+  - id: studiu-adaptare
+    titlu: "Ce spun studiile despre adaptare"
+    scop: "[EXEMPLU] Două date care surprind"
+    durata: 10
+    tip: model
+    sursa: Irina
+    verdict: nou
+  - id: apreciere-ceilalti
+    titlu: "Aprecierea celorlalți"
+    scop: "[EXEMPLU] Închidere caldă, în cerc"
+    durata: 15
+    tip: inchidere
+    sursa: bibliotecă
+    verdict: nou
+  - id: test-personalitate
+    titlu: "Test de personalitate"
+    scop: "[EXEMPLU] Prea lung pentru o dimineață"
+    durata: 30
+    tip: exercitiu
+    sursa: Irina
+    verdict: nu

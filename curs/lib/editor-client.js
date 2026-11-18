@@ -18,6 +18,13 @@
     }).then(function (r) { return r.json().catch(function () { return {}; }).then(function (j) { j._cod = r.status; return j; }); });
   }
 
+  // ---------- Masa (etapa A, 2026-11-18): lib/masa.js scrie prin editor în masa.yml și în ediție ----------
+  window.__masaEditor = {
+    salveaza: function (schimbari, hash) { return api('/api/masa', 'POST', { schimbari: schimbari, hash: hash }).then(function (j) { stare(j._cod === 200 ? ' · salvat în masa.yml' : ''); return j; }); },
+    agenda: function (hash) { return api('/api/masa/agenda', 'POST', { hash: hash }); },
+    creeaza: function () { return api('/api/masa/creeaza', 'POST', {}); },
+  };
+
   // ---------- bara de jos: mod editare + fișierele schimbate (commit-ul îl face Alex sau Tudor, nu editorul) ----------
   var bara = document.createElement('div');
   bara.className = 'ed-bara'; bara.setAttribute('role', 'status');
