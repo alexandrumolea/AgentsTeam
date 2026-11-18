@@ -28,6 +28,7 @@ O ofertă bună nu e o listă de prețuri. E răspunsul la întrebarea clientulu
 - Vocea lui Alex (skill `vocea-alex`): cald, direct, în română, fără jargon și fără presiune. Vânzare prin claritate și prin rezultat, nu prin adjective.
 - Fraze scurte. Verbe la persoana I („vă propun”, „lucrăm”), cu „dumneavoastră” sau „voi” după cum vorbește Alex deja cu clientul în email.
 - Nu promite ce nu controlăm (rezultate garantate, termene ale altora).
+- 2026-11-18: **Limbaj permisiv și suportiv, nu asertiv** (Alex). Fără imperative de vânzare („Confirmați-mi”, „Vreau să…”) și fără presiune pe termen. În loc: „Dacă vi se potrivește…”, „Mă bucur să ajustăm…”, „Spuneți-mi ce ar fi de schimbat”, plus o invitație deschisă la întrebări. Valabilitatea se spune blând („rămâne valabilă până pe…”). „Sună a sales” înseamnă clar și relevant, nu insistent.
 
 ## 4. Forma
 - Brandul se alege după skill-ul `brand-bemore` („Ce brand poartă un material”). Oferta e un document scurt (HTML → PDF), lizibil pe telefon și la tipar.
@@ -46,3 +47,6 @@ O ofertă bună nu e o listă de prețuri. E răspunsul la întrebarea clientulu
 - 2026-11-18: Când varianta e aleasă, nu mai oferim alternative; prezentăm alegerea ca recomandare clară.
 - 2026-11-18: Dovada pentru „De ce funcționează” se caută și în afara firului comercial: rezumatele trimise după livrare (pe zile, cu scorul de la final) sunt mai convingătoare decât orice argument. Se citează fapte, nu adjective.
 - 2026-11-18: Ce nu e inclus și ce ține de client (limba rapoartelor, acordul părinților, sesiuni care nu sunt în ofertă) se spune onest într-o secțiune „Bine de știut”, fără preț pentru extra-uri nedecise de Alex.
+- 2026-11-18: Alex a corectat tonul unui email de ofertă: îl simțea „asertiv, chiar agresiv”. Emailul de ofertă e scurt și cald: ce e atașat, cifra totală o dată, o invitație deschisă la discuție.
+- 2026-11-18: Fără referințe la alți clienți, la grupe sau la pilote anterioare în ofertă, dacă Alex nu le cere explicit. „De ce funcționează” se construiește atunci din metodă (cum e gândit programul), fără promisiuni.
+- 2026-11-18: Materialele pe care participanții le pot refolosi după formare sunt o parte valoroasă a ofertei: le numim concret, ca parte inclusă, fără să inventăm formate sau număr de pagini neconfirmate de Alex.

@@ -6,6 +6,9 @@ Doar lecții generale. Clienții, sumele și ofertele stau în `.claude/agent-me
 - 2026-11-18: Fiecare sumă cu „+ TVA” sau mențiunea clară că oferta nu include TVA.
 - 2026-11-18: Vrea oferte care „sună a sales”: convingătoare, legate de problema clientului, nu o listă de prețuri.
 - 2026-11-18: Când clientul (sau Alex) a ales deja varianta, oferta o prezintă pe aceea, fără meniuri de alternative.
+- 2026-11-18: Limbajul e mereu permisiv și suportiv, nu asertiv: fără imperative și fără presiune pe termen („Dacă vi se potrivește…”, „Mă bucur să ajustăm…”).
+- 2026-11-18: Nu pun în ofertă referințe la alți clienți, grupe sau pilote, dacă Alex nu le cere.
+- 2026-11-18: Materialele refolosibile pentru participanți intră în ofertă ca parte inclusă, numite concret.
 
 ## Lecții din oferte
 - 2026-11-18: Dovada cea mai puternică stă de obicei în emailurile de după livrare (rezumatele zilelor, scoruri la final), nu în firul comercial. Caut-le separat înainte de secțiunea „De ce funcționează”.
