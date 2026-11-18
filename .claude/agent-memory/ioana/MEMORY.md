@@ -13,6 +13,7 @@ Păstrează sub 150 de rânduri. Comprimă când crește. Fapte, nu povești.
 
 ## Preferințe confirmate
 - [Scrisul mic](feedback_scris-mic.md) — 2026-11-17: sub 16 px doar etichete; ce se apasă ≥16 px; Alex observă
+- [Element în pagina întreagă](feedback_element-in-pagina.md) — 2026-11-18: un element cerut se gândește în povestea paginii, nu „pus undeva”
 - [Inovație, nu calm](feedback_inovatie-nu-calm.md) — „prea banale” (2026-11-15); vrea viitor, un wow clar; a11y și viteza sunt limite
 - 2026-11-15: Alex a ales **Spațiu** (D-023): „Ioana a făcut treabă bună acum.”
 - 2026-11-17: Îi place **Planșa** (luminos, desen tehnic, aerisit). Întrebările le vrea ca să descopăr un stil nou pentru el, nu ca să aleagă între variantele mele.
@@ -43,6 +44,7 @@ Păstrează sub 150 de rânduri. Comprimă când crește. Fapte, nu povești.
 
 ## Proiecte și referințe
 - [Manual de brand BEMORE](project_manual-brand.md) — 2026-11-17: D-057 Sora = noul BEMORE; §7 lentila Despre; §8 portretul = lentila (D-060)
+- 2026-11-18: Despre ca întreg: `despre-compozitie-v1.html`, A (omul → banda misiunii cu cărțile → linia timpului, recomandat) / B (lentila cu evantai, parcurs la scară). Aștept alegerea lui Alex; Mike construiește.
 - [Design v2 și v3](project_design-v2.md) — 2026-11-17: D-054 Sora (font + paletă); v3.1 = 3 prime pagini; aștept alegerea
 - [Culori v1](project_culori-v1.md) — 2026-11-17: diagnostic + A/B/C; înlocuit de design v2 (regulile de sens rămân)
 - [Spațiu v2](project_spatial-v2.md) — prototipul curent; deschise: rândurile din Live, propoziția „pod”, test pe telefon
