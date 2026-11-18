@@ -1,0 +1,256 @@
+<title>Cum construim un curs</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Sora:wght@200;300;400&family=Inter+Tight:wght@400;500;600&display=swap">
+<style>
+/* Layout: o singură coloană-traseu, faze ca stații pe o linie verticală; masa și ziua ca planșe late */
+:root{
+  --bg:#F7F4FA; --surface:#FFFFFF; --ink:#14161F; --muted:#5B5E70; --line:#E1DCEA;
+  --cer:#2B44B8; --lavanda:#B7A6EA; --piersica:#F6C9B4; --portocaliu:#E8742A; --sage:#6F8F6A;
+  --a-bg:#EEEAFB; --b-bg:#E6F0EC; --gate-bg:#FFF1E6; --alex-bg:#FDEDE4; --pauza:#E9EFE6;
+  --f-titlu:"Sora",ui-sans-serif,system-ui,sans-serif; --f-text:"Inter Tight",ui-sans-serif,system-ui,sans-serif;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --bg:#0D1333; --surface:#161D44; --ink:#F5F3FF; --muted:#A8AECF; --line:#2B3363;
+  --cer:#A9C4FF; --lavanda:#8E7FD6; --piersica:#C98A6E; --portocaliu:#F28C3B; --sage:#9DBF96;
+  --a-bg:#232A5C; --b-bg:#1C3338; --gate-bg:#3A2A22; --alex-bg:#3A2630; --pauza:#22322A; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#0D1333; --surface:#161D44; --ink:#F5F3FF; --muted:#A8AECF; --line:#2B3363;
+  --cer:#A9C4FF; --lavanda:#8E7FD6; --piersica:#C98A6E; --portocaliu:#F28C3B; --sage:#9DBF96;
+  --a-bg:#232A5C; --b-bg:#1C3338; --gate-bg:#3A2A22; --alex-bg:#3A2630; --pauza:#22322A; color-scheme:dark}
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--ink);font:400 16px/1.6 var(--f-text);
+  padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:0 64px}
+.wrap{max-width:980px;margin:0 auto}
+h1,h2,h3{font-family:var(--f-titlu);font-weight:300;text-wrap:balance;margin:0}
+h1{font-size:clamp(36px,6vw,60px);line-height:1.05;letter-spacing:-.02em}
+h2{font-size:clamp(26px,3.4vw,34px);line-height:1.15}
+h3{font-size:20px;font-weight:400}
+p{margin:0}
+.eyebrow{font:600 12px/1 var(--f-text);letter-spacing:.14em;text-transform:uppercase;color:var(--muted)}
+.dot{display:inline-block;width:9px;height:9px;border-radius:50%;background:var(--portocaliu);vertical-align:middle}
+header.hero{padding-block:56px 32px;display:grid;gap:18px}
+.hero p.lead{max-width:62ch;font-size:18px;color:var(--muted)}
+.acum{display:inline-flex;gap:10px;align-items:center;background:var(--surface);border:1px solid var(--line);border-radius:999px;padding:8px 16px;font-weight:500;width:fit-content}
+.acum .puls{width:10px;height:10px;border-radius:50%;background:var(--portocaliu);box-shadow:0 0 0 4px color-mix(in srgb,var(--portocaliu) 25%,transparent)}
+section{padding-block:40px;border-top:1px solid var(--line);display:grid;gap:22px}
+section>header{display:grid;gap:8px}
+section>header p{color:var(--muted);max-width:64ch}
+
+/* traseul */
+.traseu{position:relative;display:grid;gap:14px;padding-left:34px}
+.traseu::before{content:"";position:absolute;left:11px;top:8px;bottom:8px;width:2px;background:linear-gradient(var(--lavanda),var(--cer) 45%,var(--sage) 70%,var(--portocaliu))}
+.faza{position:relative;display:grid;gap:10px}
+.faza>.nume{display:flex;gap:10px;align-items:baseline;flex-wrap:wrap}
+.faza>.nume::before{content:"";position:absolute;left:-30px;top:6px;width:16px;height:16px;border-radius:50%;background:var(--bg);border:3px solid var(--cer)}
+.faza.a>.nume::before{border-color:var(--lavanda)}
+.faza.gate>.nume::before{border-color:var(--portocaliu);border-radius:3px;transform:rotate(45deg)}
+.faza.b>.nume::before{border-color:var(--sage)}
+.faza.dupa>.nume::before{border-color:var(--portocaliu)}
+.faza .nume span{color:var(--muted);font-size:14px}
+.pasi{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px}
+.pas{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:16px;display:grid;gap:8px;align-content:start;min-width:0}
+.pas .nr{font:300 13px/1 var(--f-titlu);color:var(--muted);letter-spacing:.05em}
+.pas h3{font-size:19px}
+.pas p{font-size:14.5px}
+.pas dl{margin:4px 0 0;display:grid;grid-template-columns:auto 1fr;gap:4px 10px;font-size:13.5px}
+.pas dt{color:var(--muted)}
+.pas dd{margin:0}
+.faza.a .pas{background:var(--a-bg);border-color:transparent}
+.faza.b .pas{background:var(--b-bg);border-color:transparent}
+.pas.alex{background:var(--alex-bg);border-color:var(--portocaliu)}
+.tag{font:600 11px/1 var(--f-text);letter-spacing:.08em;text-transform:uppercase;padding:4px 8px;border-radius:999px;background:var(--portocaliu);color:#fff;width:fit-content}
+.gate-box{background:var(--gate-bg);border:1.5px dashed var(--portocaliu);border-radius:14px;padding:16px 18px;display:flex;flex-wrap:wrap;gap:8px 24px;align-items:center}
+.gate-box strong{font-family:var(--f-titlu);font-weight:400;font-size:20px}
+.bucla{display:flex;gap:12px;align-items:flex-start;background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:16px 18px}
+.bucla .sim{font:300 34px/1 var(--f-titlu);color:var(--cer)}
+.bucla p{font-size:15px}
+
+/* masa */
+.masa{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px;align-items:stretch}
+.col{background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:16px;display:grid;gap:10px;align-content:start;position:relative}
+.col h3{display:flex;justify-content:space-between;gap:8px}
+.col h3 small{font:500 12px/1.6 var(--f-text);color:var(--muted)}
+.card{border-radius:10px;padding:9px 11px;font-size:14px;background:var(--bg);border:1px solid var(--line);display:flex;justify-content:space-between;gap:8px}
+.card i{font-style:normal;color:var(--muted);font-size:12.5px;white-space:nowrap}
+.card.nu{opacity:.45;text-decoration:line-through}
+.card.da{border-color:var(--lavanda)}
+.card.p{border-left:3px solid var(--sage)}
+.col .intr{font-size:13.5px;color:var(--muted)}
+@media (max-width:760px){.masa{grid-template-columns:1fr}}
+
+/* ziua */
+.zi{display:grid;gap:10px}
+.bara{display:flex;height:74px;border-radius:14px;overflow:hidden;border:1px solid var(--line)}
+.bara>div{display:grid;place-content:center;text-align:center;padding:4px;font-size:13px;min-width:0}
+.bara b{font:400 15px/1.2 var(--f-titlu)}
+.bara .bloc{background:var(--a-bg)}
+.bara .bloc:nth-of-type(odd){background:color-mix(in srgb,var(--a-bg) 70%,var(--surface))}
+.bara .pz{background:var(--pauza);color:var(--sage);font-size:11.5px}
+.ore{display:flex;justify-content:space-between;font-size:12.5px;color:var(--muted);font-variant-numeric:tabular-nums}
+.nota{font-size:13.5px;color:var(--muted)}
+@media (max-width:560px){.bara{height:auto;flex-direction:column}.bara>div{flex:none!important;padding:10px}}
+
+/* grile simple */
+.doua{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:14px}
+.box{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:18px;display:grid;gap:8px;align-content:start}
+.box ul{margin:0;padding-left:18px;display:grid;gap:6px;font-size:15px}
+.echipa{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:10px}
+.om{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:12px 14px}
+.om b{font:400 17px/1.3 var(--f-titlu);display:block}
+.om span{font-size:13.5px;color:var(--muted)}
+footer{padding-top:28px;border-top:1px solid var(--line);color:var(--muted);font-size:13.5px;display:grid;gap:4px}
+code{font-size:.9em;background:var(--bg);border:1px solid var(--line);border-radius:5px;padding:0 5px}
+</style>
+
+<div class="wrap">
+<header class="hero">
+  <p class="eyebrow"><span class="dot"></span>&nbsp; BEMORE Learning Studio · procesul echipei</p>
+  <h1>Cum construim un curs</h1>
+  <p class="lead">Drumul pe care îl parcurge echipa Studio pentru fiecare curs: de la research până la un curs stabilizat. Întâi gândim conținutul pe masă, apoi producem. Bucla se repetă la fiecare livrare.</p>
+  <div class="acum"><span class="puls" aria-hidden="true"></span>Acum: Change Agility e în Etapa A, la pasul Colectate</div>
+</header>
+
+<section aria-labelledby="h-traseu">
+  <header>
+    <p class="eyebrow">Traseul</p>
+    <h2 id="h-traseu">Zece pași, o poartă, o buclă</h2>
+  </header>
+
+  <div class="traseu">
+    <div class="faza">
+      <div class="nume"><h3>Înainte de masă</h3><span>pregătim terenul, în paralel</span></div>
+      <div class="pasi">
+        <article class="pas"><p class="nr">1</p><h3>Research</h3><p>Modele, studii și exemple, cu surse. Din ele ies piese candidate pentru masă.</p><dl><dt>Cine</dt><dd>Irina</dd><dt>Alex</dt><dd>citește rezumatul de 5 rânduri</dd></dl></article>
+        <article class="pas"><p class="nr">2</p><h3>Diagnosticare</h3><p>Unde sunt participanții: un chestionar anonim de 3–5 întrebări și o piesă de diagnostic la deschidere.</p><dl><dt>Cine</dt><dd>Daria</dd><dt>Alex</dt><dd>aprobă și trimite chestionarul</dd></dl></article>
+        <article class="pas alex"><p class="tag">nou · 2026-11-18</p><h3>Practician</h3><p>Alex aplică subiectul pe sine și îl discută cu oameni apropiați, ca să-l poată explica din experiență. Ce descoperă intră pe masă, fără numele oamenilor.</p><dl><dt>Cine</dt><dd>Alex; Daria notează</dd><dt>Ține</dt><dd>cât research-ul și masa</dd></dl></article>
+        <article class="pas"><p class="nr">3</p><h3>Obiective</h3><p>Cel mult patru, scurte. Fiecare trebuie să aibă cel puțin o piesă pe masă.</p><dl><dt>Cine</dt><dd>Daria</dd><dt>Alex</dt><dd>aprobă lista</dd></dl></article>
+      </div>
+    </div>
+
+    <div class="faza a">
+      <div class="nume"><h3>Etapa A · Masa cursului</h3><span>doar conținut, câte o linie pe piesă, fără slide-uri</span></div>
+      <div class="pasi">
+        <article class="pas"><p class="nr">4a</p><h3>Colectate</h3><p>Brainstorming: tot ce merită încercat, de la Irina, Daria, Alex și din practică.</p><dl><dt>Verdict</dt><dd>nou</dd></dl></article>
+        <article class="pas"><p class="nr">4b</p><h3>Filtrate</h3><p>„Are they good enough?” Ce primește Da intră în Bibliotecă.</p><dl><dt>Alex</dt><dd>Da · Poate · Nu</dd></dl></article>
+        <article class="pas"><p class="nr">5</p><h3>Ordonate · Flow Logic</h3><p>Piesele „da” se așază în cele 4 blocuri ale zilei și fac Agenda. Daria verifică timpii și obiectivele, Andrei verifică masa.</p><dl><dt>Alex</dt><dd>ordonează</dd></dl></article>
+      </div>
+    </div>
+
+    <div class="faza gate">
+      <div class="nume"><h3>Poarta</h3></div>
+      <div class="gate-box"><strong>Alex aprobă masa</strong><span>Fără aprobare nu se produce nimic. Dacă nu e gata, ne întoarcem pe masă.</span></div>
+    </div>
+
+    <div class="faza b">
+      <div class="nume"><h3>Etapa B · Producția</h3><span>doar pentru piesele „da”</span></div>
+      <div class="pasi">
+        <article class="pas"><p class="nr">B</p><h3>Piesele prind viață</h3><p>Ecranele din sală (slide-uri v2, nota comună A · Lumi), scheme, note de trainer, banca de exerciții. „Trimite în agendă” face agenda ediției.</p><dl><dt>Cine</dt><dd>Matei, cu Daria și Irina; Ioana pe vizual</dd></dl></article>
+        <article class="pas"><p class="nr">6</p><h3>Livrare flexibilă</h3><p>Ziua în sală. Alternativele și Biblioteca permit schimbări pe loc, din materialul trainerului.</p><dl><dt>Cine</dt><dd>Alex; Mike pe generator</dd></dl></article>
+      </div>
+    </div>
+
+    <div class="faza dupa">
+      <div class="nume"><h3>După livrare</h3><span>ce învățăm și ce rămâne</span></div>
+      <div class="pasi">
+        <article class="pas"><p class="nr">7</p><h3>Feedbackul trainerului</h3><p>Cinci întrebări, în 10 minute, în aceeași zi.</p><dl><dt>Cine</dt><dd>Alex; Andrei preia</dd></dl></article>
+        <article class="pas"><p class="nr">8</p><h3>Curs online</h3><p>Același conținut, fără note de trainer și fără exercițiile din sală. Pe site, prin PR aprobat de Alex.</p><dl><dt>Stare</dt><dd>amânat până e gata cursul</dd></dl></article>
+        <article class="pas"><p class="nr">9</p><h3>Feedback către participanți</h3><p>Mulțumire, linkul cursului și 3 întrebări: ce iei cu tine, ce aplici luni, ce ai schimba.</p><dl><dt>Cine</dt><dd>Daria (draft)</dd><dt>Alex</dt><dd>trimite în 1–3 zile</dd></dl></article>
+        <article class="pas"><p class="nr">10</p><h3>Verificare centralizată</h3><p>Lunar: concluziile din toate feedbackurile, lecțiile generale, harta cursurilor la zi.</p><dl><dt>Cine</dt><dd>Andrei, cu Elena</dd></dl></article>
+      </div>
+    </div>
+  </div>
+
+  <div class="bucla"><span class="sim" aria-hidden="true">↻</span><p><strong>Bucla:</strong> Research → Obiective → Piese → Flow Logic → Livrare se repetă la fiecare livrare. Cursul e stabilizat după 2 livrări la rând fără schimbări mari (cel mult o piesă schimbată pe bloc) și cu obiectivele atinse. Bucla se redeschide dacă feedbackul scade două ediții la rând.</p></div>
+</section>
+
+<section aria-labelledby="h-masa">
+  <header>
+    <p class="eyebrow">Panoul de control</p>
+    <h2 id="h-masa">Masa → Biblioteca → Agenda</h2>
+    <p>Masa e locul unde gândim tot cursul înainte de orice slide. O piesă e o singură linie: titlu, scop, durată, tip, sursă. Puțini tokeni, totul dintr-o privire.</p>
+  </header>
+  <div class="masa">
+    <div class="col"><h3>1 · Brainstorming <small>colectate</small></h3>
+      <p class="intr">Toate candidatele, cu verdictul tău.</p>
+      <div class="card da">Toleranță vs capacitate <i>da</i></div>
+      <div class="card">O piesă din practică <i>nou</i></div>
+      <div class="card">O idee din research <i>poate</i></div>
+      <div class="card nu">Exercițiu care nu servește obiectivul <i>nu</i></div>
+    </div>
+    <div class="col"><h3>2 · Bibliotecă <small>filtrate</small></h3>
+      <p class="intr">Doar piesele „da”, produse sau de produs.</p>
+      <div class="card p">Contract <i>produsă</i></div>
+      <div class="card p">Mesaj: predicții <i>produsă</i></div>
+      <div class="card">Toleranță vs capacitate <i>de produs</i></div>
+    </div>
+    <div class="col"><h3>3 · Agendă <small>ordonate</small></h3>
+      <p class="intr">Piesele așezate în cele 4 blocuri. „Trimite în agendă” face ziua.</p>
+      <div class="card">Bloc 1 · Contract <i>20 min</i></div>
+      <div class="card">Bloc 1 · Toleranță și capacitate <i>60 min</i></div>
+      <div class="card">Bloc 4 · Closing <i>25 min</i></div>
+    </div>
+  </div>
+  <p class="nota">Exemple ilustrative. Masa reală e în materialul trainerului și în editorul local.</p>
+</section>
+
+<section aria-labelledby="h-zi">
+  <header>
+    <p class="eyebrow">Ziua standard</p>
+    <h2 id="h-zi">9:30–17:30, patru blocuri</h2>
+  </header>
+  <div class="zi">
+    <div class="bara" role="img" aria-label="Bloc 1 90 minute, pauză 15, bloc 2 75 minute, prânz 60, bloc 3 90 minute, pauză 15, bloc 4 135 minute">
+      <div class="bloc" style="flex:90"><b>Bloc 1</b>90 min</div>
+      <div class="pz" style="flex:15">pauză</div>
+      <div class="bloc" style="flex:75"><b>Bloc 2</b>75 min</div>
+      <div class="pz" style="flex:60">prânz</div>
+      <div class="bloc" style="flex:90"><b>Bloc 3</b>90 min</div>
+      <div class="pz" style="flex:15">pauză</div>
+      <div class="bloc" style="flex:135"><b>Bloc 4</b>135 min</div>
+    </div>
+    <div class="ore"><span>9:30</span><span>11:00</span><span>12:30</span><span>13:30</span><span>15:00</span><span>17:30</span></div>
+    <p class="nota">Pauzele de 15 minute sunt presupunerea noastră; Alex le poate corecta. Materialul trainerului arată totalul pe bloc și orice depășire.</p>
+  </div>
+</section>
+
+<section aria-labelledby="h-comune">
+  <header>
+    <p class="eyebrow">Ce are orice curs</p>
+    <h2 id="h-comune">Două piese fixe și câteva reguli</h2>
+  </header>
+  <div class="doua">
+    <div class="box"><h3>Contractul</h3><p>La deschidere. Aceeași structură, personalizată pe curs.</p></div>
+    <div class="box"><h3>Closing-ul</h3><p>Ales dintr-un set predefinit (de exemplu Aprecierea celorlalți, eticheta Positive Outlook). Daria adaptează întrebările la curs și la grup.</p></div>
+    <div class="box"><h3>Reguli</h3><ul>
+      <li>Nimic nu pleacă la participanți sau la client fără Alex.</li>
+      <li>Conținutul cursului stă în repo-ul privat; aici e doar procesul.</li>
+      <li>Conversațiile lui Alex rămân private: pe masă intră doar ideea.</li>
+      <li>În Etapa A nu se fac slide-uri, scheme sau ecrane.</li>
+    </ul></div>
+  </div>
+</section>
+
+<section aria-labelledby="h-echipa">
+  <header>
+    <p class="eyebrow">Cine e pe traseu</p>
+    <h2 id="h-echipa">Echipa Studio</h2>
+  </header>
+  <div class="echipa">
+    <div class="om"><b>Alex</b><span>practician, verdicte, aprobă masa, livrează</span></div>
+    <div class="om"><b>Andrei</b><span>DRI pe proces, verifică masa, concluziile lunare</span></div>
+    <div class="om"><b>Daria</b><span>diagnostic, obiective, flow, timpi</span></div>
+    <div class="om"><b>Irina</b><span>research cu surse, candidate pe masă</span></div>
+    <div class="om"><b>Matei</b><span>producția pieselor</span></div>
+    <div class="om"><b>Ioana</b><span>limbajul vizual al ecranelor</span></div>
+    <div class="om"><b>Mike</b><span>generatorul și editorul</span></div>
+    <div class="om"><b>Elena</b><span>retro și lecții</span></div>
+  </div>
+</section>
+
+<footer>
+  <p>Sursa textului: <code>docs/procese/curs-nou.md</code> (DRI: Andrei). Când procesul se schimbă, se schimbă întâi acolo, apoi această pagină.</p>
+  <p>Actualizat 2026-11-18.</p>
+</footer>
+</div>

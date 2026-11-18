@@ -2,6 +2,7 @@
 
 **DRI:** Andrei. **Echipa:** Studio (Daria, Matei, Irina), plus Mike pentru generator și Alex în sală.
 **Scop:** un flow simplu de care ne ținem la fiecare curs, de la prima idee până la concluziile din feedback (Alex, 2026-11-17).
+**Vizual:** pagina `docs/procese/curs-nou-vizual.html`, publicată la https://claude.ai/artifact/26Jm98isMEfzt5khrN5qU3. Sursa rămâne acest fișier: când procesul se schimbă, se schimbă întâi aici, apoi pagina.
 **Unde stă cursul:** sursa în repo-ul privat BEMORE-STUDIO, clonat în `privat/cursuri/<curs>/` (D-050). Generatorul e în `curs/` (`curs/README.md`). În repo-ul public intră doar procesul.
 
 ## Regula de bază: întâi conținutul, apoi producția (Alex, 2026-11-18)
