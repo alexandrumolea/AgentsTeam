@@ -44,3 +44,5 @@ O ofertă bună nu e o listă de prețuri. E răspunsul la întrebarea clientulu
 - 2026-11-18: Alex vrea „+ TVA” la fiecare sumă sau mențiunea clară că oferta nu include TVA.
 - 2026-11-18: Alex vrea ofertele să „sune a sales”: pornesc din problema clientului și din ce s-a dovedit deja, nu din lista de produse.
 - 2026-11-18: Când varianta e aleasă, nu mai oferim alternative; prezentăm alegerea ca recomandare clară.
+- 2026-11-18: Dovada pentru „De ce funcționează” se caută și în afara firului comercial: rezumatele trimise după livrare (pe zile, cu scorul de la final) sunt mai convingătoare decât orice argument. Se citează fapte, nu adjective.
+- 2026-11-18: Ce nu e inclus și ce ține de client (limba rapoartelor, acordul părinților, sesiuni care nu sunt în ofertă) se spune onest într-o secțiune „Bine de știut”, fără preț pentru extra-uri nedecise de Alex.
