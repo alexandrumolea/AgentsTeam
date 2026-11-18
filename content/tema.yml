@@ -151,5 +151,4 @@ scena:
   pulse: punct                   # impulsurile dintre agenți
   bridge: accent                 # podurile dintre camerele vizitate
   bridge-warm: portocaliu        # podurile în My Journey
-  door: accent                   # pragul de la intrare
   journey-glow: piersica         # lumina caldă din jurul pietrei

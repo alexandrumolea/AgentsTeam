@@ -387,10 +387,7 @@ function start(THREE, RoomEnvironment){
     } else T[to].pulse = 0.6;
   };
 
-  /* --- pragul: intri în atelier, nu deschizi un site --- */
-  const door = new THREE.Group(); scene.add(door);
-  const dMat = new THREE.MeshBasicMaterial({ color: SC.door, transparent: true, opacity: .45, fog: false });
-  [[6, .035, 0, 3.3], [6, .035, 0, -1.5], [.035, 4.8, -3, 0.9], [.035, 4.8, 3, 0.9]].forEach(([w, h, x, y]) => { const b = new THREE.Mesh(new THREE.BoxGeometry(w, h, .035), dMat); b.position.set(x, y, 0); door.add(b); });
+  /* --- intrarea: camera se apropie ușor de scenă. Fără ramă („pragul” din designul vechi arăta ca o eroare pe fond luminos, Alex 2026-11-18) --- */
   let entry = reduce ? 1 : 0;
   setTimeout(() => { entry = 1; }, 3200); // plasă: în tab-uri lente, intrarea se termină oricum
 
@@ -518,9 +515,7 @@ function start(THREE, RoomEnvironment){
     if (!reduce && !coarse){ px.x = damp(px.x, pxT.x, 3, dt); px.y = damp(px.y, pxT.y, 3, dt); }
     entry = Math.min(1, entry + dt / 2.2);
     const ee = 1 - Math.pow(1 - entry, 3);
-    door.visible = entry < 1;
     const dz = comp.d + (1 - ee) * 10;
-    door.position.set(world.position.x, 0, dz - 2);
     // camera privește de sus, la ~14°: orbita devine elipsa din mostră
     camera.position.set(px.x * 0.9, comp.d * 0.25 - px.y * 0.6, dz);
     camera.lookAt(0, 0, 0); camera.updateMatrixWorld();
