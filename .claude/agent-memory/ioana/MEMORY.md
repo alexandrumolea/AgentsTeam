@@ -42,7 +42,10 @@ Păstrează sub 150 de rânduri. Comprimă când crește. Fapte, nu povești.
 - 2026-11-17: În mock-urile cu variante pun `#varianta` în URL: capturile headless pe fiecare variantă ies dintr-o comandă.
 - 2026-11-17: Alex: „mai aerisit”. Înseamnă mai puține lucruri vizibile deodată, nu mai puține drumuri; compactul și interactivitatea rămân.
 
+- 2026-11-18: Un element care plutește (capsulă, raft) îl verific cu un script: coliziuni între straturi, text acoperit (Range.getClientRects), ținte < 44 px, nume accesibile. Clasele „doar în A” + „doar în B” pe același element îl ascund în ambele: folosește o clasă „nu în C”.
+
 ## Proiecte și referințe
+- [Contact v1](project_contact-v1.md) — 2026-11-18: doar iconițe-link; Alex a ales capsula, numită „Contact” (D-072); review build T-042
 - [Manual de brand BEMORE](project_manual-brand.md) — 2026-11-17: D-057 Sora = noul BEMORE; §7 lentila Despre; §8 portretul = lentila (D-060)
 - 2026-11-18: Despre: Alex a ales A (orbita). v2.1 în `despre-compozitie-v2.html`: orbita vie, cărțile rotitoare înapoi, „Acum” cu textul lui. Aștept reacția; Mike construiește. v1 rămâne (D-063).
 - [Design v2 și v3](project_design-v2.md) — 2026-11-17: D-054 Sora (font + paletă); v3.1 = 3 prime pagini; aștept alegerea
