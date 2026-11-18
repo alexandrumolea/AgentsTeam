@@ -4,7 +4,7 @@ promisiune: "[EXEMPLU] Pleci cu o hartă a felului în care treci prin schimbare
 brand: innersis
 limba: ro
 durata_zi: "9:00–12:30"
-# Pauzele la ore fixe (Alex, 2026-11-18): împart ziua în blocuri. Fără câmp: 11:00 (15 min), 12:30–13:30 (Prânz), 15:00 (15 min).
+# Pauzele la ore fixe (Alex, 2026-11-18): împart ziua în blocuri. Fără câmp: 11:00 (15 min), 12:45–13:45 (Prânz), 15:15 (15 min).
 # Exemplul ține doar o dimineață, deci are o singură pauză fixă. Ediția poate avea propriul „pauze” ([] = niciuna).
 pauze:
   - { la: "10:30", min: 15 }

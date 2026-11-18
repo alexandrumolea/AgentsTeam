@@ -391,11 +391,11 @@ test('formatul copiat: agenda ediției, rând cu rând, gata de lipit (și cu o 
 // Programul zilei: pauzele la ore fixe și blocurile dintre ele (Alex, 2026-11-18)
 const PAUZE = (rand) => (e) => e('curs.yml', (s) => s.replace(/pauze:\n(  .*\n)*/, rand));
 const ZI = (zi) => (e) => e('curs.yml', (s) => s.replace('durata_zi: "9:00–12:30"', `durata_zi: "${zi}"`));
-test('pauze implicite: 11:00 (15), 12:30 Prânz (60), 15:00 (15), deci 4 blocuri în 9:30–17:30', () => {
+test('pauze implicite: 11:00 (15), 12:45 Prânz (60), 15:15 (15), deci 4 blocuri în 9:30–17:30', () => {
   const r = cu((e) => { PAUZE('')(e); ZI('9:30–17:30')(e); e('editii/2026-11-23.yml', (s) => s.replace('ora_start: "9:00"', 'ora_start: "9:30"').replace(/  - bloc: 2 .*\n/, '')); }); ok(r);
   const b = date(r).blocuri;
-  assert.deepEqual(b.map((x) => [x.start, x.sfarsit, x.disponibil]), [[570, 660, 90], [675, 750, 75], [810, 900, 90], [915, 1050, 135]]);
-  assert.deepEqual(b.slice(0, 3).map((x) => [x.pauzaDupa.la, x.pauzaDupa.min, x.pauzaDupa.titlu]), [[660, 15, 'Pauză'], [750, 60, 'Prânz'], [900, 15, 'Pauză']]);
+  assert.deepEqual(b.map((x) => [x.start, x.sfarsit, x.disponibil]), [[570, 660, 90], [675, 765, 90], [825, 915, 90], [930, 1050, 120]]);
+  assert.deepEqual(b.slice(0, 3).map((x) => [x.pauzaDupa.la, x.pauzaDupa.min, x.pauzaDupa.titlu]), [[660, 15, 'Pauză'], [765, 60, 'Prânz'], [915, 15, 'Pauză']]);
   // Agenda: 9:30 deschidere 20, curba 45, pauza-cafea 15, ridica 5 = 85 (10:55), pasul 40 trece peste 11:00 → avertisment, pauza la 11:35
   assert.ok(r.avertismente.some((a) => /blocul 1 \(9:30–11:00\): 125 din 90 min; „Pasul de luni” trece peste pauza de la 11:00, deci pauza începe la 11:35 \(depășire 35 min\)/.test(a)), r.avertismente.join('\n'));
   const d = date(r), p = d.ecrane.find((x) => x.id === 'pauza-11-00#pauza');

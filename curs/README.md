@@ -61,7 +61,7 @@ Primul ecran al fiecărui modul (numărul și titlul) se face singur. O pauză p
 
 ### Programul zilei: pauzele la ore fixe (Alex, 2026-11-18)
 
-- `pauze` în `curs.yml`: `[{ la: "11:00", min: 15 }, { la: "12:30", min: 60, titlu: "Prânz" }, { la: "15:00", min: 15 }]`. **Fără câmp, exact acestea sunt implicite** (cele de 15 minute sunt o presupunere: le corectezi aici). Ediția poate avea propriul `pauze`, care îl înlocuiește; `pauze: []` = niciuna. Ora se scrie între ghilimele.
+- `pauze` în `curs.yml`: `[{ la: "11:00", min: 15 }, { la: "12:45", min: 60, titlu: "Prânz" }, { la: "15:15", min: 15 }]`. **Fără câmp, exact acestea sunt implicite** (cele de 15 minute sunt o presupunere: le corectezi aici). Ediția poate avea propriul `pauze`, care îl înlocuiește; `pauze: []` = niciuna. Ora se scrie între ghilimele.
 - Pauzele împart ziua în **blocuri** (de la `ora_start` la prima pauză, între pauze, de la ultima pauză la sfârșitul din `durata_zi`). Agenda se așază în ele, în ordine; pauza fixă intră singură în agendă când îi vine ora. O pauză fixă de după ultimul rând din agendă apare doar ca reper în Ziua și Schiță, fără ecran.
 - **`- bloc: 2`** în agendă: de aici începe blocul 2 (după pauza fixă dinaintea lui); restul blocului de dinainte rămâne liber. Un bloc care nu există oprește build-ul.
 - **O piesă nu se rupe peste o pauză.** Dacă un rând trece peste ora pauzei, build-ul dă avertisment (nu se oprește), iar pauza începe după rând: „blocul 1 (9:30–11:00): 103 din 90 min; „…” trece peste pauza de la 11:00, deci pauza începe la 11:13”.

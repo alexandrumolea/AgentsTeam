@@ -25,9 +25,9 @@ const LIMBI = ['ro', 'en'];
 const PUBLIC = ['nu', 'link', 'da'];
 const ID_OK = /^[a-z0-9]+(-[a-z0-9]+)*$/;
 const MARCAJ = '::piese';
-// Programul zilei (Alex, 2026-11-18): „9:30–17:30. Pauză la 11:00, pauză de la 12:30 la 13:30, pauză la 15:00.”
+// Programul zilei (Alex, 2026-11-18): 9:30–17:30, blocuri de 90 min: 9:30–11:00, pauză, 11:15–12:45, prânz 12:45–13:45, 13:45–15:15, pauză, 15:30–17:30.
 // Valoarea implicită când curs.yml și ediția nu au „pauze”. Cele de 15 minute sunt o presupunere; Alex le poate corecta.
-export const PAUZE_IMPLICITE = [{ la: '11:00', min: 15 }, { la: '12:30', min: 60, titlu: 'Prânz' }, { la: '15:00', min: 15 }];
+export const PAUZE_IMPLICITE = [{ la: '11:00', min: 15 }, { la: '12:45', min: 60, titlu: 'Prânz' }, { la: '15:15', min: 15 }];
 
 export const cuvinte = (s) => String(s).replace(/[*_`#>\[\]()!]/g, ' ').split(/\s+/).filter(Boolean).length;
 

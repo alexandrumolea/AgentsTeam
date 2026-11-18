@@ -80,13 +80,13 @@ flowchart LR
 |---|---|---|
 | 1 | 9:30–11:00 | 90 min |
 | pauză | 11:00–11:15 | 15 min |
-| 2 | 11:15–12:30 | 75 min |
-| prânz | 12:30–13:30 | 60 min |
-| 3 | 13:30–15:00 | 90 min |
-| pauză | 15:00–15:15 | 15 min |
-| 4 | 15:15–17:30 | 135 min |
+| 2 | 11:15–12:45 | 90 min |
+| prânz | 12:45–13:45 | 60 min |
+| 3 | 13:45–15:15 | 90 min |
+| pauză | 15:15–15:30 | 15 min |
+| 4 | 15:30–17:30 | 120 min |
 
-Pauzele de 15 minute sunt presupunerea noastră; Alex le poate corecta.
+Blocurile 1–3 au câte 90 de minute, blocul 4 are 120 (Alex, 2026-11-18). Pauzele: 15 minute la 11:00 și la 15:15, prânzul 12:45–13:45.
 
 ## Pașii
 | # | Pas | Ce iese | DRI | Alex |
