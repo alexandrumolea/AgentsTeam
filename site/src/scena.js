@@ -470,7 +470,9 @@ function start(THREE, RoomEnvironment){
       const topEl = [heroEl, closeEl].find(vis), botEl = [roadsEl, panelEl, closeEl].filter(vis).pop();
       const top = topEl && topEl !== botEl ? topEl.getBoundingClientRect().bottom : 14;
       const bottom = botEl ? botEl.getBoundingClientRect().top : H - 14;
-      lay.cx = W / 2; lay.cy = (top + bottom) / 2; lay.free = W; lay.freeH = Math.max(120, bottom - top);
+      // aer în jurul orbitei: 32 px față de cardul de sus și de cel de jos, 24 px pe margini, ca numerele să nu fie tăiate (Alex, 2026-11-18)
+      const PAD_Y = 32, PAD_X = 24;
+      lay.cx = W / 2; lay.cy = (top + bottom) / 2; lay.free = W - 2 * PAD_X; lay.freeH = Math.max(120, bottom - top - 2 * PAD_Y);
     }
   }
   readLayout(); window.__layout = readLayout;
