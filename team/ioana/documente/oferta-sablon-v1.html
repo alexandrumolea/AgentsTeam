@@ -101,9 +101,15 @@ a{color:var(--accent);text-underline-offset:3px;text-decoration-thickness:1px}
 .dece li + li{padding-left:20px;border-left:1px solid var(--line)}
 .dece li b{display:block;margin:0 0 4px;font-size:17px;color:var(--text)}
 
-/* Ce rămâne după: lista pe două coloane, ca să țină foaia 1 compactă */
-.mat ul{columns:2;column-gap:40px;margin-top:4px}
-.mat li{break-inside:avoid}
+/* rândurile „inclus” din tabel: ce mai primește clientul în pachet, la 0 EUR, sub rândul de care țin (mai compacte, cu o ramură) */
+tr.are-incluse td{border-bottom:0}
+tr.inclus td{padding-top:5px;padding-bottom:5px;border-bottom:0;font-size:16px;line-height:1.35}
+tr.inclus td:first-child{position:relative;padding-left:22px}
+tr.inclus td:first-child::before{content:"";position:absolute;left:4px;top:0;bottom:0;width:1px;background:rgb(43 68 184 / .3)}
+tr.inclus td:first-child::after{content:"";position:absolute;left:1px;top:calc(50% - 3.5px);width:7px;height:7px;border-radius:50%;background:var(--sora)}
+tr.inclus.ultim td{padding-bottom:12px;border-bottom:1px solid var(--line)}
+tr.inclus.ultim td:first-child::before{bottom:50%}
+tr.inclus .calc{color:var(--muted)}
 
 /* Investiția: tabelul și totalul pe banda închisă */
 .investitie .capul{display:flex;justify-content:space-between;align-items:baseline;gap:8px 16px;flex-wrap:wrap}
@@ -150,7 +156,7 @@ td small.calc-m{display:none}
   .lead{font-size:17px}
   h2{font-size:24px}
   .doua{grid-template-columns:1fr;gap:var(--gap)}
-  .mat ul{columns:1}
+  tr.inclus td{font-size:15px}
   .dece ul{grid-template-columns:1fr}
   .dece li,.dece li + li{padding:12px 0 0;border-left:0}
   .dece li + li{margin-top:12px;border-top:1px solid var(--line)}
@@ -187,21 +193,26 @@ td small.calc-m{display:none}
   .eticheta,.cap,th{font-size:7pt}
   .pasi .cand{font-size:6.8pt;padding:.8mm 2.4mm}
   .bloc{padding:5mm 7mm}
-  .hero{padding:7mm 8mm 5.5mm}
-  .hero h1{font-size:28pt;margin-bottom:2.5mm}
-  .lead{font-size:11.5pt}
+  .hero{padding:9mm 9mm 8mm}
+  /* foaia 1 e „povestea”: componentele ei au mai multă prezență la tipar (titlurile h2 rămân la fel pe ambele foi) */
+  .inteles,.pasi,.dece{padding:6.5mm 8mm}
+  .inteles p{font-size:10.5pt}
+  .hero h1{font-size:31pt;margin-bottom:3mm}
+  .lead{font-size:12.5pt}
   h2{font-size:16pt;margin-bottom:2mm}
   p{margin-bottom:2mm}
   li{margin-bottom:1.6mm}
   .inteles .citat{font-size:10.5pt;margin-top:3mm}
   .pasi ol{margin-top:3mm}
-  .pasi .nr{font-size:22pt;margin-bottom:2mm}
+  .pasi .nr{font-size:30pt;margin-bottom:3mm}
   .dece ul{margin-top:2mm}
-  .dece li{font-size:9.2pt;padding-right:5mm}.dece li + li{padding-left:5mm}
-  .dece li b{font-size:10pt;margin-bottom:1mm}
-  .mat ul{column-gap:10mm}
-  .pasi h3{font-size:10.5pt}
-  .pasi p{font-size:9.4pt}
+  .dece li{font-size:10pt;padding-right:5mm}.dece li + li{padding-left:5mm}
+  .dece li b{font-size:11pt;margin-bottom:1.2mm}
+  tr.inclus td{padding-top:1mm;padding-bottom:1mm;font-size:9pt}
+  tr.inclus td:first-child{padding-left:5.5mm}
+  tr.inclus.ultim td{padding-bottom:2.4mm}
+  .pasi h3{font-size:11.5pt}
+  .pasi p{font-size:10pt}
   .pasi li{padding-right:5mm}.pasi li + li{padding-left:5mm}
   th,td{padding:2.2mm 1.5mm}
   td small{font-size:8.6pt}
@@ -283,16 +294,6 @@ td small.calc-m{display:none}
       <li><b>Cu verificare.</b> Follow-up-ul arată ce a rămas și ce mai ajustăm.</li>
     </ul>
   </section>
-    <section class="bloc sticla mat" aria-labelledby="h-mat">
-      <h2 id="h-mat">Ce rămâne după</h2>
-      <!-- ANA: materialele pe care clientul le poate refolosi. Doar ce a confirmat Alex; fără formate sau număr de pagini inventate. Dacă nu sunt, șterge cardul. -->
-      <ul>
-        <li>formatul de ședință pentru decizii;</li>
-        <li>fișele de lucru din workshop;</li>
-        <li>rezumatul echipei;</li>
-        <li>notițele din follow-up.</li>
-      </ul>
-    </section>
 
   <footer class="jos" aria-hidden="true"><span>BEMORE Learning Studio · Ofertă pentru Client Exemplu</span><span class="pg"></span></footer>
 </section>
@@ -306,18 +307,23 @@ td small.calc-m{display:none}
       <!-- ANA: moneda. Fiecare sumă din ofertă are „+ TVA”. -->
       <span class="tva">Sumele sunt în EUR și nu includ TVA</span>
     </div>
-    <!-- ANA: un rând pe ce primește clientul (cel mult 4 rânduri): cantitate × preț unitar = total, „+ TVA” la fiecare total.
+    <!-- ANA: un rând pe ce primește clientul (cel mult 4 rânduri cu preț, plus rândurile „inclus”): cantitate × preț unitar = total, „+ TVA” la fiecare total.
          Calculul apare de două ori (coloana „Calcul” pe ecran lat și la tipar, rândul mic .calc-m pe telefon): scrie-l în ambele locuri.
          Verifică aritmetica de două ori. -->
     <table>
       <thead><tr><th scope="col">Ce primiți</th><th scope="col" class="n calc">Calcul</th><th scope="col" class="n">Total</th></tr></thead>
       <tbody>
         <tr><td>Evaluarea echipei<small>10 oameni, cu rezumatul echipei</small><small class="calc-m">10 × 50 EUR</small></td><td class="n calc">10 × 50 EUR</td><td class="n">500 EUR + TVA</td></tr>
-        <tr><td>Workshopul<small>2 zile, la sediul vostru, cu materialele incluse</small><small class="calc-m">2 × 2.000 EUR</small></td><td class="n calc">2 × 2.000 EUR</td><td class="n">4.000 EUR + TVA</td></tr>
+        <tr class="are-incluse"><td>Workshopul<small>2 zile, la sediul vostru, cu materialele incluse</small><small class="calc-m">2 × 2.000 EUR</small></td><td class="n calc">2 × 2.000 EUR</td><td class="n">4.000 EUR + TVA</td></tr>
+        <!-- ANA: sub rândul de care țin, ce mai primește clientul în pachet (materiale, ghiduri, suporturi): câte un rând <tr class="inclus">, cu „inclus” și „0 EUR”; ultimul are clasa „inclus ultim”, iar rândul de deasupra primește class="are-incluse". Doar ce a confirmat Alex. Dacă nu sunt, șterge rândurile și clasa. -->
+        <tr class="inclus"><td>Formatul de ședință pentru decizii</td><td class="n calc">inclus</td><td class="n">0 EUR</td></tr>
+        <tr class="inclus"><td>Fișele de lucru din workshop</td><td class="n calc">inclus</td><td class="n">0 EUR</td></tr>
+        <tr class="inclus"><td>Ghidul pentru ședințele de decizie</td><td class="n calc">inclus</td><td class="n">0 EUR</td></tr>
+        <tr class="inclus ultim"><td>Suporturile din workshop</td><td class="n calc">inclus</td><td class="n">0 EUR</td></tr>
         <tr><td>Follow-up<small>o sesiune online de 3 ore, după o lună</small><small class="calc-m">1 × 1.000 EUR</small></td><td class="n calc">1 × 1.000 EUR</td><td class="n">1.000 EUR + TVA</td></tr>
       </tbody>
     </table>
-    <!-- ANA: totalul: suma rândurilor de mai sus. Apare o singură dată în ofertă. -->
+    <!-- ANA: totalul: suma rândurilor de mai sus (rândurile „inclus” au 0 EUR). Apare o singură dată în ofertă. -->
     <div class="total"><span class="cap">Total</span><span class="suma">5.500 EUR<small>+ TVA</small></span></div>
     <!-- ANA: opțional, prețul pe participant, dacă ajută la înțelegere. Altfel șterge paragraful. -->
     <p class="notamica">Înseamnă 550 EUR + TVA pe participant, cu tot programul inclus.</p>
