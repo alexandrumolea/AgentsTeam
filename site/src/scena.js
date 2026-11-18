@@ -563,8 +563,8 @@ function start(THREE, RoomEnvironment){
         o.m.rotation.set(0.08, (-0.6 + (reduce ? 0 : Math.sin(t * Math.PI * 2 / 14 + j) * 0.15)) * (1 - e), 0);
         if (lensDot) lensDot.position.z = LENS * (reduce ? 0.2 : 0.16 + 0.06 * e); // fără sticlă cu transmisie, punctul stă chiar pe fața lentilei (manualul: 0,1 D, sub suprafață) lensDot.scale.setScalar(reduce ? 1 : 1 + 0.5 * e);
       } else o.m.rotation.y = reduce ? 0 : Math.sin(t * 0.3 + j * 1.7) * 0.32 * (o.k === 'knowledge' && know ? 0.3 : 1);
-      // numărul de reper: mereu, dacă obiectul e în față; numele: doar la hover, Tab, atingere sau când e ales
-      const front = items.length <= 3 ? 1 : Math.cos(a), show = hide < 0.1 && front > -0.45;
+      // numărul de reper: mereu, dacă obiectul e în față (cu cel mult 4 obiecte, la toate: cel din spate rămânea fără număr, Alex 2026-11-18); numele: doar la hover, Tab, atingere sau când e ales
+      const front = items.length <= 4 ? 1 : Math.cos(a), show = hide < 0.1 && front > -0.45;
       // discul stă în afara obiectului, pe direcția dinspre centrul orbitei (în sus), legat cu o linie de reper, ca în mostră
       const pc = toScreen(o.holder, zero), rpx = Math.hypot(...(p => [p.x - pc.x, p.y - pc.y])(toScreen(o.holder, rimOff)));
       let dx = pc.x - ctr.x, dy = pc.y - ctr.y - 140; const dl = Math.hypot(dx, dy) || 1; dx /= dl; dy /= dl;
