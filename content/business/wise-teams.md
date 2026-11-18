@@ -4,7 +4,7 @@
 nume: "Wise Teams"
 ordine: 2
 nevoie: ""   # o propoziție: ce nevoie rezolvă, pe limba vizitatorului
-rol: "Partener"   # rolul lui Alex în business (Alex, 2026-11-16)
+rol: "Fondator"   # rolul lui Alex în business (Alex, 2026-11-18, D-064; înainte „Partener”)
 link: ""     # site-ul business-ului (https://...)
 pod: ""      # ce pod construiește (D-028), o propoziție
 nevoi: []    # 1-3 slug-uri din content/nevoi.yml
