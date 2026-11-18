@@ -6,7 +6,7 @@
 # `titlu`: tab-ul primei pagini. `titlu_scurt`: în tab-ul paginilor, după numele paginii („Coaching · Alex”).
 titlu: "Alex · Atelier de învățare"
 titlu_scurt: "Alex"
-descriere: "Construiesc unelte pentru oameni care vor să crească. Sunt Alex: coach, fondator și inventator în educație."
+descriere: "Construiesc unelte pentru oameni care vor să crească. Sunt Alex: coach, fondator și inventator în domeniul educației."
 
 # Domeniul propriu, fără https:// (ex.: alex.ro). Gol = adresa GitHub Pages.
 # Completat → build-ul scrie fișierul CNAME. Domeniul se setează și în GitHub: Settings → Pages → Custom domain.
@@ -28,7 +28,7 @@ intro:
   marca_scurta: "Alex · Atelier"        # colțul pe telefon
   titlu: "Construiesc unelte pentru oameni care"
   titlu_accent: "vor să crească."
-  cine: "Sunt Alex: coach, fondator și inventator în educație."
+  cine: "Sunt Alex: coach, fondator și inventator în domeniul educației."
   # Inscripția misiunii, cuvintele lui Alex (misiunea v2, 2026-11-15, D-039). Citatul intact apare doar aici și în Despre.
   inscriptie:
     - "Învățarea ca sursă a binelui."
