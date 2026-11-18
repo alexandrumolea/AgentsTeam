@@ -42,6 +42,8 @@ O ofertă bună nu e o listă de prețuri. E răspunsul la întrebarea clientulu
 - [ ] Nimic din ofertă nu ajunge în repo-ul public.
 
 ## 6. Lecții (cu dată, generale)
+- 2026-11-18: Brandul implicit al ofertelor e „BEMORE Learning Studio” (D-073), cu fundalul de pe site și poza lui Alex în lentilă la final. Șablonul vizual îl face Ioana; Ana îl folosește.
+- 2026-11-18: Rapoartele CliftonStrengths pot fi în engleză sau în română (Alex). Nu scrie „doar în engleză”.
 - 2026-11-18: Alex vrea „+ TVA” la fiecare sumă sau mențiunea clară că oferta nu include TVA.
 - 2026-11-18: Alex vrea ofertele să „sune a sales”: pornesc din problema clientului și din ce s-a dovedit deja, nu din lista de produse.
 - 2026-11-18: Când varianta e aleasă, nu mai oferim alternative; prezentăm alegerea ca recomandare clară.
