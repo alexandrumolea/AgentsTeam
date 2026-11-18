@@ -544,7 +544,7 @@ body.page > .top{position:sticky;z-index:5}
 /* ---------- Contact: capsula de pe toate paginile (propunerea A a Ioanei, team/ioana/documente/contact-propuneri-v1.html) ----------
    Un buton de sticlă, „Contact”, în același colț; la apăsare, panoul cu iconițele (popover nativ, fără JavaScript).
    Pe prima pagină stă lângă misiune, jos în dreapta; pe paginile interioare plutește jos în dreapta;
-   pe telefon e tot jos în dreapta, iar panoul urcă de jos. Pe pagină se văd doar iconițele, fără adrese. */
+   pe telefon e tot jos în dreapta (pe prima pagină, sub drumuri), iar panoul urcă de jos. Pe pagină se văd doar iconițele, fără adrese. */
 body{--cap-r:max(var(--gut),calc((100% - 1200px) / 2));--cap-b:24px;--sora:linear-gradient(135deg,var(--cer) 0%,var(--lavanda) 52%,var(--piersica) 82%,var(--portocaliu) 100%)}
 body.home{--cap-r:40px;--cap-b:40px}
 body.page{padding-bottom:72px} /* finalul paginii nu rămâne sub capsulă */
@@ -591,8 +591,7 @@ body:has(.contact:popover-open) .capsula{opacity:0;pointer-events:none}
   body.page{padding-bottom:84px}
   .capsula{min-height:52px;padding:0 20px 0 6px}
   .br .capsula{display:none}
-  .cslot{display:flex;justify-content:flex-end;margin-top:auto}
-  .cslot + .roads{margin-top:0}
+  .cslot{display:flex;justify-content:flex-end;order:1} /* la baza paginii, sub drumuri (Alex, 2026-11-18) */
   body.sheet .cslot,body.open .cslot{display:none}
   .contact{inset:auto 12px max(12px,env(safe-area-inset-bottom)) 12px;width:auto;max-width:none;max-height:calc(100% - 24px);padding:18px 20px 20px;transform-origin:50% 100%;transform:translateY(24px)}
   @starting-style{.contact:popover-open{opacity:0;transform:translateY(24px)}}

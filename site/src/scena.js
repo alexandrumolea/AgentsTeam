@@ -150,11 +150,12 @@ else {
 
 function start(THREE, RoomEnvironment){
   const canvas = $('#gl');
-  const low = coarse && ((navigator.deviceMemory || 4) <= 4 || (navigator.hardwareConcurrency || 8) <= 4);
+  // „slab” doar când telefonul o spune clar (Safari nu dă deviceMemory: înainte, orice iPhone ieșea „slab” și desena la 1x, pixelat; Alex, 2026-11-18)
+  const low = coarse && ((navigator.deviceMemory || 8) <= 2 || (navigator.hardwareConcurrency || 8) <= 2);
   // canvas transparent: fundalul e gradientul CSS de dedesubt
   const renderer = new THREE.WebGLRenderer({ canvas, antialias: !coarse, alpha: true, powerPreference: 'high-performance' });
   renderer.setClearColor(0x000000, 0);
-  let dpr = Math.min(devicePixelRatio, low ? 1 : coarse ? 1.5 : 2);
+  let dpr = Math.min(devicePixelRatio, low ? 1.5 : 2); // pixelii adaptivi de mai jos coboară rezoluția dacă cadrele devin lente
   renderer.setPixelRatio(dpr);
   renderer.toneMapping = THREE.NoToneMapping; // ACES spală culorile pastel spre alb
 
