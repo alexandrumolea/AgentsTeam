@@ -17,6 +17,7 @@
   - are exemple și povești din practica lui personală, din luna în care și-a adus atenția mai conștient pe subiect.
 - **Masa e panoul Laboratorului.** Fiecare piesă descoperită devine o linie în `privat/cursuri/<curs>/masa.yml`. Spre finalul Laboratorului, piesele trec prin trei pași: **colectate → filtrate → ordonate**. Fluxul: Masa → Biblioteca → Agenda. Ce primește „Da” ajunge în Bibliotecă; ce ordonăm în blocuri face agenda.
 - **Poarta: masa aprobată de Alex.** Fără ea nu se produce nimic.
+- **Laboratorul continuă în paralel cu etapa B** (Alex, 2026-11-18). Poarta deschide producția pentru piesele aprobate, dar practicianul rămâne în imersie: ce descoperă intră pe masă cu verdict „nou”, trece prin aceeași filtrare și, dacă primește „Da”, intră în producție pentru ediția curentă sau pentru următoarea.
 - **Etapa B, producția.** Slide-uri, scheme, curs online, note de trainer, banca de exerciții, numai pentru piesele cu verdict „da”. Butonul „Trimite în agendă” face agenda ediției.
 
 ## Schema
@@ -36,6 +37,7 @@ flowchart LR
     F --> G{Masa aprobată<br/>de Alex?}
     G -- nu --> P
     G -- da --> B[Etapa B: producția<br/>doar piesele „da”] --> L[6. Livrare flexibilă]
+    PR -. continuă în paralel .-> B
   end
   L --> T[7. Feedbackul trainerului] --> R
   L --> C[8. Curs online]
