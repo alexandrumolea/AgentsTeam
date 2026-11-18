@@ -17,3 +17,6 @@ Adăugat: 2026-11-18
 - Mișcarea care durează peste 5 s are pauză din tastatură, nu doar hover.
 - Livrabil: 2 compoziții la 1440 + 390, cu textele și poza reale, plus recomandarea. Model: `team/ioana/documente/despre-compozitie-v1.html`.
 - Legat de [[project-manual-brand]], [[feedback-inovatie-nu-calm]].
+
+2026-11-18 (runda 2): Alex a ales A, dar „background-ul este fragmentat și arată ciudat”: banda cu gradient propriu, cu margini tăiate, peste gradientul paginii. Regula: **un singur câmp de lumină pe toată pagina**. Momentul unei secțiuni îl fac cu lumină care se intensifică (pete radiale mult mai mari decât secțiunea, care se sting înainte de margini), spațiu și lățime, nu cu o bandă. Granulația trebuie să stea deasupra luminii.
+2026-11-18: Linia timpului i s-a părut „nu suficient de imaginativă, dar nu rea”. Varianta nouă: Orbita drumului (cadran la scară, arce cât a durat rolul, numere de reper în discuri de sticlă, formarea pe orbita interioară, lista cu tot textul alături). Aștept alegerea.

@@ -44,7 +44,7 @@ Păstrează sub 150 de rânduri. Comprimă când crește. Fapte, nu povești.
 
 ## Proiecte și referințe
 - [Manual de brand BEMORE](project_manual-brand.md) — 2026-11-17: D-057 Sora = noul BEMORE; §7 lentila Despre; §8 portretul = lentila (D-060)
-- 2026-11-18: Despre ca întreg: `despre-compozitie-v1.html`, A (omul → banda misiunii cu cărțile → linia timpului, recomandat) / B (lentila cu evantai, parcurs la scară). Aștept alegerea lui Alex; Mike construiește.
+- 2026-11-18: Despre ca întreg (`despre-compozitie-v1.html`): Alex a ales A; runda 2 = fond unitar (fără bandă: „fragmentat”) + parcurs ca linie a timpului sau Orbita drumului (recomandat). Aștept alegerea; Mike construiește.
 - [Design v2 și v3](project_design-v2.md) — 2026-11-17: D-054 Sora (font + paletă); v3.1 = 3 prime pagini; aștept alegerea
 - [Culori v1](project_culori-v1.md) — 2026-11-17: diagnostic + A/B/C; înlocuit de design v2 (regulile de sens rămân)
 - [Spațiu v2](project_spatial-v2.md) — prototipul curent; deschise: rândurile din Live, propoziția „pod”, test pe telefon
