@@ -35,10 +35,10 @@
   - **exerciții**;
   - **knowledge bites**: bucăți scurte de cunoaștere, de exemplu un model, un studiu, o idee;
   - **experiences**: experiențe și povești din practica practicianului și din dezbateri.
-- Fiecare piesă e o linie în `privat/cursuri/<curs>/masa.yml`, cu verdict „nou”. Le adaugă practicianul, Irina (din research, plus nota de surse `research.md`) și Daria (din obiective și diagnostic).
+- Fiecare piesă e o linie în `privat/cursuri/<curs>/harvest.yml`, cu verdict „nou”. Le adaugă practicianul, Irina (din research, plus nota de surse `research.md`) și Daria (din obiective și diagnostic).
 
 ### Etapa C · Harvest, Curate, Flow
-Panoul acestei etape e vederea **Harvest** din materialul trainerului (fostă „Masa”; fișierul rămâne `masa.yml`).
+Panoul acestei etape e vederea **Harvest** din materialul trainerului (fostă „Masa”; fișierul `harvest.yml`, fost `masa.yml`).
 1. **Harvest:** toate piesele din Laborator, dintr-o privire.
 2. **Curate:** alegem ce e suficient de actual și cu sens ca să rămână în Bibliotecă. Alex dă Da / Poate / Nu.
 3. **Flow:** începem firul roșu. Piesele „da” se așază în cele 4 blocuri ale zilei. Daria verifică timpii (fiecare bloc încape) și că fiecare obiectiv are cel puțin o piesă. Andrei verifică firul înainte să ajungă la Alex.
@@ -90,11 +90,11 @@ Pauzele de 15 minute sunt presupunerea noastră; Alex le poate corecta.
 ## Pașii
 | # | Pas | Ce iese | DRI | Alex |
 |---|---|---|---|---|
-| 1 | **Research** | modele, studii, exemple cu surse în `research.md` + piese candidate în `masa.yml` | Irina | citește rezumatul de 5 rânduri |
+| 1 | **Research** | modele, studii, exemple cu surse în `research.md` + piese candidate în `harvest.yml` | Irina | citește rezumatul de 5 rânduri |
 | 2 | **Diagnosticare** (la fiecare ediție) | chestionar anonim de 3–5 întrebări înainte + o piesă de diagnostic la deschidere. Rezumatul, fără nume, în `editii/<data>.yml` (`nota_trainer`) | Daria | aprobă și **trimite** chestionarul |
 | 2b | **Practicianul în Laborator** (~o lună, în paralel cu 1–5) | trainerul care va livra învață, observă și dezbate cu partenerii de gândire (AI, oameni din publicul țintă, peers); descoperirile, exemplele și poveștile din practica lui intră pe masă ca piese candidate (`sursa: practică` / `conversație`), fără nume | trainerul care livrează (azi Alex). Daria le notează pe masă | trăiește subiectul, spune ce a aflat |
 | 3 | **Viziune și obiective** (A) | **Viziunea:** transformarea dorită, într-o propoziție clară și simplă (Alex, 2026-11-18). **Obiectivele:** cel mult 4, scurte, care duc spre viziune. Ambele în `curs.yml` (sau în ediție) | Daria | formulează viziunea, aprobă lista |
-| 4 | **Harvest și Curate** (B → C) | piesele din Laborator în `masa.yml`, apoi alese pentru Bibliotecă | Daria (Irina) | dă verdictele |
+| 4 | **Harvest și Curate** (B → C) | piesele din Laborator în `harvest.yml`, apoi alese pentru Bibliotecă | Daria (Irina) | dă verdictele |
 | 5 | **Flow: firul roșu** (C) | piesele „da” ordonate în cele 4 blocuri | Daria. Andrei verifică | ordonează și **aprobă firul roșu** |
 | – | **Producția** (D) | `piese/<id>.md` cu ecrane (`:::sala`), scheme, note de trainer; „Trimite în agendă” face `agenda` din `editii/<data>.yml` | Matei (Daria, Irina) | Biblioteca de piese, vederile Ziua și Schița |
 | 6 | **Livrare flexibilă** | ziua în sală; alternativele și Biblioteca permit schimbări | Alex. Mike pentru generator | – |
@@ -109,7 +109,7 @@ Pauzele de 15 minute sunt presupunerea noastră; Alex le poate corecta.
 Pe masă intră ca orice piesă, cu `sursa: comun`.
 
 ## Ce e deja făcut în Change Agility
-Modulul „Toleranță și capacitate”, contractul și closing-urile au fost produse înainte de regula din 2026-11-18. Rămân. La primul harvest intră și ele în `masa.yml`, ca piese deja produse, și trec prin verdict și ordonare ca toate celelalte.
+Modulul „Toleranță și capacitate”, contractul și closing-urile au fost produse înainte de regula din 2026-11-18. Rămân. La primul harvest intră și ele în `harvest.yml`, ca piese deja produse, și trec prin verdict și ordonare ca toate celelalte.
 
 ## Feedbackul trainerului (`editii/<data>-trainer.md`)
 1. Ce a mers? 2. Ce a lipsit sau a mers greu? 3. Ce piese schimb, scot sau adaug? 4. Ce obiective s-au atins? 5. Ce am aflat despre grup și n-am știut din diagnostic?
@@ -124,7 +124,7 @@ Modulul „Toleranță și capacitate”, contractul și closing-urile au fost p
 - În Laborator agenții nu produc slide-uri, scheme sau ecrane.
 
 ## Ce mai trebuie ca procesul să meargă
-1. Vederea „Harvest” (fostă „Masa”) și butonul „Trimite în agendă”. **DRI: Mike** (gata; redenumirea în lucru, 2026-11-18).
+1. Vederea „Harvest” (fostă „Masa”) și butonul „Trimite în agendă”. **DRI: Mike** (gata; redenumită Harvest, fișierul harvest.yml, 2026-11-18).
 2. Formularul de feedback și chestionarul: unealta o alege Alex. **DRI: Daria**.
 3. Șablonul `editii/<data>-trainer.md` și `privat/concluzii-feedback.md`. **DRI: Andrei**.
 4. Primul test complet: harvest-ul și firul roșu pentru Change Agility, apoi ediția din 23 noiembrie. **DRI: Andrei**, cu Elena la retro.

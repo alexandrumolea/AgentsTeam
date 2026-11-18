@@ -6,7 +6,7 @@ Folderul unui curs (un fișier `.md` pe modul, piesele de workshop în `piese/`,
 | Ieșirea | Fișierul | Pentru cine |
 |---|---|---|
 | Cursul participanților | `<slug>-participanti.json` | site-ul, mai târziu, prin PR aprobat de Alex. Se face **dintr-o ediție**: modulele și piesele singure din agendă, în ordinea ei, doar cu piesele folosite care au `in_curs: da`. Fără `:::trainer`, `:::sala`, schiță, pauze, biblioteca nefolosită |
-| Materialul trainerului | `<slug>-trainer.html` | Alex. Un singur fișier, merge fără internet: vederile **Masa** (panoul de control, prima vedere), Ziua, Modulul, Schița, **Biblioteca de piese** (toate piesele, cu căutare și filtre) și **Prezintă**. Ziua și Schița arată totalul zilei și cât rămâne din `durata_zi` |
+| Materialul trainerului | `<slug>-trainer.html` | Alex. Un singur fișier, merge fără internet: vederile **Harvest** (panoul de control, prima vedere), Ziua, Modulul, Schița, **Biblioteca de piese** (toate piesele, cu căutare și filtre) și **Prezintă**. Ziua și Schița arată totalul zilei și cât rămâne din `durata_zi` |
 | PDF-uri (cu `--pdf`) | `<slug>-trainer.pdf`, `<slug>-ecrane.pdf` | plasa de siguranță: hârtie și ecranele din sală, câte unul pe pagină |
 
 ## Cum rulezi
@@ -68,20 +68,22 @@ Primul ecran al fiecărui modul (numărul și titlul) se face singur. O pauză p
 - **Unde se văd:** în Ziua și Schiță, un cap pe fiecare bloc cu „X din Y min” și „liber” / „plin” / „depășire” (marcată); pauza fixă e un rând (și un ecran de pauză cu cronometru, în banda zilei și în vederea Ecrane). Id-ul ecranului ține de oră: `pauza-11-00#pauza`, deci nu mută id-urile `pauza#k` ale rândurilor `pauza: N`, care rămân pauze suplimentare.
 - „Copiază pentru ediție” (1.12) scrie pauza fixă ca `- bloc: N`, ca agenda copiată să păstreze blocurile.
 
-### Masa: panoul de control al cursului (Alex, 2026-11-18)
+### Harvest: panoul de control al cursului (Alex, 2026-11-18)
 
-Fluxul: **Masa → Biblioteca → Agenda**. „Masa este înainte să decidem ce rămâne sau nu în bibliotecă. Este rezultatul brainstorming-urilor. Apoi tot ce filtrăm ajunge și în bibliotecă, apoi tot ce ordonăm creează agenda.” Întâi conținutul, apoi producția (slide-uri, curs online).
+> Din 2026-11-18 vederea se numește Harvest (înainte: Masa), iar fișierul cursului e `harvest.yml` (înainte: `masa.yml`). Un curs care are doar `masa.yml` merge mai departe: build-ul îl citește, editorul scrie în el, iar build-ul dă avertismentul „redenumește masa.yml în harvest.yml”. Dacă le are pe amândouă, contează `harvest.yml`. În cod rămân numele vechi (`lib/masa.mjs`, `lib/masa.js`, `#masa`, `masa-*`, `/api/masa`).
 
-- **Sursa:** `masa.yml` în folderul cursului, o listă `candidate:` de obiecte mici: `id`, `titlu`, `scop`, `durata`, `tip`, `sursa` (Irina, Alex, bibliotecă…), `verdict` (nou / da / poate / nu), `bloc` (1, 2… sau gol), `ordine`; opțional `obiective`, `nota`. Fără text de slide. Exemplul: `exemple/change-agility-exemplu/masa.yml`.
-- **O singură listă:** o piesă care are deja fișier în `piese/`, dar nu e pe masă (piesele vechi), apare pe masă cu „Da”, adică în Bibliotecă. Intră în `masa.yml` la prima schimbare din editor (sau cu „Copiază masa.yml”).
-- **Masa e prima vedere**, la deschidere, și în editor, și în fișierul offline (când cursul nu are încă `masa.yml`, arată o propunere).
-- **Rezumatul de sus** (fiecare cifră e un link): masa (noi / poate / nu), Biblioteca (piese, produse, de produs → Biblioteca filtrată), agenda de pe masă (piese, minute din timpul blocurilor, „B1 85/90”… → Ziua, la bloc), obiectivele (câte piese din agendă servesc fiecare; unul neacoperit e marcat → Schița), ediția (agenda e la zi cu ordinea de pe masă sau diferă, cu „Trimite în agendă”). Obiectivele unei piese vin din masă și din fișierul ei.
-- **Trei coloane, cele trei etape:** **1 · Brainstorming** (nou; „Poate” rămâne pe masă, separat; „Nu” se ascunde, cu „Arată și Nu”), **2 · Bibliotecă** („Da”, produse sau de produs), **3 · Agendă** (blocurile zilei, cu pauzele fixe între ele și „X din Y min”, recalculat pe loc, și în timpul tragerii). Cartonașe compacte: titlu, scop pe un rând, durată, tip, sursa, „produsă”.
+Fluxul: **Harvest → Curate → Flow**, iar rezultatul e **firul roșu** (agenda ordonată). „In etapa C facem harvest, curate (alegem ce este suficient de actual și cu sens să rămână în librărie), flow (începem să facem un fir roșu). Finalul de aici este firul roșu.” Harvest: tot ce iese din Laborator (exerciții, knowledge bites, experiences). Curate: ce e suficient de actual și cu sens rămâne în Bibliotecă. Flow: firul roșu al zilei, pe blocuri. Întâi conținutul, apoi producția (slide-uri, curs online).
+
+- **Sursa:** `harvest.yml` în folderul cursului, o listă `candidate:` de obiecte mici: `id`, `titlu`, `scop`, `durata`, `tip`, `sursa` (Irina, Alex, bibliotecă…), `verdict` (nou / da / poate / nu), `bloc` (1, 2… sau gol), `ordine`; opțional `obiective`, `nota`. Fără text de slide. Exemplul: `exemple/change-agility-exemplu/masa.yml`.
+- **O singură listă:** o piesă care are deja fișier în `piese/`, dar nu e în Harvest (piesele vechi), apare în Harvest cu „Da”, adică în Bibliotecă. Intră în `harvest.yml` la prima schimbare din editor (sau cu „Copiază harvest.yml”).
+- **Harvest e prima vedere**, la deschidere, și în editor, și în fișierul offline (când cursul nu are încă `harvest.yml`, arată o propunere).
+- **Rezumatul de sus** (fiecare cifră e un link): Harvest (noi / poate / nu), Biblioteca (piese, produse, de produs → Biblioteca filtrată), firul roșu (piese, minute din timpul blocurilor, „B1 85/90”… → Ziua, la bloc), obiectivele (câte piese din agendă servesc fiecare; unul neacoperit e marcat → Schița), ediția (agenda e la zi cu firul roșu sau diferă, cu „Trimite în agendă”). Obiectivele unei piese vin din Harvest și din fișierul ei.
+- **Trei coloane, cele trei etape:** **1 · Harvest** (nou; „Poate” rămâne în Harvest, separat; „Nu” se ascunde, cu „Arată și Nu”), **2 · Curate** („Da”: rămâne în Bibliotecă, produs sau de produs), **3 · Flow** (firul roșu: blocurile zilei, cu pauzele fixe între ele și „X din Y min”, recalculat pe loc, și în timpul tragerii). Cartonașe compacte: titlu, scop pe un rând, durată, tip, sursa, „produsă”.
 - **Cum lucrezi:** Da / Poate / Nu pe cartonaș; tragere în și între liste (mouse de oriunde, deget de pe mânerul ⠿); pe cartonașul selectat: `D` `P` `N`, `1`–`4` (în blocul ales), `0` (scoate din bloc), `↑` `↓` (mută în Agendă, și peste granița blocului). Tras în Bibliotecă = „Da”; tras într-un bloc = „Da” dacă era nou.
-- **Biblioteca de piese** arată și piesele cu „Da” de pe masă care nu au încă fișier: titlu, scop, durată, marcate **„de produs”**, fără ecrane și fără „Prezintă” (filtrul „Stare”). Se actualizează la build (în editor, la reîncărcarea paginii).
-- **Salvarea:** în **editorul local**, fiecare schimbare se scrie direct în `masa.yml` (același server, același token; comentariile din fișier rămân; copie în `.editor-istoric/`; dacă fișierul s-a schimbat pe disc, nu suprascrie), apoi materialul se reface. În **fișierul offline**, schimbările stau în browser (rezistă la refresh; „Resetează” revine la fișier), iar „Copiază masa.yml” dă fișierul întreg. Fără `masa.yml`, în editor, butonul „Creează masa.yml” scrie propunerea.
+- **Biblioteca de piese** arată și piesele cu „Da” din Harvest care nu au încă fișier: titlu, scop, durată, marcate **„de produs”**, fără ecrane și fără „Prezintă” (filtrul „Stare”). Se actualizează la build (în editor, la reîncărcarea paginii).
+- **Salvarea:** în **editorul local**, fiecare schimbare se scrie direct în `harvest.yml` (același server, același token; comentariile din fișier rămân; copie în `.editor-istoric/`; dacă fișierul s-a schimbat pe disc, nu suprascrie), apoi materialul se reface. În **fișierul offline**, schimbările stau în browser (rezistă la refresh; „Resetează” revine la fișier), iar „Copiază harvest.yml” dă fișierul întreg. Fără `harvest.yml`, în editor, butonul „Creează harvest.yml” scrie propunerea.
 - **„Trimite în agendă”:** din blocurile Agendei, piesele cu „Da” care au fișier produs devin agenda ediției (cu `- bloc: N` între blocuri); celelalte sunt listate: „de produs” (Da, fără fișier) și „nehotărâte” (Poate). În editor scrie doar cheia `agenda:` din `editii/<data>.yml` (restul ediției rămâne identic, verificat), cu copie de siguranță, și reface materialul; offline, copiază blocul. Pauzele suplimentare (`pauza: N`) nu sunt candidate: le adaugi în agendă după.
-- **Ce oprește build-ul:** id dublat sau cu alte caractere decât litere mici, cifre, cratimă; verdict necunoscut; durată care nu e număr; YAML greșit. Un bloc care nu există azi și un tip necunoscut dau doar avertisment. Masa nu intră în cursul participanților.
+- **Ce oprește build-ul:** id dublat sau cu alte caractere decât litere mici, cifre, cratimă; verdict necunoscut; durată care nu e număr; YAML greșit. Un bloc care nu există azi și un tip necunoscut dau doar avertisment. Harvest nu intră în cursul participanților.
 
 ### „Prezintă” din Bibliotecă (1.12, Alex, 2026-11-17)
 
@@ -171,8 +173,8 @@ Culorile și litera stau doar în teme (tokeni): `tema/innersis.css` (Innersis I
 |---|---|
 | `build.mjs` | linia de comandă: citește, verifică, scrie, face PDF-urile |
 | `lib/sursa.mjs` | citește `curs.yml`, ediția, modulele și piesele; agenda, pauzele fixe, blocurile, orele și totalurile; verificările pe sursă; `desfasoara()` pune piesele în modul |
-| `lib/masa.mjs` | `masa.yml`: citire și verificare, propunerea de pornire, „Trimite în agendă”, scrierea din editor |
-| `lib/masa.js` | vederea Masa, în browser (offline și în editor) |
+| `lib/masa.mjs` | `harvest.yml`: citire și verificare, propunerea de pornire, „Trimite în agendă”, scrierea din editor |
+| `lib/masa.js` | vederea Harvest (`#masa`), în browser (offline și în editor) |
 | `lib/export.mjs` | cursul participanților și verificarea pe rezultat |
 | `lib/trainer.mjs` | materialul trainerului (HTML), ecranele din sală |
 | `lib/prezinta.js` | partea care rulează în browser (vederi, Prezintă, cronometru, tipar) |

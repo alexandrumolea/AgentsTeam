@@ -2,7 +2,7 @@
 //   npm test
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
-import { cpSync, mkdtempSync, readFileSync, writeFileSync, existsSync, rmSync } from 'node:fs';
+import { cpSync, mkdtempSync, readFileSync, writeFileSync, existsSync, rmSync, renameSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { join, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
@@ -442,22 +442,22 @@ test('pauze fixe: id-urile celorlalte ecrane nu se schimbă; ecranul pauzei se p
 // Masa (etapa A, Alex, 2026-11-18)
 import { agendaDinMasa, inlocuiesteAgenda, textAgenda, textMasa } from '../lib/masa.mjs';
 import { parse as parseYaml } from 'yaml';
-const MASA = (f) => (e) => e('masa.yml', f);
+const MASA = (f) => (e) => e('harvest.yml', f);
 test('masa.yml: candidatele ajung în material, cu „produsă” și blocul lor', () => {
   const r = cu(() => {}); ok(r);
   const m = date(r).masa;
-  assert.equal(m.exista, true); assert.equal(m.propunere, false); assert.equal(m.candidate.length, 13, '11 din masa.yml + 2 piese vechi din Bibliotecă');
+  assert.equal(m.exista, true); assert.equal(m.propunere, false); assert.equal(m.candidate.length, 13, '11 din harvest.yml + 2 piese vechi din Bibliotecă');
   const x = Object.fromEntries(m.candidate.map((c) => [c.id, c]));
   assert.deepEqual([x.curba.produsa, x['ridica-te-daca'].produsa, x['harta-emotiilor'].produsa], [true, true, false], 'modul sau piesă = produsă');
   assert.deepEqual(['nou', 'da', 'poate', 'nu'].map((v) => m.candidate.filter((c) => c.verdict === v).length), [2, 8, 2, 1]);
   assert.deepEqual(m.candidate.filter((c) => c.virtuala).map((c) => [c.id, c.verdict, c.bloc]), [['model-curba', 'da', null], ['perechi-curba', 'da', null]], 'piesele cu fișier care nu sunt pe masă intră cu „da” (o singură listă)');
-  assert.match(html(r), /<button data-vedere="masa">Masa<\/button>/);
+  assert.match(html(r), /<button data-vedere="masa">Harvest<\/button>/);
   assert.ok(!exportul(r).includes('Harta emoțiilor'), 'masa nu ajunge în cursul participanților');
 });
 test('masa.yml: lipsa lui nu e eroare; Masa propune din agenda de azi', () => {
   const r2 = cu(MASA(() => 'candidate: []\n')); ok(r2);
   assert.ok(date(r2).masa.candidate.every((c) => c.virtuala && c.verdict === 'da') && date(r2).masa.candidate.length === 6, 'o masă goală are doar piesele din Bibliotecă (fără pauze), nu o propunere');
-  const r3 = cu((e, f) => rmSync(f('masa.yml'))); ok(r3);
+  const r3 = cu((e, f) => rmSync(f('harvest.yml'))); ok(r3);
   const m = date(r3).masa;
   assert.equal(m.propunere, true);
   assert.deepEqual(m.candidate.filter((c) => c.verdict === 'da' && c.bloc).map((c) => [c.id, c.bloc, c.ordine]),
@@ -471,10 +471,21 @@ test('masa.yml: id-uri unice, verdict valid, durata un număr', () => {
   opreste(MASA((s) => s.replace('verdict: poate\n    bloc: 2', 'verdict: poatee\n    bloc: 2')), /verdict „poatee” necunoscut/);
   opreste(MASA((s) => s.replace('durata: 15\n    tip: exercitiu', 'durata: "15 min"\n    tip: exercitiu')), /„durata” e un număr/);
   opreste(MASA((s) => s.replace('id: curba\n', 'id: Curba Mare\n')), /„id” poate avea doar/);
-  opreste(MASA(() => 'candidate: [\n'), /masa.yml: YAML greșit/);
+  opreste(MASA(() => 'candidate: [\n'), /harvest.yml: YAML greșit/);
   const r = cu(MASA((s) => s.replace('bloc: 2\n    ordine: 1', 'bloc: 7\n    ordine: 1'))); ok(r);
   assert.ok(r.avertismente.some((a) => /bloc „7” nu există/.test(a)));
   assert.equal(date(r).masa.candidate.find((c) => c.id === 'pasul-de-luni').bloc, null);
+});
+// harvest.yml (Alex, 2026-11-18); un masa.yml vechi se citește mai departe, cu avertisment
+test('masa.yml vechi: se citește mai departe, cu avertisment, fără eroare', () => {
+  const r = cu((e, f) => renameSync(f('harvest.yml'), f('masa.yml'))); ok(r);
+  assert.equal(date(r).masa.exista, true); assert.equal(date(r).masa.fisier, 'masa.yml'); assert.equal(date(r).masa.candidate.length, 13);
+  assert.ok(r.avertismente.some((a) => /redenumește masa\.yml în harvest\.yml/.test(a)), r.avertismente.join('\n'));
+  // o greșeală din masa.yml vechi oprește build-ul, cu numele lui
+  opreste((e, f) => { renameSync(f('harvest.yml'), f('masa.yml')); writeFileSync(f('masa.yml'), 'candidate: [\n'); }, /masa\.yml: YAML greșit/);
+  const ambele = cu((e, f) => writeFileSync(f('masa.yml'), 'candidate: []\n')); ok(ambele);
+  assert.equal(date(ambele).masa.fisier, 'harvest.yml'); assert.equal(date(ambele).masa.candidate.length, 13, 'harvest.yml câștigă');
+  assert.ok(ambele.avertismente.some((a) => /are și harvest\.yml, deci îl ignor/.test(a)));
 });
 test('Trimite în agendă: da + produsă intră, bloc cu bloc; celelalte sunt listate', () => {
   const r = cu(() => {}); ok(r);
@@ -525,6 +536,6 @@ test('Masa e vederea implicită și are rezumatul; obiectivele intră în date',
   assert.equal(d.obiective.length, 4);
   assert.deepEqual(d.module.filter((m) => m.fixa).map((m) => m.bloc), [1]);
   assert.ok(d.masa.candidate.find((c) => c.id === 'curba').obFisier.includes(1), 'obiectivele din fișier ajung la candidată');
-  const fara = cu((e, f) => rmSync(f('masa.yml'))); ok(fara);
-  assert.ok(html(fara).includes('<section id="masa"'), 'și fără masa.yml, Masa (propunerea) e acolo');
+  const fara = cu((e, f) => rmSync(f('harvest.yml'))); ok(fara);
+  assert.ok(html(fara).includes('<section id="masa"'), 'și fără harvest.yml, Harvest (propunerea) e acolo');
 });

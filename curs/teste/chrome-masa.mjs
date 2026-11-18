@@ -37,14 +37,14 @@ try {
   const col = (id) => b.evaluate(c, `(() => { const li = document.querySelector('.masa-carte[data-id="${id}"]'); if (!li) return null; const s = li.closest('.masa-col'); const ol = li.closest('.masa-lista'); return s.dataset.col + (ol.dataset.bloc ? ':' + ol.dataset.bloc : ol.dataset.lista !== s.dataset.col && ol.dataset.lista !== 'biblioteca' ? '/' + ol.dataset.lista : ''); })()`);
   const rz = () => b.evaluate(c, 'document.getElementById("masa-rezumat").innerText.replace(/\\s+/g, " ")');
   const total = (k) => b.evaluate(c, `document.querySelector('.masa-bloc[data-bloc="${k}"] .masa-bloc-total').textContent`);
-  ok(!(await b.evaluate(c, 'document.getElementById("masa").hidden')) && (await b.evaluate(c, '__curs.stare().vedere')) === 'masa', 'Masa e vederea de la deschidere (fără #)');
-  ok(await b.evaluate(c, '[...document.querySelectorAll(".masa-col > h3")].map(h => h.firstChild.textContent.trim()).join("|")') === '1 · Brainstorming|2 · Bibliotecă|3 · Agendă', 'coloanele sunt cele trei etape: Brainstorming, Bibliotecă, Agendă');
+  ok(!(await b.evaluate(c, 'document.getElementById("masa").hidden')) && (await b.evaluate(c, '__curs.stare().vedere')) === 'masa', 'Harvest (#masa) e vederea de la deschidere (fără #)');
+  ok(await b.evaluate(c, '[...document.querySelectorAll(".masa-col > h3")].map(h => h.firstChild.textContent.trim()).join("|")') === '1 · Harvest|2 · Curate|3 · Flow', 'coloanele sunt cele trei etape: Harvest, Curate, Flow');
   ok((await col('studiu-adaptare')) === 'brainstorming/nou' && (await col('plimbare-curba')) === 'brainstorming/poate' && (await col('model-curba')) === 'biblioteca' && (await col('curba')) === 'agenda:1', '„nou” și „poate” stau pe masă, „da” în Bibliotecă (și piesele vechi, cu fișier), blocurile în Agendă');
   // Rezumatul: panoul de control
   let z = await rz();
-  ok(/Masa 2 noi 2 poate 1 nu/i.test(z) && /Bibliotecă 8 piese 7 produse 1 de produs/i.test(z) && /Agendă 7 piese · 155 din 195 min B1 85\/90 B2 70\/105/i.test(z), `rezumatul: masa, Biblioteca, agenda pe blocuri (${z})`);
+  ok(/Harvest 2 noi 2 poate 1 nu/i.test(z) && /Bibliotecă 8 piese 7 produse 1 de produs/i.test(z) && /Agendă 7 piese · 155 din 195 min B1 85\/90 B2 70\/105/i.test(z), `rezumatul: masa, Biblioteca, agenda pe blocuri (${z})`);
   ok(/Obiective 1 neacoperit 1: 1 2: 1 3: 1 4: 1 5: 0/i.test(z) && await b.evaluate(c, 'document.querySelectorAll(".rz.lipsa").length === 1 && /neacoperit/.test(document.querySelector(".rz.lipsa").title)'), 'obiectivele: câte piese din agendă servesc fiecare; cel neacoperit e marcat');
-  ok(/agenda e la zi cu masa/.test(z) && !(await b.evaluate(c, '!!document.querySelector(\'[data-rz="trimite"]\')')), 'agenda ediției e la zi cu ordinea de pe masă');
+  ok(/agenda e la zi cu firul roșu/.test(z) && !(await b.evaluate(c, '!!document.querySelector(\'[data-rz="trimite"]\')')), 'agenda ediției e la zi cu ordinea de pe masă');
   ok((await col('test-personalitate')) === null, '„Nu” e ascuns');
   ok((await total(1)) === '85 din 90 min' && (await total(2)) === '70 din 105 min', `totalul pe bloc față de timpul disponibil (${await total(1)}; ${await total(2)})`);
   ok(await b.evaluate(c, '/10:30 · Pauză · 15 min/.test(document.querySelector(".masa-pauza").textContent)'), 'pauza fixă stă între blocuri');
@@ -91,7 +91,7 @@ try {
   await b.send('Page.reload', {}, c.sessionId); await pauza(900);
   ok(JSON.stringify(await st()) === JSON.stringify(inainte) && /salvate în acest browser/.test(await b.evaluate(c, 'document.getElementById("masa-stare").textContent')), 'după refresh, masa e cum ai lăsat-o (salvată în browser)');
   z = await rz();
-  ok(/agenda diferă de masă/.test(z) && await b.evaluate(c, '!!document.querySelector(\'[data-rz="trimite"]\')'), 'după schimbări, rezumatul spune că agenda diferă și oferă „Trimite în agendă”');
+  ok(/agenda diferă de firul roșu/.test(z) && await b.evaluate(c, '!!document.querySelector(\'[data-rz="trimite"]\')'), 'după schimbări, rezumatul spune că agenda diferă și oferă „Trimite în agendă”');
   // Cifrele sunt linkuri
   await b.click(c, '[data-rz="de-produs"]');
   ok((await b.evaluate(c, '__curs.stare().vedere')) === 'banca' && (await b.evaluate(c, '[...document.querySelectorAll("details.ex")].filter(a => !a.hidden).map(a => a.id).join()')) === 'ex-harta-emotiilor', '„de produs” duce la Bibliotecă, filtrată pe piesele de produs (cele din build)');
@@ -124,15 +124,15 @@ try {
   console.log('Editorul local (scrie în masa.yml):');
   const e = await b.open(ed.url.replace('#ecrane', '#masa'));
   await b.send('Emulation.setDeviceMetricsOverride', { width: 1360, height: 1700, deviceScaleFactor: 1, mobile: false }, e.sessionId); await pauza(400);
-  const disc = () => Object.fromEntries(parseYaml(readFileSync(join(dirEd, 'masa.yml'), 'utf8')).candidate.map((x) => [x.id, x]));
-  ok(await b.evaluate(e, '!!window.__masaEditor && document.getElementById("masa-copiaza").hidden'), 'în editor, Masa scrie singură (fără „Copiază masa.yml”)');
+  const disc = () => Object.fromEntries(parseYaml(readFileSync(join(dirEd, 'harvest.yml'), 'utf8')).candidate.map((x) => [x.id, x]));
+  ok(await b.evaluate(e, '!!window.__masaEditor && document.getElementById("masa-copiaza").hidden'), 'în editor, Harvest scrie singur (fără „Copiază harvest.yml”)');
   await b.click(e, '.masa-carte[data-id="studiu-adaptare"] button[data-v="poate"]'); await pauza(600);
   ok(disc()['studiu-adaptare'].verdict === 'poate', 'verdictul se scrie direct în masa.yml');
   await b.trage(e, '.masa-carte[data-id="studiu-adaptare"] .mc-titlu', '.masa-carte[data-id="inchidere"] .mc-titlu'); await pauza(700);
   let dd = disc();
   ok(dd['studiu-adaptare'].bloc === 2 && [dd['pasul-de-luni'].ordine, dd['poveste-fuziune'].ordine, dd.inchidere.ordine].concat(dd['studiu-adaptare'].ordine).sort().join() === '1,2,3,4', `tragerea în blocul 2 scrie blocul și ordinea în masa.yml (ordine ${dd['studiu-adaptare'].ordine})`);
-  ok(readFileSync(join(dirEd, 'masa.yml'), 'utf8').startsWith('# [EXEMPLU] Masa'), 'comentariile din masa.yml rămân');
-  ok(/salvat în masa\.yml/.test(await b.evaluate(e, 'document.getElementById("masa-stare").textContent')), 'starea spune că e salvat');
+  ok(readFileSync(join(dirEd, 'harvest.yml'), 'utf8').startsWith('# [EXEMPLU] Harvest'), 'comentariile din harvest.yml rămân');
+  ok(/salvat în harvest\.yml/.test(await b.evaluate(e, 'document.getElementById("masa-stare").textContent')), 'starea spune că e salvat');
   await b.send('Page.reload', {}, e.sessionId); await pauza(900);
   ok((await b.evaluate(e, `document.querySelector('.masa-carte[data-id="studiu-adaptare"]').closest('.masa-lista').dataset.bloc`)) === '2', 'după refresh, pagina citește masa din fișier');
   // Trimite în agendă: scrie în ediție, pagina se reîncarcă cu mesajul

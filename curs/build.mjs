@@ -44,7 +44,7 @@ export function build(folder, { editie, out, pdf = false, log = console.log } = 
   const n = (fel) => c.agenda.filter((r) => r.fel === fel).length;
   const t = c.total, ramas = t.ramas == null ? '' : t.ramas >= 0 ? `, rămân ${t.ramas} min` : `, depășire ${-t.ramas} min`;
   const fixe = c.agenda.filter((r) => r.fixa).length;
-  log(`\nGata: ${c.curs.titlu}${c.editie.data ? `, ediția ${c.editie.data}` : ''}. Agenda: ${n('modul')} module (din ${c.module.length}), ${n('piesa')} piese singure, ${n('pauza') - fixe} pauze${fixe ? ` + ${fixe} fixe` : ''}${c.blocuri.length > 1 ? `, ${c.blocuri.length} blocuri (${c.blocuri.map((b) => `${b.folosit}/${b.disponibil}`).join(', ')} min)` : ''}${c.masa?.exista ? `; masa: ${c.masa.candidate.length} candidate` : ''}; total ${t.agenda} min${ramas}. ${c.piese.size} piese în bibliotecă; ${ecrane} ecrane în sală${ascunse ? ` (${ascunse} ascunse)` : ''}; tema ${caleTema(c.curs.brand).split('/').pop()}.`);
+  log(`\nGata: ${c.curs.titlu}${c.editie.data ? `, ediția ${c.editie.data}` : ''}. Agenda: ${n('modul')} module (din ${c.module.length}), ${n('piesa')} piese singure, ${n('pauza') - fixe} pauze${fixe ? ` + ${fixe} fixe` : ''}${c.blocuri.length > 1 ? `, ${c.blocuri.length} blocuri (${c.blocuri.map((b) => `${b.folosit}/${b.disponibil}`).join(', ')} min)` : ''}${c.masa?.exista ? `; ${c.masa.fisier}: ${c.masa.candidate.length} candidate` : ''}; total ${t.agenda} min${ramas}. ${c.piese.size} piese în bibliotecă; ${ecrane} ecrane în sală${ascunse ? ` (${ascunse} ascunse)` : ''}; tema ${caleTema(c.curs.brand).split('/').pop()}.`);
   for (const f of fisiere) log(`  ${f}`);
   return { ok: true, fisiere, export: exp, avertismente: c.avertismente };
 }

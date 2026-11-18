@@ -7,7 +7,11 @@ import { parse as parseYaml, parseDocument } from 'yaml';
 import { TIPURI_PIESA, ora } from './sursa.mjs';
 import { hash, EroareEditor, copieIstoric } from './editor-sursa.mjs';
 
-export const FISIER = 'masa.yml';
+export const FISIER = 'harvest.yml';
+// Numele vechi (până pe 2026-11-18). Un curs care are doar masa.yml merge mai departe, cu avertisment.
+export const FISIER_VECHI = 'masa.yml';
+/** Fișierul pe care îl citește și îl scrie cursul: harvest.yml; masa.yml doar dacă e singurul. */
+export const fisierMasa = (folder) => (existsSync(join(folder, FISIER)) || !existsSync(join(folder, FISIER_VECHI)) ? FISIER : FISIER_VECHI);
 export const VERDICTE = ['nou', 'da', 'poate', 'nu'];
 const ID_OK = /^[a-z0-9]+(-[a-z0-9]+)*$/;
 const CAMPURI = ['id', 'titlu', 'scop', 'durata', 'tip', 'sursa', 'verdict', 'bloc', 'ordine', 'obiective', 'nota'];
@@ -53,13 +57,15 @@ export function verificaCandidate(lista, c, erori, avertismente, unde = FISIER) 
 
 /** Citește masa.yml. Lipsa fișierului nu e eroare: întoarce o propunere din agenda și biblioteca de azi (nesalvată). */
 export function citesteMasa(c, erori, avertismente) {
-  const cale = join(c.folder, FISIER);
-  if (!existsSync(cale)) return { exista: false, propunere: true, hash: null, candidate: propunere(c) };
+  const fisier = fisierMasa(c.folder), cale = join(c.folder, fisier);
+  if (fisier === FISIER_VECHI) avertismente.push(`${FISIER_VECHI}: redenumește masa.yml în ${FISIER} (vederea se numește Harvest din 2026-11-18). Îl citesc mai departe până atunci`);
+  else if (existsSync(join(c.folder, FISIER_VECHI))) avertismente.push(`${FISIER_VECHI}: cursul are și ${FISIER}, deci îl ignor. Șterge-l după ce verifici că nu mai ai nevoie de el`);
+  if (!existsSync(cale)) return { exista: false, propunere: true, hash: null, fisier, candidate: propunere(c) };
   const text = readFileSync(cale, 'utf8');
   let v;
-  try { v = parseYaml(text) ?? {}; } catch (e) { erori.push(`${FISIER}: YAML greșit (${e.message.split('\n')[0]})`); return { exista: true, propunere: false, hash: hash(text), candidate: [] }; }
-  if (typeof v !== 'object' || Array.isArray(v)) { erori.push(`${FISIER}: are forma „candidate: [ … ]”`); return { exista: true, propunere: false, hash: hash(text), candidate: [] }; }
-  return { exista: true, propunere: false, hash: hash(text), candidate: completeaza(verificaCandidate(v.candidate ?? [], c, erori, avertismente), c) };
+  try { v = parseYaml(text) ?? {}; } catch (e) { erori.push(`${fisier}: YAML greșit (${e.message.split('\n')[0]})`); return { exista: true, propunere: false, hash: hash(text), fisier, candidate: [] }; }
+  if (typeof v !== 'object' || Array.isArray(v)) { erori.push(`${fisier}: are forma „candidate: [ … ]”`); return { exista: true, propunere: false, hash: hash(text), fisier, candidate: [] }; }
+  return { exista: true, propunere: false, hash: hash(text), fisier, candidate: completeaza(verificaCandidate(v.candidate ?? [], c, erori, avertismente, fisier), c) };
 }
 
 /** Obiectivele din fișierul piesei sau al modulului (pentru rezumat; nu se scriu în masa.yml). */
@@ -105,7 +111,7 @@ export function propunere(c) {
 const q = (t) => (/^[\p{L}\p{N} .,;()–-]*$/u.test(t) && !/^[\s-]|\s$|^(da|nu|true|false|null|yes|no)$/i.test(t) && t !== '' && !/^\d/.test(t) ? t : JSON.stringify(t));
 /** masa.yml scris de la zero (propunerea de pornire, „Copiază masa.yml”). Același format îl scrie și vederea din browser. */
 export function textMasa(candidate) {
-  const linii = ['# Masa (etapa A): piesele candidate, înainte de producție. Vederea „Masa” din materialul trainerului le filtrează și le ordonează.',
+  const linii = ['# Harvest (etapa C): piesele candidate, înainte de producție. Vederea „Harvest” din materialul trainerului le alege (Curate) și le ordonează (Flow).',
     '# verdict: nou / da / poate / nu · bloc: 1, 2, 3… (blocurile dintre pauzele fixe) sau gol · fără text de slide aici.', 'candidate:'];
   for (const x of candidate) {
     linii.push(`  - id: ${x.id}`, `    titlu: ${q(x.titlu)}`);
@@ -184,20 +190,20 @@ export function inlocuiesteAgenda(text, bloc) {
  * Verificare de concurență (hash), copie în .editor-istoric/, validare înainte de scriere.
  */
 export function scrieMasa(c, schimbari, hashCitit) {
-  const cale = join(c.folder, FISIER);
-  if (!existsSync(cale)) throw new EroareEditor('Cursul nu are încă masa.yml. Apasă întâi „Creează masa.yml”.', 404);
+  const fisier = fisierMasa(c.folder), cale = join(c.folder, fisier);
+  if (!existsSync(cale)) throw new EroareEditor(`Cursul nu are încă ${FISIER}. Apasă întâi „Creează ${FISIER}”.`, 404);
   const inainte = readFileSync(cale, 'utf8');
-  if (!hashCitit || hash(inainte) !== hashCitit) throw new EroareEditor('masa.yml s-a schimbat pe disc între timp. Nu l-am suprascris: reîncarcă pagina.', 409);
-  if (!Array.isArray(schimbari) || !schimbari.length) return { hash: hashCitit, neschimbat: true };
+  if (!hashCitit || hash(inainte) !== hashCitit) throw new EroareEditor(`${fisier} s-a schimbat pe disc între timp. Nu l-am suprascris: reîncarcă pagina.`, 409);
+  if (!Array.isArray(schimbari) || !schimbari.length) return { hash: hashCitit, neschimbat: true, fisier };
   const doc = parseDocument(inainte);
   const lista = doc.get('candidate');
-  if (!lista || !Array.isArray(lista.items)) throw new EroareEditor('masa.yml nu are lista „candidate”.', 422);
+  if (!lista || !Array.isArray(lista.items)) throw new EroareEditor(`${fisier} nu are lista „candidate”.`, 422);
   for (const s of schimbari) {
     let item = lista.items.find((n) => n && typeof n.get === 'function' && String(n.get('id')) === String(s?.id));
     if (!item) {
       // O piesă din Bibliotecă care nu era încă pe masă (virtuală): intră acum în masa.yml, la final.
       const p = c.piese.get(String(s?.id));
-      if (!p || p.tip === 'pauza') throw new EroareEditor(`nu găsesc candidata „${s?.id}” în masa.yml`, 404);
+      if (!p || p.tip === 'pauza') throw new EroareEditor(`nu găsesc candidata „${s?.id}” în ${fisier}`, 404);
       item = doc.createNode({ id: p.id, titlu: p.titlu, ...(p.obiectiv || p.ancora ? { scop: p.obiectiv || p.ancora } : {}), durata: p.durata, tip: p.tip, sursa: 'bibliotecă', verdict: 'da' });
       lista.items.push(item);
     }
@@ -209,7 +215,7 @@ export function scrieMasa(c, schimbari, hashCitit) {
   const erori = [];
   verificaCandidate(parseYaml(dupa)?.candidate ?? [], c, erori, []);
   if (erori.length) throw new EroareEditor(erori.join('; '), 422);
-  const copie = copieIstoric(c.folder, FISIER);
+  const copie = copieIstoric(c.folder, fisier);
   writeFileSync(cale, dupa);
-  return { hash: hash(dupa), inainte, copie };
+  return { hash: hash(dupa), inainte, copie, fisier };
 }

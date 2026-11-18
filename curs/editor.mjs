@@ -15,7 +15,7 @@ import { citesteCurs } from './lib/sursa.mjs';
 import { ecranul } from './lib/trainer.mjs';
 import { creeazaRandare, escapeHtml } from './lib/randare.mjs';
 import { citesteBloc, scrieBloc, EroareEditor, citesteRef, caleSigura, copieIstoric } from './lib/editor-sursa.mjs';
-import { citesteMasa, scrieMasa, agendaDinMasa, textAgenda, inlocuiesteAgenda, textMasa, propunere, FISIER as MASA } from './lib/masa.mjs';
+import { citesteMasa, scrieMasa, agendaDinMasa, textAgenda, inlocuiesteAgenda, textMasa, propunere, FISIER as MASA, FISIER_VECHI as MASA_VECHI } from './lib/masa.mjs';
 import { mkdirSync, rmSync } from 'node:fs';
 
 const AICI = dirname(fileURLToPath(import.meta.url));
@@ -90,14 +90,15 @@ export async function pornesteEditor({ folder = IMPLICIT, port = 4747, deschide 
   function masaSchimba(date) {
     const c = cursAcum();
     const s = scrieMasa(c, date.schimbari, date.hash);
-    if (s.neschimbat) return { cod: 200, corp: { ok: true, hash: s.hash, neschimbat: true } };
-    const rau = cuBuild(MASA, s.inainte); if (rau) return rau;
+    if (s.neschimbat) return { cod: 200, corp: { ok: true, hash: s.hash, fisier: s.fisier, neschimbat: true } };
+    const rau = cuBuild(s.fisier, s.inainte); if (rau) return rau;
     log(`  masa: ${date.schimbari.length} ${date.schimbari.length === 1 ? 'schimbare' : 'schimbări'}; copie: ${s.copie}`);
-    return { cod: 200, corp: { ok: true, hash: s.hash, copie: s.copie } };
+    return { cod: 200, corp: { ok: true, hash: s.hash, fisier: s.fisier, copie: s.copie } };
   }
   function masaCreeaza() {
     const cale = caleSigura(folder, MASA);
-    if (existsSync(cale)) throw new EroareEditor('masa.yml există deja. Reîncarcă pagina.', 409);
+    const are = [MASA, MASA_VECHI].find((f) => existsSync(caleSigura(folder, f)));
+    if (are) throw new EroareEditor(`${are} există deja. Reîncarcă pagina.`, 409);
     writeFileSync(cale, textMasa(propunere(cursAcum())));
     const rau = cuBuild(MASA, null); if (rau) return rau;
     log(`  masa: am creat ${MASA} din agenda și biblioteca de azi`);
@@ -106,11 +107,11 @@ export async function pornesteEditor({ folder = IMPLICIT, port = 4747, deschide 
   function masaAgenda(date) {
     const c = cursAcum();
     const m = citesteMasa(c, [], []);
-    if (!m.exista) throw new EroareEditor('Cursul nu are încă masa.yml.', 404);
-    if (!date.hash || m.hash !== date.hash) throw new EroareEditor('masa.yml s-a schimbat pe disc între timp. Reîncarcă pagina și încearcă din nou.', 409);
+    if (!m.exista) throw new EroareEditor(`Cursul nu are încă ${MASA}.`, 404);
+    if (!date.hash || m.hash !== date.hash) throw new EroareEditor(`${m.fisier} s-a schimbat pe disc între timp. Reîncarcă pagina și încearcă din nou.`, 409);
     const a = agendaDinMasa(m.candidate, c.blocuri);
     const randuri = a.linii.filter((l) => !l.startsWith('- bloc:')).length;
-    if (!randuri) throw new EroareEditor('Nicio piesă cu „Da” și fișier produs în blocurile din Ordonate; agenda a rămas cum era.', 422);
+    if (!randuri) throw new EroareEditor('Nicio piesă cu „Da” și fișier produs în blocurile din Flow; agenda a rămas cum era.', 422);
     const d = new Date(), azi = `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
     const fisier = `editii/${c.editie.fisier ?? `${azi}.yml`}`;
     const cale = caleSigura(folder, fisier);

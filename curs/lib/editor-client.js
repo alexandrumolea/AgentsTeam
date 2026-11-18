@@ -20,7 +20,7 @@
 
   // ---------- Masa (etapa A, 2026-11-18): lib/masa.js scrie prin editor în masa.yml și în ediție ----------
   window.__masaEditor = {
-    salveaza: function (schimbari, hash) { return api('/api/masa', 'POST', { schimbari: schimbari, hash: hash }).then(function (j) { stare(j._cod === 200 ? ' · salvat în masa.yml' : ''); return j; }); },
+    salveaza: function (schimbari, hash) { return api('/api/masa', 'POST', { schimbari: schimbari, hash: hash }).then(function (j) { stare(j._cod === 200 ? ' · salvat în ' + (j.fisier || 'harvest.yml') : ''); return j; }); },
     agenda: function (hash) { return api('/api/masa/agenda', 'POST', { hash: hash }); },
     creeaza: function () { return api('/api/masa/creeaza', 'POST', {}); },
   };

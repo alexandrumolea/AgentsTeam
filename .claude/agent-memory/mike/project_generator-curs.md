@@ -1,6 +1,6 @@
 ---
 name: project-generator-curs
-description: Generatorul de curs din curs/ (T-022): v1.2 piese (2026-11-17), Prezintă din file://, editor local, pauze fixe și blocuri, vederea Masa (2026-11-18)
+description: Generatorul de curs din curs/ (T-022): v1.2 piese (2026-11-17), Prezintă din file://, editor local, pauze fixe și blocuri, vederea Harvest, fostă Masa (2026-11-18)
 metadata:
   type: project
 ---
@@ -29,4 +29,4 @@ Adăugat: 2026-11-17
 2026-11-18: Masa = `masa.yml` (`candidate:`) + lib/masa.mjs (node) + lib/masa.js (browser, aceleași reguli duplicate: textMasa, agendaDinMasa). Editorul scrie cu `parseDocument` din `yaml` (comentariile rămân); API: /api/masa, /api/masa/creeaza, /api/masa/agenda, toate cu copieIstoric (editor-sursa.mjs) și revenire dacă build-ul pică. Fără masa.yml: propunere din agendă (piesele din module vin cu modulul). Pauzele `pauza: N` nu sunt candidate: „Trimite în agendă” le pierde (documentat).
 2026-11-18: un text în fișierul offline care conține „__EDITOR” sau „editor-client” pică testul „HTML offline fără editor” (și din comentarii). Editorul local care rulează la Alex trebuie repornit după orice schimbare în curs/lib.
 2026-11-18 (după-amiază): Alex: Masa = brainstorming, „da” = Bibliotecă, blocuri = agendă; Masa e panoul de control și vederea implicită. `completeaza()` (masa.mjs) adaugă piesele cu fișier care lipsesc de pe masă ca „da” virtuale (scrieMasa le adaugă în fișier la prima schimbare). Biblioteca: rânduri `.ex-de-produs` (data-stare) din masa, fără ecrane. Rezumatul e în masa.js (`rezumat()`); „la zi” = perechi id@bloc ale pieselor da+produse din blocuri față de DATA.module (are `bloc`). DATA are `obiective`; candidatele au `obFisier`.
-
+2026-11-18 (seară): Masa → **Harvest** (Alex): coloanele Harvest / Curate / Flow, rezultatul = firul roșu. Fișierul e `harvest.yml`; `fisierMasa()` (masa.mjs) cade pe `masa.yml` doar dacă e singurul (avertisment, editorul scrie tot în el; dacă sunt amândouă, câștigă harvest.yml). În cod rămân numele vechi (masa.mjs/js, #masa, masa-*, /api/masa). `M.fisier` duce numele în browser. `node --test teste/` nu merge pe Node 24: rulez fișierele explicit (npm test).

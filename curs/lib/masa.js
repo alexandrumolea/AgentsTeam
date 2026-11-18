@@ -10,6 +10,7 @@
   var M = DATA.masa;
   if (!M || !document.getElementById('masa')) return;
   var $ = function (id) { return document.getElementById(id); };
+  var F = M.fisier || 'harvest.yml'; // fișierul cursului (masa.yml doar la cursurile vechi, cu avertisment la build)
   var BLOCURI = DATA.blocuri && DATA.blocuri.length ? DATA.blocuri : [{ nr: 1, start: DATA.editie.start, sfarsit: null, disponibil: null, pauzaDupa: null }];
   var CHEIE = 'curs:' + DATA.curs.slug + ':masa';
   var CAMPURI = ['verdict', 'bloc', 'ordine'];
@@ -50,7 +51,7 @@
   }
   /** Orice schimbare trece pe aici: o aplicăm, renumerotăm blocurile, salvăm diferențele, redesenăm. */
   function schimba(fn) {
-    if (blocat()) { mesaj('Întâi apasă „Creează masa.yml”: abia apoi se pot salva verdictele și ordinea.'); return; }
+    if (blocat()) { mesaj('Întâi apasă „Creează harvest.yml”: abia apoi se pot salva verdictele și ordinea.'); return; }
     var inainte = poza();
     fn(); renumeroteaza();
     var d = diferente(inainte);
@@ -95,7 +96,7 @@
     editor().salveaza(ordine.map(function (id) { return lot[id]; }), M.hash).then(function (j) {
       inZbor = false;
       if (j._cod !== 200) { coada = []; mesaj((j.eroare || 'Nu s-a salvat.') + (j.erori && j.erori.length ? ' ' + j.erori.join('; ') : ''), true); stare('nesalvat'); return; }
-      M.hash = j.hash; stare('salvat în masa.yml'); trimiteCoada();
+      M.hash = j.hash; stare('salvat în ' + F); trimiteCoada();
     }, function () { inZbor = false; mesaj('Editorul nu răspunde. Fereastra Terminal în care rulează e încă deschisă?', true); stare('nesalvat'); });
   }
   function dupaCoada() {
@@ -112,7 +113,7 @@
     local = null; try { localStorage.removeItem(CHEIE); } catch (e) { /* nimic */ }
     cand.forEach(function (x, i) { CAMPURI.forEach(function (k) { x[k] = M.candidate[i][k]; }); });
     $('masa-text-cutie').hidden = true;
-    renumeroteaza(); randeaza(); mesaj('Masa e din nou cea din masa.yml.');
+    renumeroteaza(); randeaza(); mesaj('Harvest e din nou ca în ' + F + '.');
   }
 
   // ---------- desenul ----------
@@ -159,13 +160,13 @@
     }).join('');
     // Cele trei etape (Alex, 2026-11-18): Brainstorming → Bibliotecă → Agendă. „Poate” rămâne pe masă; „Nu” se ascunde.
     col.innerHTML =
-      '<section class="masa-col" data-col="brainstorming" aria-labelledby="masa-h-b"><h3 class="eticheta" id="masa-h-b">1 · Brainstorming <span class="banca-grup-nr">' + (noi.length + poate.length) + '</span></h3>' +
-      grup(noi, 'nou', '', 'Tot ce a ieșit din brainstorming. Fără verdict încă.', noi) +
-      grup(poate, 'poate', 'Poate', 'Rămân pe masă, nu intră încă în Bibliotecă.', poate) +
+      '<section class="masa-col" data-col="brainstorming" aria-labelledby="masa-h-b"><h3 class="eticheta" id="masa-h-b">1 · Harvest <span class="banca-grup-nr">' + (noi.length + poate.length) + '</span></h3>' +
+      grup(noi, 'nou', '', 'Tot ce a ieșit din Laborator: exerciții, knowledge bites, experiences. Fără verdict încă.', noi) +
+      grup(poate, 'poate', 'Poate', 'Rămân în Harvest, nu intră încă în Bibliotecă.', poate) +
       (respinse ? grup(nu, 'nu', 'Nu', 'Respinse. Nu intră nicăieri.', nu) : '') + '</section>' +
-      '<section class="masa-col" data-col="biblioteca" aria-labelledby="masa-h-l"><h3 class="eticheta" id="masa-h-l">2 · Bibliotecă <span class="banca-grup-nr">' + biblioteca.length + '</span></h3>' +
-      grup(biblioteca, 'biblioteca', '', 'Ce a trecut de filtru („Da”), produs sau de produs. Cele puse în zi stau la Agendă.', biblioteca) + '</section>' +
-      '<section class="masa-col masa-ordonate" data-col="agenda" aria-labelledby="masa-h-o"><h3 class="eticheta" id="masa-h-o">3 · Agendă <span class="banca-grup-nr">' + nOrd + '</span></h3>' + blocuri + '</section>';
+      '<section class="masa-col" data-col="biblioteca" aria-labelledby="masa-h-l"><h3 class="eticheta" id="masa-h-l">2 · Curate <span class="banca-grup-nr">' + biblioteca.length + '</span></h3>' +
+      grup(biblioteca, 'biblioteca', '', 'Ce e suficient de actual și cu sens („Da”) rămâne în Bibliotecă, produs sau de produs. Cele puse în zi stau la Flow.', biblioteca) + '</section>' +
+      '<section class="masa-col masa-ordonate" data-col="agenda" aria-labelledby="masa-h-o"><h3 class="eticheta" id="masa-h-o">3 · Flow <span class="banca-grup-nr">' + nOrd + '</span></h3>' + blocuri + '</section>';
     var r = $('masa-respinse'); r.setAttribute('aria-pressed', respinse ? 'true' : 'false'); r.textContent = respinse ? 'Ascunde „Nu” (' + nu.length + ')' : 'Arată și „Nu” (' + nu.length + ')'; r.disabled = !nu.length && !respinse;
     $('masa-reset').hidden = !!editor() || !local;
     $('masa-agenda').disabled = blocat();
@@ -176,7 +177,7 @@
   function stare(t) {
     if (t != null) ultimaStare = t;
     var s = $('masa-stare'); if (!s) return;
-    s.textContent = editor() ? (M.propunere ? 'propunere, încă fără masa.yml' : ultimaStare || 'se salvează în masa.yml') : local ? 'schimbări salvate în acest browser' : 'ca în masa.yml';
+    s.textContent = editor() ? (M.propunere ? 'propunere, încă fără harvest.yml' : ultimaStare || 'se salvează în ' + F) : local ? 'schimbări salvate în acest browser' : 'ca în ' + F;
   }
 
   // ---------- rezumatul: panoul de control al cursului (Alex, 2026-11-18) ----------
@@ -211,11 +212,11 @@
     var neacoperite = OBIECTIVE.filter(function (t, i) { return !deZi.some(function (x) { return obiectiveDe(x)[i + 1]; }); }).length;
     var sinc = sincronizata();
     z.innerHTML =
-      '<div class="rz-grup"><span class="rz-eticheta">Masa</span>' + b('nou', cifra(n(function (x) { return x.verdict === 'nou' && x.bloc == null; })) + ' noi') + b('poate', cifra(n(function (x) { return x.verdict === 'poate'; })) + ' poate') + b('nu', cifra(n(function (x) { return x.verdict === 'nu'; })) + ' nu') + '</div>' +
+      '<div class="rz-grup"><span class="rz-eticheta">Harvest</span>' + b('nou', cifra(n(function (x) { return x.verdict === 'nou' && x.bloc == null; })) + ' noi') + b('poate', cifra(n(function (x) { return x.verdict === 'poate'; })) + ' poate') + b('nu', cifra(n(function (x) { return x.verdict === 'nu'; })) + ' nu') + '</div>' +
       '<div class="rz-grup"><span class="rz-eticheta">Bibliotecă</span>' + b('biblioteca', cifra(da.length) + ' piese') + b('produse', cifra(prod) + ' produse') + b('de-produs', cifra(da.length - prod) + ' de produs', '', da.length - prod ? 'atentie' : '') + '</div>' +
       '<div class="rz-grup"><span class="rz-eticheta">Agendă</span>' + b('agenda', cifra(inZi.length) + ' piese · ' + cifra(min) + ' din ' + disp + ' min', 'Din ' + (DATA.total && DATA.total.durataZi || 'ziua cursului') + ', fără pauzele fixe') + blocuri + '</div>' +
       (OBIECTIVE.length ? '<div class="rz-grup"><span class="rz-eticheta">Obiective' + (neacoperite ? ' <span class="rz-lipsa">' + neacoperite + ' neacoperit' + (neacoperite === 1 ? '' : 'e') + '</span>' : '') + '</span>' + ob + '</div>' : '') +
-      '<div class="rz-grup"><span class="rz-eticheta">Ediția</span><span class="rz-stare ' + (sinc ? 'ramas' : 'atentie') + '" id="masa-sinc">' + (sinc ? 'agenda e la zi cu masa' : 'agenda diferă de masă') + '</span>' + (sinc ? '' : b('trimite', 'Trimite în agendă', '', 'rz-principal')) + '</div>';
+      '<div class="rz-grup"><span class="rz-eticheta">Ediția</span><span class="rz-stare ' + (sinc ? 'ramas' : 'atentie') + '" id="masa-sinc">' + (sinc ? 'agenda e la zi cu firul roșu' : 'agenda diferă de firul roșu') + '</span>' + (sinc ? '' : b('trimite', 'Trimite în agendă', '', 'rz-principal')) + '</div>';
   }
   function mergiLa(v) { var n = document.querySelector('[data-vedere="' + v + '"]'); if (n) n.click(); window.scrollTo(0, 0); }
   function laRezumat(rz) {
@@ -253,7 +254,7 @@
   var q = function (t) { t = String(t); return /^[\p{L}\p{N} .,;()–-]*$/u.test(t) && !/^[\s-]|\s$|^(da|nu|true|false|null|yes|no)$/i.test(t) && t !== '' && !/^\d/.test(t) ? t : JSON.stringify(t); };
   /** Același format ca lib/masa.mjs (textMasa). */
   function textMasa() {
-    var l = ['# Masa (etapa A): piesele candidate, înainte de producție. Vederea „Masa” din materialul trainerului le filtrează și le ordonează.',
+    var l = ['# Harvest (etapa C): piesele candidate, înainte de producție. Vederea „Harvest” din materialul trainerului le alege (Curate) și le ordonează (Flow).',
       '# verdict: nou / da / poate / nu · bloc: 1, 2, 3… (blocurile dintre pauzele fixe) sau gol · fără text de slide aici.', 'candidate:'];
     cand.forEach(function (x) {
       l.push('  - id: ' + x.id, '    titlu: ' + q(x.titlu));
@@ -297,14 +298,14 @@
   }
   function copiazaMasa() {
     var text = textMasa();
-    arataText('masa.yml, gata de pus în folderul cursului', text);
-    copiaza(text, function () { mesaj('Copiat. Pune textul în masa.yml, în folderul cursului (înlocuiește tot fișierul), apoi rulează build-ul.'); });
+    arataText('harvest.yml, gata de pus în folderul cursului', text);
+    copiaza(text, function () { mesaj('Copiat. Pune textul în harvest.yml, în folderul cursului (înlocuiește tot fișierul' + (F !== 'harvest.yml' ? ' și șterge ' + F : '') + '), apoi rulează build-ul.'); });
   }
   function trimiteInAgenda() {
     var a = agendaDinMasa();
     var rest = (a.deProdus.length ? 'De produs (au „Da”, dar nu au încă fișier în piese/): ' + listaTitluri(a.deProdus) + '. ' : '') +
       (a.nehotarate.length ? 'Nehotărâte („Poate”, nu intră): ' + listaTitluri(a.nehotarate) + '.' : '');
-    if (!a.linii.some(function (l) { return l.indexOf('- bloc:') !== 0; })) { mesaj('Nicio piesă cu „Da” și fișier produs în blocurile din Agendă, deci nu am ce trimite în agendă. ' + rest, true); return; }
+    if (!a.linii.some(function (l) { return l.indexOf('- bloc:') !== 0; })) { mesaj('Nicio piesă cu „Da” și fișier produs în blocurile din Flow, deci nu am ce trimite în agendă. ' + rest, true); return; }
     var ed = editor();
     if (!ed) {
       var d = new Date(), text = 'agenda:                 # din Masa, ' + d.getFullYear() + '-' + pad(d.getMonth() + 1) + '-' + pad(d.getDate()) + '\n' + a.linii.map(function (l) { return '  ' + l; }).join('\n') + '\n' +
@@ -315,7 +316,7 @@
       return;
     }
     if (blocat()) return;
-    if (!confirm('Înlocuiești agenda din editii/' + (M.editie || 'ediția nouă') + ' cu cea din Masa (' + a.linii.filter(function (l) { return l.indexOf('- bloc:') !== 0; }).length + ' rânduri)? Versiunea veche rămâne în .editor-istoric/.')) return;
+    if (!confirm('Înlocuiești agenda din editii/' + (M.editie || 'ediția nouă') + ' cu firul roșu din Harvest (' + a.linii.filter(function (l) { return l.indexOf('- bloc:') !== 0; }).length + ' rânduri)? Versiunea veche rămâne în .editor-istoric/.')) return;
     mesaj('Trimit în agendă…');
     dupaCoada().then(function () { return ed.agenda(M.hash); }).then(function (j) {
       if (j._cod !== 200) { mesaj((j.eroare || 'Nu am putut scrie agenda.') + (j.erori && j.erori.length ? ' ' + j.erori.join('; ') : ''), true); return; }
@@ -331,13 +332,13 @@
     var p = $('masa-propunere');
     if (M.propunere) {
       p.hidden = false;
-      p.innerHTML = 'Cursul nu are încă <code>masa.yml</code>. Ce vezi e o propunere: piesele din agenda de azi (cu „Da”, în blocurile lor) și restul bibliotecii (cu „Da”, în Bibliotecă). ' +
-        (editor() ? '<button type="button" class="principal" id="masa-creeaza">Creează masa.yml</button>' : 'Lucrezi în acest browser; „Copiază masa.yml” îți dă fișierul.');
+      p.innerHTML = 'Cursul nu are încă <code>harvest.yml</code>. Ce vezi e o propunere: piesele din agenda de azi (cu „Da”, în blocurile lor) și restul bibliotecii (cu „Da”, în Bibliotecă). ' +
+        (editor() ? '<button type="button" class="principal" id="masa-creeaza">Creează harvest.yml</button>' : 'Lucrezi în acest browser; „Copiază harvest.yml” îți dă fișierul.');
       if ($('masa-creeaza')) $('masa-creeaza').addEventListener('click', function () {
         this.disabled = true;
         editor().creeaza().then(function (j) {
-          if (j._cod !== 200) { mesaj(j.eroare || 'Nu am putut crea masa.yml.', true); return; }
-          try { sessionStorage.setItem('masa:mesaj', 'Am creat masa.yml. De acum, fiecare schimbare se scrie direct în el.'); } catch (e) { /* nimic */ }
+          if (j._cod !== 200) { mesaj(j.eroare || 'Nu am putut crea harvest.yml.', true); return; }
+          try { sessionStorage.setItem('masa:mesaj', 'Am creat harvest.yml. De acum, fiecare schimbare se scrie direct în el.'); } catch (e) { /* nimic */ }
           location.hash = '#masa'; location.reload();
         });
       });

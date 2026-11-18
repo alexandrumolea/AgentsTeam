@@ -358,7 +358,7 @@ function vedereaBanca(c) {
   const toate = [...c.piese.values()];
   // Fluxul Masa → Biblioteca → Agenda (Alex, 2026-11-18): ce are „Da” pe masă e în Bibliotecă, produs sau nu.
   const deProdus = (c.masa?.candidate ?? []).filter((x) => x.verdict === 'da' && !x.produsa);
-  if (!toate.length && !deProdus.length) return '<h2>Biblioteca de piese</h2><p class="sters">Cursul nu are încă piese în piese/ și nicio piesă cu „Da” pe masă.</p>';
+  if (!toate.length && !deProdus.length) return '<h2>Biblioteca de piese</h2><p class="sters">Cursul nu are încă piese în piese/ și nicio piesă cu „Da” în Harvest.</p>';
   // Unde e folosită azi: rândurile din agendă (pentru oră și titlu), în ordinea agendei. O piesă poate apărea de mai multe ori.
   const azi = new Map();
   c.agenda.forEach((r) => {
@@ -411,7 +411,7 @@ ${x.segmente.map((s) => piesa(s, sursaPiesa(x), randeaza, x.id, c.curs.marca)).j
 <span class="ex-cap"><span class="ex-titlu">${e(x.titlu)}</span>${x.scop ? `<span class="ex-obiectiv">${e(x.scop)}</span>` : ''}</span>
 <span class="ex-meta"><span class="de-produs-semn">de produs</span>${x.tip ? `<span class="ex-tip ex-tip-${e(familie)}">${TIP[x.tip] ?? e(x.tip)}</span>` : ''}</span><span class="ex-semn" aria-hidden="true"></span></span></summary>
 <div class="ex-detalii"><div class="ex-fise">
-<div><p class="eticheta">Pe masă</p><p>Sursa: ${x.sursa ? e(x.sursa) : '<span class="sters">–</span>'}${x.bloc ? ` · blocul ${x.bloc}` : ''}</p></div>
+<div><p class="eticheta">În Harvest</p><p>Sursa: ${x.sursa ? e(x.sursa) : '<span class="sters">–</span>'}${x.bloc ? ` · blocul ${x.bloc}` : ''}</p></div>
 <div><p class="eticheta">De produs</p><p>Nu are încă fișierul <code>piese/${e(x.id)}.md</code>, deci nici ecrane.</p></div>
 ${x.nota ? `<div><p class="eticheta">Notă</p><p>${e(x.nota)}</p></div>` : ''}
 </div></div></details>`;
@@ -440,7 +440,7 @@ ${moduleChip.length ? rand_filtre('Modulul', moduleChip.map((m) => chip('modul',
 <div class="banca-lista">
 ${grup('Azi în agendă', deAzi, `<span class="banca-grup-timp"> · ${minAzi} min, ${Math.round((minAzi / ziua) * 100)}% din zi</span>`)}
 ${grup(deAzi.length ? 'Restul bibliotecii' : 'Toate piesele', rest)}
-${grup('De produs (de pe masă)', deProdus, '', randDeProdus)}
+${grup('De produs (din Harvest)', deProdus, '', randDeProdus)}
 <p class="banca-gol" id="banca-gol" hidden>Nicio piesă nu se potrivește. <button type="button" id="banca-gol-sterge">Șterge filtrele</button></p>
 </div>
 <p class="sters banca-nota">Ca să schimbi o piesă în agendă: editează „agenda” din ediție și rulează din nou build-ul. Orele se recalculează singure.</p>`;
@@ -449,14 +449,14 @@ ${grup('De produs (de pe masă)', deProdus, '', randDeProdus)}
 /** Masa (Alex, 2026-11-18): panoul de control al cursului și prima vedere. Scheletul; rezumatul și cartonașele le face lib/masa.js
  *  din DATA.masa, ca totul să se recalculeze pe loc. Trei coloane, cele trei etape: Brainstorming, Bibliotecă, Agendă. */
 function vedereaMasa(c) {
-  return `<div class="banca-cap"><h2>Masa</h2><p class="sters" id="masa-stare" role="status"></p></div>
-<p class="sters masa-ajutor">Panoul de control al cursului. Fluxul: <b>Masa → Biblioteca → Agenda</b>. Brainstormingul pune candidatele pe masă; „Da” le trece în Bibliotecă (produse sau de produs); ordinea din blocuri face agenda.
+  return `<div class="banca-cap"><h2>Harvest</h2><p class="sters" id="masa-stare" role="status"></p></div>
+<p class="sters masa-ajutor">Panoul de control al cursului. Fluxul: <b>Harvest → Curate → Flow</b>. Harvest: tot ce iese din Laborator (exerciții, knowledge bites, experiences). Curate: ce e suficient de actual și cu sens rămâne în Bibliotecă. Flow: firul roșu al zilei, pe blocuri.
 Trage un cartonaș (pe tabletă, de mânerul ⠿) sau, pe cartonașul selectat: <kbd>D</kbd> da · <kbd>P</kbd> poate · <kbd>N</kbd> nu · <kbd>1</kbd>–<kbd>${c.blocuri.length}</kbd> în blocul ales · <kbd>0</kbd> scoate din bloc · <kbd>↑</kbd> <kbd>↓</kbd> mută în Agendă.</p>
 <div class="masa-rezumat" id="masa-rezumat" aria-label="Rezumatul cursului"></div>
 <p class="masa-propunere" id="masa-propunere" hidden></p>
 <div class="masa-bara">
   <button type="button" id="masa-respinse" aria-pressed="false">Arată și „Nu”</button>
-  <span class="masa-bara-dreapta"><button type="button" id="masa-copiaza">Copiază masa.yml</button><button type="button" id="masa-reset" hidden>Resetează</button><button type="button" id="masa-agenda" class="principal">Trimite în agendă</button></span>
+  <span class="masa-bara-dreapta"><button type="button" id="masa-copiaza">Copiază harvest.yml</button><button type="button" id="masa-reset" hidden>Resetează</button><button type="button" id="masa-agenda" class="principal">Trimite în agendă</button></span>
 </div>
 <p class="mesaj" id="masa-mesaj" role="status"></p>
 <div id="masa-text-cutie" hidden><label class="eticheta" for="masa-text" id="masa-text-eticheta"></label><textarea id="masa-text" rows="8" readonly spellcheck="false"></textarea></div>
@@ -511,7 +511,7 @@ export function construiesteTrainer(c, ecrane = pregatesteEcrane(c).ecrane) {
     blocuri: c.blocuri,
     obiective: c.obiective,
     // Masa (etapa A, Alex, 2026-11-18): candidatele din masa.yml (sau propunerea, dacă fișierul lipsește). Doar în materialul trainerului.
-    masa: c.masa ? { ...c.masa, fisier: 'masa.yml', editie: c.editie.fisier ?? null, data: c.editie.data } : null,
+    masa: c.masa ? { ...c.masa, fisier: c.masa.fisier ?? 'harvest.yml', editie: c.editie.fisier ?? null, data: c.editie.data } : null,
   };
   const titlu = `${c.curs.titlu} · materialul trainerului${c.editie.data ? ' · ' + c.editie.data : ''}`;
   return `<!doctype html>
@@ -527,7 +527,7 @@ export function construiesteTrainer(c, ecrane = pregatesteEcrane(c).ecrane) {
 <header class="bara">
   <div class="bara-titlu">${marcaHtml(c.curs.marca, 'bara-marca')}<h1>${e(c.curs.titlu)} <span class="sters">${c.editie.data ? e(c.editie.data) : ''}</span></h1></div>
   <nav aria-label="Vederi">
-    ${c.masa ? '<button data-vedere="masa">Masa</button>' : ''}
+    ${c.masa ? '<button data-vedere="masa">Harvest</button>' : ''}
     <button data-vedere="ziua">Ziua</button>
     <button data-vedere="modul">Modulul</button>
     <button data-vedere="schita">Schița</button>

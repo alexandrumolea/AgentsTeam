@@ -116,38 +116,50 @@ test('serverul: salvare → build refăcut; build oprit → fișierul revine, te
 });
 
 // Masa (etapa A, Alex, 2026-11-18): scrierea în masa.yml și „Trimite în agendă”, prin același server și același token
-test('serverul: Masa scrie în masa.yml (comentariile rămân), cu concurență și copie', async () => {
+test('serverul: Harvest scrie în harvest.yml (comentariile rămân), cu concurență și copie', async () => {
   const d = copie(), e = await pornesteEditor({ folder: d, port: 0, log: () => {} });
   try {
-    const h0 = hash(citeste(d, 'masa.yml'));
+    const h0 = hash(citeste(d, 'harvest.yml'));
     assert.equal((await cere(e, { metoda: 'POST', cale: '/api/masa', corp: { schimbari: [], hash: h0 } })).cod, 403, 'fără token');
     const s = await cere(e, { metoda: 'POST', cale: '/api/masa', token: e.token, corp: { hash: h0, schimbari: [{ id: 'studiu-adaptare', verdict: 'da', bloc: 2, ordine: 4 }, { id: 'poveste-fuziune', bloc: null, ordine: null }] } });
     assert.equal(s.cod, 200, s.text);
-    const t = citeste(d, 'masa.yml');
-    assert.ok(t.startsWith('# [EXEMPLU] Masa (etapa A'), 'comentariile de sus rămân');
+    const t = citeste(d, 'harvest.yml');
+    assert.ok(t.startsWith('# [EXEMPLU] Harvest (etapa C'), 'comentariile de sus rămân');
     assert.match(t, /- id: studiu-adaptare\n(    .*\n)*?    verdict: da\n    bloc: 2\n    ordine: 4/);
     const item = (id) => t.split(`  - id: ${id}\n`)[1].split('  - id:')[0];
     assert.ok(/verdict: poate/.test(item('poveste-fuziune')) && !/bloc:|ordine:/.test(item('poveste-fuziune')), 'blocul scos dispare din fișier, verdictul rămâne');
     assert.equal(s.json.hash, hash(t));
-    assert.ok(readdirSync(join(d, '.editor-istoric')).some((f) => f.endsWith('__masa.yml')), 'copia de siguranță există');
+    assert.ok(readdirSync(join(d, '.editor-istoric')).some((f) => f.endsWith('__harvest.yml')), 'copia de siguranță există');
     assert.ok(readFileSync(join(d, 'dist', 'change-agility-exemplu-trainer.html'), 'utf8').includes('"id":"studiu-adaptare","titlu":"Ce spun studiile despre adaptare","scop":"[EXEMPLU] Două date care surprind","durata":10,"tip":"model","sursa":"Irina","verdict":"da","bloc":2'), 'materialul e refăcut');
     assert.equal((await cere(e, { metoda: 'POST', cale: '/api/masa', token: e.token, corp: { hash: h0, schimbari: [{ id: 'curba', verdict: 'nu' }] } })).cod, 409, 'hash vechi: nu suprascrie');
     assert.equal((await cere(e, { metoda: 'POST', cale: '/api/masa', token: e.token, corp: { hash: s.json.hash, schimbari: [{ id: 'curba', verdict: 'poatee' }] } })).cod, 400, 'verdict greșit');
     assert.equal((await cere(e, { metoda: 'POST', cale: '/api/masa', token: e.token, corp: { hash: s.json.hash, schimbari: [{ id: 'nu-exista', verdict: 'da' }] } })).cod, 404);
-    assert.equal(citeste(d, 'masa.yml'), t, 'cererile refuzate nu ating fișierul');
-    assert.equal((await cere(e, { metoda: 'POST', cale: '/api/masa/creeaza', token: e.token, corp: {} })).cod, 409, 'masa.yml există deja');
+    assert.equal(citeste(d, 'harvest.yml'), t, 'cererile refuzate nu ating fișierul');
+    assert.equal((await cere(e, { metoda: 'POST', cale: '/api/masa/creeaza', token: e.token, corp: {} })).cod, 409, 'harvest.yml există deja');
     // O piesă veche (are fișier, nu era pe masă): la prima schimbare intră în masa.yml
-    const v = await cere(e, { metoda: 'POST', cale: '/api/masa', token: e.token, corp: { hash: hash(citeste(d, 'masa.yml')), schimbari: [{ id: 'model-curba', bloc: 1, ordine: 5 }] } });
+    const v = await cere(e, { metoda: 'POST', cale: '/api/masa', token: e.token, corp: { hash: hash(citeste(d, 'harvest.yml')), schimbari: [{ id: 'model-curba', bloc: 1, ordine: 5 }] } });
     assert.equal(v.cod, 200, v.text);
-    assert.match(citeste(d, 'masa.yml'), /  - id: model-curba\n    titlu: Curba schimbării\n    scop: Curba, nu linia\n    durata: 20\n    tip: model\n    sursa: bibliotecă\n    verdict: da\n    bloc: 1\n    ordine: 5\n$/);
+    assert.match(citeste(d, 'harvest.yml'), /  - id: model-curba\n    titlu: Curba schimbării\n    scop: Curba, nu linia\n    durata: 20\n    tip: model\n    sursa: bibliotecă\n    verdict: da\n    bloc: 1\n    ordine: 5\n$/);
   } finally { await e.inchide(); }
 });
-test('serverul: „Trimite în agendă” scrie doar agenda ediției, cu copie; „Creează masa.yml” pornește din agenda de azi', async () => {
+test('serverul: un curs cu masa.yml vechi scrie mai departe în masa.yml; „Creează” nu face al doilea fișier', async () => {
+  const d = copie(); writeFileSync(join(d, 'masa.yml'), citeste(d, 'harvest.yml')); rmSync(join(d, 'harvest.yml'));
+  const e = await pornesteEditor({ folder: d, port: 0, log: () => {} });
+  try {
+    const s = await cere(e, { metoda: 'POST', cale: '/api/masa', token: e.token, corp: { hash: hash(citeste(d, 'masa.yml')), schimbari: [{ id: 'studiu-adaptare', verdict: 'da' }] } });
+    assert.equal(s.cod, 200, s.text);
+    assert.equal(JSON.parse(s.text).fisier, 'masa.yml');
+    assert.match(citeste(d, 'masa.yml'), /id: studiu-adaptare[\s\S]*?verdict: da/);
+    assert.ok(!existsSync(join(d, 'harvest.yml')), 'nu apare un harvest.yml în paralel');
+    assert.equal((await cere(e, { metoda: 'POST', cale: '/api/masa/creeaza', token: e.token, corp: {} })).cod, 409, 'masa.yml există deja');
+  } finally { await e.inchide(); }
+});
+test('serverul: „Trimite în agendă” scrie doar agenda ediției, cu copie; „Creează harvest.yml” pornește din agenda de azi', async () => {
   const d = copie(), e = await pornesteEditor({ folder: d, port: 0, log: () => {} });
   try {
     const ed = 'editii/2026-11-23.yml', inainte = citeste(d, ed);
     assert.equal((await cere(e, { metoda: 'POST', cale: '/api/masa/agenda', token: e.token, corp: { hash: 'vechi' } })).cod, 409);
-    const a = await cere(e, { metoda: 'POST', cale: '/api/masa/agenda', token: e.token, corp: { hash: hash(citeste(d, 'masa.yml')) } });
+    const a = await cere(e, { metoda: 'POST', cale: '/api/masa/agenda', token: e.token, corp: { hash: hash(citeste(d, 'harvest.yml')) } });
     assert.equal(a.cod, 200, a.text);
     assert.deepEqual([a.json.fisier, a.json.randuri, a.json.deProdus.map((x) => x.id), a.json.nehotarate.map((x) => x.id)], [ed, 5, ['harta-emotiilor'], ['poveste-fuziune']]);
     const dupa = citeste(d, ed);
@@ -157,13 +169,13 @@ test('serverul: „Trimite în agendă” scrie doar agenda ediției, cu copie; 
     assert.ok(readdirSync(join(d, '.editor-istoric')).some((f) => f.endsWith('__editii__2026-11-23.yml')));
     assert.ok(!readFileSync(join(d, 'dist', 'change-agility-exemplu-trainer.html'), 'utf8').includes('pauza-cafea#pauza'), 'materialul e refăcut din agenda nouă');
     // Fără nicio piesă produsă cu „Da” în blocuri: agenda rămâne
-    writeFileSync(join(d, 'masa.yml'), 'candidate:\n  - { id: idee-noua, titlu: "Idee", durata: 10, verdict: da, bloc: 1 }\n');
-    const g = await cere(e, { metoda: 'POST', cale: '/api/masa/agenda', token: e.token, corp: { hash: hash(citeste(d, 'masa.yml')) } });
+    writeFileSync(join(d, 'harvest.yml'), 'candidate:\n  - { id: idee-noua, titlu: "Idee", durata: 10, verdict: da, bloc: 1 }\n');
+    const g = await cere(e, { metoda: 'POST', cale: '/api/masa/agenda', token: e.token, corp: { hash: hash(citeste(d, 'harvest.yml')) } });
     assert.equal(g.cod, 422); assert.equal(citeste(d, ed), dupa);
     // Creează masa.yml
-    rmSync(join(d, 'masa.yml'));
+    rmSync(join(d, 'harvest.yml'));
     const c = await cere(e, { metoda: 'POST', cale: '/api/masa/creeaza', token: e.token, corp: {} });
     assert.equal(c.cod, 200, c.text);
-    assert.match(citeste(d, 'masa.yml'), /^# Masa \(etapa A\)[\s\S]*- id: deschidere\n    titlu: De ce suntem aici\n/);
+    assert.match(citeste(d, 'harvest.yml'), /^# Harvest \(etapa C\)[\s\S]*- id: deschidere\n    titlu: De ce suntem aici\n/);
   } finally { await e.inchide(); }
 });
