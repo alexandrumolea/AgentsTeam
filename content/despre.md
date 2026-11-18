@@ -6,6 +6,8 @@ poza: "alex-cerc.jpg"
 poza_alt: "Alex, zâmbind, pe o alee cu copaci de toamnă"
 # Propoziția de sub linie, pe primul card (Alex, 2026-11-18, cuvintele lui). Prima propoziție, de deasupra liniei, e în corpul paginii, jos.
 cine: "Sunt Alex: coach, fondator și inventator în domeniul educației."
+# Textul din „Atelierul, la vedere”, ultimul card al paginii (Alex, 2026-11-18, cuvintele lui).
+atelier: "Lucrez cu oameni foarte faini și cu o echipă de agenți AI. Tot ceea ce creez, încerc să transparentizez pe acest site pentru a le fi de folos altor oameni pasionați de educație."
 # Cele trei cărți de sticlă care se rotesc lângă misiune (ca pe vechiul site), cu cuvântul scris pe fiecare.
 # Se folosesc primele trei.
 valori: ["Rezultate", "Colaborare", "Umanitate"]

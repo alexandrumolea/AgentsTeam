@@ -601,7 +601,7 @@ function desprePage(c){
   ${valoriHtml}
 </section>` : '';
   const next = `<section class="next w glass" aria-labelledby="atelierH">
-  <div><h2 id="atelierH">Atelierul, la vedere</h2><p>Lucrez cu o echipă de agenți AI, iar munca noastră e publică. ${C.live ? `<a href="${u('live/echipa/')}">Vezi echipa și procesele</a> sau <a href="${pageUrl(C.live)}">ce construim acum</a>.` : `Totul e în <a href="${esc(GH)}" rel="noopener">repo-ul public pe GitHub</a>.`}</p></div>
+  <div><h2 id="atelierH">Atelierul, la vedere</h2><p>${esc(despre.data.atelier || '')}${C.live ? ` <a href="${u('live/echipa/')}">Vezi echipa și procesele</a> sau <a href="${pageUrl(C.live)}">ce construim acum</a>.` : ''}</p></div>
   <div class="actions">${C.coaching ? `<a class="btn" href="${pageUrl(C.coaching)}">${esc(C.coaching.eticheta)} <span aria-hidden="true">→</span></a>` : ''}${GH ? `<a href="${esc(GH)}" rel="noopener">Mă găsești pe GitHub</a>` : ''}</div>
 </section>`;
   const bodyHtml = `${hero}\n${mission}\n${ORBITA.parcurs}\n${next}`;
