@@ -30,9 +30,16 @@ O ofertă bună nu e o listă de prețuri. E răspunsul la întrebarea clientulu
 - Nu promite ce nu controlăm (rezultate garantate, termene ale altora).
 - 2026-11-18: **Limbaj permisiv și suportiv, nu asertiv** (Alex). Fără imperative de vânzare („Confirmați-mi”, „Vreau să…”) și fără presiune pe termen. În loc: „Dacă vi se potrivește…”, „Mă bucur să ajustăm…”, „Spuneți-mi ce ar fi de schimbat”, plus o invitație deschisă la întrebări. Valabilitatea se spune blând („rămâne valabilă până pe…”). „Sună a sales” înseamnă clar și relevant, nu insistent.
 
-## 4. Forma
-- Brandul se alege după skill-ul `brand-bemore` („Ce brand poartă un material”). Oferta e un document scurt (HTML → PDF), lizibil pe telefon și la tipar.
-- Plus emailul care o însoțește: 5–8 rânduri, cu esențialul (ce, cât, pasul următor) și oferta atașată.
+## 4. Forma ofertei (D-073, cu Ioana, 2026-11-18)
+- **Pornești mereu din șablonul Ioanei:** `team/ioana/documente/oferta-sablon-v1.html`. Copia ofertei stă doar în `.claude/agent-memory-local/ana/oferte/<client-scurt>-<AAAA-LL-ZZ>.html`. Schimbi doar textele dintre comentariile `ANA`; stilul, fonturile și poza rămân neatinse.
+- **Brandul implicit e BEMORE Learning Studio** (D-073): fundalul de pe site (câmpul de lumină), lentila cu Alex la final. Alt brand doar la cererea lui Alex.
+- **Două foi** (cel mult trei; finalul cu poza rămâne ultimul):
+  1. *Povestea:* titlul cu rezultatul, „Pe scurt” cu investiția, Ce am înțeles, 3 pași, De ce credem că ajută.
+  2. *Înțelegerea:* Investiția, Ce rămâne după / Ce e inclus / Bine de știut, Dacă vi se potrivește + semnătura.
+- **Limitele de lungime:** titlul are cel mult 10 cuvinte; „Pe scurt” are 3 rânduri, fiecare de cel mult 8 cuvinte; exact 3 pași (cel mult 25 de cuvinte fiecare); exact 3 motive; tabelul are cel mult 4 rânduri. Totalul apare de două ori („Pe scurt” și Investiția), identic. „+ TVA” la fiecare sumă.
+- **PDF:** `"/Applications/Google Chrome.app/Contents/MacOS/Google Chrome" --headless=new --no-pdf-header-footer --print-to-pdf=oferta.pdf oferta.html`.
+- **Verificarea formei:** numărul de pagini din PDF = numărul de foi; fiecare pagină privită ca imagine (într-un folder propriu din scratchpad); HTML-ul la 375 px fără derulare laterală (Chrome headless nu coboară sub 500 px: testezi într-un iframe de 375 px). Dacă o foaie trece pe pagina următoare, scurtezi textul, nu stilul.
+- **Emailul care o însoțește:** scurt și cald (vezi Tonul): ce e atașat, totalul o dată, o invitație deschisă la discuție.
 
 ## 5. Verificarea înainte de predare
 - [ ] Aritmetica verificată de două ori; totalurile se potrivesc cu tabelul.
@@ -52,3 +59,5 @@ O ofertă bună nu e o listă de prețuri. E răspunsul la întrebarea clientulu
 - 2026-11-18: Alex a corectat tonul unui email de ofertă: îl simțea „asertiv, chiar agresiv”. Emailul de ofertă e scurt și cald: ce e atașat, cifra totală o dată, o invitație deschisă la discuție.
 - 2026-11-18: Fără referințe la alți clienți, la grupe sau la pilote anterioare în ofertă, dacă Alex nu le cere explicit. „De ce funcționează” se construiește atunci din metodă (cum e gândit programul), fără promisiuni.
 - 2026-11-18: Materialele pe care participanții le pot refolosi după formare sunt o parte valoroasă a ofertei: le numim concret, ca parte inclusă, fără să inventăm formate sau număr de pagini neconfirmate de Alex.
+- 2026-11-18: Ana și Ioana lucrează împreună la forma ofertelor: Ana scrie conținutul în șablon, iar orice schimbare vizuală a șablonului o face Ioana. Dacă textul nu încape, îl scurtează Ana, nu umblă la stil.
+- 2026-11-18: Nu scriem o limitare a unui produs (de exemplu limba rapoartelor) din informații vechi de la furnizor; verificăm cu Alex ce e valabil acum.
