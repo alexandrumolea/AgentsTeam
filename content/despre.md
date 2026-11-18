@@ -4,8 +4,8 @@ rol: "Systemic Coach & Team Coach"
 poza: "alex-cerc.jpg"
 # Poza stă în lentila de sticlă (D-060), în centrul orbitei din primul card: pătrată, cu fața în centru.
 poza_alt: "Alex, zâmbind, pe o alee cu copaci de toamnă"
-# „Acum”, pe primul card (Alex, 2026-11-18, cuvintele lui).
-acum: "Fondator la BEMORE LS, Leadership Trainer la Innersis, colaborator la LIFT, fondator Wise Teams de un an."
+# Propoziția de sub linie, pe primul card (Alex, 2026-11-18, cuvintele lui). Prima propoziție, de deasupra liniei, e în corpul paginii, jos.
+cine: "Sunt Alex: coach, fondator și inventator în domeniul educației."
 # Cele trei cărți de sticlă care se rotesc lângă misiune (ca pe vechiul site), cu cuvântul scris pe fiecare.
 # Se folosesc primele trei.
 valori: ["Rezultate", "Colaborare", "Umanitate"]
@@ -77,7 +77,7 @@ formare:
     - titlu: "Scrum & Agile"
       unde: "Scrum Master, Facilitation și Agile Leadership"
 ---
-Construiesc unelte pentru oameni care vor să crească. Sunt Alex: coach, fondator și inventator.
+Construiesc unelte pentru oameni care vor să crească.
 
 ## Misiunea mea
 

@@ -291,7 +291,7 @@ const detaliiHtml = c => Array.isArray(c.detalii) && c.detalii.length ? `<ul cla
 const bookBtn = cls => rezervare ? `<a class="btn book ${cls || ''}" href="${esc(rezervare)}" rel="noopener">Rezervă<span class="pv-long"> o sesiune</span></a>` : '';
 const businessList = () => BUSINESS.length ? `<ul class="list biz">${BUSINESS.map(b => `<li><b>${b.link ? `<a href="${esc(b.link)}" rel="noopener">${esc(b.nume)}</a>` : esc(b.nume)}</b>${b.nevoie ? `<span>${esc(b.nevoie)}</span>` : ''}${b.rol ? `<small>${esc(b.rol)}</small>` : ''}${b.pod ? `<small class="pod">${esc(b.pod)}</small>` : ''}</li>`).join('')}</ul>` : '';
 // Despre (compoziția v2 a Ioanei, varianta A „Orbita în jurul lentilei”, aprobată de Alex pe 2026-11-18):
-// corpul din content/despre.md dă prima propoziție și misiunea; antetul dă „Acum”, cărțile, parcursul și formarea.
+// corpul din content/despre.md dă prima propoziție și misiunea; antetul dă propoziția de sub linie (cine), cărțile, parcursul și formarea.
 // Orbita din primul card și lista parcursului le face site/orbita.mjs.
 const despreParti = (() => {
   const toks = marked.lexer(despre.body || '').filter(t => t.type !== 'space');
@@ -552,7 +552,7 @@ ${C.live ? `<p class="actions"><a class="btn" href="${pageUrl(C.live)}">Vezi ce 
   return page({ cheie: c.cheie, title: c.eticheta, description: `${c.eticheta}: ${c.fraza}`, path: c.url + '/', bodyHtml: `<h1>${esc(c.eticheta)}</h1><p class="kicker">${esc(c.fraza)}</p>\n${inner}` });
 }
 
-// Despre: primul card (cine sunt, „Acum”, orbita în jurul lentilei), misiunea cu cărțile, parcursul cu formarea, pasul următor.
+// Despre: primul card (cine sunt, propoziția de sub linie, orbita în jurul lentilei), misiunea cu cărțile, parcursul cu formarea, pasul următor.
 // Mostra: team/ioana/documente/despre-compozitie-v2.html (deschisă cu ?solo=a). Același spațiu între toate blocurile.
 function desprePage(c){
   const d = despre.data, P = despreParti;
@@ -561,7 +561,7 @@ function desprePage(c){
     ${d.rol ? `<p class="eyebrow">${esc(d.rol)}</p>` : ''}
     <h1 id="despreH">${esc(c.eticheta)}</h1>
     ${P.lead ? `<p class="lede">${P.lead}</p>` : ''}
-    ${d.acum ? `<dl class="facts"><div><dt>Acum</dt><dd>${esc(d.acum)}</dd></div></dl>` : ''}
+    ${d.cine ? `<p class="semn">${esc(d.cine)}</p>` : ''}
     <div class="actions">${C.coaching ? `<a class="btn" href="${pageUrl(C.coaching)}">${esc(C.coaching.eticheta)} <span aria-hidden="true">→</span></a>` : ''}<a href="#parcurs">Tot parcursul</a></div>
   </div>
   ${ORBITA.figure}
@@ -671,7 +671,7 @@ write('api/continut.json', JSON.stringify({
   familii, categorii: CATS.map(c => ({ ...c, url: pageUrl(c) })),
   ...(C.companie ? { business: BUSINESS } : {}), nevoi,
   despre: { titlu: despre.data.titlu || 'Despre mine', markdown: despre.body, valori,
-    acum: despre.data.acum || null,
+    cine: despre.data.cine || null,
     parcurs: PARCURS.roluri.map(({ rol, organizatie, de_la, pana_la, ani, descriere }) => ({ rol, organizatie, de_la, pana_la, ani, descriere })),
     formare: PARCURS.formare },
   echipa: { ...(site.echipa || {}), agenti: AGENTS.map(({ status, ...a }) => a), procese: PROCESE }

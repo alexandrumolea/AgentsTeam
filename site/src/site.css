@@ -372,10 +372,7 @@ body.page > .top{position:sticky;z-index:5}
 
 /* 1 · primul card: cine sunt, „Acum”, butoanele; în dreapta, orbita cu lentila în centru */
 .despre .prim{position:relative;display:grid;gap:4px;padding:28px 24px}
-.despre .facts{margin:0;max-width:34ch}
-.despre .facts > div{padding:12px 0;border-top:1px solid var(--line)}
-.despre .facts dt{margin:0 0 3px;font:500 13px/1.35 var(--sans);letter-spacing:.14em;text-transform:uppercase;color:var(--muted)}
-.despre .facts dd{margin:0;font-size:18px;line-height:1.45}
+.despre .semn{margin:0;max-width:34ch;padding:12px 0 0;border-top:1px solid var(--line);font-size:18px;line-height:1.45}
 .despre .prim .actions{margin-top:16px}
 
 /* orbita: inelul pornește din primul an (--A0) și se oprește la „azi” (--azi); punctele se pun cu sin() / cos() */
@@ -511,7 +508,7 @@ body.page > .top{position:sticky;z-index:5}
   .despre .lede{font-size:18px;max-width:42ch}
   .despre .glass,.despre .glass-read{border-radius:24px}
   .despre .prim{padding:14px 20px 20px}
-  .despre .facts dd{font-size:17px}
+  .despre .semn{font-size:17px}
   .despre .orbit{--R:108px;--L:150px;--up:18px;width:100%;max-width:326px;height:316px}
   .despre .pt i{left:-7px;top:-7px;width:14px;height:14px}
   .despre .pt.two i{box-shadow:0 0 0 2px var(--sticla),0 0 0 3.5px var(--punct-inel),0 0 0 5.5px var(--sticla),0 0 0 7px var(--punct-inel)}
