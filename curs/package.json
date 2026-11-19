@@ -7,8 +7,8 @@
   "scripts": {
     "build": "node build.mjs",
     "exemplu": "node build.mjs exemple/change-agility-exemplu --pdf",
-    "test": "node --test teste/verificari.test.mjs teste/editor.test.mjs",
-    "test:chrome": "node teste/chrome-prezinta.mjs && node teste/chrome-imagini.mjs && node teste/chrome-ecrane.mjs && node teste/chrome-editor.mjs && node teste/chrome-live.mjs && node teste/chrome-masa.mjs",
+    "test": "node --test teste/verificari.test.mjs teste/editor.test.mjs teste/fisa.test.mjs",
+    "test:chrome": "node teste/chrome-prezinta.mjs && node teste/chrome-imagini.mjs && node teste/chrome-ecrane.mjs && node teste/chrome-editor.mjs && node teste/chrome-live.mjs && node teste/chrome-masa.mjs && node teste/chrome-fisa.mjs",
     "editor": "node editor.mjs"
   },
   "engines": {

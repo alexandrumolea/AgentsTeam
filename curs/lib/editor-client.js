@@ -23,6 +23,7 @@
     salveaza: function (schimbari, hash) { return api('/api/masa', 'POST', { schimbari: schimbari, hash: hash }).then(function (j) { stare(j._cod === 200 ? ' · salvat în ' + (j.fisier || 'harvest.yml') : ''); return j; }); },
     agenda: function (hash) { return api('/api/masa/agenda', 'POST', { hash: hash }); },
     creeaza: function () { return api('/api/masa/creeaza', 'POST', {}); },
+    fisa: function (id) { return api('/api/fisa?id=' + encodeURIComponent(id)); },
   };
 
   // ---------- bara de jos: mod editare + fișierele schimbate (commit-ul îl face Alex sau Tudor, nu editorul) ----------

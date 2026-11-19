@@ -8,14 +8,19 @@ export const escapeHtml = (s) => String(s ?? '').replace(/[&<>"']/g, (c) => ({ '
  *        (cursul online: rămâne „materiale/x.png”; materialul trainerului: o cheie din harta de imagini)
  * @param {'src'|'data-img'} atribut
  */
-export function creeazaRandare({ imagine = (s) => s, atribut = 'src', randuriNoi = false } = {}) {
+export function creeazaRandare({ imagine = (s) => s, atribut = 'src', randuriNoi = false, linkuriNoi = false } = {}) {
   // randuriNoi: pe ecranele din sală, fiecare rând nou rămâne rând nou.
+  // linkuriNoi: linkurile http(s) se deschid în tab nou (fișa piesei din Harvest, 2026-11-19).
   const m = new Marked({ gfm: true, breaks: randuriNoi });
   m.use({
     renderer: {
       html: (tok) => escapeHtml(tok.text),
       // Linkurile javascript:/data:/vbscript: devin text simplu (cursul ajunge pe site-ul public).
-      link: (tok) => (/^\s*(javascript|data|vbscript):/i.test(tok.href) ? escapeHtml(tok.text) : false),
+      link(tok) {
+        if (/^\s*(javascript|data|vbscript):/i.test(tok.href)) return escapeHtml(tok.text);
+        if (!linkuriNoi || !/^https?:\/\//i.test(tok.href)) return false;
+        return `<a href="${escapeHtml(tok.href)}" target="_blank" rel="noopener noreferrer"${tok.title ? ` title="${escapeHtml(tok.title)}"` : ''}>${this.parser.parseInline(tok.tokens)}</a>`;
+      },
       image: (tok) => `<img ${atribut}="${escapeHtml(imagine(tok.href))}" alt="${escapeHtml(tok.text)}">`,
       // Pe ecranele din sală, o imagine stă în paragraful ei (<p class="doar-imagine">), chiar dacă e scrisă imediat sub text:
       // așa poate lua exact spațiul rămas pe ecran (stil.css). În rest, paragrafele rămân cum le face marked.

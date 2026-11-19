@@ -5,7 +5,7 @@
 // Serverul ascultă doar pe 127.0.0.1, cere un token aleator (în linkul deschis la pornire) și scrie doar în folderul cursului.
 // Fișierul HTML normal (offline) rămâne exact cum e: editarea se adaugă doar în paginile servite de aici.
 import { createServer } from 'node:http';
-import { readFileSync, writeFileSync, existsSync } from 'node:fs';
+import { readFileSync, writeFileSync, existsSync, readdirSync, statSync } from 'node:fs';
 import { resolve, join, dirname } from 'node:path';
 import { fileURLToPath, pathToFileURL } from 'node:url';
 import { randomBytes, timingSafeEqual } from 'node:crypto';
@@ -17,6 +17,7 @@ import { creeazaRandare, escapeHtml } from './lib/randare.mjs';
 import { citesteBloc, scrieBloc, EroareEditor, citesteRef, caleSigura, copieIstoric } from './lib/editor-sursa.mjs';
 import { citesteMasa, scrieMasa, agendaDinMasa, textAgenda, inlocuiesteAgenda, textMasa, propunere, FISIER as MASA, FISIER_VECHI as MASA_VECHI } from './lib/masa.mjs';
 import { mkdirSync, rmSync } from 'node:fs';
+import { fisaPiesei } from './lib/fisa.mjs';
 
 const AICI = dirname(fileURLToPath(import.meta.url));
 const IMPLICIT = join(AICI, '..', 'privat', 'cursuri', 'change-agility');
@@ -27,10 +28,35 @@ export async function pornesteEditor({ folder = IMPLICIT, port = 4747, deschide 
   if (!existsSync(join(folder, 'curs.yml'))) throw new Error(`${folder} nu e folderul unui curs (lipsește curs.yml)`);
   const token = randomBytes(18).toString('hex');
   const out = join(folder, 'dist');
+  let amprenta = null; // fișierele cursului la ultimul build (2026-11-19: Daria și Irina scriu și direct pe disc)
   let ultim = construieste();
   let ocupat = false;
 
+  /** Amprenta fișierelor cursului: căile și mtime-ul lor (fără dist/, .editor-istoric/, .git și alte foldere ascunse).
+   *  O piesă nouă, una ștearsă sau una schimbată dau altă amprentă. */
+  function amprentaAcum() {
+    const parti = [];
+    (function umbla(rel) {
+      let intrari; try { intrari = readdirSync(join(folder, rel), { withFileTypes: true }); } catch { return; }
+      for (const x of intrari) {
+        if (x.name.startsWith('.') || (!rel && x.name === 'dist') || x.name === 'node_modules') continue;
+        const r = rel ? `${rel}/${x.name}` : x.name;
+        if (x.isDirectory()) umbla(r);
+        else if (x.isFile()) { try { const st = statSync(join(folder, r)); parti.push(`${r}:${st.mtimeMs}:${st.size}`); } catch { /* șters între timp */ } }
+      }
+    })('');
+    return parti.sort().join('|');
+  }
+  /** La deschiderea paginii: dacă un fișier al cursului s-a schimbat pe disc de la ultimul build, build din nou. */
+  function laZi() {
+    if (ocupat || amprentaAcum() === amprenta) return false;
+    ultim = construieste();
+    log(`  am refăcut materialul: fișierele cursului s-au schimbat pe disc${ultim.ok ? '' : ' (build-ul s-a oprit; pagina arată de ce)'}`);
+    return true;
+  }
+
   function construieste() {
+    amprenta = amprentaAcum(); // înainte de build: o scriere din timpul build-ului cere încă un build data viitoare
     const linii = [];
     const r = build(folder, { out, log: (x) => linii.push(x) });
     return { ...r, log: linii.join('\n') };
@@ -138,6 +164,7 @@ export async function pornesteEditor({ folder = IMPLICIT, port = 4747, deschide 
     const u = new URL(req.url, `http://127.0.0.1:${p}`);
     if (req.method === 'GET' && u.pathname === '/') {
       if (!tokenBun(u.searchParams.get('t'))) return trimite(403, '<!doctype html><meta charset="utf-8"><p style="font:16px system-ui;margin:2rem">Linkul nu e bun. Deschide-l pe cel afișat în fereastra Terminal în care rulează editorul.</p>', 'text/html; charset=utf-8');
+      laZi();
       return trimite(200, pagina(), 'text/html; charset=utf-8');
     }
     if (!u.pathname.startsWith('/api/')) return trimite(404, { eroare: 'nu există' });
@@ -145,6 +172,10 @@ export async function pornesteEditor({ folder = IMPLICIT, port = 4747, deschide 
     if (req.method === 'GET' && u.pathname === '/api/stare') return trimite(200, { schimbate: schimbate(), build: { ok: ultim.ok, erori: ultim.erori ?? [] } });
     if (req.method === 'GET' && u.pathname === '/api/bloc') {
       try { return trimite(200, citesteBloc(folder, u.searchParams.get('ref'))); } catch (e) { return trimite(e.cod ?? 500, { eroare: e.message }); }
+    }
+    // Fișa piesei din Harvest (2026-11-19): citită acum de pe disc, ca să se vadă ce scriu Irina și Daria între timp.
+    if (req.method === 'GET' && u.pathname === '/api/fisa') {
+      try { return trimite(200, fisaPiesei(folder, u.searchParams.get('id'))); } catch (e) { return trimite(e.cod ?? 500, { eroare: e.message }); }
     }
     if (req.method !== 'POST' || !['/api/bloc', '/api/previzualizare', ...Object.keys(MASA_API)].includes(u.pathname)) return trimite(404, { eroare: 'nu există' });
     if (!/^application\/json\b/.test(req.headers['content-type'] ?? '')) return trimite(415, { eroare: 'se trimite JSON' });
@@ -187,7 +218,7 @@ export async function pornesteEditor({ folder = IMPLICIT, port = 4747, deschide 
   });
   const url = `http://127.0.0.1:${server.address().port}/?t=${token}#ecrane`;
   if (deschide && process.platform === 'darwin') spawn('open', [url], { stdio: 'ignore', detached: true }).unref();
-  return { url, token, server, folder, inchide: () => new Promise((ok) => server.close(ok)), ultim: () => ultim };
+  return { url, token, server, folder, inchide: () => new Promise((ok) => server.close(ok)), ultim: () => ultim, laZi };
 }
 
 // Linia de comandă

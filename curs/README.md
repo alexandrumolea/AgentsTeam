@@ -85,6 +85,18 @@ Fluxul: **Harvest → Curate → Flow**, iar rezultatul e **firul roșu** (agend
 - **„Trimite în agendă”:** din blocurile Agendei, piesele cu „Da” care au fișier produs devin agenda ediției (cu `- bloc: N` între blocuri); celelalte sunt listate: „de produs” (Da, fără fișier) și „nehotărâte” (Poate). În editor scrie doar cheia `agenda:` din `editii/<data>.yml` (restul ediției rămâne identic, verificat), cu copie de siguranță, și reface materialul; offline, copiază blocul. Pauzele suplimentare (`pauza: N`) nu sunt candidate: le adaugi în agendă după.
 - **Ce oprește build-ul:** id dublat sau cu alte caractere decât litere mici, cifre, cratimă; verdict necunoscut; durată care nu e număr; YAML greșit. Un bloc care nu există azi și un tip necunoscut dau doar avertisment. Harvest nu intră în cursul participanților.
 
+### Fișa piesei din Harvest (Alex, 2026-11-19)
+
+„Să pot deschide fiecare piesă și să-i văd toată logica.” Pe fiecare cartonaș din Harvest e butonul **Fișa** (punctat când nu e nimic scris încă); pe cartonașul selectat merg și `F` sau `Enter`. Se deschide un dialog cu fișa randată; se închide cu `Esc`, × sau clic pe fundal, iar focusul revine pe cartonaș. Verdictul și tragerea merg ca înainte.
+
+- **Sursa, în ordine:** `harvest/<id>.md` (fișa scrisă de Irina și Daria: Ce mi-a dat Alex, Pe scurt, Pentru trainer, Exemple, Clasificare, Întrebare pentru Alex); dacă lipsește, piesa produsă (`piese/<id>.md` sau modulul cu acest id): antetul ca listă scurtă (durată, tip, format, energie, obiectiv, materiale), apoi blocurile (ecranele din sală, nota trainerului, participantul). Dacă nu există nimic: „Fișa nu e scrisă încă.”
+- **În editorul local** fișa se recitește de pe disc la fiecare deschidere (`GET /api/fisa?id=…`, cu token), deci se vede ce scriu colegii între timp, fără refresh. **În fișierul offline** fișele se includ la build.
+- **Siguranța:** aceeași randare ca restul materialului (HTML-ul brut apare ca text, linkurile `javascript:`/`data:` devin text); linkurile `http(s)` se deschid în tab nou (`noopener`). Id-ul e validat (litere mici, cifre, cratimă), iar fișierul se citește doar dacă și ținta lui reală (după legăturile simbolice) e în folderul cursului.
+
+### Editorul vede ce s-a schimbat pe disc (2026-11-19)
+
+La fiecare deschidere sau refresh al paginii, editorul compară fișierele cursului (căile, mărimea și data lor; fără `dist/`, `.editor-istoric/` și folderele ascunse) cu cele de la ultimul build. Dacă s-a schimbat ceva (o candidată nouă în `harvest.yml`, o piesă nouă sau ștearsă în `piese/`, o ediție), refă build-ul înainte să servească pagina. Dacă build-ul se oprește, pagina arată de ce.
+
 ### „Prezintă” din Bibliotecă (1.12, Alex, 2026-11-17)
 
 - Fiecare piesă din Biblioteca de piese are **Prezintă**, și alternativele care nu sunt în agendă. Ecranele piesei intră imediat după ecranul de acum, iar prezentarea sare la primul; după ultimul ecran al piesei, continuă de unde ai rămas. Dacă piesa e deja în prezentare (în agendă sau adăugată live), doar sare la ea.
@@ -174,9 +186,10 @@ Culorile și litera stau doar în teme (tokeni): `tema/innersis.css` (Innersis I
 | `build.mjs` | linia de comandă: citește, verifică, scrie, face PDF-urile |
 | `lib/sursa.mjs` | citește `curs.yml`, ediția, modulele și piesele; agenda, pauzele fixe, blocurile, orele și totalurile; verificările pe sursă; `desfasoara()` pune piesele în modul |
 | `lib/masa.mjs` | `harvest.yml`: citire și verificare, propunerea de pornire, „Trimite în agendă”, scrierea din editor |
-| `lib/masa.js` | vederea Harvest (`#masa`), în browser (offline și în editor) |
+| `lib/masa.js` | vederea Harvest (`#masa`), în browser (offline și în editor), cu fișa piesei |
+| `lib/fisa.mjs` | fișa piesei: `harvest/<id>.md` sau piesa produsă, randată sigur; id validat |
 | `lib/export.mjs` | cursul participanților și verificarea pe rezultat |
 | `lib/trainer.mjs` | materialul trainerului (HTML), ecranele din sală |
 | `lib/prezinta.js` | partea care rulează în browser (vederi, Prezintă, cronometru, tipar) |
 | `lib/randare.mjs` | Markdown → HTML; HTML-ul brut și linkurile `javascript:` devin text |
-| `teste/` | `verificari.test.mjs`, `editor.test.mjs` (npm test); `chrome-*.mjs` + `cdp.mjs` (Chrome comandat prin DevTools, fără dependențe), între ele `chrome-masa.mjs` |
+| `teste/` | `verificari.test.mjs`, `editor.test.mjs`, `fisa.test.mjs` (npm test); `chrome-*.mjs` + `cdp.mjs` (Chrome comandat prin DevTools, fără dependențe), între ele `chrome-masa.mjs` și `chrome-fisa.mjs` |

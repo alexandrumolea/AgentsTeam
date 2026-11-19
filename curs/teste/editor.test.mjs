@@ -179,3 +179,22 @@ test('serverul: „Trimite în agendă” scrie doar agenda ediției, cu copie; 
     assert.match(citeste(d, 'harvest.yml'), /^# Harvest \(etapa C\)[\s\S]*- id: deschidere\n    titlu: De ce suntem aici\n/);
   } finally { await e.inchide(); }
 });
+
+test('pagina refăcută când fișierele cursului s-au schimbat pe disc (harvest.yml, piese/), altfel nu', async () => {
+  const d = copie(), linii = [], e = await pornesteEditor({ folder: d, port: 0, log: (x) => linii.push(x) });
+  try {
+    assert.equal(e.laZi(), false, 'nimic schimbat: fără build');
+    writeFileSync(join(d, 'dist', 'nota.txt'), 'x'); // dist/ nu contează
+    assert.equal(e.laZi(), false, 'dist/ nu pornește build-ul');
+    writeFileSync(join(d, 'harvest.yml'), citeste(d, 'harvest.yml') + '  - id: piesa-de-pe-disc\n    titlu: "Adăugată de Daria"\n    durata: 10\n    verdict: nou\n');
+    const p = await cere(e, { cale: `/?t=${e.token}` });
+    assert.equal(p.cod, 200);
+    assert.match(p.text, /piesa-de-pe-disc/, 'candidata scrisă direct în harvest.yml apare după refresh');
+    assert.ok(linii.some((l) => /am refăcut materialul/.test(l)));
+    assert.equal(e.laZi(), false, 'după build, amprenta e la zi');
+    writeFileSync(join(d, 'piese', 'piesa-noua.md'), '---\ntitlu: "Piesă nouă de pe disc"\ndurata: 5\ntip: teorie\n---\n\n:::sala\nText\n:::\n');
+    assert.match((await cere(e, { cale: `/?t=${e.token}` })).text, /Piesă nouă de pe disc/, 'o piesă nouă în piese/ apare după refresh');
+    rmSync(join(d, 'piese', 'piesa-noua.md'));
+    assert.doesNotMatch((await cere(e, { cale: `/?t=${e.token}` })).text, /Piesă nouă de pe disc/, 'și una ștearsă dispare');
+  } finally { await e.inchide(); }
+});

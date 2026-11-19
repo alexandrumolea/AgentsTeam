@@ -17,6 +17,8 @@
   var TIP = { teorie: 'teorie', model: 'model', poveste: 'poveste', exercitiu: 'exercițiu', reflectie: 'reflecție', energizant: 'energizant', deschidere: 'deschidere', inchidere: 'închidere', mesaj: 'mesaj', pauza: 'pauză' };
   var FEL = { teorie: 'teorie', model: 'teorie', poveste: 'teorie', reflectie: 'reflectie', deschidere: 'reflectie', inchidere: 'reflectie', mesaj: 'mesaj', exercitiu: 'exercitiu', energizant: 'exercitiu', pauza: 'pauza' };
   var VERDICT = { da: 'Da', poate: 'Poate', nu: 'Nu' };
+  var json = function (id) { try { return JSON.parse(document.getElementById(id).textContent) || {}; } catch (e) { return {}; } };
+  var FISE = json('fise'), IMG = json('imagini'); // fișele incluse la build (offline); în editor se recitesc de pe disc
 
   var cand = M.candidate.map(function (x) { var y = {}; for (var k in x) y[k] = x[k]; return y; });
   var ID = {}; cand.forEach(function (x) { ID[x.id] = x; });
@@ -122,10 +124,11 @@
       (x.sursa ? '<span class="mc-sursa">' + esc(x.sursa) + '</span>' : '') +
       (x.produsa ? '<span class="mc-produsa" title="Are deja fișierul în piese/">produsă</span>' : '') +
       (x.nota ? '<span class="mc-nota" title="' + esc(x.nota) + '">notă</span>' : '');
+    var areFisa = !!FISE[x.id];
     return '<li class="masa-carte v-' + x.verdict + (x.produsa ? ' produsa' : '') + '" data-id="' + esc(x.id) + '" tabindex="0" aria-label="' + esc(x.titlu + ', ' + x.durata + ' min, verdict ' + x.verdict + (x.produsa ? ', produsă' : '')) + '"' + (x.nota ? ' title="' + esc(x.nota) + '"' : '') + '>' +
       '<span class="ec-maner masa-maner" aria-hidden="true" title="Trage ca să muți">⠿</span>' +
       '<div class="mc-rand"><span class="mc-durata"><b>' + x.durata + '</b> min</span><span class="mc-cap"><span class="mc-titlu">' + esc(x.titlu) + '</span>' + (x.scop ? '<span class="mc-scop">' + esc(x.scop) + '</span>' : '') + '</span></div>' +
-      '<div class="mc-jos"><span class="mc-meta">' + meta + '</span><span class="mc-verdict" role="group" aria-label="Verdict">' +
+      '<div class="mc-jos"><span class="mc-meta"><button type="button" class="mc-fisa' + (areFisa ? '' : ' fara') + '" data-fisa="' + esc(x.id) + '" aria-label="Deschide fișa: ' + esc(x.titlu) + '" title="' + (areFisa ? 'Toată logica piesei (tasta F)' : 'Fișa nu e scrisă încă') + '">Fișa</button>' + meta + '</span><span class="mc-verdict" role="group" aria-label="Verdict">' +
       ['da', 'poate', 'nu'].map(function (v) { return '<button type="button" data-v="' + v + '" aria-pressed="' + (x.verdict === v) + '"' + (blocat() ? ' disabled' : '') + '>' + VERDICT[v] + '</button>'; }).join('') +
       '</span></div></li>';
   }
@@ -325,6 +328,46 @@
     }, function () { mesaj('Editorul nu răspunde. Fereastra Terminal în care rulează e încă deschisă?', true); });
   }
 
+  // ---------- fișa piesei (Alex, 2026-11-19): toată logica piesei, din harvest/<id>.md sau din piesa produsă ----------
+  // HTML-ul vine gata randat și escapat (lib/fisa.mjs, la build sau din editor), deci aici doar îl punem în dialog.
+  var fisaDe = null;
+  function arataFisa(x, f) {
+    var d = $('fisa-dialog'); if (!d) return;
+    $('fisa-titlu').textContent = x.titlu;
+    $('fisa-sursa').textContent = !f || !f.sursa ? 'Fișa · ' + x.id : f.sursa === 'harvest' ? 'Fișa · ' + f.fisier : 'Piesa produsă · ' + f.fisier + ' (încă fără fișă în harvest/)';
+    var corp = $('fisa-corp');
+    corp.innerHTML = f && f.sursa ? f.html : '<p class="fisa-gol">Fișa nu e scrisă încă.</p>';
+    [].forEach.call(corp.querySelectorAll('img[data-img]'), function (im) {
+      var src = IMG[im.getAttribute('data-img')];
+      if (src) im.src = src; else { var t = document.createElement('span'); t.className = 'sters'; t.textContent = '[imagine: ' + (im.alt || im.getAttribute('data-img')) + ']'; im.replaceWith(t); }
+    });
+    corp.scrollTop = 0;
+    if (!d.open) d.showModal();
+  }
+  function deschideFisa(id) {
+    var x = ID[id]; if (!x) return;
+    fisaDe = id;
+    var ed = editor();
+    if (!ed || !ed.fisa) { arataFisa(x, FISE[id]); return; }
+    arataFisa(x, FISE[id] || { sursa: 'harvest', fisier: 'harvest/' + id + '.md', html: '<p class="sters">Se citește fișa…</p>' });
+    ed.fisa(id).then(function (j) {
+      if (fisaDe !== id) return;
+      if (j._cod !== 200) { arataFisa(x, FISE[id]); mesaj((j.eroare || 'Nu pot citi fișa de pe disc.') + ' Arăt varianta de la ultimul build.', true); return; }
+      FISE[id] = j.sursa ? j : null; arataFisa(x, j);
+      var b = document.querySelector('.mc-fisa[data-fisa="' + id + '"]'); if (b) b.classList.toggle('fara', !j.sursa);
+    }, function () { if (fisaDe === id) arataFisa(x, FISE[id]); });
+  }
+  function initFisa() {
+    var d = $('fisa-dialog'); if (!d) return;
+    $('fisa-inchide').addEventListener('click', function () { d.close(); });
+    d.addEventListener('click', function (ev) { if (ev.target === d) d.close(); }); // clic pe fundal
+    d.addEventListener('keydown', function (ev) { ev.stopPropagation(); }); // tastele din fișă nu ajung la cartonașe sau la prezentare
+    d.addEventListener('close', function () {
+      var id = fisaDe; fisaDe = null;
+      var li = id && document.querySelector('.masa-carte[data-id="' + id + '"]'); if (li) li.focus();
+    });
+  }
+
   // ---------- evenimente ----------
   function init() {
     var col = $('masa-coloane'); if (!col) return;
@@ -350,7 +393,9 @@
     $('masa-copiaza').addEventListener('click', copiazaMasa);
     $('masa-agenda').addEventListener('click', trimiteInAgenda);
     $('masa-rezumat').addEventListener('click', function (ev) { var b = ev.target.closest('[data-rz]'); if (b) laRezumat(b.getAttribute('data-rz')); });
+    initFisa();
     col.addEventListener('click', function (ev) {
+      var fb = ev.target.closest('button[data-fisa]'); if (fb) { deschideFisa(fb.getAttribute('data-fisa')); return; }
       var b = ev.target.closest('button[data-v]'); if (!b) return;
       var li = b.closest('.masa-carte'); fokus = li.getAttribute('data-id');
       verdict(fokus, b.getAttribute('data-v'));
@@ -361,6 +406,7 @@
       if (k === 'd' || k === 'D') verdict(id, 'da');
       else if (k === 'p' || k === 'P') verdict(id, 'poate');
       else if (k === 'n' || k === 'N') verdict(id, 'nu');
+      else if (k === 'f' || k === 'F' || k === 'Enter') deschideFisa(id);
       else if (/^[1-9]$/.test(k) && +k <= BLOCURI.length) inBloc(id, +k);
       else if (k === '0' && ID[id].bloc != null) scoate(id);
       else if (k === 'ArrowUp' || k === 'ArrowDown') {

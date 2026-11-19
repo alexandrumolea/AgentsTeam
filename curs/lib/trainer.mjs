@@ -4,6 +4,7 @@ import { readFileSync, existsSync } from 'node:fs';
 import { join, extname, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { creeazaRandare, escapeHtml as e, normal } from './randare.mjs';
+import { fiseleMasa } from './fisa.mjs';
 import { imaginiDin, ora, desfasoara, FORMATE, ENERGII, FAMILIE, FAMILII } from './sursa.mjs';
 
 const AICI = dirname(fileURLToPath(import.meta.url));
@@ -595,10 +596,15 @@ ${c.masa ? `<section id="masa" hidden>${vedereaMasa(c)}</section>` : ''}
   </div>
 </section>
 </main>
+${c.masa ? `<dialog class="fisa-dialog" id="fisa-dialog" aria-labelledby="fisa-titlu">
+  <header class="fisa-cap"><div><p class="eticheta" id="fisa-sursa"></p><h2 id="fisa-titlu"></h2></div><button type="button" class="fisa-inchide" id="fisa-inchide" aria-label="Închide fișa">×</button></header>
+  <div class="fisa-corp" id="fisa-corp"></div>
+</dialog>` : ''}
 <div id="aici" hidden></div>
 <div id="tipar-ecrane-lista"></div>
 <script type="application/json" id="date-curs">${json(date)}</script>
 <script type="application/json" id="imagini">${json(harta(c))}</script>
+${c.masa ? `<script type="application/json" id="fise">${json(fiseleMasa(c))}</script>` : ''}
 <script>${script}</script>
 <script>${scriptMasa}</script>
 </body>

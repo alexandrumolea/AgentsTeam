@@ -292,10 +292,11 @@ h2.sub { font-size: 1.4rem; margin-top: 2.5rem; }
 details.ex { background: var(--t-suprafata); border: 1px solid var(--t-linie); border-radius: 12px; margin-bottom: .5rem; }
 details.ex[hidden] { display: none; }
 details.ex > summary { list-style: none; cursor: pointer; display: block; padding: .7rem 1rem .7rem .9rem; border-radius: 12px; }
-.ex-rand { display: grid; grid-template-columns: 4.2rem 1fr auto 1.2rem; gap: .25rem 1rem; align-items: center; min-height: 40px; }
+/* Rândul are cinci copii: durata, capul, meta, „Prezintă”, semnul (bug 2026-11-19: grila avea patru coloane și butonul cădea în coloana de 1.2rem). */
+.ex-rand { display: grid; grid-template-columns: 4.2rem minmax(0, 1fr) auto auto 1.2rem; gap: .25rem 1rem; align-items: center; min-height: 40px; }
 details.ex > summary::-webkit-details-marker { display: none; }
 details.ex > summary::marker { content: ""; }
-details.ex .ex-semn { width: .5rem; height: .5rem; border-right: 1.5px solid var(--t-sters); border-bottom: 1.5px solid var(--t-sters); transform: rotate(45deg); justify-self: center; margin-top: -.25rem; transition: transform .15s; }
+details.ex .ex-semn { grid-column: -2; width: .5rem; height: .5rem; border-right: 1.5px solid var(--t-sters); border-bottom: 1.5px solid var(--t-sters); transform: rotate(45deg); justify-self: center; margin-top: -.25rem; transition: transform .15s; }
 details.ex[open] .ex-semn { transform: rotate(-135deg); margin-top: .25rem; }
 details.ex > summary:hover { background: var(--t-fundal); }
 details.ex > summary:focus-visible { outline: 2px solid var(--t-accent); outline-offset: -2px; }
@@ -318,9 +319,10 @@ details.ex[open] .ex-obiectiv { display: none; }
 .banca-nota { font-size: .9rem; margin-top: 2rem; }
 @media (pointer: coarse) { .chip, .sterge-filtre { min-height: 44px; } details.ex > summary { padding-top: .9rem; padding-bottom: .9rem; } }
 @media (max-width: 760px) {
-  .ex-rand { grid-template-columns: 3.6rem 1fr 1.2rem; }
-  .ex-meta { grid-column: 2; grid-row: 2; justify-content: flex-start; }
-  .ex-semn { grid-column: 3; grid-row: 1; }
+  .ex-rand { grid-template-columns: 3.6rem minmax(0, 1fr) auto 1.2rem; column-gap: .6rem; }
+  .ex-meta { grid-column: 2 / -1; grid-row: 2; justify-content: flex-start; }
+  .prezinta-piesa { grid-column: 3; grid-row: 1; }
+  .ex-semn { grid-column: 4; grid-row: 1; }
   .filtre-rand { grid-template-columns: 1fr; gap: .25rem; } .filtre-eticheta { padding-top: 0; }
 }
 @media print {
@@ -410,7 +412,7 @@ details.ex[open] .ex-obiectiv { display: none; }
 @media (pointer: coarse) { .ec-butoane button, .ec-mic, .ascunse-aici button { min-height: 44px; min-width: 44px; } .ec-maner { width: 44px; height: 44px; } }
 
 /* „Prezintă” din Bibliotecă și piesele adăugate live (1.12, Alex, 2026-11-17) */
-.prezinta-piesa { flex: none; align-self: center; font-size: .8rem; padding: .2rem .7rem; border-color: var(--t-accent); color: var(--t-accent); background: var(--t-suprafata); }
+.prezinta-piesa { flex: none; align-self: center; justify-self: end; width: auto; white-space: nowrap; font-size: .8rem; padding: .2rem .7rem; border-color: var(--t-accent); color: var(--t-accent); background: var(--t-suprafata); }
 .prezinta-piesa:hover { background: var(--t-accent); color: var(--t-pe-accent); }
 .live-semn { display: inline-flex; align-items: center; gap: .3rem; font-size: .72rem; font-weight: 600; letter-spacing: .04em; text-transform: none; color: var(--t-accent); background: var(--t-acum); border-radius: 999px; padding: .05rem .5rem; }
 .live-semn[hidden] { display: none; }
@@ -509,3 +511,36 @@ main > section#masa { max-width: 1440px; }
 /* Biblioteca: piesele „de produs” (cu „Da” pe masă, fără piese/<id>.md) */
 details.ex-de-produs { border-style: dashed; background: transparent; }
 .de-produs-semn { font-size: .75rem; font-weight: 600; color: var(--cronometru-gata); border: 1px dashed currentColor; border-radius: 999px; padding: 0 .5rem; white-space: nowrap; }
+
+/* Fișa piesei din Harvest (Alex, 2026-11-19): butonul de pe cartonaș și dialogul cu toată logica piesei. */
+.mc-fisa { font-size: .74rem; padding: .05rem .5rem; border-radius: 999px; border-color: var(--t-accent); color: var(--t-accent); background: transparent; white-space: nowrap; }
+.mc-fisa:hover { background: var(--t-accent); color: var(--t-pe-accent); }
+.mc-fisa.fara { border-style: dashed; border-color: var(--t-linie); color: var(--t-sters); }
+@media (pointer: coarse) { .mc-fisa { min-height: 40px; min-width: 44px; } }
+@media print { .mc-fisa { display: none; } }
+.fisa-dialog { width: min(820px, calc(100vw - 2rem)); max-height: calc(100vh - 2rem); padding: 0; border: 1px solid var(--t-linie); border-radius: 12px; background: var(--t-fundal); color: var(--t-text); font-family: var(--font); }
+.fisa-dialog[open] { display: flex; flex-direction: column; }
+.fisa-dialog::backdrop { background: rgba(0,0,0,.35); }
+.fisa-cap { display: flex; justify-content: space-between; align-items: flex-start; gap: 1rem; padding: .9rem 1.2rem .6rem; border-bottom: 1px solid var(--t-linie); }
+.fisa-cap h2 { font-size: 1.3rem; margin: 0; line-height: 1.25; }
+.fisa-cap .eticheta { margin: 0 0 .15rem; overflow-wrap: anywhere; }
+.fisa-inchide { flex: none; font-size: 1.4rem; line-height: 1; padding: .1rem .55rem; min-width: 44px; min-height: 44px; }
+.fisa-corp { overflow: auto; padding: .4rem 1.2rem 1.4rem; line-height: 1.55; overflow-wrap: anywhere; }
+.fisa-corp h1 { font-size: 1.15rem; margin: .9rem 0 .4rem; }
+.fisa-corp h2 { font-size: 1.05rem; margin: 1.3rem 0 .4rem; padding-top: .9rem; border-top: 1px solid var(--t-linie); }
+.fisa-corp h3 { font-size: 1rem; margin: 1rem 0 .3rem; }
+.fisa-corp ul, .fisa-corp ol { padding-left: 1.3rem; }
+.fisa-corp li { margin: .25rem 0; }
+.fisa-corp blockquote { margin: .6rem 0; padding: .5rem .9rem; border-left: 3px solid var(--t-accent); background: var(--t-suprafata); border-radius: 0 8px 8px 0; }
+.fisa-corp blockquote p { margin: 0; }
+.fisa-corp a { color: var(--t-accent); }
+.fisa-corp code { background: var(--t-suprafata); border: 1px solid var(--t-linie); border-radius: 4px; padding: 0 .3em; font-size: .9em; }
+.fisa-corp img { max-width: 100%; height: auto; }
+.fisa-antet { display: grid; grid-template-columns: repeat(auto-fit, minmax(10rem, 1fr)); gap: .5rem 1.2rem; margin: .8rem 0 1rem; padding: .7rem .9rem; background: var(--t-suprafata); border: 1px solid var(--t-linie); border-radius: 10px; }
+.fisa-antet dt { font-size: .72rem; letter-spacing: .06em; text-transform: uppercase; color: var(--t-sters); }
+.fisa-antet dd { margin: 0; }
+.fisa-bloc { margin: .9rem 0; padding: .6rem .9rem; border: 1px solid var(--t-linie); border-radius: 10px; }
+.fisa-bloc > .eticheta { margin: 0 0 .3rem; }
+.fisa-bloc > :last-child { margin-bottom: 0; }
+.fisa-trainer { background: var(--t-suprafata); }
+.fisa-gol { color: var(--t-sters); padding: 1.5rem 0; }
