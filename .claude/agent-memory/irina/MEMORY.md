@@ -19,3 +19,7 @@ Păstrează sub 150 de rânduri. Comprimă când crește. Fapte, nu povești.
 ## Lecții de research
 - 2026-11-17: Gartner (10 schimbări/an în 2022 vs 2 în 2016; 74% → 43%) are sursa primară doar pe o pagină de webinar; articolele secundare dau cifre diferite. Citează doar gartner.com și marchează „date de industrie”.
 - 2026-11-17: PDF-urile DTIC dau 403, iar PDF-urile binare nu se pot citi local (fără pdftotext). Pentru efecte exacte din meta-analize caută versiunea PMC.
+
+## Proces Harvest
+- 2026-11-19: Proces nou cerut de Alex: pentru fiecare piesă din Harvest, Irina scrie „Pe scurt” și, doar dacă are research, „Pentru trainer” (≤15 rânduri, fiecare afirmație cu sursă); Daria face exemplele și clasificarea. Textul lui Alex nu se modifică; greșelile le semnalez la „Întrebare pentru Alex”.
+- 2026-11-19: Surse-cheie pentru definiții de change agility: Lombardo & Eichinger 2000 (prin Frontiers 2022), Savickas & Porfeli 2012 (CAAS), Taleb 2012, Oreg 2003 și Oreg/Vakola/Armenakis 2011, Piderit 2000, Ford/Ford/D'Amelio 2008. Nuanța utilă: rezistența are o parte dispozițională (Oreg), deci mesajul sigur e „nu e un dat fix”, nu „nu există”.
