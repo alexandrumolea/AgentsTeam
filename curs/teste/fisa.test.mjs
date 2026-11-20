@@ -184,7 +184,8 @@ test('editorul: salvează fișa și câmpurile rândului (comentariile rămân),
   try {
     const src = (await cere(e, '/api/fisa/sursa?id=harta-emotiilor', e.token)).json;
     assert.equal(src.exista, false); assert.match(src.md, /## Input-ul lui Alex/);
-    assert.deepEqual(src.campuri, { titlu: 'Harta emoțiilor din echipă', scop: '[EXEMPLU] Ce simte grupul, pe un perete', durata: 15, tip: 'exercitiu' });
+    assert.deepEqual(src.campuri, { titlu: 'Harta emoțiilor din echipă', scop: '[EXEMPLU] Ce simte grupul, pe un perete', durata: 15, tip: 'exercitiu', obiective: [] });
+    assert.equal(src.obiective, null, 'fără harvest-obiective.yml: fără bife de obiective');
     assert.equal((await cere(e, '/api/fisa/sursa?id=..%2Fcurs', e.token)).cod, 400);
     assert.equal((await posteaza(e, '/api/fisa/salveaza', { id: 'harta-emotiilor', md: 'x', hash: null }, null)).cod, 403, 'fără token');
     assert.equal((await posteaza(e, '/api/fisa/salveaza', { id: '../curs', md: 'x', hash: null })).cod, 400);

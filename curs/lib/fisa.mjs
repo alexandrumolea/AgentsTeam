@@ -8,6 +8,7 @@ import { parse as parseYaml } from 'yaml';
 import { creeazaRandare, escapeHtml as e } from './randare.mjs';
 import { imparteInStraturi } from './sursa.mjs';
 import { caleSigura, fisierPentru, EroareEditor, hash, copieIstoric } from './editor-sursa.mjs';
+import { DOSAR_OB } from './obiective.mjs';
 
 const ID_OK = /^[a-z0-9]+(-[a-z0-9]+)*$/;
 export const DOSAR = 'harvest';
@@ -61,11 +62,24 @@ export function fisaPiesei(folder, id) {
   return { id, sursa: 'piesa', fisier, ...dinPiesa(citesteSigur(folder, fisier)) };
 }
 
-/** Fișele tuturor candidatelor, pentru fișierul offline (se includ la build). Doar cele care au ceva scris. */
+/** Fișa unui obiectiv din harvest-ul de obiective (2026-11-20): harvest/obiective/<id>.md, sau nimic (sursa null). */
+export function fisaObiectivului(folder, id) {
+  id = String(id ?? '');
+  if (!ID_OK.test(id)) throw new EroareEditor(`id greșit: „${id.slice(0, 60)}”`, 400);
+  const rel = `${DOSAR_OB}/${id}.md`;
+  if (!existsSync(caleSigura(folder, rel))) return { id, sursa: null, fisier: null, titlu: '', html: '' };
+  return { id, sursa: 'obiectiv', fisier: rel, titlu: '', html: randeaza(citesteSigur(folder, rel)) };
+}
+
+/** Fișele tuturor candidatelor și ale obiectivelor, pentru fișierul offline (se includ la build). Doar cele care au ceva scris.
+ *  Obiectivele au cheia „obiectiv:<id>” (două puncte nu apar într-un id de piesă). */
 export function fiseleMasa(c) {
   const out = {};
   for (const x of c.masa?.candidate ?? []) {
     try { const f = fisaPiesei(c.folder, x.id); if (f.sursa) out[x.id] = f; } catch { /* id-urile candidatelor sunt deja verificate */ }
+  }
+  for (const o of c.harvestObiective?.obiective ?? []) {
+    try { const f = fisaObiectivului(c.folder, o.id); if (f.sursa) out[`obiectiv:${o.id}`] = f; } catch { /* id-urile sunt verificate */ }
   }
   return out;
 }
@@ -121,13 +135,43 @@ export function sablonFisa({ id, titlu = '', durata = null, tip = '' } = {}, azi
 `;
 }
 
-/** Calea de scriere a fișei: doar harvest/<id>.md, cu folderul harvest/ în curs (nu o legătură spre altundeva), fișierul nu e legătură. */
-function caleScriere(folder, id) {
+/** Fișa nouă a unui obiectiv, cu secțiunile din fișele Dariei (harvest/obiective/, 2026-11-20). */
+export function sablonObiectiv({ id, text = '' } = {}, azi = new Date().toISOString().slice(0, 10)) {
+  return `# ${text || id}
+- **ID:** ${id}
+- **Sursa:** Alex, ${azi}
+- **Verdict:** nou
+
+## Input-ul lui Alex
+> 
+
+## Obiectivul
+${text}
+
+## De ce contează
+
+
+## Cum îl recunoaștem la final de zi
+- 
+
+## Piesele care îl servesc
+
+`;
+}
+
+/** Dosarul fișelor: harvest/ pentru piese, harvest/obiective/ pentru obiective. */
+const dosarDe = (fel) => (fel === 'obiectiv' ? DOSAR_OB : DOSAR);
+
+/** Calea de scriere a fișei: doar harvest/<id>.md (sau harvest/obiective/<id>.md), cu folderele în curs (nu legături spre altundeva), fișierul nu e legătură. */
+function caleScriere(folder, id, fel) {
   if (!ID_OK.test(String(id ?? ''))) throw new EroareEditor(`id greșit: „${String(id ?? '').slice(0, 60)}”`, 400);
-  const rel = `${DOSAR}/${id}.md`, cale = caleSigura(folder, rel), dosar = caleSigura(folder, DOSAR);
+  const DOS = dosarDe(fel);
+  const rel = `${DOS}/${id}.md`, cale = caleSigura(folder, rel), dosar = caleSigura(folder, DOS);
   const radacina = realpathSync(folder);
-  if (existsSync(dosar)) {
-    if (lstatSync(dosar).isSymbolicLink() || !realpathSync(dosar).startsWith(radacina + sep)) throw new EroareEditor(`cale interzisă: ${DOSAR}/`, 403);
+  const parti = DOS.split('/');
+  for (let i = 1; i <= parti.length; i++) {
+    const d = caleSigura(folder, parti.slice(0, i).join('/'));
+    if (existsSync(d) && (lstatSync(d).isSymbolicLink() || !realpathSync(d).startsWith(radacina + sep))) throw new EroareEditor(`cale interzisă: ${parti.slice(0, i).join('/')}/`, 403);
   }
   let st = null; try { st = lstatSync(cale); } catch { /* nu există încă */ }
   if (st && (st.isSymbolicLink() || !st.isFile())) throw new EroareEditor(`cale interzisă: ${rel}`, 403);
@@ -135,10 +179,10 @@ function caleScriere(folder, id) {
 }
 
 /** Textul de editat: Markdown-ul de pe disc (cu hash-ul lui) sau, dacă fișa lipsește, șablonul D-078 (exista: false, hash: null). */
-export function fisaDeEditat(folder, id, candidata = {}) {
-  const { rel, cale } = caleScriere(folder, id);
+export function fisaDeEditat(folder, id, candidata = {}, { fel = 'piesa' } = {}) {
+  const { rel, cale } = caleScriere(folder, id, fel);
   if (existsSync(cale)) { const md = citesteSigur(folder, rel); return { id, fisier: rel, exista: true, md, hash: hash(md) }; }
-  return { id, fisier: rel, exista: false, md: sablonFisa({ id, ...candidata }), hash: null };
+  return { id, fisier: rel, exista: false, md: fel === 'obiectiv' ? sablonObiectiv({ id, ...candidata }) : sablonFisa({ id, ...candidata }), hash: null };
 }
 
 /** Verifică textul fișei: un șir, fără caractere nule, cel mult MAX_FISA. Rândurile se normalizează la \n, cu un \n la final. */
@@ -155,9 +199,9 @@ export function verificaFisa(md) {
  * Scrie harvest/<id>.md în `folder` (orice folder cu forma unui curs; nu depinde de curs.yml). Conflict (409, conflict: true) dacă fișierul de pe disc nu mai e cel deschis: alt hash, sau a apărut
  * între timp (hashCitit null), sau a dispărut. Înainte să suprascrie, copie în .editor-istoric/. Întoarce { fisier, inainte, copie }.
  */
-export function scrieFisa(folder, id, md, hashCitit) {
+export function scrieFisa(folder, id, md, hashCitit, { fel = 'piesa' } = {}) {
   const text = verificaFisa(md);
-  const { rel, cale, dosar } = caleScriere(folder, id);
+  const { rel, cale, dosar } = caleScriere(folder, id, fel);
   const exista = existsSync(cale);
   const inainte = exista ? readFileSync(cale, 'utf8') : null;
   if ((hashCitit ?? null) !== (exista ? hash(inainte) : null)) {
@@ -184,7 +228,7 @@ export function idDinTitlu(titlu, ocupate = new Set()) {
   return id;
 }
 
-/** Fișele care există deja în harvest/ (pentru unicitatea id-ului nou). */
-export function fiseExistente(folder) {
-  try { return readdirSync(join(folder, DOSAR)).filter((f) => f.endsWith('.md')).map((f) => f.slice(0, -3)); } catch { return []; }
+/** Fișele care există deja în harvest/ (sau harvest/obiective/), pentru unicitatea id-ului nou. */
+export function fiseExistente(folder, fel) {
+  try { return readdirSync(join(folder, dosarDe(fel))).filter((f) => f.endsWith('.md')).map((f) => f.slice(0, -3)); } catch { return []; }
 }

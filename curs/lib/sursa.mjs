@@ -6,6 +6,7 @@ import { readFileSync, readdirSync, existsSync, statSync } from 'node:fs';
 import { join, normalize } from 'node:path';
 import { parse as parseYaml } from 'yaml';
 import { normal } from './randare.mjs';
+import { citesteObiectiveHarvest, referinte, indexZi, FISIER_OB, MAX_OB } from './obiective.mjs';
 
 export const STRATURI = ['sala', 'sala-si-curs', 'trainer', 'participant'];
 export const TIPURI = ['teorie', 'exercitiu', 'challenge', 'reflectie', 'mesaj', 'pauza'];
@@ -48,11 +49,12 @@ function citesteEtichete(v, nume, erori) {
   return l.map((x) => String(x).trim().replace(/\s+/g, ' '));
 }
 
-/** `obiective: [1, 3]` la un modul sau o piesă: indexuri (de la 1) în lista de obiective a zilei. */
+/** `obiective: [obiectiv-1, 3]` la un modul sau o piesă: id-uri din harvest-obiective.yml sau numere (1 = primul obiectiv al zilei).
+ *  Se rezolvă în indexuri după ce se știu obiectivele zilei (vezi citesteCurs). */
 function indexuriObiective(v, nume, erori) {
-  if (v === undefined || v === null) return [];
-  if (!Array.isArray(v) || !v.every((n) => Number.isInteger(n) && n > 0)) { erori.push(`${nume}: „obiective” e o listă de numere (indexurile obiectivelor din curs.yml, de la 1), de exemplu [1, 3]`); return []; }
-  return v;
+  const r = referinte(v);
+  if (r == null) { erori.push(`${nume}: „obiective” e o listă de id-uri de obiective (din ${FISIER_OB}) sau de numere (de la 1), de exemplu [obiectiv-1] sau [1, 3]`); return []; }
+  return r;
 }
 const lista = (x) => (x === undefined || x === null ? [] : Array.isArray(x) ? x : [x]);
 
@@ -462,22 +464,45 @@ export function citesteCurs(folder, { editie: numeEditie } = {}) {
   for (const m of module) m.inAgenda = inAgenda.has(m.id);
 
   // Totalurile zilei (D-053): suma agendei și cât rămâne până la sfârșitul zilei (negativ = depășire, arătată în material și ca avertisment).
-  // Obiectivele zilei (Alex, 2026-11-17): lista din curs.yml; ediția o poate înlocui (de exemplu, ce a cerut clientul).
-  const obiective = [];
+  // Obiectivele zilei: ediția (de exemplu, ce a cerut clientul) → harvest-obiective.yml, cele cu „da”, în ordinea din fișier
+  // (Alex, 2026-11-20) → curs.yml (rezervă, cât timp cursul nu are harvest de obiective; Alex, 2026-11-17).
+  const ho = citesteObiectiveHarvest(folder, erori, avertismente);
   const citesteObiective = (v, unde) => {
     if (!Array.isArray(v) || !v.every((x) => typeof x === 'string' && x.trim())) { erori.push(`${unde}: „obiective” e o listă de texte scurte`); return null; }
     return v.map((x) => x.trim());
   };
-  let sursaOb = null;
-  if (editie.obiective !== undefined && editie.obiective !== null) { sursaOb = `ediția ${aleasa}`; obiective.push(...(citesteObiective(editie.obiective, sursaOb) ?? [])); }
-  else if (curs.obiective !== undefined && curs.obiective !== null) { sursaOb = 'curs.yml'; obiective.push(...(citesteObiective(curs.obiective, sursaOb) ?? [])); }
+  let sursaOb = null, zi = [], felOb = null;
+  if (editie.obiective !== undefined && editie.obiective !== null) { sursaOb = `ediția ${aleasa}`; felOb = 'editie'; zi = (citesteObiective(editie.obiective, sursaOb) ?? []).map((text) => ({ id: null, text })); }
+  else if (ho) {
+    sursaOb = FISIER_OB; felOb = 'harvest'; zi = ho.obiective.filter((o) => o.verdict === 'da').map((o) => ({ id: o.id, text: o.text }));
+    if (zi.length > MAX_OB) avertismente.push(`${FISIER_OB}: ${zi.length} obiective au „da”; în curs rămân cel mult ${MAX_OB} (docs/procese/curs-nou.md, pasul 3). Alege-le pe cele mai importante`);
+    const dinCurs = Array.isArray(curs.obiective) ? curs.obiective.map((x) => String(x).trim()) : null;
+    if (dinCurs && dinCurs.join('\n') !== zi.map((o) => o.text).join('\n')) avertismente.push(`curs.yml: „obiective” nu se mai folosește; obiectivele zilei vin din ${FISIER_OB} (cele cu „da”). Șterge lista din curs.yml, ca să nu încurce`);
+  } else if (curs.obiective !== undefined && curs.obiective !== null) { sursaOb = 'curs.yml'; felOb = 'curs'; zi = (citesteObiective(curs.obiective, sursaOb) ?? []).map((text) => ({ id: null, text })); }
+  const obiective = zi.map((o) => o.text);
   for (const o of obiective) if (cuvinte(o) > 12) avertismente.push(`${sursaOb}: obiectivul „${o}” are ${cuvinte(o)} cuvinte; în schiță merge mai bine sub 12`);
-  for (const f of [...module, ...piese.values()]) for (const n of f.obiective) {
-    if (n > obiective.length) avertismente.push(`${f.fisier}: obiective conține ${n}, dar ziua are ${obiective.length} ${obiective.length === 1 ? 'obiectiv' : 'obiective'}; îl ignor`);
+  // Legăturile pieselor și ale modulelor: id-uri sau numere → indexuri în obiectivele zilei (restul codului lucrează cu indexuri).
+  const numerice = [];
+  for (const f of [...module, ...piese.values()]) {
+    f.obiectiveRef = f.obiective;
+    const out = new Set();
+    for (const n of f.obiective) {
+      if (Number.isInteger(n)) {
+        if (ho) numerice.push(f.fisier);
+        if (n > obiective.length) { avertismente.push(`${f.fisier}: obiective conține ${n}, dar ziua are ${obiective.length} ${obiective.length === 1 ? 'obiectiv' : 'obiective'}; îl ignor`); continue; }
+      } else if (!ho?.obiective.some((o) => o.id === n)) { avertismente.push(`${f.fisier}: obiectivul „${n}” nu există${ho ? ` în ${FISIER_OB}` : ` (cursul nu are ${FISIER_OB})`}; îl ignor`); continue; }
+      const k = indexZi(n, zi, ho);
+      if (k) out.add(k);
+    }
+    f.obiective = [...out].sort((a, b) => a - b);
+  }
+  if (numerice.length) {
+    const u = [...new Set(numerice)];
+    avertismente.push(`${u.length} ${u.length === 1 ? 'fișier leagă' : 'fișiere leagă'} obiectivele prin număr (${u.slice(0, 4).join(', ')}${u.length > 4 ? ', …' : ''}). Merge mai departe (1 = primul obiectiv cu „da”${zi[0]?.id ? `, adică ${zi[0].id}` : ''}), dar numărul se mută când schimbi verdictele: scrie id-ul, de exemplu obiective: [${zi[0]?.id ?? 'obiectiv-1'}]`);
   }
 
   const total = { agenda: t - (oraStart ?? 0), zi: ziStart != null && ziSfarsit != null ? ziSfarsit - ziStart : null, ramas: ziSfarsit != null ? ziSfarsit - t : null, sfarsit: t };
-  return { folder, curs: { ...curs, marca, zi_start: ziStart, zi_sfarsit: ziSfarsit }, editie: { ...editie, start: oraStart }, module, piese, agenda, blocuri, pauze: fixe, total, obiective, etichete: [...etichete.values()].sort((a, b) => a.text.localeCompare(b.text, 'ro')), erori, avertismente };
+  return { folder, curs: { ...curs, marca, zi_start: ziStart, zi_sfarsit: ziSfarsit }, editie: { ...editie, start: oraStart }, module, piese, agenda, blocuri, pauze: fixe, total, obiective, obiectiveZi: zi, obiectiveFel: felOb, harvestObiective: ho, etichete: [...etichete.values()].sort((a, b) => a.text.localeCompare(b.text, 'ro')), erori, avertismente };
 }
 
 /**

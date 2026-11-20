@@ -19,7 +19,8 @@ import { citesteBloc, scrieBloc, EroareEditor, citesteRef, caleSigura, copieIsto
 import { citesteMasa, scrieMasa, adaugaCandidata, agendaDinMasa, textAgenda, inlocuiesteAgenda, textMasa, propunere, CAMPURI_FISA, FISIER as MASA, FISIER_VECHI as MASA_VECHI } from './lib/masa.mjs';
 import { TIPURI_PIESA } from './lib/sursa.mjs';
 import { mkdirSync, rmSync } from 'node:fs';
-import { fisaPiesei, fisaDeEditat, scrieFisa, sablonFisa, idDinTitlu, fiseExistente, DOSAR as HARVEST } from './lib/fisa.mjs';
+import { fisaPiesei, fisaObiectivului, fisaDeEditat, scrieFisa, sablonFisa, idDinTitlu, fiseExistente, DOSAR as HARVEST } from './lib/fisa.mjs';
+import { citesteObiectiveHarvest, scrieObiective, adaugaObiectiv, textObiectiveNou, FISIER_OB, DOSAR_OB } from './lib/obiective.mjs';
 import { gasesteCore, citesteCore, amprenta as amprentaPiesei, stare as stareCore, STARI, idDinLegatura, trimiteInCore, iaDinCore, adaugaDinCore, PREFIX, Scrieri } from './lib/core.mjs';
 
 const AICI = dirname(fileURLToPath(import.meta.url));
@@ -161,17 +162,94 @@ export async function pornesteEditor({ folder = IMPLICIT, port = 4747, deschide 
     return { cod: 200, corp: { ok: true, fisier, copie, randuri, linii: a.linii, deProdus: scurt(a.deProdus), nehotarate: scurt(a.nehotarate) } };
   }
 
-  // Fișa piesei, editabilă (Alex, 2026-11-20): harvest/<id>.md și câmpurile rândului din harvest.yml (titlu, scop, durata, tip).
-  const campuriDin = (x) => (x ? { titlu: x.titlu, scop: x.scop ?? '', durata: x.durata, tip: x.tip ?? '' } : null);
+  // Fișa piesei, editabilă (Alex, 2026-11-20): harvest/<id>.md și câmpurile rândului din harvest.yml (titlu, scop, durata, tip, obiective).
+  const campuriDin = (x) => (x ? { titlu: x.titlu, scop: x.scop ?? '', durata: x.durata, tip: x.tip ?? '', obiective: x.obiective ?? [] } : null);
   function candidataAcum(c, id) {
     const m = citesteMasa(c, [], []);
     return { m, x: m.candidate.find((y) => y.id === id) ?? null };
   }
-  function fisaSursa(id) {
+  /** Bifele de obiective din fișa piesei: toate obiectivele din harvest-obiective.yml; „legat” = piesa îl servește acum
+   *  (din rând sau din lista „piese” a obiectivului); „dinFisier” = legătura stă în antetul piese/<id>.md (nu se schimbă de aici). */
+  function obiectiveFisa(c, x, id) {
+    const ho = c.harvestObiective;
+    if (!ho) return null;
+    const zi = c.obiectiveZi ?? [];
+    const dinFisier = new Set((x?.obFisier ?? []).map((r) => (Number.isInteger(r) ? zi[r - 1]?.id : r)).filter(Boolean));
+    const legate = new Set(x?.obIds ?? []);
+    const dinRand = new Set((x?.obiective ?? []).map((r) => (Number.isInteger(r) ? zi[r - 1]?.id : r)).filter(Boolean));
+    return ho.obiective.map((o) => ({ id: o.id, text: o.text, verdict: o.verdict, legat: legate.has(o.id), legatRand: dinRand.has(o.id), dinFisier: dinFisier.has(o.id), dinLista: o.piese.includes(id) }));
+  }
+  function fisaSursa(id, fel) {
+    if (fel === 'obiectiv') return fisaSursaOb(id);
     const c = cursAcum();
     const { m, x } = candidataAcum(c, String(id ?? ''));
     const f = fisaDeEditat(folder, id, campuriDin(x) ?? {});
-    return { ...f, campuri: campuriDin(x), areMasa: m.exista, fisierMasa: m.fisier, hashMasa: m.hash, tipuri: TIPURI_PIESA };
+    return { ...f, campuri: campuriDin(x), areMasa: m.exista, fisierMasa: m.fisier, hashMasa: m.hash, tipuri: TIPURI_PIESA,
+      obiective: obiectiveFisa(c, x, String(id ?? '')), hashOb: c.harvestObiective?.hash ?? null };
+  }
+  // Fișa obiectivului (2026-11-20): harvest/obiective/<id>.md și textul obiectivului din harvest-obiective.yml.
+  function obiectivAcum(id) {
+    const ho = citesteObiectiveHarvest(folder, [], []);
+    return { ho, o: ho?.obiective.find((y) => y.id === String(id ?? '')) ?? null };
+  }
+  function fisaSursaOb(id) {
+    const { ho, o } = obiectivAcum(id);
+    const f = fisaDeEditat(folder, id, o ? { text: o.text } : {}, { fel: 'obiectiv' });
+    return { ...f, fel: 'obiectiv', campuri: o ? { text: o.text } : null, areOb: !!ho, fisierOb: FISIER_OB, hashOb: ho?.hash ?? null };
+  }
+  function fisaSalveazaOb(date) {
+    const id = String(date.id ?? '');
+    const { ho, o } = obiectivAcum(id);
+    const text = date.campuri && typeof date.campuri.text === 'string' ? date.campuri.text : null;
+    if (text != null) {
+      if (!ho) throw new EroareEditor(`Cursul nu are încă ${FISIER_OB}.`, 404);
+      if (!o) throw new EroareEditor(`nu găsesc obiectivul „${id.slice(0, 60)}” în ${FISIER_OB}`, 404);
+      if (String(o.text) !== String(date.campuriInainte?.text ?? '')) {
+        const e = new EroareEditor(`Obiectivul din ${FISIER_OB} s-a schimbat între timp (probabil un agent). Nu l-am suprascris.`, 409);
+        e.conflict = { campuri: { text: o.text }, hashOb: ho.hash }; throw e;
+      }
+    }
+    const scrise = [];
+    let f = null, s = null;
+    try {
+      if (typeof date.md === 'string') { f = scrieFisa(folder, id, date.md, date.hash ?? null, { fel: 'obiectiv' }); if (!f.neschimbat) scrise.push({ rel: f.fisier, inainte: f.inainte }); }
+      if (text != null && text.trim() !== o.text) { s = scrieObiective(folder, { schimbari: [{ id, text }] }, ho.hash); if (!s.neschimbat) scrise.push({ rel: s.fisier, inainte: s.inainte }); }
+    } catch (e) {
+      for (const { rel, inainte } of scrise.reverse()) { if (inainte == null) rmSync(caleSigura(folder, rel), { force: true }); else writeFileSync(caleSigura(folder, rel), inainte); }
+      throw e;
+    }
+    if (scrise.length) { const rau = cuBuildMulte(scrise); if (rau) return rau; log(`  fișa obiectivului: ${scrise.map((x) => x.rel).join(', ')}`); }
+    return { cod: 200, corp: { ok: true, neschimbat: !scrise.length, fisa: fisaObiectivului(folder, id), sursa: fisaSursaOb(id), copie: f?.copie ?? null } };
+  }
+  // Harvest de obiective (2026-11-20): verdict, viziune, obiectiv nou, fișierul de pornire.
+  function obiectiveSchimba(date) {
+    const s = scrieObiective(folder, { schimbari: date.schimbari ?? [], ...(typeof date.viziune === 'string' ? { viziune: date.viziune } : {}) }, date.hash);
+    if (s.neschimbat) return { cod: 200, corp: { ok: true, hash: s.hash, neschimbat: true } };
+    const rau = cuBuild(s.fisier, s.inainte); if (rau) return rau;
+    log(`  obiective: ${s.fisier}; copie: ${s.copie}`);
+    return { cod: 200, corp: { ok: true, hash: s.hash, fisier: s.fisier, copie: s.copie, avertismente: ultim.avertismente ?? [] } };
+  }
+  function obiectivNou(date) {
+    const ho = citesteObiectiveHarvest(folder, [], []);
+    if (!ho) throw new EroareEditor(`Cursul nu are încă ${FISIER_OB}. Apasă întâi „Creează ${FISIER_OB}”.`, 404);
+    const text = String(date.text ?? '').trim();
+    const ocupate = new Set([...ho.obiective.map((o) => o.id), ...fiseExistente(folder, 'obiectiv')]);
+    const id = idDinTitlu(`obiectiv ${text.split(/\s+/).slice(0, 4).join(' ')}`, ocupate);
+    const s = adaugaObiectiv(folder, { id, text }, date.hash ?? ho.hash);
+    const scrise = [{ rel: s.fisier, inainte: s.inainte }];
+    try { const f = scrieFisa(folder, id, fisaDeEditat(folder, id, { text }, { fel: 'obiectiv' }).md, null, { fel: 'obiectiv' }); scrise.push({ rel: f.fisier, inainte: null }); }
+    catch (e) { writeFileSync(caleSigura(folder, s.fisier), s.inainte); throw e; }
+    const rau = cuBuildMulte(scrise); if (rau) return rau;
+    log(`  obiectiv nou: ${id} (${FISIER_OB} + ${DOSAR_OB}/${id}.md)`);
+    return { cod: 200, corp: { ok: true, id, fisier: `${DOSAR_OB}/${id}.md` } };
+  }
+  function obiectiveCreeaza() {
+    if (existsSync(caleSigura(folder, FISIER_OB))) throw new EroareEditor(`${FISIER_OB} există deja. Reîncarcă pagina.`, 409);
+    const c = cursAcum();
+    writeFileSync(caleSigura(folder, FISIER_OB), textObiectiveNou(c.obiectiveFel === 'curs' ? c.obiective : []));
+    const rau = cuBuild(FISIER_OB, null); if (rau) return rau;
+    log(`  obiective: am creat ${FISIER_OB}${c.obiectiveFel === 'curs' ? ' din obiectivele din curs.yml' : ''}`);
+    return { cod: 200, corp: { ok: true } };
   }
   /** Scrie fișierele în ordine; dacă build-ul refuză, toate revin la ce erau. */
   function cuBuildMulte(scrise) {
@@ -182,6 +260,7 @@ export async function pornesteEditor({ folder = IMPLICIT, port = 4747, deschide 
     return { cod: 422, corp: { eroare: `Build-ul a refuzat schimbarea, așa că ${scrise.map((s) => s.rel).join(' și ')} ${scrise.length === 1 ? 'a rămas cum era' : 'au rămas cum erau'}.`, erori: r.erori } };
   }
   function fisaSalveaza(date) {
+    if (date.fel === 'obiectiv') return fisaSalveazaOb(date);
     const id = String(date.id ?? '');
     const c = cursAcum();
     const { m, x } = candidataAcum(c, id);
@@ -204,6 +283,13 @@ export async function pornesteEditor({ folder = IMPLICIT, port = 4747, deschide 
       if (Object.keys(cerute).length) {
         s = scrieMasa(c, [{ id, ...cerute }], m.hash);
         if (!s.neschimbat) scrise.push({ rel: s.fisier, inainte: s.inainte });
+      }
+      // O bifă scoasă de pe un obiectiv care avea piesa în lista lui „piese” (harvest-obiective.yml): o scoatem și de acolo.
+      const scoase = Array.isArray(date.scoateDinObiective) ? date.scoateDinObiective.map(String) : [];
+      const ho = c.harvestObiective, din = scoase.filter((o) => ho?.obiective.find((y) => y.id === o)?.piese.includes(id));
+      if (din.length) {
+        const o = scrieObiective(folder, { schimbari: din.map((x) => ({ id: x, scoatePiesa: id })) }, date.hashOb ?? null);
+        if (!o.neschimbat) scrise.push({ rel: o.fisier, inainte: o.inainte });
       }
     } catch (e) { // a doua scriere a eșuat: prima revine
       for (const { rel, inainte } of scrise.reverse()) { if (inainte == null) rmSync(caleSigura(folder, rel), { force: true }); else writeFileSync(caleSigura(folder, rel), inainte); }
@@ -331,7 +417,8 @@ export async function pornesteEditor({ folder = IMPLICIT, port = 4747, deschide 
   }
 
   const MASA_API = { '/api/core/trimite': coreTrimite, '/api/core/ia': coreIa, '/api/core/raman': coreRaman, '/api/core/dezleaga': coreDezleaga, '/api/core/adauga': coreAdauga,
-    '/api/masa': masaSchimba, '/api/masa/creeaza': masaCreeaza, '/api/masa/agenda': masaAgenda, '/api/fisa/salveaza': fisaSalveaza, '/api/fisa/noua': fisaNoua };
+    '/api/masa': masaSchimba, '/api/masa/creeaza': masaCreeaza, '/api/masa/agenda': masaAgenda, '/api/fisa/salveaza': fisaSalveaza, '/api/fisa/noua': fisaNoua,
+    '/api/obiective': obiectiveSchimba, '/api/obiective/nou': obiectivNou, '/api/obiective/creeaza': obiectiveCreeaza };
 
   const server = createServer((req, res) => {
     const trimite = (cod, corp, tip = 'application/json; charset=utf-8') => {
@@ -355,14 +442,14 @@ export async function pornesteEditor({ folder = IMPLICIT, port = 4747, deschide 
     }
     // Fișa piesei din Harvest (2026-11-19): citită acum de pe disc, ca să se vadă ce scriu Irina și Daria între timp.
     if (req.method === 'GET' && u.pathname === '/api/fisa') {
-      try { return trimite(200, fisaPiesei(folder, u.searchParams.get('id'))); } catch (e) { return trimite(e.cod ?? 500, { eroare: e.message }); }
+      try { return trimite(200, u.searchParams.get('fel') === 'obiectiv' ? fisaObiectivului(folder, u.searchParams.get('id')) : fisaPiesei(folder, u.searchParams.get('id'))); } catch (e) { return trimite(e.cod ?? 500, { eroare: e.message }); }
     }
     const CORE_GET = { '/api/core': () => coreLista(), '/api/core/stare': () => coreStare(u.searchParams.get('id')), '/api/core/compara': () => coreCompara(u.searchParams.get('id')) };
     if (req.method === 'GET' && CORE_GET[u.pathname]) {
       try { return trimite(200, CORE_GET[u.pathname]()); } catch (e) { return trimite(e.cod ?? 500, { eroare: e.message }); }
     }
     if (req.method === 'GET' && u.pathname === '/api/fisa/sursa') {
-      try { return trimite(200, fisaSursa(u.searchParams.get('id'))); } catch (e) { return trimite(e.cod ?? 500, { eroare: e.message }); }
+      try { return trimite(200, fisaSursa(u.searchParams.get('id'), u.searchParams.get('fel'))); } catch (e) { return trimite(e.cod ?? 500, { eroare: e.message }); }
     }
     if (req.method !== 'POST' || !['/api/bloc', '/api/previzualizare', ...Object.keys(MASA_API)].includes(u.pathname)) return trimite(404, { eroare: 'nu există' });
     if (!/^application\/json\b/.test(req.headers['content-type'] ?? '')) return trimite(415, { eroare: 'se trimite JSON' });

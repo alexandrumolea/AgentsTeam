@@ -465,6 +465,7 @@ Trage un cartonaș (pe tabletă, de mânerul ⠿) sau, pe cartonașul selectat: 
 </div>
 <p class="mesaj" id="masa-mesaj" role="status"></p>
 <div id="masa-text-cutie" hidden><label class="eticheta" for="masa-text" id="masa-text-eticheta"></label><textarea id="masa-text" rows="8" readonly spellcheck="false"></textarea></div>
+<section class="obh" id="obh" aria-labelledby="obh-h"></section>
 <div class="masa-coloane" id="masa-coloane"></div>`;
 }
 
@@ -515,8 +516,12 @@ export function construiesteTrainer(c, ecrane = pregatesteEcrane(c).ecrane) {
     total: { ...c.total, start: c.editie.start, ziSfarsit: c.curs.zi_sfarsit, durataZi: String(c.curs.durata_zi ?? '') },
     blocuri: c.blocuri,
     obiective: c.obiective,
+    // Obiectivele zilei cu id-urile lor (null când vin din ediție sau din curs.yml) și de unde vin: harvest / editie / curs.
+    obiectiveZi: c.obiectiveZi ?? [], obiectiveFel: c.obiectiveFel ?? null,
     // Masa (etapa A, Alex, 2026-11-18): candidatele din masa.yml (sau propunerea, dacă fișierul lipsește). Doar în materialul trainerului.
-    masa: c.masa ? { ...c.masa, fisier: c.masa.fisier ?? 'harvest.yml', editie: c.editie.fisier ?? null, data: c.editie.data } : null,
+    masa: c.masa ? { ...c.masa, fisier: c.masa.fisier ?? 'harvest.yml', editie: c.editie.fisier ?? null, data: c.editie.data,
+      // Harvest de obiective (2026-11-20): viziunea și obiectivele candidate, fără durată. null = cursul nu are harvest-obiective.yml.
+      obiective: c.harvestObiective ? { viziune: c.harvestObiective.viziune, lista: c.harvestObiective.obiective, hash: c.harvestObiective.hash, fisier: c.harvestObiective.fisier } : null } : null,
   };
   const titlu = `${c.curs.titlu} · materialul trainerului${c.editie.data ? ' · ' + c.editie.data : ''}`;
   return `<!doctype html>

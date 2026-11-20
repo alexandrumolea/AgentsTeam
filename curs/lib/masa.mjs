@@ -6,6 +6,7 @@ import { join } from 'node:path';
 import { parse as parseYaml, parseDocument } from 'yaml';
 import { TIPURI_PIESA, ora } from './sursa.mjs';
 import { hash, EroareEditor, copieIstoric } from './editor-sursa.mjs';
+import { referinte, indexZi, idDin, FISIER_OB } from './obiective.mjs';
 
 export const FISIER = 'harvest.yml';
 // Numele vechi (până pe 2026-11-18). Un curs care are doar masa.yml merge mai departe, cu avertisment.
@@ -17,8 +18,8 @@ const ID_OK = /^[a-z0-9]+(-[a-z0-9]+)*$/;
 const CAMPURI = ['id', 'titlu', 'scop', 'durata', 'tip', 'sursa', 'verdict', 'bloc', 'ordine', 'obiective', 'nota', 'din', 'baza'];
 // Legătura cu biblioteca core (2026-11-20): din = comun/<id>, baza = amprenta versiunii luate (8 caractere hex). Vezi lib/core.mjs.
 const DIN_OK = /^comun\/[a-z0-9]+(-[a-z0-9]+)*$/, BAZA_OK = /^[0-9a-f]{8}$/;
-/** Câmpurile rândului care se editează din fișa piesei (Alex, 2026-11-20). */
-export const CAMPURI_FISA = ['titlu', 'scop', 'durata', 'tip'];
+/** Câmpurile rândului care se editează din fișa piesei (Alex, 2026-11-20). „obiective”: bifele cu obiectivele, ca id-uri. */
+export const CAMPURI_FISA = ['titlu', 'scop', 'durata', 'tip', 'obiective'];
 
 /** Verifică titlu / scop / durata / tip venite din editor (doar cele prezente). Întoarce valorile curățate. */
 export function verificaCampuri(s) {
@@ -43,6 +44,11 @@ export function verificaCampuri(s) {
     const t = String(s.tip ?? '').trim();
     if (t && !TIPURI_PIESA.includes(t)) throw new EroareEditor(`tip „${t.slice(0, 40)}” necunoscut (${TIPURI_PIESA.join(' / ')})`);
     v.tip = t;
+  }
+  if ('obiective' in s) {
+    const l = s.obiective == null ? [] : s.obiective;
+    if (!Array.isArray(l) || l.length > 30 || !l.every((x) => typeof x === 'string' && ID_OK.test(x))) throw new EroareEditor('Obiectivele piesei sunt o listă de id-uri de obiective.');
+    v.obiective = [...new Set(l)];
   }
   return v;
 }
@@ -79,11 +85,12 @@ export function verificaCandidate(lista, c, erori, avertismente, unde = FISIER) 
     if (din != null && !DIN_OK.test(din)) avertismente.push(`${loc}: „din” e de forma comun/<id> (biblioteca core); „${din.slice(0, 60)}” nu e`);
     if (baza != null && din == null) erori.push(`${loc}: „baza” fără „din”: scoate-o sau pune și legătura comun/<id>`);
     else if (baza != null && !BAZA_OK.test(baza)) erori.push(`${loc}: „baza” e amprenta din core, 8 caractere 0-9a-f`);
-    if (x.obiective != null && !(Array.isArray(x.obiective) && x.obiective.every((n) => Number.isInteger(n) && n > 0))) erori.push(`${loc}: „obiective” e o listă de numere, de exemplu [1, 3]`);
+    const refs = referinte(x.obiective);
+    if (refs == null) erori.push(`${loc}: „obiective” e o listă de id-uri de obiective (din ${FISIER_OB}) sau de numere, de exemplu [obiectiv-1] sau [1, 3]`);
     out.push({
       id, titlu: String(x.titlu ?? id), scop: x.scop == null ? '' : String(x.scop), durata: typeof x.durata === 'number' ? x.durata : 0,
       tip: x.tip == null ? '' : String(x.tip), sursa: x.sursa == null ? '' : String(x.sursa), verdict: VERDICTE.includes(verdict) ? verdict : 'nou',
-      bloc, ordine: typeof x.ordine === 'number' ? x.ordine : null, obiective: Array.isArray(x.obiective) ? x.obiective : [],
+      bloc, ordine: typeof x.ordine === 'number' ? x.ordine : null, obiective: refs ?? [],
       nota: x.nota == null ? '' : String(x.nota), produsa: produsa(c, id),
       ...(din != null && DIN_OK.test(din) ? { din, baza } : {}),
     });
@@ -101,13 +108,34 @@ export function citesteMasa(c, erori, avertismente) {
   let v;
   try { v = parseYaml(text) ?? {}; } catch (e) { erori.push(`${fisier}: YAML greșit (${e.message.split('\n')[0]})`); return { exista: true, propunere: false, hash: hash(text), fisier, candidate: [] }; }
   if (typeof v !== 'object' || Array.isArray(v)) { erori.push(`${fisier}: are forma „candidate: [ … ]”`); return { exista: true, propunere: false, hash: hash(text), fisier, candidate: [] }; }
-  return { exista: true, propunere: false, hash: hash(text), fisier, candidate: completeaza(verificaCandidate(v.candidate ?? [], c, erori, avertismente, fisier), c) };
+  const candidate = completeaza(verificaCandidate(v.candidate ?? [], c, erori, avertismente, fisier), c);
+  if (c.harvestObiective) {
+    const numerice = candidate.filter((x) => x.obiective.some(Number.isInteger)).length;
+    const prim = c.obiectiveZi?.[0]?.id;
+    if (numerice) avertismente.push(`${fisier}: ${numerice} ${numerice === 1 ? 'piesă leagă' : 'piese leagă'} obiectivele prin număr (obiective: [1]). Merge mai departe (1 = primul obiectiv cu „da”${prim ? `, adică ${prim}` : ''}), dar numărul se mută când schimbi verdictele: bifează obiectivele din fișa piesei sau scrie obiective: [${prim ?? 'obiectiv-1'}]`);
+    const ids = new Set(c.harvestObiective.obiective.map((o) => o.id));
+    for (const x of candidate) for (const r of x.obiective) if (typeof r === 'string' && !ids.has(r)) avertismente.push(`${fisier}, „${x.id}”: obiectivul „${r}” nu există în ${FISIER_OB}; îl ignor`);
+  }
+  return { exista: true, propunere: false, hash: hash(text), fisier, candidate };
 }
 
-/** Obiectivele din fișierul piesei sau al modulului (pentru rezumat; nu se scriu în masa.yml). */
+/** Obiectivele din fișierul piesei sau al modulului (legăturile scrise acolo, ca în fișier; nu se scriu în harvest.yml). */
 function obiectiveDin(c, id) {
   const f = c.piese.get(id) ?? c.module.find((m) => m.id === id);
-  return f?.obiective ?? [];
+  return f?.obiectiveRef ?? f?.obiective ?? [];
+}
+/**
+ * Legăturile unei candidate cu obiectivele (2026-11-20): obIds = id-urile obiectivelor servite (din rând, din fișierul piesei
+ * și din lista „piese” a obiectivului), obZi = indexurile în obiectivele zilei (pentru rezumat). Numerele vechi: 1 = primul „da”.
+ */
+function cuLegaturi(x, c) {
+  const zi = c.obiectiveZi ?? [], ho = c.harvestObiective;
+  const refs = [...(x.obiective ?? []), ...(x.obFisier ?? [])];
+  const ids = new Set(refs.map((r) => idDin(r, zi)).filter(Boolean));
+  for (const o of ho?.obiective ?? []) if (o.piese.includes(x.id)) ids.add(o.id);
+  const k = new Set(refs.map((r) => indexZi(r, zi, ho)).filter(Boolean));
+  for (const id of ids) { const n = indexZi(id, zi, ho); if (n) k.add(n); }
+  return { ...x, obIds: [...ids], obZi: [...k].sort((a, b) => a - b) };
 }
 /**
  * Fluxul (Alex, 2026-11-18): Masa → Biblioteca → Agenda, o singură listă. Piesele care au deja fișier în piese/, dar nu sunt
@@ -119,9 +147,9 @@ export function completeaza(candidate, c) {
   const out = candidate.map((x) => ({ ...x, obFisier: obiectiveDin(c, x.id) }));
   for (const p of c.piese.values()) {
     if (are.has(p.id) || p.tip === 'pauza') continue;
-    out.push({ id: p.id, titlu: p.titlu, scop: p.obiectiv || p.ancora || '', durata: p.durata, tip: p.tip, sursa: 'bibliotecă', verdict: 'da', bloc: null, ordine: null, obiective: [], nota: '', produsa: true, virtuala: true, obFisier: p.obiective ?? [] });
+    out.push({ id: p.id, titlu: p.titlu, scop: p.obiectiv || p.ancora || '', durata: p.durata, tip: p.tip, sursa: 'bibliotecă', verdict: 'da', bloc: null, ordine: null, obiective: [], nota: '', produsa: true, virtuala: true, obFisier: obiectiveDin(c, p.id) });
   }
-  return out;
+  return out.map((x) => cuLegaturi(x, c));
 }
 
 /** Propunerea de pornire: ce e azi în agendă (da, cu blocul și ordinea lui), apoi restul bibliotecii (da, fără bloc: e în Bibliotecă).
@@ -135,13 +163,13 @@ export function propunere(c) {
     if (f.tip === 'pauza' || pus.has(f.id)) continue;
     pus.add(f.id);
     const n = (ordine.get(r.bloc) ?? 0) + 1; ordine.set(r.bloc, n);
-    out.push({ id: f.id, titlu: f.titlu, scop: f.ancora || f.obiectiv || '', durata: r.durata, tip: f.tip, sursa: 'curs', verdict: 'da', bloc: r.bloc, ordine: n, obiective: f.obiective ?? [], nota: '', produsa: true });
+    out.push({ id: f.id, titlu: f.titlu, scop: f.ancora || f.obiectiv || '', durata: r.durata, tip: f.tip, sursa: 'curs', verdict: 'da', bloc: r.bloc, ordine: n, obiective: f.obiectiveRef ?? f.obiective ?? [], nota: '', produsa: true });
   }
   for (const p of c.piese.values()) {
     if (out.some((x) => x.id === p.id) || p.tip === 'pauza') continue; // și piesele din module: sunt în Bibliotecă
-    out.push({ id: p.id, titlu: p.titlu, scop: p.obiectiv || p.ancora || '', durata: p.durata, tip: p.tip, sursa: 'bibliotecă', verdict: 'da', bloc: null, ordine: null, obiective: p.obiective ?? [], nota: '', produsa: true });
+    out.push({ id: p.id, titlu: p.titlu, scop: p.obiectiv || p.ancora || '', durata: p.durata, tip: p.tip, sursa: 'bibliotecă', verdict: 'da', bloc: null, ordine: null, obiective: p.obiectiveRef ?? p.obiective ?? [], nota: '', produsa: true });
   }
-  return out.map((x) => ({ ...x, obFisier: obiectiveDin(c, x.id) }));
+  return out.map((x) => cuLegaturi({ ...x, obFisier: obiectiveDin(c, x.id) }, c));
 }
 
 const q = (t) => (/^[\p{L}\p{N} .,;()–-]*$/u.test(t) && !/^[\s-]|\s$|^(da|nu|true|false|null|yes|no)$/i.test(t) && t !== '' && !/^\d/.test(t) ? t : JSON.stringify(t));
@@ -248,7 +276,11 @@ export function scrieMasa(c, schimbari, hashCitit) {
     if ('ordine' in s) { if (s.ordine == null) item.delete('ordine'); else if (Number.isInteger(s.ordine) && s.ordine > 0) item.set('ordine', s.ordine); else throw new EroareEditor(`ordine „${s.ordine}” greșită`); }
     // Câmpurile rândului, din fișa piesei (2026-11-20): titlu, scop, durata, tip. Un scop sau un tip gol se scoate din rând.
     const v = verificaCampuri(s);
-    for (const k of CAMPURI_FISA) if (k in v) { if (v[k] === '') item.delete(k); else item.set(k, v[k]); }
+    for (const k of CAMPURI_FISA) {
+      if (!(k in v)) continue;
+      if (k === 'obiective') { if (!v.obiective.length) item.delete(k); else { const n = doc.createNode(v.obiective); n.flow = true; item.set(k, n); } continue; }
+      if (v[k] === '') item.delete(k); else item.set(k, v[k]);
+    }
     // Legătura cu core (2026-11-20): null o scoate (Dezleagă de core).
     for (const k of ['din', 'baza']) if (k in s) { if (s[k] == null) item.delete(k); else if ((k === 'din' ? DIN_OK : BAZA_OK).test(String(s[k]))) item.set(k, String(s[k])); else throw new EroareEditor(`${k} „${String(s[k]).slice(0, 40)}” greșit`); }
   }

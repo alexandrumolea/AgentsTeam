@@ -494,6 +494,38 @@ main > section#masa { max-width: 1440px; }
 @media (pointer: coarse) { .mc-verdict button { min-height: 40px; min-width: 44px; } .masa-maner { width: 40px; height: 40px; } .masa-carte { padding-left: 3rem; } }
 @media print { .masa-bara, .masa-ajutor, .masa-maner, .mc-verdict { display: none; } }
 
+/* Harvest de obiective (Alex, 2026-11-20): deasupra pieselor, fără durată. Cartonașe compacte, aceleași butoane de verdict. */
+.obh { margin: 0 0 1.1rem; }
+.obh-cap { display: flex; flex-wrap: wrap; align-items: baseline; gap: .2rem .8rem; margin-bottom: .3rem; }
+.obh-cap h3 { margin: 0; }
+.obh-stare { font-size: .8rem; color: var(--t-sters); }
+.obh-stare.atentie { color: var(--cronometru-gata); font-weight: 600; }
+.obh-dreapta { margin-left: auto; }
+.obh-viziune { margin: 0 0 .5rem; font-size: .92rem; line-height: 1.4; max-width: 70rem; }
+.obh-viziune .eticheta { margin-right: .35rem; }
+.obh-viz-edit { display: grid; gap: .3rem; }
+.obh-viz-edit textarea, .obh-form input { width: 100%; font: inherit; padding: .45rem .55rem; border: 1px solid var(--t-linie); border-radius: 6px; background: var(--t-suprafata); color: var(--t-text); }
+.obh-form { display: grid; gap: .3rem; margin: 0 0 .6rem; max-width: 60rem; }
+.obh-act { display: flex; gap: .4rem; justify-content: flex-end; }
+.obh-mic { font-size: .76rem; padding: .05rem .5rem; }
+.obh-nota { margin: 0 0 .5rem; font-size: .84rem; }
+.obh-lista { list-style: none; margin: 0; padding: .35rem; display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 19rem), 1fr)); gap: .4rem; border-radius: 12px; background: color-mix(in srgb, var(--t-linie) 22%, transparent); }
+.obh-carte { display: grid; gap: .3rem; align-content: space-between; padding: .45rem .6rem; background: var(--t-suprafata); border: 1px solid var(--t-linie); border-radius: 10px; min-width: 0; }
+.obh-carte:focus-visible { outline: 2px solid var(--t-accent); outline-offset: 2px; }
+.obh-carte.v-da { border-color: var(--t-text); }
+.obh-carte.v-poate { border-style: dashed; }
+.obh-carte.v-nu { opacity: .5; }
+.obh-carte.v-nu .obh-text { text-decoration: line-through; }
+.obh-text { margin: 0; display: flex; gap: .45rem; align-items: baseline; font-size: .9rem; line-height: 1.3; }
+.obh-nr { flex: none; display: inline-grid; place-items: center; min-width: 1.35rem; height: 1.35rem; border-radius: 999px; background: var(--t-text); color: var(--t-suprafata); font-size: .72rem; font-weight: 600; font-variant-numeric: tabular-nums; }
+.obh-piese { white-space: nowrap; font-variant-numeric: tabular-nums; }
+.obh-piese.lipsa { color: var(--cronometru-gata); }
+#obh-mesaj { margin: .3rem 0 0; }
+#obh-mesaj:empty { display: none; }
+#obh-mesaj.eroare { color: var(--cronometru-gata); }
+@media (pointer: coarse) { .obh-carte .mc-verdict button { min-height: 40px; min-width: 44px; } }
+@media print { .obh .mc-verdict, #obh-nou, #obh-viz-ed { display: none; } }
+
 /* Masa ca panou de control (Alex, 2026-11-18): rezumatul de sus, compact, ca Biblioteca. Fiecare cifră e un link spre vederea ei. */
 .masa-rezumat { display: flex; flex-wrap: wrap; gap: .5rem 1.25rem; align-items: center; padding: .6rem .8rem; margin: 0 0 1rem; background: var(--t-suprafata); border: 1px solid var(--t-linie); border-radius: 12px; }
 .rz-grup { display: flex; flex-wrap: wrap; align-items: center; gap: .25rem; }

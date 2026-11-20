@@ -23,7 +23,11 @@
     salveaza: function (schimbari, hash) { return api('/api/masa', 'POST', { schimbari: schimbari, hash: hash }).then(function (j) { stare(j._cod === 200 ? ' · salvat în ' + (j.fisier || 'harvest.yml') : ''); return j; }); },
     agenda: function (hash) { return api('/api/masa/agenda', 'POST', { hash: hash }); },
     creeaza: function () { return api('/api/masa/creeaza', 'POST', {}); },
-    fisa: function (id) { return api('/api/fisa?id=' + encodeURIComponent(id)); },
+    fisa: function (id, fel) { return api('/api/fisa?id=' + encodeURIComponent(id) + (fel === 'obiectiv' ? '&fel=obiectiv' : '')); },
+    // Harvest de obiective (2026-11-20): verdict / viziune, obiectiv nou, fișierul de pornire (harvest-obiective.yml).
+    obiective: function (date, hash) { return api('/api/obiective', 'POST', { schimbari: date.schimbari || [], viziune: date.viziune, hash: hash }).then(function (j) { if (j._cod === 200) stare(' · salvat în harvest-obiective.yml'); return j; }); },
+    obiectivNou: function (text, hash) { return api('/api/obiective/nou', 'POST', { text: text, hash: hash }); },
+    obiectiveCreeaza: function () { return api('/api/obiective/creeaza', 'POST', {}); },
   };
 
   // ---------- bara de jos: mod editare + fișierele schimbate (commit-ul îl face Alex sau Tudor, nu editorul) ----------
@@ -195,7 +199,9 @@
       '<label class="fe-camp"><span class="eticheta">Durata (min)</span><input id="fe-durata" type="number" min="0" max="600" step="1" inputmode="numeric"></label>' +
       '<label class="fe-camp"><span class="eticheta">Tip</span><select id="fe-tip"></select></label>' +
       '<label class="fe-camp fe-tot"><span class="eticheta">Obiectivul piesei (scop, în harvest.yml)</span><input id="fe-scop" type="text" maxlength="600" autocomplete="off"></label>' +
+      '<fieldset class="fe-camp fe-tot fe-obiective" id="fe-obiective" hidden><legend class="eticheta">Obiectivele cursului pe care le servește</legend><span id="fe-ob-lista"></span></fieldset>' +
       '<p class="fe-nota sters" id="fe-campuri-nota" hidden></p></div>' +
+      '<div class="fe-campuri" id="fe-campuri-ob" hidden><label class="fe-camp fe-tot"><span class="eticheta">Obiectivul (text, în harvest-obiective.yml)</span><input id="fe-ob-text" type="text" maxlength="400" autocomplete="off"></label></div>' +
       '<label class="eticheta fe-eticheta" for="fe-text" id="fe-text-eticheta">Fișa (Markdown)</label>' +
       '<textarea id="fe-text" spellcheck="true" lang="ro"></textarea>' +
       '<div class="fe-conflict" id="fe-conflict" role="alert" hidden><p id="fe-conflict-text"></p>' +
@@ -213,7 +219,16 @@
     var ed = null, ciorne = {}, CAMP = ['titlu', 'scop', 'durata', 'tip'];
     var tipuri = [];
     var val = function () { return { titlu: $('fe-titlu').value, scop: $('fe-scop').value, durata: $('fe-durata').value, tip: $('fe-tip').value }; };
-    var schimbate = function () { var v = val(), o = {}; if (!ed || !ed.campuri0) return o; CAMP.forEach(function (k) { if (String(v[k]).trim() !== String(ed.campuri0[k] == null ? '' : ed.campuri0[k])) o[k] = k === 'durata' ? (/^\s*\d+\s*$/.test(v[k]) ? +v[k] : v[k]) : v[k].trim(); }); return o; };
+    // Bifele de obiective (2026-11-20): starea de la deschidere (ed.ob0) față de acum; se trimit doar dacă s-a schimbat ceva.
+    var bifeOb = function () { return [].filter.call($('fe-ob-lista').querySelectorAll('input[data-ob]'), function (x) { return x.checked && !x.disabled; }).map(function (x) { return x.getAttribute('data-ob'); }); };
+    var schimbate = function () {
+      var o = {}; if (!ed || !ed.campuri0) return o;
+      if (ed.fel === 'obiectiv') { var t = $('fe-ob-text').value.replace(/\s+/g, ' ').trim(); if (t !== String(ed.campuri0.text || '')) o.text = t; return o; }
+      var v = val();
+      CAMP.forEach(function (k) { if (String(v[k]).trim() !== String(ed.campuri0[k] == null ? '' : ed.campuri0[k])) o[k] = k === 'durata' ? (/^\s*\d+\s*$/.test(v[k]) ? +v[k] : v[k]) : v[k].trim(); });
+      if (ed.ob0 && bifeOb().slice().sort().join(' ') !== ed.ob0.slice().sort().join(' ')) o.obiective = bifeOb();
+      return o;
+    };
     var murdar = function () { return !!ed && ((ed.mod === 'fisa' && $('fe-text').value !== ed.md0) || Object.keys(schimbate()).length > 0); };
     function feEroare(t, lista) { var e = $('fe-eroare'); e.hidden = !t; e.innerHTML = t ? escape(t) + (lista && lista.length ? '<ul>' + lista.map(function (x) { return '<li>' + escape(x) + '</li>'; }).join('') + '</ul>' : '') : ''; }
     function info(t) { $('fe-info').textContent = t || ''; }
@@ -228,35 +243,59 @@
       [].forEach.call($('fe-campuri').querySelectorAll('input, select'), function (x) { x.disabled = !activ; });
       $('fe-campuri-nota').hidden = !nota; $('fe-campuri-nota').textContent = nota || '';
     }
-    function activeaza(mod) {
+    /** Bifele: toate obiectivele din harvest-obiective.yml. Cele legate din antetul piese/<id>.md sunt bifate și blocate. */
+    function puneBifeOb(lista, areRand) {
+      var f = $('fe-obiective'); f.hidden = !lista || !lista.length;
+      if (f.hidden) { ed.ob0 = null; return; }
+      var VER = { nou: 'nou', da: 'da', poate: 'poate', nu: 'nu' };
+      $('fe-ob-lista').innerHTML = lista.map(function (o) {
+        var blocat = o.dinFisier && !o.legatRand;
+        return '<label class="fe-ob' + (o.verdict === 'nu' ? ' fe-ob-nu' : '') + '"' + (o.dinFisier ? ' title="Legat și din antetul piesei (piese/' + escape(ed.id) + '.md); se schimbă acolo."' : '') + '><input type="checkbox" data-ob="' + escape(o.id) + '"' + (o.legat ? ' checked' : '') + (!areRand || blocat ? ' disabled' : '') + '> <span>' + escape(o.text) + '</span> <span class="fe-ob-v v-' + escape(o.verdict) + '">' + VER[o.verdict] + '</span></label>';
+      }).join('');
+      ed.ob0 = bifeOb(); ed.obLista = lista;
+    }
+    function activeaza(mod, fel) {
       d.classList.add('fe-activ'); p.hidden = false; corp.hidden = true; be.hidden = true;
+      $('fe-campuri').hidden = fel === 'obiectiv'; $('fe-campuri-ob').hidden = fel !== 'obiectiv'; $('fe-obiective').hidden = true;
       $('fe-text').hidden = mod === 'nou'; $('fe-text-eticheta').hidden = mod === 'nou';
       $('fe-salveaza').textContent = mod === 'nou' ? 'Creează piesa' : 'Salvează';
       $('fe-conflict').hidden = true; feEroare(''); info('');
       // Bifa core: nebifată la fiecare deschidere (spec Radu), ca personalizarea să nu ajungă din greșeală în core.
-      if (CORE) { $('fe-core-bifa').checked = false; puneBifa(mod); }
+      if (CORE) { $('fe-core-bifa').checked = false; puneBifa(mod); if (fel === 'obiectiv') $('fe-core-eticheta').hidden = true; } // obiectivele nu merg în core (sunt ale cursului)
       bc.hidden = true; cmp.hidden = true;
     }
     function iesi() {
       ed = null; d.classList.remove('fe-activ'); p.hidden = true; corp.hidden = false; be.hidden = false;
       deseneazaCore();
     }
-    function intra(id) {
+    function intra(id, fel) {
       feEroare('');
-      api('/api/fisa/sursa?id=' + encodeURIComponent(id)).then(function (j) {
+      fel = fel || (MF.fel ? MF.fel() : 'piesa');
+      var cheie = (fel === 'obiectiv' ? 'obiectiv:' : '') + id;
+      api('/api/fisa/sursa?id=' + encodeURIComponent(id) + (fel === 'obiectiv' ? '&fel=obiectiv' : '')).then(function (j) {
         if (j._cod !== 200) { info(''); feEroare(j.eroare || 'Nu pot deschide fișa pentru editare.'); if (!d.open) d.showModal(); return; }
-        if (MF.deschisa() !== id && d.open) return; // între timp s-a deschis altă piesă
-        if (!d.open) MF.deschide(id);
-        ed = { mod: 'fisa', id: id, md0: j.md, hash: j.hash, exista: j.exista, fisier: j.fisier, campuri0: j.campuri, hashMasa: j.hashMasa, fisierMasa: j.fisierMasa };
-        activeaza('fisa');
-        puneTipuri(j.tipuri, '');
-        var areRand = j.areMasa && j.campuri;
-        puneCampuri(j.campuri, !!areRand, !j.areMasa ? 'Cursul nu are încă harvest.yml: titlul, durata și tipul se pot schimba după „Creează harvest.yml”.' : !j.campuri ? 'Piesa nu e în ' + j.fisierMasa + '.' : '');
+        if ((MF.deschisa() !== id || (MF.fel && MF.fel() !== fel)) && d.open) return; // între timp s-a deschis altă fișă
+        if (!d.open) MF.deschide(id, fel);
+        ed = { mod: 'fisa', fel: fel, cheie: cheie, id: id, md0: j.md, hash: j.hash, exista: j.exista, fisier: j.fisier, campuri0: j.campuri, hashMasa: j.hashMasa, fisierMasa: j.fisierMasa, hashOb: j.hashOb };
+        activeaza('fisa', fel);
+        if (fel === 'obiectiv') {
+          $('fe-ob-text').value = j.campuri ? j.campuri.text : ''; $('fe-ob-text').disabled = !j.campuri;
+        } else {
+          puneTipuri(j.tipuri, '');
+          var areRand = j.areMasa && j.campuri;
+          puneCampuri(j.campuri, !!areRand, !j.areMasa ? 'Cursul nu are încă harvest.yml: titlul, durata și tipul se pot schimba după „Creează harvest.yml”.' : !j.campuri ? 'Piesa nu e în ' + j.fisierMasa + '.' : '');
+          puneBifeOb(j.obiective, !!areRand);
+        }
         $('fe-text').value = j.md;
-        $('fe-text-eticheta').textContent = 'Fișa (Markdown) · ' + j.fisier + (j.exista ? '' : ' · nouă, din șablonul D-078; se creează la „Salvează”');
-        var c = ciorne[id];
+        $('fe-text-eticheta').textContent = 'Fișa (Markdown) · ' + j.fisier + (j.exista ? '' : (fel === 'obiectiv' ? ' · nouă; se creează la „Salvează”' : ' · nouă, din șablonul D-078; se creează la „Salvează”'));
+        var c = ciorne[cheie];
         if (c) {
-          $('fe-text').value = c.md; CAMP.forEach(function (k) { if (k in c.v) $('fe-' + k).value = c.v[k]; });
+          $('fe-text').value = c.md;
+          if (fel === 'obiectiv') { if ('text' in c.v) $('fe-ob-text').value = c.v.text; }
+          else {
+            CAMP.forEach(function (k) { if (k in c.v) $('fe-' + k).value = c.v[k]; });
+            if (c.ob) [].forEach.call($('fe-ob-lista').querySelectorAll('input[data-ob]'), function (x) { if (!x.disabled) x.checked = c.ob.indexOf(x.getAttribute('data-ob')) >= 0; });
+          }
           info('Am pus înapoi textul nesalvat de data trecută. „Renunță” îl aruncă.');
         }
         $('fe-text').focus(); $('fe-text').setSelectionRange(0, 0); $('fe-text').scrollTop = 0;
@@ -265,7 +304,7 @@
     function renunta() {
       if (!ed) return true;
       if (murdar() && !confirm(ed.mod === 'nou' ? 'Renunți la piesa nouă?' : 'Renunți la schimbările din fișă?')) return false;
-      var nou = ed.mod === 'nou', id = ed.id; delete ciorne[id];
+      var nou = ed.mod === 'nou'; delete ciorne[ed.cheie || ed.id];
       iesi();
       if (nou) d.close();
       return true;
@@ -274,17 +313,25 @@
       if (!ed) return;
       if (ed.mod === 'nou') return creeaza();
       var b = $('fe-salveaza'); b.disabled = true; b.textContent = 'Salvez…'; feEroare('');
-      var campuri = schimbate(), id = ed.id, inCore = CORE && $('fe-core-bifa').checked;
-      api('/api/fisa/salveaza', 'POST', { id: id, md: $('fe-text').value, hash: ed.hash, campuri: campuri, campuriInainte: ed.campuri0 }).then(function (j) {
+      var campuri = schimbate(), id = ed.id, fel = ed.fel, cheie = ed.cheie, inCore = CORE && fel !== 'obiectiv' && $('fe-core-bifa').checked;
+      var corpCerere = { id: id, md: $('fe-text').value, hash: ed.hash, campuri: campuri, campuriInainte: ed.campuri0 };
+      if (fel === 'obiectiv') corpCerere.fel = 'obiectiv';
+      else if (campuri.obiective && ed.obLista) {
+        // O bifă scoasă de pe un obiectiv care are piesa în lista lui „piese” o scoate și de acolo (harvest-obiective.yml).
+        corpCerere.scoateDinObiective = ed.obLista.filter(function (o) { return o.dinLista && campuri.obiective.indexOf(o.id) < 0; }).map(function (o) { return o.id; });
+        corpCerere.hashOb = ed.hashOb;
+      }
+      api('/api/fisa/salveaza', 'POST', corpCerere).then(function (j) {
         b.disabled = false; b.textContent = 'Salvează';
-        if (!ed || ed.id !== id) return;
+        if (!ed || ed.id !== id || ed.fel !== fel) return;
         if (j._cod === 409 && j.conflict) { arataConflict(j); return; }
         if (j._cod !== 200) { feEroare(j.eroare || 'Nu s-a salvat.', j.erori); return; } // textul rămâne în câmp
-        delete ciorne[id];
-        if (j.sursa) MF.actualizeaza(id, j.sursa.campuri, j.sursa.hashMasa);
+        delete ciorne[cheie];
+        if (fel === 'obiectiv') { if (j.sursa) MF.actualizeazaOb(id, j.sursa.campuri, j.sursa.hashOb); }
+        else if (j.sursa) { MF.actualizeaza(id, j.sursa.campuri, j.sursa.hashMasa); if (MF.legaturiObiective) MF.legaturiObiective(id, j.sursa.obiective, j.sursa.hashOb); }
         iesi();
-        MF.arata(id, j.fisa);
-        stare(j.neschimbat ? ' · nimic de salvat' : ' · salvat în ' + escape(j.sursa ? j.sursa.fisier : 'harvest/') + (Object.keys(campuri).length ? ' și ' + escape(j.sursa.fisierMasa) : '') + ', materialul e refăcut');
+        MF.arata(id, j.fisa, fel);
+        stare(j.neschimbat ? ' · nimic de salvat' : ' · salvat în ' + escape(j.sursa ? j.sursa.fisier : 'harvest/') + (Object.keys(campuri).length ? ' și ' + escape(fel === 'obiectiv' ? j.sursa.fisierOb : j.sursa.fisierMasa) : '') + ', materialul e refăcut');
         $('fisa-sursa').textContent += j.neschimbat ? ' · nimic de salvat' : ' · salvat';
         be.focus();
         if (inCore) trimiteCore(id, {}, 'Fișa e salvată în curs.');
@@ -302,12 +349,12 @@
         try { if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(text).then(function () { ok(true); }, function () { ok(rezerva()); }); else ok(rezerva()); } catch (e) { ok(rezerva()); }
       });
     }
-    $('fe-reincarca').addEventListener('click', function () { if (!ed) return; var id = ed.id; delete ciorne[id]; ed = null; intra(id); });
+    $('fe-reincarca').addEventListener('click', function () { if (!ed) return; var id = ed.id, fel = ed.fel; delete ciorne[ed.cheie || id]; ed = null; intra(id, fel); });
     $('fe-pastreaza').addEventListener('click', function () {
       if (!ed || !ed.conflict) return;
       var c = ed.conflict;
       if ('hash' in c) { ed.hash = c.hash; ed.exista = c.hash != null; }
-      if (c.campuri) { ed.campuri0 = c.campuri; ed.hashMasa = c.hashMasa; }
+      if (c.campuri) { ed.campuri0 = c.campuri; ed.hashMasa = c.hashMasa; if (c.hashOb) ed.hashOb = c.hashOb; }
       ed.conflict = null; $('fe-conflict').hidden = true;
       copiaza($('fe-text').value).then(function (ok) {
         info((ok ? 'Textul tău e copiat în clipboard și' : 'Nu l-am putut copia în clipboard, dar textul tău') + ' rămâne aici. „Salvează” înlocuiește acum versiunea de pe disc (aceea rămâne în .editor-istoric/).');
@@ -318,9 +365,9 @@
     noua.addEventListener('click', function () {
       if (MF.propunere()) return;
       api('/api/fisa/sursa?id=piesa-noua-model').then(function (j) {
-        ed = { mod: 'nou', id: null, md0: '', campuri0: { titlu: '', scop: '', durata: '', tip: '' } };
+        ed = { mod: 'nou', fel: 'piesa', id: null, md0: '', campuri0: { titlu: '', scop: '', durata: '', tip: '' } };
         $('fisa-titlu').textContent = 'Piesă nouă'; $('fisa-sursa').textContent = 'Harvest · rând nou în harvest.yml + fișă în harvest/';
-        activeaza('nou');
+        activeaza('nou', 'piesa');
         puneTipuri(j.tipuri || [], '');
         puneCampuri(null, true, 'Id-ul se face din titlu (litere mici, fără diacritice). Piesa intră în Harvest cu verdict „nou”, iar fișa pornește din șablonul D-078.');
         if (!d.open) d.showModal();
@@ -344,7 +391,7 @@
       }, function () { b.disabled = false; b.textContent = 'Creează piesa'; feEroare('Editorul nu răspunde. Fereastra Terminal în care rulează e încă deschisă?'); });
     }
 
-    be.addEventListener('click', function () { var id = MF.deschisa(); if (id) intra(id); });
+    be.addEventListener('click', function () { var id = MF.deschisa(); if (id) intra(id, MF.fel ? MF.fel() : 'piesa'); });
     $('fe-salveaza').addEventListener('click', salveaza);
     $('fe-renunta').addEventListener('click', renunta);
     // Esc în modul de editare = „Renunță” (cu întrebare dacă ai scris ceva); nu închide fișa pe nevăzute.
@@ -357,12 +404,12 @@
     window.__fisaPaza = function () {
       if (!ed) return true;
       if (murdar() && !confirm('Închizi fișa fără să salvezi schimbările?')) return false;
-      if (ed.id) delete ciorne[ed.id];
+      if (ed.id) delete ciorne[ed.cheie || ed.id];
       iesi(); return true;
     };
     // Dacă fișa se închide totuși cu text nesalvat, textul rămâne ca ciornă pentru următorul „Editează”.
     d.addEventListener('close', function () {
-      if (ed && ed.mod === 'fisa' && murdar()) ciorne[ed.id] = { md: $('fe-text').value, v: val() };
+      if (ed && ed.mod === 'fisa' && murdar()) ciorne[ed.cheie || ed.id] = { md: $('fe-text').value, v: ed.fel === 'obiectiv' ? { text: $('fe-ob-text').value } : val(), ob: ed.fel === 'obiectiv' || !ed.ob0 ? null : bifeOb() };
       if (ed) iesi();
     });
     window.addEventListener('beforeunload', function (ev) { if (murdar()) { ev.preventDefault(); ev.returnValue = ''; } });
@@ -380,17 +427,17 @@
       $('fe-core-bifa-text').textContent = legata ? 'Actualizează și în core' : 'Salvează și în core';
       $('fe-core-eticheta').hidden = mod !== 'nou' && !(ci && ci.activ && ci.areRand && ci.id === (ed && ed.id));
     }
-    window.__fisaLaDeschidere = function (id) {
+    window.__fisaLaDeschidere = function (id, fel) {
       ci = null; bc.hidden = true; cmp.hidden = true; if (!ed) corp.hidden = false;
-      if (!CORE) return;
+      if (!CORE || fel === 'obiectiv') return; // obiectivele sunt ale cursului: fără core
       api('/api/core/stare?id=' + encodeURIComponent(id)).then(function (j) {
-        if (MF.deschisa() !== id || j._cod !== 200) return;
+        if (MF.deschisa() !== id || (MF.fel && MF.fel() !== 'piesa') || j._cod !== 200) return;
         ci = j; ci.id = id; deseneazaCore(); if (ed) puneBifa(ed.mod);
       });
     };
     var buton2 = function (id, text, cls) { return '<button type="button" id="' + id + '"' + (cls ? ' class="' + cls + '"' : '') + '>' + text + '</button>'; };
     function deseneazaCore() {
-      if (!ci || !ci.activ || !ci.areRand || ed || ci.id !== MF.deschisa()) { bc.hidden = true; return; }
+      if (!ci || !ci.activ || !ci.areRand || ed || ci.id !== MF.deschisa() || (MF.fel && MF.fel() !== 'piesa')) { bc.hidden = true; return; }
       var h = '', din = '<code>' + escape(ci.din || '') + '</code>';
       if (!ci.legata) {
         h = '<span class="fe-core-text sters">Doar în acest curs.</span>' + buton2('fe-core-trimite', 'Trimite în core') +
@@ -545,10 +592,12 @@
     }
 
     var deEditat = null; try { deEditat = sessionStorage.getItem('masa:editeaza'); sessionStorage.removeItem('masa:editeaza'); } catch (e) { /* nimic */ }
-    if (deEditat && MF.candidata(deEditat)) { MF.deschide(deEditat); intra(deEditat); }
+    if (deEditat && MF.candidata(deEditat)) { MF.deschide(deEditat); intra(deEditat, 'piesa'); }
+    var deEditatOb = null; try { deEditatOb = sessionStorage.getItem('masa:editeaza-ob'); sessionStorage.removeItem('masa:editeaza-ob'); } catch (e) { /* nimic */ }
+    if (deEditatOb && MF.obiectiv && MF.obiectiv(deEditatOb)) { MF.deschide(deEditatOb, 'obiectiv'); intra(deEditatOb, 'obiectiv'); }
     var deVazut = null; try { deVazut = sessionStorage.getItem('masa:fisa'); sessionStorage.removeItem('masa:fisa'); coreMesaj = sessionStorage.getItem('masa:core-mesaj') || ''; sessionStorage.removeItem('masa:core-mesaj'); } catch (e) { /* nimic */ }
     if (deVazut && !deEditat && MF.candidata(deVazut)) MF.deschide(deVazut);
-    window.__fisaEditor = { stare: function () { return ed ? { mod: ed.mod, id: ed.id, murdar: murdar(), hash: ed.hash } : null; }, ciorne: function () { return Object.keys(ciorne); } };
+    window.__fisaEditor = { stare: function () { return ed ? { mod: ed.mod, fel: ed.fel, id: ed.id, murdar: murdar(), hash: ed.hash } : null; }, ciorne: function () { return Object.keys(ciorne); } };
   }
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', pornesteFisa); else pornesteFisa();
 })();

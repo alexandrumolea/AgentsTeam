@@ -23,6 +23,11 @@
   var FISE = json('fise'), IMG = json('imagini'); // fișele incluse la build (offline); în editor se recitesc de pe disc
 
   var cand = M.candidate.map(function (x) { var y = {}; for (var k in x) y[k] = x[k]; return y; });
+  // Harvest de obiective (2026-11-20): { viziune, lista, hash, fisier } sau null (cursul nu are harvest-obiective.yml).
+  var OBH = M.obiective || null;
+  var OB = OBH ? OBH.lista.map(function (o) { return { id: o.id, text: o.text, sursa: o.sursa, verdict: o.verdict, piese: o.piese.slice(), nota: o.nota }; }) : [];
+  var OBID = {}; OB.forEach(function (o) { OBID[o.id] = o; });
+  var FO = OBH ? OBH.fisier : 'harvest-obiective.yml', MAX_OB = 4;
   var ID = {}; cand.forEach(function (x) { ID[x.id] = x; });
   var respinse = false, fokus = null, local = null;
   var editor = function () { return window.__masaEditor || null; }; // doar în pagina servită de editorul local
@@ -176,7 +181,7 @@
     var r = $('masa-respinse'); r.setAttribute('aria-pressed', respinse ? 'true' : 'false'); r.textContent = respinse ? 'Ascunde „Nu” (' + nu.length + ')' : 'Arată și „Nu” (' + nu.length + ')'; r.disabled = !nu.length && !respinse;
     $('masa-reset').hidden = !!editor() || !local;
     $('masa-agenda').disabled = blocat();
-    rezumat(); stare();
+    rezumat(); stare(); randeazaOb();
     if (fokus) { var f = col.querySelector('.masa-carte[data-id="' + fokus + '"]'); if (f) f.focus({ preventScroll: false }); }
   }
   var ultimaStare = '';
@@ -188,8 +193,31 @@
 
   // ---------- rezumatul: panoul de control al cursului (Alex, 2026-11-18) ----------
   // Fiecare cifră duce la vederea ei. Agenda „de pe masă” = cartonașele din blocuri; „agenda ediției” = ce e acum în ediție (DATA.module).
-  var OBIECTIVE = DATA.obiective || [];
-  var obiectiveDe = function (x) { var o = {}; (x.obiective || []).concat(x.obFisier || []).forEach(function (n) { o[n] = 1; }); return o; };
+  // Obiectivele zilei (2026-11-20): cu harvest-obiective.yml, cele cu „da”, în ordinea din fișier (se recalculează când schimbi verdictul).
+  // Legăturile pieselor: id-uri sau numere vechi (1 = primul obiectiv cu „da”); aceleași reguli ca lib/obiective.mjs (indexZi, idDin).
+  function obiectiveZi() {
+    if (OBH && DATA.obiectiveFel === 'harvest') return OB.filter(function (o) { return o.verdict === 'da'; }).map(function (o) { return { id: o.id, text: o.text }; });
+    return DATA.obiectiveZi && DATA.obiectiveZi.length ? DATA.obiectiveZi : (DATA.obiective || []).map(function (t) { return { id: null, text: t }; });
+  }
+  function indexZi(ref, zi) {
+    if (typeof ref === 'number') return ref <= zi.length ? ref : 0;
+    for (var i = 0; i < zi.length; i++) if (zi[i].id === ref) return i + 1;
+    var o = OBID[ref]; if (o) for (var j = 0; j < zi.length; j++) if (zi[j].text === o.text) return j + 1;
+    return 0;
+  }
+  /** Id-urile obiectivelor servite de o candidată: din rând, din fișierul piesei și din lista „piese” a obiectivului. */
+  function legaturi(x) {
+    var zi = obiectiveZi(), ids = {};
+    (x.obiective || []).concat(x.obFisier || []).forEach(function (r) { var id = typeof r === 'number' ? (zi[r - 1] && zi[r - 1].id) : r; if (id) ids[id] = 1; });
+    OB.forEach(function (o) { if (o.piese.indexOf(x.id) >= 0) ids[o.id] = 1; });
+    return ids;
+  }
+  var obiectiveDe = function (x) {
+    var o = {}, zi = obiectiveZi();
+    (x.obiective || []).concat(x.obFisier || []).forEach(function (r) { var k = indexZi(r, zi); if (k) o[k] = 1; });
+    Object.keys(legaturi(x)).forEach(function (id) { var k = indexZi(id, zi); if (k) o[k] = 1; });
+    return o;
+  };
   /** Agenda de pe masă, ca perechi id + bloc (doar ce intră la „Trimite”: Da și produsă), față de agenda ediției. */
   function sincronizata() {
     var masa = [], editie = [];
@@ -211,6 +239,7 @@
       var t = totalBloc(bl, dinBloc(bl.nr).map(function (x) { return x.id; }));
       return b('bloc-' + bl.nr, 'B' + bl.nr + ' ' + t.text.replace(' din ', '/').replace(' min', ''), 'Blocul ' + bl.nr + ': ' + t.text + (t.stare ? ', ' + t.stare : ''), 'rz-mic ' + t.clasa);
     }).join('') : '';
+    var OBIECTIVE = obiectiveZi().map(function (o) { return o.text; });
     var ob = OBIECTIVE.map(function (text, i) {
       var k = deZi.filter(function (x) { return obiectiveDe(x)[i + 1]; }).length;
       return b('obiective', (i + 1) + ': ' + cifra(k), 'Obiectivul ' + (i + 1) + ': ' + text + ' · ' + (k ? k + (k === 1 ? ' piesă' : ' piese') + ' în agendă' : 'neacoperit'), 'rz-mic ' + (k ? 'ramas' : 'lipsa'));
@@ -333,11 +362,13 @@
 
   // ---------- fișa piesei (Alex, 2026-11-19): toată logica piesei, din harvest/<id>.md sau din piesa produsă ----------
   // HTML-ul vine gata randat și escapat (lib/fisa.mjs, la build sau din editor), deci aici doar îl punem în dialog.
-  var fisaDe = null;
-  function arataFisa(x, f) {
+  var fisaDe = null, fisaFel = 'piesa';
+  var cheieFisa = function (id, fel) { return fel === 'obiectiv' ? 'obiectiv:' + id : id; };
+  function arataFisa(x, f, fel) {
     var d = $('fisa-dialog'); if (!d) return;
     $('fisa-titlu').textContent = x.titlu;
-    $('fisa-sursa').textContent = !f || !f.sursa ? 'Fișa · ' + x.id : f.sursa === 'harvest' ? 'Fișa · ' + f.fisier : 'Piesa produsă · ' + f.fisier + ' (încă fără fișă în harvest/)';
+    $('fisa-sursa').textContent = fel === 'obiectiv' ? 'Fișa obiectivului · ' + (f && f.sursa ? f.fisier : 'harvest/obiective/' + x.id + '.md') :
+      !f || !f.sursa ? 'Fișa · ' + x.id : f.sursa === 'harvest' ? 'Fișa · ' + f.fisier : 'Piesa produsă · ' + f.fisier + ' (încă fără fișă în harvest/)';
     var corp = $('fisa-corp');
     corp.innerHTML = f && f.sursa ? f.html : '<p class="fisa-gol">Fișa nu e scrisă încă.</p>';
     [].forEach.call(corp.querySelectorAll('img[data-img]'), function (im) {
@@ -347,19 +378,23 @@
     corp.scrollTop = 0;
     if (!d.open) d.showModal();
   }
-  function deschideFisa(id) {
-    var x = ID[id]; if (!x) return;
-    fisaDe = id;
-    if (window.__fisaLaDeschidere) window.__fisaLaDeschidere(id); // editorul local: rândul „Din core” al fișei
+  var butonFisa = function (id, fel) { return document.querySelector(fel === 'obiectiv' ? '.mc-fisa[data-fisa-ob="' + id + '"]' : '.mc-fisa[data-fisa="' + id + '"]'); };
+  /** Fișa unei piese (fel „piesa”) sau a unui obiectiv (fel „obiectiv”, harvest/obiective/<id>.md). */
+  function deschideFisa(id, fel) {
+    fel = fel === 'obiectiv' ? 'obiectiv' : 'piesa';
+    var x = fel === 'obiectiv' ? (OBID[id] ? { id: id, titlu: OBID[id].text } : null) : ID[id]; if (!x) return;
+    var k = cheieFisa(id, fel);
+    fisaDe = id; fisaFel = fel;
+    if (window.__fisaLaDeschidere) window.__fisaLaDeschidere(id, fel); // editorul local: rândul „Din core” al fișei (doar la piese)
     var ed = editor();
-    if (!ed || !ed.fisa) { arataFisa(x, FISE[id]); return; }
-    arataFisa(x, FISE[id] || { sursa: 'harvest', fisier: 'harvest/' + id + '.md', html: '<p class="sters">Se citește fișa…</p>' });
-    ed.fisa(id).then(function (j) {
-      if (fisaDe !== id) return;
-      if (j._cod !== 200) { arataFisa(x, FISE[id]); mesaj((j.eroare || 'Nu pot citi fișa de pe disc.') + ' Arăt varianta de la ultimul build.', true); return; }
-      FISE[id] = j.sursa ? j : null; arataFisa(x, j);
-      var b = document.querySelector('.mc-fisa[data-fisa="' + id + '"]'); if (b) b.classList.toggle('fara', !j.sursa);
-    }, function () { if (fisaDe === id) arataFisa(x, FISE[id]); });
+    if (!ed || !ed.fisa) { arataFisa(x, FISE[k], fel); return; }
+    arataFisa(x, FISE[k] || { sursa: 'harvest', fisier: (fel === 'obiectiv' ? 'harvest/obiective/' : 'harvest/') + id + '.md', html: '<p class="sters">Se citește fișa…</p>' }, fel);
+    ed.fisa(id, fel).then(function (j) {
+      if (fisaDe !== id || fisaFel !== fel) return;
+      if (j._cod !== 200) { arataFisa(x, FISE[k], fel); mesaj((j.eroare || 'Nu pot citi fișa de pe disc.') + ' Arăt varianta de la ultimul build.', true); return; }
+      FISE[k] = j.sursa ? j : null; arataFisa(x, j, fel);
+      var b = butonFisa(id, fel); if (b) b.classList.toggle('fara', !j.sursa);
+    }, function () { if (fisaDe === id && fisaFel === fel) arataFisa(x, FISE[k], fel); });
   }
   function initFisa() {
     var d = $('fisa-dialog'); if (!d) return;
@@ -369,8 +404,133 @@
     d.addEventListener('click', function (ev) { if (ev.target === d) inchide(); }); // clic pe fundal
     d.addEventListener('keydown', function (ev) { ev.stopPropagation(); }); // tastele din fișă nu ajung la cartonașe sau la prezentare
     d.addEventListener('close', function () {
-      var id = fisaDe; fisaDe = null;
-      var li = id && document.querySelector('.masa-carte[data-id="' + id + '"]'); if (li) li.focus();
+      var id = fisaDe, fel = fisaFel; fisaDe = null; fisaFel = 'piesa';
+      var li = id && document.querySelector(fel === 'obiectiv' ? '.obh-carte[data-ob="' + id + '"]' : '.masa-carte[data-id="' + id + '"]'); if (li) li.focus();
+    });
+  }
+
+  // ---------- Harvest de obiective (Alex, 2026-11-20): „Aș vrea să facem harvest și de obiective. Acestea nu au timp alocat.” ----------
+  // Cartonașe compacte deasupra pieselor: textul, sursa, câte piese din Harvest îl servesc, Da / Poate / Nu (D, P, N), Fișa (F).
+  // În editorul local, verdictul și viziunea se scriu în harvest-obiective.yml (cu copie în .editor-istoric/); offline doar se citesc.
+  var fokusOb = null, vizEdit = false, obNou = false, lantOb = Promise.resolve();
+  var VERDICT_OB = { da: 'Da', poate: 'Poate', nu: 'Nu' };
+  function mesajOb(t, eroare) { var m = $('obh-mesaj'); if (m) { m.textContent = t || ''; m.classList.toggle('eroare', !!eroare); } }
+  /** Piesele din Harvest (fără „Nu”) care servesc obiectivul. */
+  function pieseOb(o) { return cand.filter(function (x) { return x.verdict !== 'nu' && legaturi(x)[o.id]; }); }
+  function carteOb(o, nr) {
+    var p = pieseOb(o), areFisa = !!FISE['obiectiv:' + o.id], ed = !!editor();
+    return '<li class="obh-carte v-' + o.verdict + '" data-ob="' + esc(o.id) + '" tabindex="0" aria-label="' + esc('Obiectiv: ' + o.text + ', verdict ' + o.verdict + ', ' + p.length + (p.length === 1 ? ' piesă' : ' piese')) + '">' +
+      '<p class="obh-text">' + (nr ? '<span class="obh-nr" title="Al ' + nr + '-lea obiectiv al zilei">' + nr + '</span>' : '') + '<span>' + esc(o.text) + '</span></p>' +
+      '<div class="mc-jos"><span class="mc-meta"><button type="button" class="mc-fisa' + (areFisa ? '' : ' fara') + '" data-fisa-ob="' + esc(o.id) + '" aria-label="Deschide fișa obiectivului" title="' + (areFisa ? 'Fișa obiectivului (tasta F)' : 'Fișa nu e scrisă încă') + '">Fișa</button>' +
+      (o.sursa ? '<span class="mc-sursa">' + esc(o.sursa) + '</span>' : '') +
+      '<span class="obh-piese' + (p.length ? '' : ' lipsa') + '" title="' + esc(p.length ? p.map(function (x) { return x.titlu; }).join(' · ') : 'Nicio piesă din Harvest nu îl servește încă') + '">' + p.length + (p.length === 1 ? ' piesă' : ' piese') + '</span></span>' +
+      '<span class="mc-verdict" role="group" aria-label="Verdict">' + ['da', 'poate', 'nu'].map(function (v) {
+        return '<button type="button" data-ov="' + v + '" aria-pressed="' + (o.verdict === v) + '"' + (ed ? '' : ' disabled title="Verdictul obiectivelor se schimbă în editorul local"') + '>' + VERDICT_OB[v] + '</button>';
+      }).join('') + '</span></div></li>';
+  }
+  function randeazaOb() {
+    var z = $('obh'); if (!z) return;
+    var ed = !!editor(), zi = obiectiveZi();
+    if (!OBH) {
+      z.innerHTML = '<div class="obh-cap"><h3 class="eticheta" id="obh-h">Obiective</h3></div><p class="sters obh-nota">Cursul nu are încă <code>harvest-obiective.yml</code>, așa că obiectivele zilei vin din curs.yml' + (zi.length ? ' (' + zi.length + ')' : '') + '.' +
+        (ed ? ' <button type="button" id="obh-creeaza">Creează harvest-obiective.yml</button>' : '') + '</p><p class="mesaj" id="obh-mesaj" role="status"></p>';
+      return;
+    }
+    var da = OB.filter(function (o) { return o.verdict === 'da'; }).length, peste = da > MAX_OB;
+    var nrZi = {}; if (DATA.obiectiveFel === 'harvest') zi.forEach(function (o, i) { nrZi[o.id] = i + 1; });
+    var vz = OBH.viziune;
+    var viziune = vizEdit
+      ? '<div class="obh-viziune obh-viz-edit"><label class="eticheta" for="obh-viz-text">Viziune · ' + esc(vz && vz.stare || 'propunere') + '</label><textarea id="obh-viz-text" rows="2" maxlength="600">' + esc(vz ? vz.text : '') + '</textarea>' +
+        '<span class="obh-act"><button type="button" id="obh-viz-renunta">Renunță</button><button type="button" class="principal" id="obh-viz-salveaza">Salvează</button></span></div>'
+      : '<p class="obh-viziune"><span class="eticheta">Viziune · ' + esc(vz && vz.stare || 'propunere') + (vz && vz.sursa ? ' · ' + esc(vz.sursa) : '') + '</span> <span class="obh-viz">' + (vz && vz.text ? esc(vz.text) : '<span class="sters">încă nescrisă</span>') + '</span>' +
+        (ed ? ' <button type="button" class="obh-mic" id="obh-viz-ed">Editează</button>' : '') + '</p>';
+    z.innerHTML = '<div class="obh-cap"><h3 class="eticheta" id="obh-h">Obiective <span class="banca-grup-nr">' + OB.length + '</span></h3>' +
+      '<span class="obh-stare' + (peste ? ' atentie' : '') + '">' + da + ' cu „Da”' + (peste ? ' · peste ' + MAX_OB + ': alege cel mult ' + MAX_OB : ' · în curs rămân cel mult ' + MAX_OB) + '</span>' +
+      (ed ? '<span class="obh-dreapta"><button type="button" id="obh-nou">Obiectiv nou</button></span>' : '') + '</div>' + viziune +
+      (DATA.obiectiveFel === 'editie' ? '<p class="sters obh-nota">Ediția are propriile obiective, care le înlocuiesc pe cele cu „Da” de aici.</p>' : '') +
+      (obNou ? '<div class="obh-form"><label class="eticheta" for="obh-nou-text">Obiectiv nou (verdict „nou”)</label><input type="text" id="obh-nou-text" maxlength="400" autocomplete="off" placeholder="Ce pleacă oamenii știind sau făcând">' +
+        '<span class="obh-act"><button type="button" id="obh-nou-renunta">Renunță</button><button type="button" class="principal" id="obh-nou-adauga">Adaugă</button></span></div>' : '') +
+      '<ol class="obh-lista" aria-labelledby="obh-h">' + OB.map(function (o) { return carteOb(o, nrZi[o.id]); }).join('') + '</ol>' +
+      '<p class="mesaj" id="obh-mesaj" role="status"></p>';
+    if (fokusOb) { var f = z.querySelector('.obh-carte[data-ob="' + fokusOb + '"]'); if (f) f.focus({ preventScroll: true }); }
+  }
+  /** Scrierile se fac una după alta, fiecare cu hash-ul celei de dinainte. */
+  function trimiteOb(date, laEroare, gata) {
+    stare('se salvează…');
+    lantOb = lantOb.then(function () { return editor().obiective(date, OBH.hash); }).then(function (j) {
+      if (j._cod !== 200) { laEroare(); randeaza(); mesajOb((j.eroare || 'Nu s-a salvat.') + (j.erori && j.erori.length ? ' ' + j.erori.join('; ') : ''), true); stare('nesalvat'); return; }
+      OBH.hash = j.hash; stare('salvat în ' + FO);
+      if (gata) gata(j);
+    }, function () { laEroare(); randeaza(); mesajOb('Editorul nu răspunde. Fereastra Terminal în care rulează e încă deschisă?', true); stare('nesalvat'); });
+  }
+  function verdictOb(id, v) {
+    var o = OBID[id]; if (!o || o.verdict === v) return;
+    if (!editor()) { mesajOb('Verdictul obiectivelor se schimbă în editorul local (Editeaza curs.command).'); return; }
+    var vechi = o.verdict; o.verdict = v; fokusOb = id; randeaza();
+    trimiteOb({ schimbari: [{ id: id, verdict: v }] }, function () { o.verdict = vechi; }, function () {
+      var da = OB.filter(function (x) { return x.verdict === 'da'; }).length;
+      mesajOb(da > MAX_OB ? da + ' obiective au „Da”; în curs rămân cel mult ' + MAX_OB + '.' : 'Salvat. Schița și cursul participanților iau obiectivele cu „Da” la reîncărcare.', da > MAX_OB);
+    });
+  }
+  function initOb() {
+    var z = $('obh'); if (!z) return;
+    z.addEventListener('click', function (ev) {
+      var b = ev.target.closest('button'); if (!b) return;
+      if (b.hasAttribute('data-fisa-ob')) { deschideFisa(b.getAttribute('data-fisa-ob'), 'obiectiv'); return; }
+      if (b.hasAttribute('data-ov')) { verdictOb(b.closest('.obh-carte').getAttribute('data-ob'), b.getAttribute('data-ov')); return; }
+      if (b.id === 'obh-viz-ed') { vizEdit = true; randeazaOb(); var t = $('obh-viz-text'); t.focus(); t.setSelectionRange(t.value.length, t.value.length); return; }
+      if (b.id === 'obh-viz-renunta') { vizEdit = false; randeazaOb(); $('obh-viz-ed').focus(); return; }
+      if (b.id === 'obh-viz-salveaza') {
+        var text = $('obh-viz-text').value.replace(/\s+/g, ' ').trim();
+        if (!text) { mesajOb('Viziunea nu poate rămâne goală.', true); return; }
+        var vz = OBH.viziune, vechi = vz ? { text: vz.text, sursa: vz.sursa } : null;
+        OBH.viziune = { text: text, sursa: 'alex', stare: vz && vz.stare || 'propunere' }; vizEdit = false; randeazaOb();
+        trimiteOb({ viziune: text }, function () { OBH.viziune = vechi ? { text: vechi.text, sursa: vechi.sursa, stare: vz.stare } : null; }, function () { mesajOb('Viziunea e salvată în ' + FO + ' (rămâne propunere până o aprobi).'); });
+        return;
+      }
+      if (b.id === 'obh-nou') { obNou = true; randeazaOb(); $('obh-nou-text').focus(); return; }
+      if (b.id === 'obh-nou-renunta') { obNou = false; randeazaOb(); $('obh-nou').focus(); return; }
+      if (b.id === 'obh-nou-adauga') {
+        var t2 = $('obh-nou-text').value.replace(/\s+/g, ' ').trim();
+        if (!t2) { mesajOb('Scrie obiectivul.', true); $('obh-nou-text').focus(); return; }
+        b.disabled = true;
+        lantOb.then(function () { return editor().obiectivNou(t2, OBH.hash); }).then(function (j) {
+          b.disabled = false;
+          if (j._cod !== 200) { mesajOb((j.eroare || 'Nu am putut adăuga obiectivul.') + (j.erori && j.erori.length ? ' ' + j.erori.join('; ') : ''), true); return; }
+          try { sessionStorage.setItem('masa:mesaj', 'Am adăugat obiectivul (' + j.fisier + ', verdict „nou”). Fișa e deschisă pentru editare.'); sessionStorage.setItem('masa:editeaza-ob', j.id); } catch (e) { /* nimic */ }
+          location.hash = '#masa'; location.reload();
+        }, function () { b.disabled = false; mesajOb('Editorul nu răspunde. Fereastra Terminal în care rulează e încă deschisă?', true); });
+        return;
+      }
+      if (b.id === 'obh-creeaza') {
+        b.disabled = true;
+        editor().obiectiveCreeaza().then(function (j) {
+          if (j._cod !== 200) { b.disabled = false; mesajOb(j.eroare || 'Nu am putut crea harvest-obiective.yml.', true); return; }
+          try { sessionStorage.setItem('masa:mesaj', 'Am creat harvest-obiective.yml din obiectivele din curs.yml (toate cu „Da”).'); } catch (e) { /* nimic */ }
+          location.hash = '#masa'; location.reload();
+        });
+      }
+    });
+    z.addEventListener('keydown', function (ev) {
+      if (ev.target.id === 'obh-viz-text') {
+        if (ev.key === 'Escape') { ev.preventDefault(); vizEdit = false; randeazaOb(); $('obh-viz-ed').focus(); }
+        else if ((ev.metaKey || ev.ctrlKey) && (ev.key === 's' || ev.key === 'Enter')) { ev.preventDefault(); $('obh-viz-salveaza').click(); }
+        return;
+      }
+      if (ev.target.id === 'obh-nou-text') {
+        if (ev.key === 'Escape') { ev.preventDefault(); $('obh-nou-renunta').click(); } else if (ev.key === 'Enter') { ev.preventDefault(); $('obh-nou-adauga').click(); }
+        return;
+      }
+      var li = ev.target.classList && ev.target.classList.contains('obh-carte') ? ev.target : null; if (!li || ev.metaKey || ev.ctrlKey || ev.altKey) return;
+      var id = li.getAttribute('data-ob'), k = ev.key; fokusOb = id;
+      if (k === 'd' || k === 'D') verdictOb(id, 'da');
+      else if (k === 'p' || k === 'P') verdictOb(id, 'poate');
+      else if (k === 'n' || k === 'N') verdictOb(id, 'nu');
+      else if (k === 'f' || k === 'F' || k === 'Enter') deschideFisa(id, 'obiectiv');
+      else if (k === 'ArrowUp' || k === 'ArrowLeft') { if (li.previousElementSibling) li.previousElementSibling.focus(); }
+      else if (k === 'ArrowDown' || k === 'ArrowRight') { if (li.nextElementSibling) li.nextElementSibling.focus(); }
+      else return;
+      ev.preventDefault();
     });
   }
 
@@ -399,7 +559,7 @@
     $('masa-copiaza').addEventListener('click', copiazaMasa);
     $('masa-agenda').addEventListener('click', trimiteInAgenda);
     $('masa-rezumat').addEventListener('click', function (ev) { var b = ev.target.closest('[data-rz]'); if (b) laRezumat(b.getAttribute('data-rz')); });
-    initFisa();
+    initFisa(); initOb();
     col.addEventListener('click', function (ev) {
       var fb = ev.target.closest('button[data-fisa]'); if (fb) { deschideFisa(fb.getAttribute('data-fisa')); return; }
       var b = ev.target.closest('button[data-v]'); if (!b) return;
@@ -478,15 +638,32 @@
       // Pentru editarea fișei (editorul local, 2026-11-20): ce piesă e deschisă, randarea fișei și câmpurile rândului după salvare.
       fisa: {
         deschisa: function () { return fisaDe; },
+        fel: function () { return fisaFel; },
         candidata: function (id) { var x = ID[id]; return x ? { id: x.id, titlu: x.titlu, scop: x.scop || '', durata: x.durata, tip: x.tip || '' } : null; },
+        obiectiv: function (id) { var o = OBID[id]; return o ? { id: o.id, text: o.text, verdict: o.verdict } : null; },
         propunere: function () { return !!M.propunere; },
         deschide: deschideFisa,
-        arata: function (id, f) { var x = ID[id]; if (!x) return; FISE[id] = f && f.sursa ? f : null; arataFisa(x, f); var b = document.querySelector('.mc-fisa[data-fisa="' + id + '"]'); if (b) b.classList.toggle('fara', !(f && f.sursa)); },
+        arata: function (id, f, fel) {
+          var x = fel === 'obiectiv' ? (OBID[id] ? { id: id, titlu: OBID[id].text } : null) : ID[id]; if (!x) return;
+          FISE[cheieFisa(id, fel)] = f && f.sursa ? f : null; arataFisa(x, f, fel); var b = butonFisa(id, fel); if (b) b.classList.toggle('fara', !(f && f.sursa));
+        },
         actualizeaza: function (id, campuri, hashMasa) {
           var x = ID[id]; if (!x || !campuri) return;
-          ['titlu', 'scop', 'durata', 'tip'].forEach(function (k) { if (k in campuri) x[k] = campuri[k]; });
+          ['titlu', 'scop', 'durata', 'tip', 'obiective'].forEach(function (k) { if (k in campuri) x[k] = campuri[k]; });
           if (hashMasa) M.hash = hashMasa;
           fokus = null; randeaza();
+        },
+        // După salvarea fișei unei piese: lista „piese” a obiectivelor (o bifă scoasă o scoate și de acolo) și hash-ul fișierului.
+        legaturiObiective: function (id, lista, hashOb) {
+          (lista || []).forEach(function (l) { var o = OBID[l.id]; if (!o) return; var i = o.piese.indexOf(id); if (l.dinLista && i < 0) o.piese.push(id); if (!l.dinLista && i >= 0) o.piese.splice(i, 1); });
+          if (OBH && hashOb) OBH.hash = hashOb;
+          randeaza();
+        },
+        actualizeazaOb: function (id, campuri, hashOb) {
+          var o = OBID[id]; if (!o || !campuri) return;
+          if ('text' in campuri) o.text = campuri.text;
+          if (OBH && hashOb) OBH.hash = hashOb;
+          randeaza();
         },
       } };
   }

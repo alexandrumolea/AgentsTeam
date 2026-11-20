@@ -247,7 +247,12 @@ test('obiectivele: un obiectiv lung dă doar avertisment', () => {
   assert.ok(r.avertismente.some((a) => /sub 12/.test(a)));
 });
 test('obiectivele: format greșit oprește build-ul', () => opreste((e) => e('curs.yml', (s) => s.replace(/obiective:\n(  - .*\n)+/, 'obiective: "unul singur"\n')), /listă de texte scurte/));
-test('obiectivele: „obiective” la modul trebuie să fie numere', () => opreste((e) => e('04-pasul-de-luni.md', (s) => s.replace('obiective: [3]', 'obiective: [trei]')), /listă de numere/));
+test('obiectivele: „obiective” la modul sunt numere sau id-uri', () => opreste((e) => e('04-pasul-de-luni.md', (s) => s.replace('obiective: [3]', 'obiective: [Trei pași]')), /listă de id-uri de obiective/));
+test('obiectivele: un id fără harvest-obiective.yml dă avertisment și e ignorat', () => {
+  const r = cu((e) => e('04-pasul-de-luni.md', (s) => s.replace('obiective: [3]', 'obiective: [trei]'))); ok(r);
+  assert.ok(r.avertismente.some((a) => /obiectivul „trei” nu există \(cursul nu are harvest-obiective\.yml\)/.test(a)), r.avertismente.join('\n'));
+  assert.doesNotMatch(html(r), /Pasul de luni · 40 min <span class="ob-leg"/);
+});
 test('obiectivele la tipar: căsuțe goale (bifele nu se tipăresc)', () => {
   const r = cu(() => {}); ok(r);
   const css = html(r).match(/@media print \{\s*\.obiective-lista input:checked \+ \.ob-cutie \{[^}]*\}\s*\.obiective-lista input:checked \+ \.ob-cutie::after \{ content: none; \}/);
