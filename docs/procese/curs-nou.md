@@ -46,14 +46,26 @@ Panoul acestei etape e vederea **Harvest** din materialul trainerului (fostă �
 - **O piesă = o singură linie:** `id`, `titlu`, `scop`, `durata`, `tip`, `sursa`, `verdict` (nou / da / poate / nu), `bloc` (1–4), `ordine`. Fără text de slide, fără desene, fără ecrane. Așa consumăm puțini tokeni și Alex vede tot dintr-o privire.
 - **Fișa piesei:** detaliile stau în `harvest/<id>.md`, lângă rând. Se deschide din Harvest cu butonul „Fișa”.
 
-#### Harvest pas cu pas (Alex, 2026-11-19; formatul fișei, D-077)
-**Fișa unei piese, în ordinea asta:**
-1. **Obiectivul piesei:** ce pleacă omul cu el, într-o propoziție (Daria propune, Alex corectează).
-2. **Input-ul lui Alex:** textul lui, exact, plus comentariile ulterioare, cu dată (Tudor).
-3. **Pe scurt:** esența piesei, aproape de cuvintele și de viziunea lui Alex, fără artificii teoretice (Irina). **Din „Pe scurt” se fac ecranele**, cât mai aproape de el.
-4. **Pentru trainer:** research-ul, doar dacă e relevant: ce susține și ce nuanțează, cum folosești în sală. Fiecare afirmație cu sursă (Irina).
-5. **Instrucțiunile pentru participanți**, **Exemple**, **Clasificare** (Daria). Apoi rândul în `harvest.yml`, cu verdict „nou”.
-6. **Întrebare pentru Alex:** cel mult una pe piesă, doar dacă e necesară.
+#### Harvest pas cu pas (Alex, 2026-11-19; formatul fișei, D-078)
+**Fișa unei piese de conținut, în ordinea asta (Alex, D-078):**
+1. **Input-ul lui Alex:** textul lui, exact, plus comentariile ulterioare, cu dată (Tudor).
+2. **Pe scurt:** interpretarea colegilor AI, aproape de viziunea lui Alex, fără artificii teoretice (Irina). Din el se fac ecranele.
+3. **Obiectivul piesei:** ce pleacă omul cu el, într-o propoziție.
+4. **Knowledge:** ce trebuie să știe participanții ca să înțeleagă și să-și dezvolte mindset-ul. Fiecare idee e formulată la fel:
+   - **Statement principal:** un mesaj cheie catchy, contraintuitiv sau construit după principiile din *Made to Stick* (Heath & Heath: simplu, neașteptat, concret, credibil, emoțional, cu poveste);
+   - **Explicație**;
+   - **Exemple**;
+   - **Impact**;
+   - **Așa da / așa nu:** pattern-urile, unul lângă altul.
+5. **Micro-comportamentul:** ce abilitate integrează participantul ca să dezvolte competența principală, sau dacă piesa creează mai degrabă awareness. În sistemul nostru, o piesă face una dintre trei:
+   - **schimbă mindset-ul prin idei** diferite;
+   - **schimbă mindset-ul prin experiență:** un micro-comportament care le arată ce alternative există de a se uita la viață;
+   - **antrenează un micro-comportament**, ca să dezvolte o competență sau experiența care aduce self-awareness.
+6. **Experiența:** cum simt, trăiesc și exersează participanții competența, ca să vadă AS IS față de TO BE. Instrucțiunile exacte, pas cu pas, cu timp și format (D-075).
+7. **Integrarea:** întrebările de debriefing ale trainerului, pentru awareness suplimentar și asimilare.
+8. **Materiale necesare:** ce printăm, cartonașe, framework-uri pe care lucrează oamenii.
+9. **Research-ul pentru trainer:** ce susține și ce nuanțează, cu surse (Irina).
+- La final, cel mult o **Întrebare pentru Alex**. Felul, durata și blocul propus stau sus, în antetul fișei.
 
 - **Viziunea e a lui Alex** (D-077): el gândește ce trebuie să se întâmple, ca să-și poată asuma. Echipa clarifică și sprijină, nu schimbă viziunea. Unde research-ul o nuanțează, spune asta în „Pentru trainer” sau ca întrebare, nu rescrie „Pe scurt”.
 - **Fără secțiune de ecran în Harvest.** Ecranele se fac după poartă, din „Pe scurt”.
