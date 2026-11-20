@@ -25,6 +25,7 @@ Platformă principală: LinkedIn. Celelalte platforme se confirmă cu Alex. Con�
 - Draft-uri de postări adaptate pe fiecare platformă
 - Reciclarea conținutului: un articol devine 3–5 postări
 - Raport lunar: ce a mers, ce nu, ce încercăm
+- Copywriting (din 2026-11-20, D-076): articole și newslettere de thought leadership (Substack, articol LinkedIn) și adaptarea lor în postări, cu skill-ul `copywriting`
 
 ## Soft skills
 - Storytelling: o idee, un exemplu, o invitație
@@ -35,6 +36,7 @@ Platformă principală: LinkedIn. Celelalte platforme se confirmă cu Alex. Con�
 
 ## Claude skills și unelte
 - `vocea-alex` (obligatoriu)
+- `copywriting` (al meu, din 2026-11-20): structura articolului, titluri și deschideri, checklist, adaptare pe Substack și LinkedIn
 - WebSearch pentru trenduri de platformă
 - Conectorul Canva și `anthropic-skills:canvas-design` pentru vizualuri, cu Ioana
 - `anthropic-skills:docs` pentru calendare de împărțit
@@ -52,3 +54,4 @@ Platformă principală: LinkedIn. Celelalte platforme se confirmă cu Alex. Con�
 | Dată | Schimbare | De ce |
 |---|---|---|
 | 2026-11-15 | Rol creat | Kickoff echipă |
+| 2026-11-20 | Copywriting adăugat ca responsabilitate și skill (`copywriting`) | Alex: „Să o definim ca skill al persoanei care se ocupă de social media.” Nu agent nou (D-076). |

@@ -14,7 +14,11 @@ Păstrează sub 150 de rânduri. Comprimă când crește. Fapte, nu povești.
 - (încă niciuna; adaugă după feedbackul lui Alex)
 
 ## Ce a mers / ce nu
-- (gol la 2026-11-15)
+- 2026-11-20: Copywriting e skill-ul meu (D-076, nu agent nou): `.claude/skills/copywriting/SKILL.md`, research în `team/sofia/documente/copywriting-research-2026-11-20.md`. Lecțiile noi intră în skill, cu dată.
+- 2026-11-20: Primele două articole (Wise Teams: „procesul, nu oamenii” și „Oglinda comună”) în `team/sofia/documente/drafts/`. Fără feedback încă. Format care a mers la scris: ideea într-o frază, presupunerea contrazisă, 3 titluri, Substack, postare LinkedIn, surse, „ce am verificat”.
+- 2026-11-20: Wise Teams, ce pot spune public: modelul (4 categorii Flux, Încredere, Livrare, Anticipare + Containerul; 16 comportamente; Oglinda comună primul pas; ciclu ~3 luni, întâlnire la 2 săptămâni; raportul nu propune pași). Ordinea categoriilor e ipoteza lui Alex („credem că ajută”), nu cercetare. Skill-ul `wise-critical-path` conține nume de clienți: nu le folosesc niciodată.
+- 2026-11-20: Surse verificate pentru echipe: Edmondson 1999 (ASQ), Google re:Work Aristotle, Beer et al. 2016 (HBS WK), Haas & Mortensen HBR 2016, Wageman 60-30-10. Paginile Edelman dau 403 la acces automat.
+- 2026-11-20: Rolul la Wise Teams = fondator din 2025 (D-064). Manualul Mariei încă zice „partener” (T-047).
 
 ## Deschis
 - Vezi `docs/intrebari-pentru-alex.md`.
