@@ -463,6 +463,11 @@ Trage un cartonaș (pe tabletă, de mânerul ⠿) sau, pe cartonașul selectat: 
   <button type="button" id="masa-respinse" aria-pressed="false">Arată și „Nu”</button>
   <span class="masa-bara-dreapta"><button type="button" id="masa-copiaza">Copiază harvest.yml</button><button type="button" id="masa-reset" hidden>Resetează</button><button type="button" id="masa-agenda" class="principal">Trimite în agendă</button></span>
 </div>
+<div class="banca-filtre masa-filtre" id="masa-filtre" role="search" aria-label="Filtrează piesele din Harvest">
+<div class="cautare"><input type="search" id="masa-cauta" placeholder="Caută în piese: titlu, scop, sursă, notă…" aria-label="Caută în piesele din Harvest" autocomplete="off" enterkeyhint="search"><kbd aria-hidden="true">/</kbd></div>
+<div class="masa-chipuri" id="masa-chipuri"></div>
+<p class="masa-filtre-jos"><span class="sters" id="masa-numar" role="status"></span><button type="button" class="sterge-filtre" id="masa-sterge" hidden>Șterge filtrele</button></p>
+</div>
 <p class="mesaj" id="masa-mesaj" role="status"></p>
 <div id="masa-text-cutie" hidden><label class="eticheta" for="masa-text" id="masa-text-eticheta"></label><textarea id="masa-text" rows="8" readonly spellcheck="false"></textarea></div>
 <section class="obh" id="obh" aria-labelledby="obh-h"></section>

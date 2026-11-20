@@ -445,6 +445,15 @@ main > section#masa { max-width: 1440px; }
 .masa-propunere button { margin-left: .5rem; }
 .masa-bara { display: flex; flex-wrap: wrap; gap: .4rem; justify-content: space-between; align-items: center; margin-bottom: .6rem; }
 .masa-bara-dreapta { display: flex; flex-wrap: wrap; gap: .4rem; }
+.masa-filtre { gap: .45rem; padding: .6rem .75rem; margin-bottom: .8rem; }
+.masa-filtre .cautare input { font-size: .95rem; padding-top: .45rem; padding-bottom: .45rem; min-height: 0; }
+.masa-chipuri { display: grid; gap: .35rem; }
+.masa-filtre .chip { min-height: 30px; padding: .15rem .7rem; font-size: .86rem; }
+.masa-filtre .chip .chip-text { overflow: hidden; text-overflow: ellipsis; max-width: 14rem; }
+.masa-filtre-jos { display: flex; flex-wrap: wrap; align-items: center; gap: 0 1rem; margin: 0; font-size: .86rem; font-variant-numeric: tabular-nums; }
+.masa-filtre-jos:has(#masa-sterge[hidden]):has(#masa-numar:empty) { display: none; }
+.masa-carte[hidden] { display: none; }
+@media (pointer: coarse) { .masa-filtre .chip { min-height: 44px; } }
 #masa-respinse[aria-pressed="true"] { background: var(--t-text); color: var(--t-suprafata); border-color: var(--t-text); }
 #masa-mesaj.eroare { color: var(--cronometru-gata); }
 #masa-text-cutie { margin: .5rem 0 1rem; }

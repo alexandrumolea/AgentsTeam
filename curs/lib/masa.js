@@ -30,6 +30,36 @@
   var FO = OBH ? OBH.fisier : 'harvest-obiective.yml', MAX_OB = 4;
   var ID = {}; cand.forEach(function (x) { ID[x.id] = x; });
   var respinse = false, fokus = null, local = null;
+
+  // ---------- filtrele (Alex, 2026-11-20: „vreau și filtre la harvest, ca la bibliotecă”) ----------
+  // Aceleași componente ca Biblioteca: căutare fără diacritice + chip-uri. În același rând chipurile se adună (SAU), între rânduri se cer toate.
+  // Filtrele doar ascund cartonașe: nu schimbă fișierele, totalurile blocurilor și rezumatul rămân pe tot Harvest-ul.
+  // Starea ține cât e deschis tab-ul (sessionStorage), ca să treacă de reîncărcările din editor; mâine pornești fără filtre.
+  var FAMILIE = { teorie: 'continut', model: 'continut', poveste: 'continut', exercitiu: 'activitate', challenge: 'activitate', reflectie: 'activitate', energizant: 'activitate', deschidere: 'punte', inchidere: 'punte', mesaj: 'punte', pauza: 'punte' };
+  var NUME_FAMILIE = { continut: 'conținut', activitate: 'activitate', punte: 'punte' };
+  var CHEIE_F = 'curs:' + DATA.curs.slug + ':masa-filtre';
+  var GOL_F = function () { return { q: '', fel: [], tip: [], verdict: [], ob: [], stare: [], core: [] }; };
+  var FLT = GOL_F();
+  try { var fs0 = JSON.parse(sessionStorage.getItem(CHEIE_F)); if (fs0 && typeof fs0 === 'object') Object.keys(FLT).forEach(function (k) { if (k === 'q' ? typeof fs0.q === 'string' : Array.isArray(fs0[k])) FLT[k] = fs0[k]; }); } catch (e) { /* fără stocare: pornește fără filtre */ }
+  var normal = function (s) { return String(s == null ? '' : s).normalize('NFD').replace(/[̀-ͯ]/g, '').toLowerCase().replace(/[^a-z0-9]+/g, ' ').trim(); };
+  var filtruActiv = function () { return !!(normal(FLT.q) || FLT.fel.length || FLT.tip.length || FLT.verdict.length || FLT.ob.length || FLT.stare.length || FLT.core.length); };
+  function salveazaFiltre() { try { sessionStorage.setItem(CHEIE_F, JSON.stringify(FLT)); } catch (e) { /* nimic */ } }
+  /** Numărul de acum al unui obiectiv din chip (valoarea e id-ul; fără id, numărul). „-” = fără obiectiv. */
+  function nrOb(v, zi) { for (var i = 0; i < zi.length; i++) if (zi[i].id ? zi[i].id === v : String(i + 1) === v) return i + 1; return 0; }
+  function potriveste(x) {
+    if ((FLT.fel.length || FLT.tip.length) && FLT.fel.indexOf(FAMILIE[x.tip]) < 0 && FLT.tip.indexOf(x.tip) < 0) return false;
+    if (FLT.verdict.length && FLT.verdict.indexOf(x.verdict) < 0) return false;
+    if (FLT.stare.length && FLT.stare.indexOf(x.produsa ? 'produsa' : 'de-produs') < 0) return false;
+    if (FLT.core.length && !x.core) return false;
+    if (FLT.ob.length) {
+      var o = obiectiveDe(x), zi = obiectiveZi();
+      if (!FLT.ob.some(function (v) { return v === '-' ? !Object.keys(o).length : o[nrOb(v, zi)]; })) return false;
+    }
+    var q = normal(FLT.q); if (!q) return true;
+    var text = normal([x.titlu, x.scop, x.sursa, x.nota, x.id, TIP[x.tip] || x.tip].join(' '));
+    return q.split(' ').every(function (w) { return text.indexOf(w) >= 0; });
+  }
+  var ascunsa = function (x) { return filtruActiv() && !potriveste(x); };
   var editor = function () { return window.__masaEditor || null; }; // doar în pagina servită de editorul local
   var blocat = function () { return !!(editor() && M.propunere); }; // în editor, fără masa.yml: întâi „Creează masa.yml”
 
@@ -82,10 +112,12 @@
   /** ↑ ↓ în Agendă: un loc mai sus sau mai jos; la marginea blocului, trece în blocul vecin. */
   function muta(id, pas) {
     var x = ID[id]; if (!inOrdonate(x)) return false;
-    var lista = dinBloc(x.bloc), i = lista.indexOf(x), k = x.bloc;
+    // Cu filtre active, vecinii sunt doar cartonașele care se văd: sare peste cele ascunse, care își păstrează ordinea între ele.
+    var k = x.bloc, plin = dinBloc(k), lista = plin.filter(function (y) { return y === x || !ascunsa(y); }), i = lista.indexOf(x);
     if (pas < 0 && i === 0) { if (k > 1) inBloc(id, k - 1); return true; }
     if (pas > 0 && i === lista.length - 1) { if (k < BLOCURI.length) inBloc(id, k + 1, 0); return true; }
-    inBloc(id, k, i + pas);
+    var j = plin.filter(function (y) { return y !== x; }).indexOf(lista[i + pas]);
+    inBloc(id, k, pas < 0 ? j : j + 1);
     return true;
   }
 
@@ -133,7 +165,7 @@
       (x.core ? '<span class="mc-core' + (x.core.stare && x.core.stare !== 'la-zi' ? ' mc-core-' + esc(x.core.stare) : '') + '" title="Din biblioteca core (' + esc(x.core.din) + ')">◇ core' + (STARE_CORE[x.core.stare] ? ' · ' + STARE_CORE[x.core.stare] : '') + '</span>' : '') +
       (x.nota ? '<span class="mc-nota" title="' + esc(x.nota) + '">notă</span>' : '');
     var areFisa = !!FISE[x.id];
-    return '<li class="masa-carte v-' + x.verdict + (x.produsa ? ' produsa' : '') + '" data-id="' + esc(x.id) + '" tabindex="0" aria-label="' + esc(x.titlu + ', ' + x.durata + ' min, verdict ' + x.verdict + (x.produsa ? ', produsă' : '') + (x.core ? ', din core' : '')) + '"' + (x.nota ? ' title="' + esc(x.nota) + '"' : '') + '>' +
+    return '<li class="masa-carte v-' + x.verdict + (x.produsa ? ' produsa' : '') + '" data-id="' + esc(x.id) + '" tabindex="0" aria-label="' + esc(x.titlu + ', ' + x.durata + ' min, verdict ' + x.verdict + (x.produsa ? ', produsă' : '') + (x.core ? ', din core' : '')) + '"' + (x.nota ? ' title="' + esc(x.nota) + '"' : '') + (ascunsa(x) ? ' hidden' : '') + '>' +
       '<span class="ec-maner masa-maner" aria-hidden="true" title="Trage ca să muți">⠿</span>' +
       '<div class="mc-rand"><span class="mc-durata"><b>' + x.durata + '</b> min</span><span class="mc-cap"><span class="mc-titlu">' + esc(x.titlu) + '</span>' + (x.scop ? '<span class="mc-scop">' + esc(x.scop) + '</span>' : '') + '</span></div>' +
       '<div class="mc-jos"><span class="mc-meta"><button type="button" class="mc-fisa' + (areFisa ? '' : ' fara') + '" data-fisa="' + esc(x.id) + '" aria-label="Deschide fișa: ' + esc(x.titlu) + '" title="' + (areFisa ? 'Toată logica piesei (tasta F)' : 'Fișa nu e scrisă încă') + '">Fișa</button>' + meta + '</span><span class="mc-verdict" role="group" aria-label="Verdict">' +
@@ -182,10 +214,42 @@
     $('masa-reset').hidden = !!editor() || !local;
     $('masa-agenda').disabled = blocat();
     col.classList.toggle('poate-trage-zi', poatePune());
-    rezumat(); stare(); randeazaOb();
+    rezumat(); stare(); randeazaOb(); randeazaFiltre(col);
     if (fokusZi) { var fz = col.querySelector('.obz-carte[data-ob="' + fokusZi.id + '"] [data-obz="' + fokusZi.ce + '"]:not([disabled])') || col.querySelector('.obz-carte[data-ob="' + fokusZi.id + '"]') || $('obz-h'); fokusZi = null; if (fz) fz.focus({ preventScroll: true }); return; }
     if (fokus) { var f = col.querySelector('.masa-carte[data-id="' + fokus + '"]'); if (f) f.focus({ preventScroll: false }); }
   }
+  /** Chip-urile filtrelor (se refac la fiecare desen: contoarele și numerele obiectivelor se schimbă) și contorul „N din M piese”. */
+  function randeazaFiltre(col) {
+    var z = $('masa-chipuri'); if (!z) return;
+    var apasat = function (k, v) { return FLT[k].indexOf(v) >= 0; };
+    var chip = function (k, v, html, titlu) { return '<button type="button" class="chip" data-hf="' + k + '" data-valoare="' + esc(v) + '" aria-pressed="' + apasat(k, v) + '"' + (titlu ? ' title="' + esc(titlu) + '"' : '') + '>' + html + '</button>'; };
+    var nr = function (n) { return ' <span class="chip-nr">' + n + '</span>'; };
+    var rand = function (eticheta, chipuri) { return chipuri ? '<div class="filtre-rand" role="group" aria-label="' + eticheta + '"><span class="filtre-eticheta">' + eticheta + '</span><div class="chipuri">' + chipuri + '</div></div>' : ''; };
+    var n = function (f) { return cand.filter(f).length; };
+    // Fel și tip: doar ce există în Harvest, în ordinea din 1.9 (ca la Bibliotecă).
+    var feluri = ['continut', 'activitate', 'punte'].filter(function (f) { return cand.some(function (x) { return FAMILIE[x.tip] === f; }); });
+    var tipuri = Object.keys(FAMILIE).filter(function (t) { return cand.some(function (x) { return x.tip === t; }); });
+    var zi = obiectiveZi();
+    var fara = n(function (x) { return x.verdict !== 'nu' && !Object.keys(obiectiveDe(x)).length; });
+    var nCore = n(function (x) { return !!x.core; });
+    // Un filtru pe un obiectiv care nu mai e în zi (scos, mutat la „Poate”) iese singur, ca să nu ascundă piese fără să se vadă de ce.
+    FLT.ob = FLT.ob.filter(function (v) { return v === '-' || nrOb(v, zi); });
+    z.innerHTML =
+      rand('Fel și tip', feluri.map(function (f) { return chip('fel', f, '<b>' + NUME_FAMILIE[f] + '</b>'); }).join('') + (feluri.length ? '<span class="chip-sep" aria-hidden="true"></span>' : '') +
+        tipuri.map(function (t) { return chip('tip', t, esc(TIP[t] || t)); }).join('')) +
+      rand('Verdict', ['nou', 'da', 'poate', 'nu'].map(function (v) { return chip('verdict', v, (VERDICT[v] || 'Nou') + nr(n(function (x) { return x.verdict === v; }))); }).join('')) +
+      (zi.length ? rand('Obiectiv', zi.map(function (o, i) {
+        var k = n(function (x) { return x.verdict !== 'nu' && obiectiveDe(x)[i + 1]; });
+        return chip('ob', o.id || String(i + 1), '<b>' + (i + 1) + '</b> <span class="chip-text">' + esc(o.text) + '</span>' + nr(k), 'Obiectivul ' + (i + 1) + ': ' + o.text);
+      }).join('') + chip('ob', '-', 'fără obiectiv' + nr(fara), 'Piesele (fără „Nu”) care nu servesc niciun obiectiv al zilei')) : '') +
+      rand('Stare', chip('stare', 'produsa', 'produsă' + nr(n(function (x) { return x.produsa; }))) + chip('stare', 'de-produs', 'de produs' + nr(n(function (x) { return !x.produsa; }))) +
+        (nCore ? '<span class="chip-sep" aria-hidden="true"></span>' + chip('core', 'da', '◇ core' + nr(nCore), 'Piesele luate din biblioteca core') : ''));
+    var activ = filtruActiv(), carti = col.querySelectorAll('.masa-carte'), vazute = col.querySelectorAll('.masa-carte:not([hidden])').length;
+    $('masa-numar').textContent = activ ? (vazute ? vazute + ' din ' + carti.length + ' piese' : 'Nicio piesă din ' + carti.length + ' nu se potrivește.') + ' · totalurile blocurilor rămân pe tot Harvest-ul' : '';
+    $('masa-sterge').hidden = !activ;
+    col.classList.toggle('filtrat', activ);
+  }
+  function stergeFiltrele() { FLT = GOL_F(); $('masa-cauta').value = ''; salveazaFiltre(); fokus = null; randeaza(); }
   var ultimaStare = '';
   function stare(t) {
     if (t != null) ultimaStare = t;
@@ -685,6 +749,31 @@
   }
 
   // ---------- evenimente ----------
+  function initFiltre(col) {
+    var cauta = $('masa-cauta'), cutie = $('masa-filtre'); if (!cauta || !cutie) return;
+    cauta.value = FLT.q;
+    cauta.addEventListener('input', function () { FLT.q = cauta.value; salveazaFiltre(); fokus = null; randeaza(); });
+    cutie.addEventListener('click', function (ev) {
+      var c = ev.target.closest('.chip[data-hf]');
+      if (c) {
+        var k = c.getAttribute('data-hf'), v = c.getAttribute('data-valoare'), i = FLT[k].indexOf(v);
+        if (i >= 0) FLT[k].splice(i, 1); else { FLT[k].push(v); if (k === 'verdict' && v === 'nu') respinse = true; } // „Nu” cerut = „Nu” arătat
+        salveazaFiltre(); fokus = null; randeaza();
+        var dupa = cutie.querySelector('.chip[data-hf="' + k + '"][data-valoare="' + v.replace(/["\\]/g, '\\$&') + '"]'); if (dupa) dupa.focus({ preventScroll: true });
+        return;
+      }
+      if (ev.target.id === 'masa-sterge') { stergeFiltrele(); cauta.focus(); }
+    });
+    // Ca la Bibliotecă: „/” caută, Esc golește căutarea, ↓ sau Enter trec la primul cartonaș care se vede.
+    document.addEventListener('keydown', function (ev) {
+      var sect = $('masa'); if (!sect || sect.hidden || ev.metaKey || ev.ctrlKey || ev.altKey) return;
+      var t = ev.target;
+      if (ev.key === '/' && t !== cauta && !/^(INPUT|TEXTAREA|SELECT)$/.test(t.tagName) && !t.isContentEditable && !document.querySelector('dialog[open]')) { ev.preventDefault(); cauta.focus(); cauta.select(); return; }
+      if (t !== cauta) return;
+      if (ev.key === 'Escape') { ev.preventDefault(); if (cauta.value) { cauta.value = ''; FLT.q = ''; salveazaFiltre(); fokus = null; randeaza(); } else cauta.blur(); }
+      else if (ev.key === 'ArrowDown' || ev.key === 'Enter') { var p = col.querySelector('.masa-carte:not([hidden])'); if (p) { ev.preventDefault(); p.focus(); } }
+    });
+  }
   function init() {
     var col = $('masa-coloane'); if (!col) return;
     citesteLocal();
@@ -709,7 +798,7 @@
     $('masa-copiaza').addEventListener('click', copiazaMasa);
     $('masa-agenda').addEventListener('click', trimiteInAgenda);
     $('masa-rezumat').addEventListener('click', function (ev) { var b = ev.target.closest('[data-rz]'); if (b) laRezumat(b.getAttribute('data-rz')); });
-    initFisa(); initOb();
+    initFisa(); initOb(); initFiltre(col);
     col.addEventListener('click', function (ev) {
       var zb = ev.target.closest('button[data-obz]'); if (zb) { actiuneZi(zb.getAttribute('data-obz'), zb.closest('.obz-carte').getAttribute('data-ob')); return; }
       var fb = ev.target.closest('button[data-fisa]'); if (fb) { deschideFisa(fb.getAttribute('data-fisa')); return; }
@@ -732,7 +821,7 @@
       else if (/^[1-9]$/.test(k) && +k <= BLOCURI.length) inBloc(id, +k);
       else if (k === '0' && ID[id].bloc != null) scoate(id);
       else if (k === 'ArrowUp' || k === 'ArrowDown') {
-        if (!muta(id, k === 'ArrowUp' ? -1 : 1)) { var fr = k === 'ArrowUp' ? li.previousElementSibling : li.nextElementSibling; if (fr) fr.focus(); }
+        if (!muta(id, k === 'ArrowUp' ? -1 : 1)) { var fr = li; do { fr = k === 'ArrowUp' ? fr.previousElementSibling : fr.nextElementSibling; } while (fr && fr.hidden); if (fr) fr.focus(); }
       } else return;
       ev.preventDefault();
     });
@@ -762,7 +851,7 @@
         lista.insertBefore(tr.li, ev.clientY > r.top + r.height / 2 ? tinta.nextSibling : tinta);
       } else if (!tinta) {
         // sub ultimul cartonaș (sau o listă goală): la final; deasupra primului: la început
-        var carti = [].filter.call(lista.children, function (x) { return x !== tr.li; });
+        var carti = [].filter.call(lista.children, function (x) { return x !== tr.li && !x.hidden; });
         var primul = carti[0];
         if (primul && ev.clientY < primul.getBoundingClientRect().top) lista.insertBefore(tr.li, primul);
         else if (tr.li.parentNode !== lista || tr.li !== lista.lastElementChild) lista.appendChild(tr.li);

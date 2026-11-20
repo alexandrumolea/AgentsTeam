@@ -260,7 +260,7 @@
   // Durata e un prag: un singur chip apăsat odată.
   function normal(s) { return String(s).normalize('NFD').replace(/[̀-ͯ]/g, '').toLowerCase().replace(/[^a-z0-9]+/g, ' ').trim(); }
   function filtreaza() {
-    var f = { familie: [], tip: [], format: [], energie: [], durata: [], modul: [], eticheta: [], stare: [] }, l = document.querySelectorAll('.chip[aria-pressed="true"]');
+    var f = { familie: [], tip: [], format: [], energie: [], durata: [], modul: [], eticheta: [], stare: [] }, l = document.querySelectorAll('.chip[data-filtru][aria-pressed="true"]');
     for (var k = 0; k < l.length; k++) f[l[k].getAttribute('data-filtru')].push(l[k].getAttribute('data-valoare'));
     var c = $('banca-cauta'), q = c ? normal(c.value) : '', cuvinte = q ? q.split(' ') : [];
     var ex = document.querySelectorAll('details.ex'), n = 0;
@@ -286,7 +286,7 @@
     if ($('banca-sterge')) $('banca-sterge').hidden = !activ;
   }
   function stergeFiltrele() {
-    var l = document.querySelectorAll('.chip[aria-pressed="true"]'); for (var k = 0; k < l.length; k++) l[k].setAttribute('aria-pressed', 'false');
+    var l = document.querySelectorAll('.chip[data-filtru][aria-pressed="true"]'); for (var k = 0; k < l.length; k++) l[k].setAttribute('aria-pressed', 'false');
     if ($('banca-cauta')) $('banca-cauta').value = '';
     filtreaza();
   }

@@ -115,6 +115,69 @@ try {
   ok(/De produs/.test(await b.evaluate(c, 'document.getElementById("masa-mesaj").textContent')), 'mesajul spune ce e de produs');
   await b.click(c, '#masa-reset');
   ok((await col('studiu-adaptare')) === 'brainstorming/nou', '„Resetează” revine la masa.yml');
+
+  // Filtrele (Alex, 2026-11-20: „ca la bibliotecă”): ascund cartonașe, nu schimbă fișierul, nu strică ordinea
+  console.log('Filtrele din Harvest:');
+  const vazute = () => b.evaluate(c, '[...document.querySelectorAll("#masa-coloane .masa-carte")].filter(li => !li.hidden).map(li => li.dataset.id)');
+  const numar = () => b.evaluate(c, 'document.getElementById("masa-numar").textContent');
+  const cauta = (t) => b.evaluate(c, `(() => { const i = document.getElementById('masa-cauta'); i.value = ${JSON.stringify(t)}; i.dispatchEvent(new Event('input', { bubbles: true })); })()`);
+  const chipH = (k, v) => b.click(c, `#masa-chipuri .chip[data-hf="${k}"][data-valoare="${v}"]`);
+  const toate = (await vazute()).length;
+  const t1 = await total(1), t2 = await total(2);
+  ok(await b.evaluate(c, '[...document.querySelectorAll("#masa-chipuri .filtre-eticheta")].map(x => x.textContent).join("|")') === 'Fel și tip|Verdict|Obiectiv|Stare' && (await numar()) === '' && await b.evaluate(c, 'document.getElementById("masa-sterge").hidden'), 'bara de filtre: Fel și tip, Verdict, Obiectiv, Stare; fără filtre, fără contor și fără „Șterge filtrele”');
+  await cauta('EMOTIILOR');
+  ok(JSON.stringify(await vazute()) === '["harta-emotiilor"]' && /^1 din \d+ piese/.test(await numar()) && !(await b.evaluate(c, 'document.getElementById("masa-sterge").hidden')), `căutarea merge fără diacritice și majuscule; contorul „N din M piese” (${await numar()})`);
+  ok((await total(1)) === t1 && (await total(2)) === t2, 'totalurile blocurilor rămân pe tot Harvest-ul, nu doar pe ce se vede');
+  await cauta('');
+  await chipH('verdict', 'poate');
+  let v = await vazute();
+  ok(v.length > 0 && v.every((id) => ['plimbare-curba', 'poveste-fuziune'].includes(id)), `verdictul „Poate” lasă doar piesele cu „Poate” (${v.join(', ')})`);
+  await chipH('verdict', 'nou');
+  v = await vazute();
+  ok(v.includes('studiu-adaptare') && v.includes('plimbare-curba') && !v.includes('curba'), 'în același rând chipurile se adună (Nou SAU Poate)');
+  ok(await b.evaluate(c, 'document.activeElement.matches(\'.chip[data-hf="verdict"][data-valoare="nou"]\')'), 'focusul rămâne pe chip după redesen');
+  await chipH('verdict', 'nou'); await chipH('verdict', 'poate');
+  await chipH('verdict', 'nu');
+  ok(JSON.stringify(await vazute()) === '["test-personalitate"]' && await b.evaluate(c, 'document.getElementById("masa-respinse").getAttribute("aria-pressed")') === 'true', 'filtrul „Nu” arată și respinsele');
+  await chipH('verdict', 'nu'); await b.click(c, '#masa-respinse');
+  // Obiectivul: aceleași piese ca în contorul lui (fără „Nu”)
+  const ob1 = await b.evaluate(c, 'document.querySelector(\'#masa-chipuri .chip[data-hf="ob"]\').dataset.valoare');
+  await chipH('ob', ob1);
+  v = await vazute();
+  ok(v.length > 0 && v.length < toate && String(v.length) === await b.evaluate(c, 'document.querySelector(\'#masa-chipuri .chip[data-hf="ob"] .chip-nr\').textContent'), `obiectivul 1 lasă piesele care îl servesc (${v.length})`);
+  await chipH('ob', ob1);
+  // ↑ cu filtru: sare peste cartonașele ascunse, iar ele își păstrează ordinea
+  const bloc1 = () => b.evaluate(c, '[...document.querySelectorAll(\'.masa-lista[data-bloc="1"] .masa-carte\')].map(li => li.dataset.id)');
+  const b1 = await bloc1();
+  ok(b1[0] === 'deschidere' && b1[1] === 'curba' && b1[2] === 'ridica-te-daca', `blocul 1 începe cu deschidere, curba, ridica-te-daca (${b1.join(', ')})`);
+  await chipH('tip', 'mesaj'); await chipH('tip', 'energizant');
+  await b.evaluate(c, 'document.querySelector(\'.masa-carte[data-id="ridica-te-daca"]\').focus()');
+  await b.key(c, 'ArrowUp');
+  const b1b = await bloc1();
+  ok(b1b[0] === 'ridica-te-daca' && b1b[1] === 'deschidere' && b1b[2] === 'curba' && b1b.length === b1.length, `↑ cu filtru trece peste piesa ascunsă (curba rămâne după deschidere: ${b1b.join(', ')})`);
+  await chipH('tip', 'mesaj'); await chipH('tip', 'energizant');
+  // Tragerea cu filtru: din Harvest în Curate
+  await chipH('fel', 'continut');
+  ok((await vazute()).includes('studiu-adaptare') && !(await vazute()).includes('ridica-te-daca'), 'familia „conținut” lasă teoria, modelele și poveștile');
+  await b.trage(c, '.masa-carte[data-id="studiu-adaptare"] .mc-titlu', '.masa-carte[data-id="model-curba"] .mc-titlu');
+  ok((await col('studiu-adaptare')) === 'biblioteca' && (await st())['studiu-adaptare'].verdict === 'da', 'tragerea merge și cu filtre active (Harvest → Curate)');
+  // Starea filtrelor ține la refresh (în tab), „Șterge filtrele” le scoate pe toate
+  await cauta('curba');
+  await b.send('Page.reload', {}, c.sessionId); await pauza(900);
+  ok(await b.evaluate(c, 'document.getElementById("masa-cauta").value') === 'curba' && await b.evaluate(c, '!!document.querySelector(\'#masa-chipuri .chip[data-hf="fel"][data-valoare="continut"][aria-pressed="true"]\')') && (await vazute()).every((id) => /curba/.test(id) || id === 'plimbare-curba'), 'după refresh, filtrele sunt tot acolo');
+  await b.click(c, '#masa-sterge');
+  ok((await numar()) === '' && (await vazute()).length === toate && await b.evaluate(c, 'document.getElementById("masa-cauta").value === "" && document.activeElement.id === "masa-cauta"'), '„Șterge filtrele” arată iar toate piesele');
+  await b.key(c, 'Escape');
+  await b.evaluate(c, 'document.body.focus()');
+  await b.key(c, '/');
+  ok(await b.evaluate(c, 'document.activeElement.id') === 'masa-cauta', '„/” duce în căutare');
+  // Biblioteca își păstrează filtrele ei (chip-urile din Harvest nu intră în calculul ei)
+  await chipH('verdict', 'da');
+  await b.click(c, '[data-vedere="banca"]');
+  ok(/piese$/.test(await b.evaluate(c, 'document.getElementById("banca-numar").textContent')) && await b.evaluate(c, '[...document.querySelectorAll("details.ex")].every(a => !a.hidden)'), 'Biblioteca nu e afectată de filtrele din Harvest');
+  await b.click(c, '[data-vedere="masa"]');
+  await b.click(c, '#masa-sterge');
+  await b.click(c, '#masa-reset');
   // Telefon: o coloană, fără derulare pe orizontală
   await b.send('Emulation.setDeviceMetricsOverride', { width: 390, height: 900, deviceScaleFactor: 1, mobile: true }, c.sessionId); await pauza(300);
   ok(await b.evaluate(c, 'document.documentElement.scrollWidth <= innerWidth + 1'), 'pe telefon nu derulează pe orizontală');
