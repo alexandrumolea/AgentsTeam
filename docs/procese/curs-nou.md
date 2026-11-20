@@ -46,15 +46,21 @@ Panoul acestei etape e vederea **Harvest** din materialul trainerului (fostă �
 - **O piesă = o singură linie:** `id`, `titlu`, `scop`, `durata`, `tip`, `sursa`, `verdict` (nou / da / poate / nu), `bloc` (1–4), `ordine`. Fără text de slide, fără desene, fără ecrane. Așa consumăm puțini tokeni și Alex vede tot dintr-o privire.
 - **Fișa piesei:** detaliile stau în `harvest/<id>.md`, lângă rând. Se deschide din Harvest cu butonul „Fișa”.
 
-#### Harvest pas cu pas (Alex, 2026-11-19, primele 5 piese din Change Agility)
-1. **Alex dă piesa** în orice formă. Tudor creează fișa și trece textul lui exact, la „Ce mi-a dat Alex”. Comentariile ulterioare ale lui Alex se adaugă tot acolo, cu dată.
-2. **Irina:** „Pe scurt” și, doar dacă găsește research relevant, „Pentru trainer”: ce spune research-ul, unde susține și unde nuanțează ideea lui Alex, cum o folosești în sală (frază, întrebare, obiecție). Fiecare afirmație cu sursă. Un caz real, dacă are.
-3. **Daria:** „Instrucțiunile pentru participanți”, 2–3 „Exemple” (marcate ilustrativ sau real), „Clasificare” (fel, obiectiv, cum se folosește, durată, bloc propus) și „Ecran în sală (propunere)”. Apoi rândul în `harvest.yml`, cu verdict „nou”.
-4. **Cel mult o întrebare pentru Alex** pe piesă, doar dacă e necesară.
-5. **Alex dă verdictul** în Harvest: Da / Poate / Nu.
-- **Ecranul e doar o propunere** în Harvest. Ecranele finale le face Matei în etapa D, după poartă.
-- **Felurile de piese:** exercițiu, knowledge bite, experience, plus **challenge** (D-075): o întrebare care pune participantul față în față cu o situație reală a lui și cere un răspuns concret (ex.: „Care e planul tău pentru AI Literacy?”).
-- **Exercițiile sunt instrucțiuni exacte** (D-075): pașii pe care îi primesc participanții, ca un framework prin care trec. **Folosim des interacțiunea**, ca oamenii să învețe unii de la alții, mult mai mult decât prin reflecție individuală.
+#### Harvest pas cu pas (Alex, 2026-11-19; formatul fișei, D-077)
+**Fișa unei piese, în ordinea asta:**
+1. **Obiectivul piesei:** ce pleacă omul cu el, într-o propoziție (Daria propune, Alex corectează).
+2. **Input-ul lui Alex:** textul lui, exact, plus comentariile ulterioare, cu dată (Tudor).
+3. **Pe scurt:** esența piesei, aproape de cuvintele și de viziunea lui Alex, fără artificii teoretice (Irina). **Din „Pe scurt” se fac ecranele**, cât mai aproape de el.
+4. **Pentru trainer:** research-ul, doar dacă e relevant: ce susține și ce nuanțează, cum folosești în sală. Fiecare afirmație cu sursă (Irina).
+5. **Instrucțiunile pentru participanți**, **Exemple**, **Clasificare** (Daria). Apoi rândul în `harvest.yml`, cu verdict „nou”.
+6. **Întrebare pentru Alex:** cel mult una pe piesă, doar dacă e necesară.
+
+- **Viziunea e a lui Alex** (D-077): el gândește ce trebuie să se întâmple, ca să-și poată asuma. Echipa clarifică și sprijină, nu schimbă viziunea. Unde research-ul o nuanțează, spune asta în „Pentru trainer” sau ca întrebare, nu rescrie „Pe scurt”.
+- **Fără secțiune de ecran în Harvest.** Ecranele se fac după poartă, din „Pe scurt”.
+- **Alex dă verdictul** în Harvest: Da / Poate / Nu.
+- **Felurile de piese:** exercițiu, knowledge bite, experience, plus **challenge** (D-075): o întrebare care pune participantul față în față cu o situație reală a lui și cere un răspuns concret.
+- **Exercițiile sunt instrucțiuni exacte** (D-075), un framework prin care trec participanții. **Folosim des interacțiunea**, ca oamenii să învețe unii de la alții, mult mai mult decât prin reflecție individuală.
+- **În etapa C se actualizează doar Harvest-ul.** Restul se generează din el după poartă.
 
 ### Poarta: Alex aprobă firul roșu
 Fără ea nu se produce nimic.
