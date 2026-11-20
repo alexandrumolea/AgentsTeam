@@ -30,3 +30,4 @@ Doar lecții generale. Clienții, sumele și ofertele stau în `.claude/agent-me
 - 2026-11-20: Când Alex cere o ofertă fără email de la client, verific calendarul și firele recente: poate înlocui o zi recontractată. Nu creez ciornă Gmail dacă destinatarul nu e sigur; las emailul în fișier, cu variantele de destinatar.
 - 2026-11-20: Temele lui Alex devin „experiență” din propriile lui materiale (definițiile programelor și uneltele lor, în emailurile trimise), nu din flow-uri inventate.
 - 2026-11-20: Când conținutul are mai multe teme decât cele 3 coloane ale șablonului, le pun într-un bloc simplu (listă) pe o foaie proprie, fără să ating stilul; oferta poate avea 3 foi.
+- 2026-11-21: Când o ofertă înlocuiește o livrare deja convenită, prețul convenit rămâne (îl verific în fir) și oferta arată legătura cu restul seriei. Emailul merge celor care au ridicat obiecția, cu organizatorul comercial în CC; ca email nou, ca să poată avea PDF-ul atașat.
