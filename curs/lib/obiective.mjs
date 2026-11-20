@@ -1,10 +1,10 @@
 // Harvest de obiective (Alex, 2026-11-20): „Aș vrea să facem harvest și de obiective. Acestea nu au timp alocat.”
 // Sursa: harvest-obiective.yml în folderul cursului (viziune + listă de obiective cu verdict), fișele în harvest/obiective/<id>.md.
-// Obiectivele cu „da”, în ordinea din fișier, sunt obiectivele zilei (Schița, rezumatul, cursul participanților).
+// Obiectivele cu „da” sunt obiectivele zilei (Schița, rezumatul, cursul participanților), numerotate în ordinea din Flow (ordineZi).
 // Fără fișier: curs.yml „obiective” (rezervă, ca la exemple). Ediția le poate înlocui, ca înainte.
-// Legătura piesă → obiectiv: `obiective: [obiectiv-1, …]` (id-uri). Numerele vechi rămân valide: 1 = primul obiectiv cu „da”.
+// Legătura piesă → obiectiv: `obiective: [obiectiv-1, …]` (id-uri). Un număr vechi rămâne doar rezervă: 1 = primul obiectiv al zilei.
 // Obiectivul blocului (Alex, 2026-11-20): `bloc: N` opțional pe rândul unui obiectiv cu „da” = stă în Blocul N din Flow, nu în cutia zilei.
-// Rămâne obiectiv al zilei (numărul, limita de 4, legăturile nu se schimbă); Schița și cursul participanților ignoră câmpul.
+// Rămâne obiectiv al zilei (limita de 4, legăturile pe id nu se schimbă); Schița și cursul participanților iau doar numărul.
 // Modulul ăsta nu importă nimic din curs/lib (sursa.mjs îl citește), ca să nu facă cicluri.
 import { readFileSync, existsSync, writeFileSync } from 'node:fs';
 import { join } from 'node:path';
@@ -76,6 +76,16 @@ export function citesteObiectiveHarvest(folder, erori, avertismente) {
   return { exista: true, fisier: FISIER_OB, hash: hash(text), ...verificaObiective(v, erori, avertismente) };
 }
 
+/**
+ * Ordinea totală a obiectivelor zilei (Alex, 2026-11-20: „Numerele obiectivelor ar trebui să se schimbe în funcție de ordinea lor în total.”):
+ * întâi cele din cutia zilei, apoi Blocul 1, Blocul 2…; în fiecare loc, ordinea din fișier. Un `bloc` peste numărul de blocuri = cutia zilei.
+ * Numărul unui obiectiv = locul lui aici (1, 2, 3… fără goluri). Aceeași regulă în lib/masa.js (obiectiveZi).
+ */
+export function ordineZi(obiective, nrBlocuri) {
+  const loc = (o) => (o.bloc != null && o.bloc >= 1 && o.bloc <= nrBlocuri ? o.bloc : 0);
+  return obiective.filter((o) => o.verdict === 'da').map((o, i) => ({ o, i })).sort((a, b) => loc(a.o) - loc(b.o) || a.i - b.i).map(({ o }) => o);
+}
+
 /** Lista legăturilor: numere (indexuri în obiectivele zilei, de la 1) sau id-uri. null = formă greșită. */
 export function referinte(v) {
   if (v === undefined || v === null) return [];
@@ -142,7 +152,7 @@ export function scrieObiective(folder, { schimbari = [], viziune } = {}, hashCit
     }
     if (String(item.get('verdict') ?? '') !== 'da' && item.has('bloc')) item.delete('bloc');
     if ('text' in s) item.set('text', unRand(s.text, 'Textul obiectivului'));
-    // Ordinea zilei = ordinea din fișier (Obiectivele zilei din Flow, 2026-11-20): mută rândul înaintea / după alt obiectiv.
+    // Ordinea în locul lui (cutia zilei sau blocul) = ordinea din fișier (ordineZi): mută rândul înaintea / după alt obiectiv.
     if (s.inainteDe != null || s.dupa != null) {
       const ref = s.inainteDe != null ? s.inainteDe : s.dupa, tinta = gaseste(lista, ref);
       if (!tinta) throw new EroareEditor(`nu găsesc obiectivul „${String(ref).slice(0, 60)}” în ${FISIER_OB}`, 404);
@@ -183,7 +193,7 @@ export function textObiectiveNou(obiective = []) {
   const l = ['# Harvest de obiective: obiectivele candidate ale cursului, fără durată (Alex, 2026-11-20).',
     '# verdict: nou / da / poate / nu · sursa: alex / daria · piese: id-urile din harvest.yml care servesc obiectivul.',
     '# bloc: N (opțional, doar la „da”) = obiectivul Blocului N din Flow; fără bloc = în cutia „Obiectivele zilei”.',
-    `# Fișele: ${DOSAR_OB}/<id>.md. Obiectivele cu „da”, în ordinea de aici, sunt obiectivele zilei; în curs rămân cel mult ${MAX_OB}.`,
+    `# Fișele: ${DOSAR_OB}/<id>.md. Obiectivele cu „da” sunt obiectivele zilei, numerotate ca în Flow (cutia zilei, apoi Blocul 1, 2…); în curs rămân cel mult ${MAX_OB}.`,
     'obiective:'];
   if (!obiective.length) l[l.length - 1] = 'obiective: []';
   obiective.forEach((t, i) => l.push(`  - id: obiectiv-${i + 1}`, `    text: ${q(t)}`, '    sursa: curs.yml', '    verdict: da'));

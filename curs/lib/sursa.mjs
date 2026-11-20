@@ -6,7 +6,7 @@ import { readFileSync, readdirSync, existsSync, statSync } from 'node:fs';
 import { join, normalize } from 'node:path';
 import { parse as parseYaml } from 'yaml';
 import { normal } from './randare.mjs';
-import { citesteObiectiveHarvest, referinte, indexZi, FISIER_OB, MAX_OB } from './obiective.mjs';
+import { citesteObiectiveHarvest, referinte, indexZi, ordineZi, FISIER_OB, MAX_OB } from './obiective.mjs';
 
 export const STRATURI = ['sala', 'sala-si-curs', 'trainer', 'participant'];
 export const TIPURI = ['teorie', 'exercitiu', 'challenge', 'reflectie', 'mesaj', 'pauza'];
@@ -464,7 +464,7 @@ export function citesteCurs(folder, { editie: numeEditie } = {}) {
   for (const m of module) m.inAgenda = inAgenda.has(m.id);
 
   // Totalurile zilei (D-053): suma agendei și cât rămâne până la sfârșitul zilei (negativ = depășire, arătată în material și ca avertisment).
-  // Obiectivele zilei: ediția (de exemplu, ce a cerut clientul) → harvest-obiective.yml, cele cu „da”, în ordinea din fișier
+  // Obiectivele zilei: ediția (de exemplu, ce a cerut clientul) → harvest-obiective.yml, cele cu „da”, în ordinea din Flow (ordineZi)
   // (Alex, 2026-11-20) → curs.yml (rezervă, cât timp cursul nu are harvest de obiective; Alex, 2026-11-17).
   const ho = citesteObiectiveHarvest(folder, erori, avertismente);
   const citesteObiective = (v, unde) => {
@@ -474,7 +474,7 @@ export function citesteCurs(folder, { editie: numeEditie } = {}) {
   let sursaOb = null, zi = [], felOb = null;
   if (editie.obiective !== undefined && editie.obiective !== null) { sursaOb = `ediția ${aleasa}`; felOb = 'editie'; zi = (citesteObiective(editie.obiective, sursaOb) ?? []).map((text) => ({ id: null, text })); }
   else if (ho) {
-    sursaOb = FISIER_OB; felOb = 'harvest'; zi = ho.obiective.filter((o) => o.verdict === 'da').map((o) => ({ id: o.id, text: o.text }));
+    sursaOb = FISIER_OB; felOb = 'harvest'; zi = ordineZi(ho.obiective, blocuri.length).map((o) => ({ id: o.id, text: o.text }));
     for (const o of ho.obiective) if (o.bloc != null && o.bloc > blocuri.length) avertismente.push(`${FISIER_OB}: obiectivul „${o.id}” are bloc: ${o.bloc}, dar ziua are ${blocuri.length} ${blocuri.length === 1 ? 'bloc' : 'blocuri'}; îl arăt în cutia zilei`);
     if (zi.length > MAX_OB) avertismente.push(`${FISIER_OB}: ${zi.length} obiective au „da”; în curs rămân cel mult ${MAX_OB} (docs/procese/curs-nou.md, pasul 3). Alege-le pe cele mai importante`);
     const dinCurs = Array.isArray(curs.obiective) ? curs.obiective.map((x) => String(x).trim()) : null;
@@ -499,7 +499,7 @@ export function citesteCurs(folder, { editie: numeEditie } = {}) {
   }
   if (numerice.length) {
     const u = [...new Set(numerice)];
-    avertismente.push(`${u.length} ${u.length === 1 ? 'fișier leagă' : 'fișiere leagă'} obiectivele prin număr (${u.slice(0, 4).join(', ')}${u.length > 4 ? ', …' : ''}). Merge mai departe (1 = primul obiectiv cu „da”${zi[0]?.id ? `, adică ${zi[0].id}` : ''}), dar numărul se mută când schimbi verdictele: scrie id-ul, de exemplu obiective: [${zi[0]?.id ?? 'obiectiv-1'}]`);
+    avertismente.push(`${u.length} ${u.length === 1 ? 'fișier leagă' : 'fișiere leagă'} obiectivele prin număr (${u.slice(0, 4).join(', ')}${u.length > 4 ? ', …' : ''}). Merge mai departe (1 = primul obiectiv al zilei${zi[0]?.id ? `, adică ${zi[0].id}` : ''}), dar numărul se mută când schimbi verdictele sau ordinea din Flow: scrie id-ul, de exemplu obiective: [${zi[0]?.id ?? 'obiectiv-1'}]`);
   }
 
   const total = { agenda: t - (oraStart ?? 0), zi: ziStart != null && ziSfarsit != null ? ziSfarsit - ziStart : null, ramas: ziSfarsit != null ? ziSfarsit - t : null, sfarsit: t };

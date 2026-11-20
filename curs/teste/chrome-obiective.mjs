@@ -142,10 +142,13 @@ try {
   const loc = (id) => yml('harvest-obiective.yml').obiective.find((o) => o.id === id).bloc ?? null;
   const inBloc = (k) => fe(`[...document.querySelectorAll('.masa-bloc[data-bloc="${k}"] .obb-carte')].map(x => x.dataset.ob + "=" + x.querySelector(".obh-nr").textContent).join(" ")`);
   const unde = (id, val) => fe(`(() => { const s = document.querySelector('.obz-carte[data-ob="${id}"] select[data-obz="unde"]'); s.value = "${val}"; s.dispatchEvent(new Event("change", { bubbles: true })); return 1; })()`);
+  // Numerele (Alex, 2026-11-20: „Numerele obiectivelor ar trebui să se schimbe în funcție de ordinea lor în total.”): de sus în jos în Flow, 1…n, aceleași în Obiective.
+  const sus = () => fe(`(() => { const f = [...document.querySelectorAll('.obz-carte')]; const ok = f.every((x, i) => x.querySelector('.obh-nr').textContent === String(i + 1) && (document.querySelector('.obh-carte[data-ob="' + x.dataset.ob + '"] .obh-nr') || {}).textContent === String(i + 1)); return ok ? f.map(x => x.dataset.ob).join(' ') : 'gresit'; })()`);
   ok(await fe('!document.querySelector(".obb")'), 'fără obiective în blocuri, blocurile nu au zonă (nu ocupă loc)');
   await unde('ob-pas', 2); await pauza(900);
-  ok(loc('ob-pas') === 2 && await inBloc(2) === 'ob-pas=3' && !(await fe('!!document.querySelector(\'#obz .obz-carte[data-ob="ob-pas"]\')')), '„Unde: Blocul 2”: bloc: 2 în fișier; cartonașul stă în Blocul 2, cu numărul lui din zi (3)');
-  ok(ziY() === `ob-curba ob-nou ob-pas ${nouId}`, 'numerotarea zilei nu se schimbă');
+  ok(loc('ob-pas') === 2 && await inBloc(2) === 'ob-pas=4' && !(await fe('!!document.querySelector(\'#obz .obz-carte[data-ob="ob-pas"]\')')), '„Unde: Blocul 2”: bloc: 2 în fișier; cartonașul stă în Blocul 2, ultimul ca număr (4)');
+  ok(ziY() === `ob-curba ob-nou ob-pas ${nouId}`, 'rândurile din fișier nu se mută');
+  ok(await sus() === `ob-curba ob-nou ${nouId} ob-pas`, 'numerele: 1…4 de sus în jos, aceleași în Flow și în Obiective');
   ok(/4 din 4 · 1 în blocuri/.test(await fe('document.querySelector("#obz .masa-bloc-total").textContent')), 'cutia: „4 din 4 · 1 în blocuri” (limita e pe toate)');
   ok(await fe('document.activeElement && document.activeElement.dataset.obz === "unde" && document.activeElement.closest(".obz-carte").dataset.ob === "ob-pas"'), 'focusul rămâne pe „Unde”, în noul loc');
   ok(await fe('(() => { const c = document.querySelector(\'.masa-bloc[data-bloc="2"]\'); return !!(c.querySelector(".obb").compareDocumentPosition(c.querySelector(".masa-lista")) & Node.DOCUMENT_POSITION_FOLLOWING); })()'), 'obiectivul blocului stă deasupra pieselor');
@@ -154,11 +157,12 @@ try {
   await fe('scrollTo(0, 0); 1'); await pauza(200);
   await b.trage(e, '#obz .obz-carte[data-ob="ob-nou"] .obh-text', '.masa-bloc[data-bloc="1"] .masa-bloc-cap'); await pauza(900);
   ok(loc('ob-nou') === 1 && /^ob-nou=\d$/.test(await inBloc(1)), 'tras din cutia zilei într-un bloc gol: bloc: 1');
-  ok(ziY() === `ob-curba ob-nou ob-pas ${nouId}`, 'într-un bloc gol, obiectivul își păstrează numărul');
+  ok(ziY() === `ob-curba ob-nou ob-pas ${nouId}` && await sus() === `ob-curba ${nouId} ob-nou ob-pas` && await inBloc(1) === 'ob-nou=3', 'mutat în Blocul 1: numerele se recalculează (1…4 de sus în jos)');
   await b.trage(e, '.obb-carte[data-ob="ob-nou"] .obh-text', '.masa-bloc[data-bloc="2"] .masa-bloc-cap'); await pauza(900);
   ok(loc('ob-nou') === 2 && (await inBloc(2)).startsWith('ob-nou=') && (await inBloc(2)).includes('ob-pas=') && !(await inBloc(1)), 'dintr-un bloc în altul, deasupra celui de acolo');
   await b.trage(e, '.obb-carte[data-ob="ob-pas"] .obh-text', '#obz .masa-bloc-cap'); await pauza(900);
   ok(loc('ob-pas') === null && await fe('document.querySelector("#obz .obz-carte").dataset.ob') === 'ob-pas', 'din bloc înapoi în cutia zilei (câmpul bloc dispare), primul');
+  ok(/^ob-pas ob-curba /.test(await sus()), 'înapoi în cutie: numărul 1');
   ok(yml('harvest-obiective.yml').obiective.find((o) => o.id === 'ob-respins').verdict === 'poate', 'ob-respins e „poate” înainte de tragere');
   await fe('scrollTo(0, 0); 1'); await pauza(200);
   await b.trage(e, '.obh-carte[data-ob="ob-respins"] .obh-text', '.masa-bloc[data-bloc="1"] .masa-bloc-cap'); await pauza(900);

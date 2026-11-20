@@ -195,10 +195,14 @@
 
   // ---------- rezumatul: panoul de control al cursului (Alex, 2026-11-18) ----------
   // Fiecare cifră duce la vederea ei. Agenda „de pe masă” = cartonașele din blocuri; „agenda ediției” = ce e acum în ediție (DATA.module).
-  // Obiectivele zilei (2026-11-20): cu harvest-obiective.yml, cele cu „da”, în ordinea din fișier (se recalculează când schimbi verdictul).
-  // Legăturile pieselor: id-uri sau numere vechi (1 = primul obiectiv cu „da”); aceleași reguli ca lib/obiective.mjs (indexZi, idDin).
+  // Obiectivele zilei (2026-11-20): cu harvest-obiective.yml, cele cu „da”, numerotate în ordinea totală din Flow: cutia zilei, apoi Blocul 1, 2…,
+  // în fiecare loc ordinea din fișier (aceeași regulă ca ordineZi din lib/obiective.mjs; se recalculează la orice mutare sau verdict).
+  // Legăturile pieselor: id-uri sau numere vechi (rezervă: 1 = primul obiectiv al zilei); aceleași reguli ca lib/obiective.mjs (indexZi, idDin).
   function obiectiveZi() {
-    if (OBH && DATA.obiectiveFel === 'harvest') return OB.filter(function (o) { return o.verdict === 'da'; }).map(function (o) { return { id: o.id, text: o.text }; });
+    if (OBH && DATA.obiectiveFel === 'harvest') {
+      return OB.filter(function (o) { return o.verdict === 'da'; }).map(function (o, i) { return { o: o, i: i, l: locOb(o) || 0 }; })
+        .sort(function (a, b) { return a.l - b.l || a.i - b.i; }).map(function (x) { return { id: x.o.id, text: x.o.text }; });
+    }
     return DATA.obiectiveZi && DATA.obiectiveZi.length ? DATA.obiectiveZi : (DATA.obiective || []).map(function (t) { return { id: null, text: t }; });
   }
   function indexZi(ref, zi) {
@@ -480,9 +484,9 @@
     });
   }
   // ---------- Obiectivele zilei în Flow (Alex, 2026-11-20): „Vreau să am un spațiu în Flow să pun obiectivele zilei, deasupra Blocului 1.” ----------
-  // Aceleași obiective ca obiectiveZi(): cele cu „Da”, în ordinea din harvest-obiective.yml. Fără durată, nu intră în totalurile blocurilor.
+  // Aceleași obiective ca obiectiveZi(): cele cu „Da”. Fără durată, nu intră în totalurile blocurilor.
   // Obiectivul blocului (Alex, 2026-11-20): un obiectiv cu „Da” stă într-un singur loc, în cutia zilei sau într-un bloc (`bloc: N`),
-  // ca un cartonaș fără timp deasupra pieselor blocului. Numărul rămâne cel din zi (toate cele cu „Da”), deci legăturile nu se schimbă.
+  // ca un cartonaș fără timp deasupra pieselor blocului. Numărul = locul în ordinea totală, de sus în jos (se mută cu obiectivul); legăturile sunt pe id.
   // A pune în zi = verdict „Da”; ↑ ↓ mută rândul în fișier, în locul lui; „Unde” mută între zi și blocuri; Scoate = verdict „Poate”.
   var fokusZi = null;
   var poatePune = function () { return !!(editor() && OBH && DATA.obiectiveFel === 'harvest'); };
@@ -545,7 +549,7 @@
   }
   /**
    * Mută obiectivul în cutia zilei (bloc null) sau în Blocul bloc, cu „Da”. Locul: înaintea lui inainteDe, altfel la finalul obiectivelor de acolo;
-   * într-un loc gol, un obiectiv care avea deja „Da” își păstrează numărul, iar unul nou vine după toate obiectivele zilei.
+   * într-un loc gol, rândul rămâne unde e în fișier (numărul vine din loc, nu din rând), iar unul nou vine după toate obiectivele zilei.
    */
   function mutaOb(id, bloc, inainteDe, fok) {
     var o = OBID[id]; if (!o) return;

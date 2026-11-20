@@ -112,7 +112,7 @@ export function citesteMasa(c, erori, avertismente) {
   if (c.harvestObiective) {
     const numerice = candidate.filter((x) => x.obiective.some(Number.isInteger)).length;
     const prim = c.obiectiveZi?.[0]?.id;
-    if (numerice) avertismente.push(`${fisier}: ${numerice} ${numerice === 1 ? 'piesă leagă' : 'piese leagă'} obiectivele prin număr (obiective: [1]). Merge mai departe (1 = primul obiectiv cu „da”${prim ? `, adică ${prim}` : ''}), dar numărul se mută când schimbi verdictele: bifează obiectivele din fișa piesei sau scrie obiective: [${prim ?? 'obiectiv-1'}]`);
+    if (numerice) avertismente.push(`${fisier}: ${numerice} ${numerice === 1 ? 'piesă leagă' : 'piese leagă'} obiectivele prin număr (obiective: [1]). Merge mai departe (1 = primul obiectiv al zilei${prim ? `, adică ${prim}` : ''}), dar numărul se mută când schimbi verdictele sau ordinea din Flow: bifează obiectivele din fișa piesei sau scrie obiective: [${prim ?? 'obiectiv-1'}]`);
     const ids = new Set(c.harvestObiective.obiective.map((o) => o.id));
     for (const x of candidate) for (const r of x.obiective) if (typeof r === 'string' && !ids.has(r)) avertismente.push(`${fisier}, „${x.id}”: obiectivul „${r}” nu există în ${FISIER_OB}; îl ignor`);
   }
