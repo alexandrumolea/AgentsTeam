@@ -55,6 +55,7 @@
 - Formule de tip „hook-uri virale”, liste de „10 deschideri care merg mereu”: sună a marketing și contrazic regula lui Alex (limbaj permisiv și suportiv, nu insistent).
 - Praguri și cifre despre algoritmul LinkedIn din bloguri: neconfirmate.
 - Emoji, majuscule, „🚀”: nu se potrivesc vocii lui Alex.
+  - 2026-11-20, corectare: pe Substack, Alex folosește emoji ca marcaje de structură (📌, 👉, 💡, 💬). Regula de mai sus era o presupunere, nu o observație. Vezi `substack-voce-2026-11-20.md`.
 
 ## Surse de cercetare folosite în articolele Wise Teams (2026-11-20)
 Verificate pe pagina sursei sau pe rezumatul instituției care a publicat-o.

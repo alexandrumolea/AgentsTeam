@@ -13,10 +13,19 @@ Un text de thought leadership e citit până la capăt când cititorul își rec
 
 Nu vindem. Arătăm de ce contează ceva și ce se schimbă. Instrumentul sau serviciul apare târziu, ca exemplu, nu ca subiect.
 
+## 0. Înainte de orice: citește ce a publicat deja Alex pe acel canal
+> Regulă din 2026-11-20. Am scris primele două articole fără să ne uităm pe Substack-ul lui; Alex ne-a întrebat „V-ați uitat acolo?”. Nu ne uitasem, iar draft-urile au ieșit în altă limbă, alt ritm și alt format de titlu decât ce publicase deja.
+
+Înainte de orice articol, newsletter sau postare:
+1. **Deschide canalul** (Substack: [alexandrumolea.substack.com/archive](https://alexandrumolea.substack.com/archive); LinkedIn: profilul și postările lui) și citește cel puțin 3–5 texte, întâi pe cele mai apropiate de subiect.
+2. **Notează** limba, lungimea, cum deschide, structura, formula titlului și a subtitlului, cum încheie. Analiza Substack de până acum: `team/sofia/documente/substack-voce-2026-11-20.md`; actualizeaz-o când apar texte noi.
+3. **Caută ce a scris deja pe subiect** și leagă textul nou de el, ca seria să continue (trimite la articolul vechi, folosește modelul sau imaginea lui).
+4. Ce găsești în textele lui bate regulile generale din acest skill. Dacă se contrazic, urmează-l pe Alex și notează lecția mai jos.
+
 ## 1. Structura unui articol
 Un articol are **o singură idee**. Dacă ai două, ai două articole.
 
-| Parte | Ce face | Lungime (articol de 700–1.100 de cuvinte) |
+| Parte | Ce face | Lungime (articol de 700–950 de cuvinte) |
 |---|---|---|
 | **Titlu** | Spune ideea sau tensiunea. Nu promite ce nu livrează. | 4–10 cuvinte |
 | **Deschidere** | Pornește de la o situație pe care cititorul o trăiește sau de la o presupunere comună pe care o punem sub semnul întrebării. Spune devreme unde ajungem. | 2–4 paragrafe scurte |
@@ -35,7 +44,8 @@ Reguli:
 ## 2. Titluri și deschideri
 
 ### Titluri care țin
-Alege una dintre cele patru forme. Scrie mereu 3 variante și lasă-l pe Alex să aleagă.
+Pe Substack, Alex scrie **titlu în Title Case + subtitlu care explică** (vezi `vocea-alex`, „Vocea de pe Substack”), pe formulele lui: numărul modelului, conceptul numit, afirmația către „tu”, tensiunea. Pornește de la ele. Formele de mai jos sunt pentru restul.
+Alege una dintre cele patru forme. Scrie mereu 3 variante (titlu + subtitlu) și lasă-l pe Alex să aleagă.
 1. **Afirmația care contrazice** o presupunere comună: „Echipele nu au o problemă de oameni.”
 2. **Tensiunea** pe care cititorul o are deja: „De ce ne întoarcem de la training și nimic nu se schimbă.”
 3. **Imaginea** care rezumă ideea: „Oglinda comună.” (merge doar cu un subtitlu care o explică)
@@ -43,7 +53,7 @@ Alege una dintre cele patru forme. Scrie mereu 3 variante și lasă-l pe Alex s�
 
 Testul titlului: îl poate repeta cineva unui coleg fără să-l citească de pe ecran? Dacă nu, e prea lung sau prea abstract.
 
-Evită: numere goale („7 secrete…”), superlative („cel mai important…”), urgență („Trebuie să știi acum”), întrebări la care răspunsul e evident „da”.
+Evită: numere goale („7 secrete…”; un număr care numără piesele unui model al lui Alex e în regulă: „The 3 Hidden Forces…”), superlative („cel mai important…”), urgență („Trebuie să știi acum”), întrebări la care răspunsul e evident „da”.
 
 ### Deschideri care țin
 Prima propoziție are o singură treabă: să te facă să citești a doua. Pe LinkedIn, primele 2–3 rânduri sunt tot ce se vede înainte de „vezi mai mult”.
@@ -55,6 +65,7 @@ Evită: definițiile de dicționar, „În lumea de azi…”, statisticile ca p
 
 ## 3. Checklist înainte de draft
 Răspunde în scris, în 1–2 rânduri fiecare, înainte să scrii textul:
+- [ ] **Am citit ce a publicat Alex pe acest canal** (secțiunea 0) și știu cu ce articol de-al lui se leagă textul.
 - [ ] **Ideea într-o frază.** Dacă nu încape, nu e gata.
 - [ ] **Pentru cine** (rol, situație) și **ce problemă are** omul acesta luni dimineață.
 - [ ] **Presupunerea** pe care o contrazicem sau o nuanțăm.
@@ -78,7 +89,8 @@ Pornim mereu de la articolul lung (Substack). Celelalte se taie din el, nu se sc
 | | Substack | Articol LinkedIn | Postare LinkedIn |
 |---|---|---|---|
 | **Rol** | Textul-sursă, pentru cei care au ales să-l citească pe Alex | Același text, pentru rețeaua profesională; se găsește și prin căutare | Ușa: o idee, un exemplu, o invitație |
-| **Lungime** | 700–1.100 de cuvinte | La fel sau puțin mai scurt | 120–250 de cuvinte |
+| **Limba** | Engleză (tot ce a publicat Alex acolo) | De confirmat cu Alex (profilul e în engleză) | De confirmat cu Alex |
+| **Lungime** | 700–950 de cuvinte (mediana lui: ~870) | La fel sau puțin mai scurt | 120–250 de cuvinte |
 | **Titlu** | Subiectul de email (scurt, ~30–40 de caractere vizibile pe telefon) poate fi diferit de titlul de pe pagină | Titlul de pe pagină; subtitlurile ajută scanarea | Nu are titlu: primele 2 rânduri sunt titlul |
 | **Deschidere** | Scena sau presupunerea; textul de previzualizare continuă ideea | Aceeași; o imagine de copertă de la Ioana | 1–2 rânduri care opresc scroll-ul, apoi un rând liber |
 | **Corp** | Complet: argument, exemplu, surse la final | Complet; sursele ca linkuri în text | Ideea în 3–5 rânduri scurte, un exemplu în 2–3 rânduri |
@@ -87,14 +99,14 @@ Pornim mereu de la articolul lung (Substack). Celelalte se taie din el, nu se sc
 
 Reguli pentru postare:
 - Un rând liber între blocuri; fără ziduri de text.
-- Fără emoji ca decor, fără hashtag-uri în corp (cel mult 2–3 la final, dacă Alex vrea).
+- Fără emoji ca decor, fără hashtag-uri în corp. Emoji ca marcaje, ca pe Substack-ul lui Alex (👉 pe concluzie, 💬 pe întrebare), sunt în regulă, puține (cel mult 2–3 la final, dacă Alex vrea).
 - Întrebarea de la final e una la care oamenii chiar au un răspuns („Ce faceți voi după un training ca să nu se piardă?”), nu „Sunteți de acord?”.
 - Cifre și praguri despre algoritm: nu le folosim decât dacă vin de la LinkedIn.
 
 ## 5. Format de livrare
 Fiecare draft stă în `team/sofia/documente/drafts/<subiect>-AAAA-LL-ZZ.md`, cu:
 1. ideea într-o frază și pentru cine e;
-2. 3 variante de titlu;
+2. 3 variante de titlu, fiecare cu subtitlu;
 3. textul pentru Substack;
 4. adaptarea pentru postarea LinkedIn;
 5. sursele.
@@ -102,3 +114,5 @@ Nimic nu se publică fără aprobarea explicită a lui Alex.
 
 ## Lecții (cu dată)
 - 2026-11-20: Skill creat. Primele texte scrise cu el: două articole despre valoarea Wise Teams. Încă fără feedback de la Alex.
+- 2026-11-20: **Înainte de a scrie în numele lui Alex, citesc ce a publicat deja pe canalul respectiv** (secțiunea 0). Primele draft-uri le-am scris fără Substack-ul lui: în română (el scrie acolo în engleză), proză curgătoare (el scrie sacadat, cu modele numite, bold, liste și emoji-marcaje), cu cercetarea în centru (el pune experiența și modelul în centru) și fără legătură cu seria lui despre echipe. Le-am rescris (v2).
+- 2026-11-20: Pe Substack, structura lui Alex: subtitluri cu 📌, un model numit, „Let's imagine this” pentru exemple, „Your action plan” și „Final thought” la final, apoi o întrebare reală și o invitație caldă. Regula mea veche „fără emoji” nu ținea pe canalul lui.

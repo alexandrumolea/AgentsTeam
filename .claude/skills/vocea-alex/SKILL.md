@@ -43,13 +43,30 @@ description: Profilul, personalitatea și vocea publică a lui Alex. Folosește-
 | Om (valori, pasiuni) | de confirmat | despre, social |
 
 ## Cum sună Alex
-- Limba: română implicit. Engleză: de confirmat.
+- Limba: română implicit. 2026-11-20: **Substack-ul și profilul LinkedIn sunt în engleză** (vezi „Vocea de pe Substack” mai jos). Limba postărilor LinkedIn: de confirmat.
 - Ton: direct, cald, practic (ipoteză, de confirmat).
 - 2026-11-18: **Limbaj permisiv și suportiv, mereu** (Alex: „Aș vrea ca mereu limbajul nostru să fie mai degrabă permisiv și suportiv.”). Nu asertiv, nu insistent, fără imperative de vânzare și fără presiune pe termene. Invităm („Dacă vi se potrivește…”, „Mă bucur să ajustăm…”, „Spuneți-mi ce ar fi de schimbat”), nu cerem. Se aplică la emailuri, oferte, postări și texte de pe site.
 - Persoana: „eu” și „tu”, nu „noi, compania”.
 - Lungime: propoziții scurte. O idee pe paragraf.
-- Cuvinte pe care le folosește des: de colectat din texte reale.
+- Cuvinte pe care le folosește des: 2026-11-20, din Substack (engleză): *system*, *living system*, *patterns*, *invisible / hidden*, *red thread*, *ownership*, *trust*, *flow*, *pass the ball*, *alignment*, *clarity*, *mirror*, *journey*, *by design or by default*. În română: de colectat.
 - Cuvinte de evitat: jargon corporate gol („sinergie”, „holistic” fără conținut), superlative fără dovezi.
+
+## Vocea de pe Substack (confirmată din texte reale, 2026-11-20)
+> Sursa: cele 12 articole de pe [alexandrumolea.substack.com](https://alexandrumolea.substack.com), februarie–iulie 2025, toate în engleză, publicația „Alexandru Molea, Systemic Coach & Advisor”. Analiza completă, cu linkuri: `team/sofia/documente/substack-voce-2026-11-20.md`. Ce e aici e observat, nu ipoteză.
+
+- 2026-11-20: **Lungime:** 530–1.540 de cuvinte, mediana ~870; cele recente, mai scurte. Țintă pentru noi: 700–950.
+- 2026-11-20: **Deschidere:** o întrebare către cititor („Have you ever noticed…”), o teză în bold, un paradox observat sau o poveste scurtă (client anonimizat, scenă cu dialog, imagine din natură). Spune devreme de ce îi pasă.
+- 2026-11-20: **Un model numit și numerotat** ține textul: 3 forțe, 9 condiții, două fire, trei A-uri, o piramidă, un „milestone”. Conceptele primesc majuscule, ca nume proprii (*Personal ROI*, *Pattern Shaping*).
+- 2026-11-20: **Ritm sacadat:** rânduri scurte, una sub alta; contraste („From X → to Y”); întrebări retorice; bold pe ideea-cheie; liste multe.
+- 2026-11-20: **Emoji ca marcaje de structură**, nu ca decor: 📌 sau 💡 pe secțiuni, 👉 pe concluzia unui bloc, 💬 pe întrebarea de final, ✅ / 🔹 în liste.
+- 2026-11-20: **Persoana:** „I” pentru convingeri și motivație („this topic moves me deeply”), „we” pentru oameni în general și pentru practica lui, „you” direct, cu instrucțiuni.
+- 2026-11-20: **Exemple:** personaje compuse cu prenume, dialog în italic, „Let's imagine this.”, metafore din natură (copaci, orchestră, semințe, valul, pompierii care se antrenează între incendii).
+- 2026-11-20: **Surse: aproape deloc.** Autoritatea vine din experiența cu echipele și din modelul lui. Când preia ceva, o spune simplu, în paranteză. O sursă de cercetare e în regulă, scurt și în text, ca susținere, nu ca argument principal.
+- 2026-11-20: **Final:** secțiune cu nume fix („Final thought”, „Key insights”, „Your action plan”), o frază-aforism („We are always building a system.”), o întrebare reală către cititor și o invitație caldă („I'd love to support you”, „Let's hold that mirror together.”).
+- 2026-11-20: **Titluri** în Title Case, pe patru formule: numărul modelului („The 3 Hidden Forces that Shape…”), conceptul numit („The Disagree and Commit Milestone”), afirmația către „tu” („Your team needs two threads”), tensiunea („Why Smart Teams Get Stuck—And How to Fix It”). **Subtitlul explică** („What Teams Can Learn from Living Systems”) sau întreabă. 10 din 12 au subtitlu.
+- 2026-11-20: **Motivul care revine: invizibilul făcut vizibil** („hidden forces”, „the underlying dynamics were invisible”, „make it visible together”). E misiunea lui v2, spusă pe echipe.
+- 2026-11-20: Seria despre echipe există deja (*3 Hidden Forces*, *9 Conditions*, *Why Smart Teams Get Stuck*, *Disagree and Commit*, *two threads*, *Dance of Stability and Change*). Textele noi o continuă și trimit la ea.
+- 2026-11-20: Engleza lui e clară, cu câteva greșeli de tipar. Nu le copiem; scriem engleză simplă și curată, cu propozițiile lui scurte.
 
 ## Esteticul vizual (referință pentru Ioana)
 > Detaliile vizuale sunt ale Ioanei. Sursa unică de acum: manualul de brand, skill-ul `brand-bemore` (în curs, I-022), din `team/ioana/documente/manual-brand-v1.md` (vizual) și `team/maria/documente/manual-brand-pozitionare-v1.md` (poziționare și arhitectura de brand). Valorile de culoare stau doar acolo. Aici e doar ce trebuie să știe oricine scrie sau decide în numele lui Alex.
@@ -106,3 +123,4 @@ description: Profilul, personalitatea și vocea publică a lui Alex. Folosește-
 - 2026-11-15: adăugate primele exemple aprobate de Alex: introducerea din prototipuri și metafora „atelierul meu de inovație, work & living”.
 - 2026-11-15: T-010: reguli de folosire a misiunii (de confirmat); completarea hero retrasă în favoarea misiunii.
 - 2026-11-17: I-022: „Esteticul vizual” actualizat cu D-054 (Sora, Liquid Glass, „Sticlă colorată”) și reperele lui Alex (esență, nu elemente; atelier de arhitect schițat; wellness al minții; bibliotecă modernă; showroom; mai aerisit). Aspectul Spațiu (fond întunecat) și „Liquid Glass doar ca material” trecute la istoric; scena cu obiectele-simbol rămâne. Trimitere la manualul de brand (`brand-bemore`).
+- 2026-11-20: Sofia: adăugată secțiunea „Vocea de pe Substack”, din cele 12 articole publicate de Alex (întrebarea lui: „V-ați uitat acolo?”). Limba de pe Substack și LinkedIn: engleză.

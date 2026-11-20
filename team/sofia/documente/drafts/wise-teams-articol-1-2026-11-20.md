@@ -1,119 +1,207 @@
-# Wise Teams, articolul 1: procesul, nu oamenii
+# Wise Teams, articolul 1: procesul, nu oamenii (v2, pe vocea de pe Substack)
 
 > Draft Sofia, 2026-11-20 (T-045). **Nepublicat. Așteaptă aprobarea lui Alex.**
-> Scris cu skill-urile `vocea-alex` și `copywriting`.
+> v2: rescris după ce am citit cele 12 articole de pe Substack-ul lui Alex (`team/sofia/documente/substack-voce-2026-11-20.md`). Textul pentru Substack e în engleză, ca tot ce a publicat acolo. v1, în română: `arhiva/wise-teams-articol-1-2026-11-20-v1-ro.md`.
 
-- **Ideea într-o frază:** rezultatele unei echipe vin din felul în care lucrează împreună, deci pârghia e procesul, iar capacitățile oamenilor sunt nutrient, nu pârghie.
-- **Pentru cine:** lideri de echipă, manageri, oameni de HR care au trimis echipa la training și n-au văzut schimbarea pe care o sperau.
+- **Ideea într-o frază:** rezultatele unei echipe vin din felul în care lucrează împreună, deci pârghia e procesul, iar capacitățile oamenilor sunt nutrientul, nu pârghia.
+- **Pentru cine:** lideri de echipă, manageri, oameni de HR care au trimis echipa la training și n-au văzut schimbarea sperată.
 - **Presupunerea pe care o contrazicem:** „când o echipă nu merge, e o problemă de oameni, deci facem un training”.
-- **Unghiul:** A, cum a propus Tudor. L-am păstrat pentru că e argumentul lui Alex din raport (input, proces, output) și deschide firesc articolul 2.
+- **Cum continuă seria lui:** pornește de la *The 3 Hidden Forces* („every team results in a repeatable system”) și leagă exemplul de condiția 6 din *9 Conditions* („Who does what, by when”).
 
-## Variante de titlu
-1. **Echipele nu au o problemă de oameni** *(recomandarea mea: contrazice direct o presupunere comună și se poate repeta ușor)*
-2. De ce te întorci de la training și nimic nu se schimbă
-3. Oamenii sunt nutrientul. Procesul e pârghia.
+## Variante de titlu (cu subtitlu)
+1. **It's Not a People Problem**
+   *Why teams come back from training and nothing changes*
+   (recomandarea mea: formula „tensiunii” din *Why Smart Teams Get Stuck*; se poate repeta ușor unui coleg)
+2. **People Are the Nutrient. Process Is the Lever.**
+   *What actually changes a team's results*
+3. **The 4 Layers of How a Team Works**
+   *Flow, Trust, Delivery, Anticipation, and the container underneath*
+   (formula „numărul modelului”, ca în *3 Hidden Forces* și *9 Conditions*)
 
-Subiect de email (Substack, scurt): „Nu e o problemă de oameni”
-Text de previzualizare: „De ce training-urile nu schimbă rezultatele și ce le schimbă.”
-
----
-
-## Textul pentru Substack
-
-# Echipele nu au o problemă de oameni
-
-Când o echipă nu merge, primul reflex e să ne uităm la oameni. Cine nu comunică. Cine nu își asumă. Cine nu ascultă. Iar răspunsul vine aproape la fel de repede: un training. De comunicare, de feedback, de leadership.
-
-Training-ul e bun. Oamenii pleacă mai deschiși, cu idei noi, uneori chiar entuziasmați. Apoi, luni, se întorc în aceeași echipă, la aceleași ședințe, cu aceleași reguli nescrise. În câteva săptămâni, totul arată ca înainte.
-
-Nu cred că e vina oamenilor. Nici a training-ului. Cred că e o problemă de ordine: încercăm să schimbăm rezultatele schimbând oamenii, când rezultatele vin, de fapt, din felul în care lucrăm împreună.
-
-## Dacă vrei alte rezultate, schimbă procesul
-
-Gândește-te la o echipă ca la un sistem simplu. Intră ceva: oameni, timp, informație, obiective. Iese ceva: rezultate. Între ele stă procesul, adică felul în care echipa lucrează în fiecare zi.
-
-Dacă rezultatele nu sunt cele pe care le vrei, poți schimba ce intră. Aduci alți oameni sau îi trimiți pe cei de acum la cursuri. Sau poți schimba ce se întâmplă la mijloc.
-
-Eu cred că pârghia e la mijloc. Capacitățile oamenilor contează, dar sunt nutrient, nu pârghie. Hrănesc procesul. Nu îl conduc.
-
-Nu sunt singurul care vede asta. Michael Beer, profesor la Harvard Business School, împreună cu Magnus Finnström și Derek Schrader, a analizat de ce programele de training dau atât de rar rezultatele așteptate. Concluzia lor, din 2016: problema e mai puțin conținutul și mai mult contextul. Training-ul funcționează când organizația e pregătită să-l primească. Altfel, oamenii învață ceva nou și se întorc într-un sistem care îi trage înapoi.
-
-Iar când Google a studiat 180 de echipe proprii, în proiectul Aristotle, a ajuns la ceva asemănător: contează mai puțin cine e în echipă și mai mult cum lucrează oamenii împreună.
-
-## Ce înseamnă „proces”, concret
-
-„Proces” sună abstract, așa că îl spun în patru cuvinte. La Wise Teams lucrăm cu patru categorii de comportamente de echipă, în ordinea în care credem că ajută să fie construite:
-
-- **Flux:** informația, sarcinile, întâlnirile și deciziile circulă fără blocaje și fără să treacă toate prin lider.
-- **Încredere:** se poate spune adevărul. Dificultățile reale ajung pe masă, greșelile ies la suprafață devreme, tensiunile se spun în față, iar răspunderea e reciprocă.
-- **Livrare:** echipa știe ce contează, fiecare știe unde contribuie, iar ce își propune se întâmplă.
-- **Anticipare:** echipa vede schimbarea din timp, încearcă lucruri noi în siguranță și învață din ele.
-
-Sub toate stă ceea ce numim Containerul: echipa știe de ce există, ce livrează și cui, cine ce rol are și după ce reguli lucrează împreună. Fără el, nimic de deasupra nu stă în picioare.
-
-Instrumentul nostru, Strategic Focus Tool, măsoară 16 comportamente, câte patru în fiecare categorie. Nu măsoară cât de buni sunt oamenii. Măsoară cum lucrează echipa.
-
-## Un exemplu pe care probabil îl recunoști
-
-Ia o echipă în care ședințele se termină cu „bun, ne mai auzim”. Toată lumea a vorbit, toată lumea a fost de acord, dar nimeni nu a plecat cu un nume și un termen lângă o acțiune. Peste o săptămână, fiecare crede că s-a ocupat altcineva.
-
-Privit prin lentila oamenilor, pare o problemă de asumare. Soluția evidentă: un curs despre responsabilitate.
-
-Privit prin lentila procesului, e altceva. E un comportament de Flux: întâlnirile nu produc decizii. Iar soluția e mai mică și mai concretă. De exemplu, un registru comun din care nicio acțiune nu pleacă fără responsabil, termen și criteriu de finalizare. Sau o agendă care începe cu rezultatul dorit și abia apoi deschide discuția.
-
-Aceiași oameni, aceleași capacități. Altă regulă de lucru.
-
-Asta nu înseamnă că dezvoltarea oamenilor nu contează. Înseamnă că o facem în altă ordine: întâi alegem ce schimbăm în felul de lucru, apoi vedem ce capacități cere acea schimbare. Atunci training-ul are unde să prindă rădăcini.
-
-## De ce contează
-
-Pentru că oamenii obosesc să fie „reparați”. Când o echipă nu merge și singurul răspuns e un curs, mesajul nespus e: problema sunteți voi. Oamenii simt asta. Iar o echipă care se simte judecată se închide exact acolo unde ar avea nevoie să se deschidă.
-
-Când te uiți la proces, conversația se schimbă. Nu mai întrebi „cine greșește?”, ci „ce face ca lucrul ăsta să se întâmple din nou și din nou?”. E o întrebare pe care o echipă o poate discuta fără să se apere. Și e o întrebare la care poate găsi singură răspunsuri.
-
-Mai e un motiv, poate cel mai important pentru mine. O schimbare făcută în locul potrivit nu rămâne doar acolo. Dacă întâlnirile încep să producă decizii clare, sarcinile circulă mai ușor, iar răspunderea devine mai firească. Procesul e un sistem, iar un punct bine ales mișcă mai multe lucruri deodată.
-
-## Un lucru pe care îl poți încerca săptămâna asta
-
-La următoarea ședință a echipei, poți păstra ultimele cinci minute pentru o singură întrebare: „Cine ce face și până când?”. Scrieți răspunsurile acolo unde le vede toată lumea.
-
-Nu e un training. E o mică schimbare de proces. Și, în câteva săptămâni, îți arată cât din ce părea „problema oamenilor” ținea, de fapt, de felul în care lucrați.
-
-Dacă vrei să vezi cum arată cele patru categorii pentru echipa ta, mă bucur să stăm de vorbă.
-
-*Alex*
+Subiect de email (scurt): „It's not a people problem”
+Text de previzualizare: „Why teams come back from training and nothing changes.”
 
 ---
 
-## Adaptare: postare LinkedIn
+## Textul pentru Substack (EN, ~950 de cuvinte)
 
-> Linkul către articol: în text sau în primul comentariu, cum preferă Alex.
+# It's Not a People Problem
+*Why teams come back from training and nothing changes*
+
+When a team isn't working, where do we look first?
+
+At people.
+Who doesn't communicate. Who doesn't take ownership. Who doesn't listen.
+
+And the answer comes almost as fast: a training. On communication, on feedback, on leadership.
+
+I like trainings. I design and deliver them. People leave more open, with new ideas, sometimes even excited.
+
+Then, on Monday, they walk back into the same team.
+Same meetings. Same unwritten rules.
+A few weeks later, everything looks like before.
+
+It's not the people's fault. It's not the training's fault either.
+
+**It's a matter of order.** We try to change results by changing people, when results actually come from how people work together.
+
+### 📌 Results come from a system
+
+A while ago I wrote about [the 3 hidden forces that shape high performing teams](https://alexandrumolea.substack.com/p/the-3-hidden-forces-that-shape-high). The core idea was simple: every team results in a repeatable system. By design or by default.
+
+Here is the simplest way I know to look at that system:
+
+- **Input**: people, time, information, goals
+- **Process**: how the team works, every day
+- **Output**: results
+
+If the results aren't what you want, you can change the input. Bring in other people. Send the current ones to courses.
+
+Or you can change what happens in the middle.
+
+I believe the lever is in the middle.
+
+👉 **People's capabilities matter. But they are the nutrient, not the lever.** They feed the process. They don't drive it.
+
+I'm not the only one seeing this. Michael Beer and his colleagues at Harvard Business School looked at why so much training fails to deliver. Their conclusion: the problem is less the content and more the context. When the organization isn't ready, people learn something new and go back into a system that pulls them back.
+
+And when Google studied 180 of its own teams in [Project Aristotle](https://rework.withgoogle.com/intl/en/guides/understand-team-effectiveness), it found that who is on a team matters less than how the team works together.
+
+### 📌 What "process" means, concretely
+
+"Process" sounds abstract. At Wise Teams, we break it into four categories of team behaviour, in the order we believe they are best built:
+
+- **Flow** → information, tasks, meetings and decisions move without getting stuck, and without everything passing through the leader.
+- **Trust** → the truth can be said. Real difficulties reach the table, mistakes surface early, tensions are named face to face, accountability goes both ways.
+- **Delivery** → the team knows what matters, everyone knows where they contribute, and what we commit to actually happens.
+- **Anticipation** → the team sees change coming, tries new things safely and learns from them.
+
+Underneath them sits what we call **the Container**: why the team exists, what it delivers and to whom, who plays which role, and the rules it works by. Without it, nothing above stands.
+
+Our Strategic Focus Tool looks at 16 behaviours, four in each category. It doesn't measure how good people are. **It measures how the team works.**
+
+### 📌 Let's imagine this
+
+A team whose meetings end with "OK, let's keep in touch."
+
+Everyone spoke. Everyone agreed.
+Nobody left with a name and a date next to an action.
+A week later, everyone thinks someone else took care of it.
+
+Through the people lens, it looks like an ownership problem. The obvious fix: a course on accountability.
+
+Through the process lens, it's something else. It's a Flow behaviour: **our meetings don't produce decisions.** And the fix is smaller and more concrete:
+
+- a shared list where no action leaves the room without an owner, a deadline and a clear "done";
+- or an agenda that starts with the outcome we want, before the discussion opens.
+
+Same people. Same capabilities. A different rule of work.
+
+If this sounds familiar, it's the sixth of the [9 Conditions of High Performing Teams](https://alexandrumolea.substack.com/p/8-conditions-of-high-performing-teams): "What's next?" is always answered. Who does what, by when.
+
+This doesn't mean developing people doesn't matter. It means we do it in a different order. First, we choose what changes in how we work. Then we see what capabilities that change asks for.
+
+That's when a training has somewhere to take root.
+
+### 📌 Why this matters to me
+
+Because people get tired of being "fixed".
+
+When the only answer to a struggling team is a course, the unspoken message is: *you are the problem.* People feel it. And a team that feels judged closes up exactly where it would need to open.
+
+When you look at the process, the conversation changes.
+
+Not "Who is wrong?"
+But "What makes this happen again and again?"
+
+👉 It's a question a team can discuss without defending itself. And one it can answer on its own.
+
+There's one more reason. A change made in the right place doesn't stay there. When meetings start producing clear decisions, tasks move more easily and ownership becomes more natural. The process is a system, and a well-chosen point moves several things at once.
+
+### Your action plan
+
+In your next team meeting, keep the last five minutes for one question:
+
+*"Who does what, and by when?"*
+
+Write the answers where everyone can see them.
+
+It's not a training. It's a small change in process. And in a few weeks, it will show you how much of what looked like a "people problem" was really about how you work.
+
+### Final thought
+
+Teams don't need fixing.
+They need to see the system they are already building, and choose it.
+
+💬 What do you change in how your team works after a training, so that what you learned doesn't fade away?
+
+And if you'd like to see how the four categories look for your team, I'd be happy to talk.
+
+---
+
+## Adaptare: postare LinkedIn (RO, ~190 de cuvinte)
+
+> Profilul LinkedIn al lui Alex e în engleză; limba postărilor nu am putut-o vedea. Am pus ambele variante; Alex alege. Linkul: în text sau în primul comentariu, cum preferă el.
 
 Când o echipă nu merge, primul reflex e un training.
 
-Oamenii pleacă entuziasmați. Luni se întorc la aceleași ședințe, cu aceleași reguli nescrise. În câteva săptămâni, totul arată ca înainte.
+Oamenii pleacă entuziasmați.
+Luni se întorc la aceleași ședințe, cu aceleași reguli nescrise.
+În câteva săptămâni, totul arată ca înainte.
 
-Nu cred că e vina oamenilor. Cred că e o problemă de ordine.
+Nu e vina oamenilor. Nici a training-ului.
+E o problemă de ordine.
 
-Rezultatele unei echipe vin din felul în care lucrează împreună: cum circulă informația și deciziile, dacă se poate spune adevărul, dacă ce își propune se întâmplă, dacă vede schimbarea din timp. Asta e procesul. Capacitățile oamenilor îl hrănesc, dar nu îl conduc.
+Rezultatele unei echipe vin din felul în care lucrează împreună. Asta e procesul.
+👉 Capacitățile oamenilor sunt nutrientul, nu pârghia.
 
-Un exemplu: ședințe care se termină cu „ne mai auzim”. Pare o problemă de asumare. De fapt, lipsește o regulă de lucru: nicio acțiune nu pleacă din întâlnire fără un nume și un termen.
+Un exemplu: ședințe care se termină cu „ne mai auzim”.
+Pare o problemă de asumare.
+De fapt, lipsește o regulă de lucru: nicio acțiune nu pleacă din întâlnire fără un nume și un termen.
 
 Aceiași oameni. Altă regulă de lucru.
 
 Am scris mai pe larg despre asta și despre cum privim echipele la Wise Teams: [link]
 
-Voi ce schimbați în felul de lucru după un training, ca să nu se piardă ce ați învățat?
+💬 Voi ce schimbați în felul de lucru după un training, ca să nu se piardă ce ați învățat?
+
+## Adaptare: postare LinkedIn (EN, ~180 de cuvinte)
+
+When a team isn't working, the first reflex is a training.
+
+People leave excited.
+On Monday, they walk back into the same meetings, with the same unwritten rules.
+A few weeks later, everything looks like before.
+
+It's not the people's fault. Not the training's either.
+It's a matter of order.
+
+A team's results come from how it works together. That's the process.
+👉 People's capabilities are the nutrient, not the lever.
+
+An example: meetings that end with "let's keep in touch".
+It looks like an ownership problem.
+It's actually a missing rule of work: no action leaves the room without a name and a date.
+
+Same people. A different rule of work.
+
+I wrote more about this, and about how we look at teams at Wise Teams: [link]
+
+💬 What do you change in how your team works after a training, so that what you learned doesn't fade away?
 
 ---
 
 ## Surse
-- Beer, M., Finnström, M., Schrader, D. (2016). *The Great Training Robbery*, HBS Working Paper. Rezumat: [Harvard Business School Working Knowledge, 25.07.2016](https://www.library.hbs.edu/working-knowledge/whose-to-blame-for-the-great-training-robbery). Articolul: „Why Leadership Training Fails, and What to Do About It”, *Harvard Business Review*, octombrie 2016.
-- Google re:Work, [Understand team effectiveness](https://rework.withgoogle.com/intl/en/guides/understand-team-effectiveness) (proiectul Aristotle, 180 de echipe; „less about who is on the team”).
-- Modelul Wise Teams (patru categorii, Containerul, input-proces-output, opțiunile de lucru pentru „Rezultatele întâlnirilor”): skill-ul `wise-critical-path` al lui Alex.
-- Note complete despre surse: `team/sofia/documente/copywriting-research-2026-11-20.md`.
+- Beer, M., Finnström, M., Schrader, D. (2016). *The Great Training Robbery*, HBS Working Paper. Rezumat: [HBS Working Knowledge, 25.07.2016](https://www.library.hbs.edu/working-knowledge/whose-to-blame-for-the-great-training-robbery). Articolul: „Why Leadership Training Fails, and What to Do About It”, *Harvard Business Review*, octombrie 2016.
+- Google re:Work, [Understand team effectiveness](https://rework.withgoogle.com/intl/en/guides/understand-team-effectiveness) (Project Aristotle, 180 de echipe).
+- Articolele lui Alex la care trimite textul: [The 3 Hidden Forces that Shape High Performing Teams](https://alexandrumolea.substack.com/p/the-3-hidden-forces-that-shape-high) (2025-06-10), [9 Conditions of High Performing Teams](https://alexandrumolea.substack.com/p/8-conditions-of-high-performing-teams) (2025-05-20).
+- Modelul Wise Teams (patru categorii, Containerul, input-proces-output): skill-ul `wise-critical-path` al lui Alex.
+- Note despre surse: `team/sofia/documente/copywriting-research-2026-11-20.md`. Vocea: `team/sofia/documente/substack-voce-2026-11-20.md`.
 
 ## Ce am verificat
-- Fără nume de clienți, fără date din rapoarte, fără cifre inventate. Singurele cifre: 16 comportamente (modelul), 180 de echipe (Google), 2016 (Beer și colegii).
-- Exemplul e generic.
-- De confirmat cu Alex: „la Wise Teams lucrăm” / „instrumentul nostru” (persoana „noi” pentru Wise Teams, „eu” pentru convingerea lui).
+- Fără nume de clienți, fără date din rapoarte, fără cifre inventate. Cifre: 16 comportamente (modelul), 180 de echipe (Google).
+- Exemplul e generic, scris ca „Let's imagine this”, formula lui Alex din *Disagree and Commit*.
+- Ordinea categoriilor e spusă ca ipoteză („in the order we believe they are best built”).
+- Cercetarea e scurtă, în text, ca susținere: așa folosește Alex sursele.
+- „I design and deliver them” (training-urile): e adevărat după rolurile lui (BEMORE LS, Innersis). De confirmat că vrea să spună asta.
+- De confirmat: numele în engleză ale categoriilor și „the Container” (traducerile mele); emoji ca marcaje, ca în *Your team needs two threads*.
