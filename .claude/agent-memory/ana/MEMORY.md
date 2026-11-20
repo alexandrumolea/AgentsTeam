@@ -26,3 +26,7 @@ Doar lecții generale. Clienții, sumele și ofertele stau în `.claude/agent-me
 - 2026-11-20: La bugetele pentru finanțări cu decizie peste luni, semnalez lui Alex distanța dintre valabilitatea ofertei și momentul comenzii; o clauză despre tarifele furnizorului o propun separat, nu o pun singură în ofertă.
 - 2026-11-20: Verific vârsta sau publicul recomandat de furnizor pentru un instrument față de publicul clientului; nepotrivirea o semnalez, nu o rezolv singură în ofertă.
 - 2026-11-20: PDF-ul pe imagini: pdftoppm lipsește pe Mac și Read nu poate deschide PDF-ul pe pagini; merge un script Swift cu PDFKit (page.thumbnail → PNG) într-un folder din scratchpad. Testul la 375 px: iframe + Chrome headless cu --allow-file-access-from-files și --dump-dom.
+- 2026-11-20: Pentru un client vechi, tariful de referință stă de obicei în firul comercial recent (prețuri pe format: 3 ore, zi întreagă). Îl caut acolo înainte să propun o sumă și spun lui Alex de unde vine.
+- 2026-11-20: Când Alex cere o ofertă fără email de la client, verific calendarul și firele recente: poate înlocui o zi recontractată. Nu creez ciornă Gmail dacă destinatarul nu e sigur; las emailul în fișier, cu variantele de destinatar.
+- 2026-11-20: Temele lui Alex devin „experiență” din propriile lui materiale (definițiile programelor și uneltele lor, în emailurile trimise), nu din flow-uri inventate.
+- 2026-11-20: Când conținutul are mai multe teme decât cele 3 coloane ale șablonului, le pun într-un bloc simplu (listă) pe o foaie proprie, fără să ating stilul; oferta poate avea 3 foi.
