@@ -74,6 +74,15 @@ Panoul acestei etape e vederea **Harvest** din materialul trainerului (fostă �
 - **Exercițiile sunt instrucțiuni exacte** (D-075), un framework prin care trec participanții. **Folosim des interacțiunea**, ca oamenii să învețe unii de la alții, mult mai mult decât prin reflecție individuală.
 - **În etapa C se actualizează doar Harvest-ul.** Restul se generează din el după poartă.
 
+#### Ce am învățat din editările lui Alex (2026-11-20: contract, toleranță, de ce contează)
+- **Obiectivul piesei spune ce se schimbă în om, nu ce face.** Ex.: „Să creeze conștientizare că există riscul ca unele schimbări să ne crească toleranța, nu neapărat capacitatea.” Nu „Fiecare se așază în colț și numește…”. La piesele de deschidere, obiectivul spune și **ce simte trainerul** când piesa a mers (ex. îi e clar ce înseamnă succesul pentru participanți, e în armonie cu asta, e atent la energia oamenilor).
+- **Knowledge pornește de la felul nostru de a privi lucrurile**, spus participanților (ex. „Noi privim workshop-ul ca pe o colaborare între trainer și participanți”), apoi statement-ul. Statement-ul e o frază pe care Alex o poate spune ca a lui, nu un slogan.
+- **Experiența e scrisă ca vorbește trainerul:** pași numerotați, scurți, cu întrebările exacte puse oamenilor, între ghilimele. Fără meta-comentarii (*„pașii din piesa produsă, neschimbați”*), fără „Produce: …”, fără trimiteri la ecrane sau taste, fără marcaje [DE PERSONALIZAT] acolo unde Alex poate scrie direct.
+- **Întrebări bune, folosite de Alex:** proiecția în viitor („Imaginați-vă că este deja mâine și ziua de azi s-a dovedit o investiție foarte valoroasă. Cum ați recunoaște asta?”), sentimentul onest față de subiect, contribuția fiecăruia („Cum vă propuneți să contribuiți?”), nevoile practice („De ce mai aveți nevoie ca să fiți bine azi?”). Regulile vin cu motivul lui („Circularitate, pentru că cred în asta, fără să forțăm pe nimeni”).
+- **Nu orice piesă are debriefing.** Dacă nu are sens, scrie simplu „Nu se face debriefing aici”. Nu umple secțiunea.
+- **Integrarea poate fi o întrebare de nuanță, nu un rezumat:** „Când e potrivit să-ți crești toleranța? Când capacitatea? Poți să-ți crești toleranța și constructiv, și neconstructiv?” Alex nu vrea mesaje alb-negru (toleranța nu e rea; rezistența e un mecanism natural, homeostazia).
+- **Mai puțin e mai bine.** Alex a tăiat explicațiile pentru trainer din Experiență și a scurtat fișa. Scriem doar ce folosește în sală.
+
 ### Poarta: Alex aprobă firul roșu
 Fără ea nu se produce nimic.
 
