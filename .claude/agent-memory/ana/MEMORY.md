@@ -21,3 +21,8 @@ Doar lecții generale. Clienții, sumele și ofertele stau în `.claude/agent-me
 - 2026-11-18: Nu schimb titlul (sau alte secțiuni) din proprie inițiativă după o rescriere a lui Alex în altă parte; un titlu care a mers rămâne.
 - 2026-11-18: Citatul clientului doar dacă adaugă sens, nu dacă repetă textul.
 - 2026-11-18: Emailul de ofertă: fără sumă și fără pas de programare. Doar ce e atașat și deschiderea de a ajusta împreună (Alex a rescris așa emailul trimis). Înlocuiește regula „totalul o dată în email”.
+- 2026-11-20: Când clientul cere o ofertă sub una concurentă, schimb doar ce a decis Alex (preț, volum) și ce decurge din cifre. Nu numesc concurentul și nu compar: valoarea reiese din ce conține pachetul (tot raportul, limba testului, zilele de formare, materialele). Comparația o pun doar în notele pentru Alex.
+- 2026-11-20: Când prețul de vânzare se apropie de costul furnizorului, îi arăt lui Alex marja și pragurile de volum ale furnizorului (uneori o treaptă mai mare, cu coduri în plus, costă mai puțin). Decizia e a lui.
+- 2026-11-20: La bugetele pentru finanțări cu decizie peste luni, semnalez lui Alex distanța dintre valabilitatea ofertei și momentul comenzii; o clauză despre tarifele furnizorului o propun separat, nu o pun singură în ofertă.
+- 2026-11-20: Verific vârsta sau publicul recomandat de furnizor pentru un instrument față de publicul clientului; nepotrivirea o semnalez, nu o rezolv singură în ofertă.
+- 2026-11-20: PDF-ul pe imagini: pdftoppm lipsește pe Mac și Read nu poate deschide PDF-ul pe pagini; merge un script Swift cu PDFKit (page.thumbnail → PNG) într-un folder din scratchpad. Testul la 375 px: iframe + Chrome headless cu --allow-file-access-from-files și --dump-dom.
