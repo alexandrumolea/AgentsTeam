@@ -2,12 +2,12 @@
 // Sursa, în ordine: harvest/<id>.md (fișa scrisă de Irina și Daria), apoi piesa produsă (piese/<id>.md sau modulul cu acest id).
 // Markdown → HTML cu aceeași randare ca restul materialului: HTML-ul brut e afișat ca text, linkurile javascript:/data: devin text,
 // linkurile externe se deschid în tab nou. Id-ul e validat (litere mici, cifre, cratimă), deci nu poate ieși din folderul cursului.
-import { readFileSync, existsSync, realpathSync } from 'node:fs';
-import { sep } from 'node:path';
+import { readFileSync, existsSync, realpathSync, lstatSync, mkdirSync, writeFileSync, readdirSync } from 'node:fs';
+import { sep, join } from 'node:path';
 import { parse as parseYaml } from 'yaml';
 import { creeazaRandare, escapeHtml as e } from './randare.mjs';
 import { imparteInStraturi } from './sursa.mjs';
-import { caleSigura, fisierPentru, EroareEditor } from './editor-sursa.mjs';
+import { caleSigura, fisierPentru, EroareEditor, hash, copieIstoric } from './editor-sursa.mjs';
 
 const ID_OK = /^[a-z0-9]+(-[a-z0-9]+)*$/;
 export const DOSAR = 'harvest';
@@ -68,4 +68,123 @@ export function fiseleMasa(c) {
     try { const f = fisaPiesei(c.folder, x.id); if (f.sursa) out[x.id] = f; } catch { /* id-urile candidatelor sunt deja verificate */ }
   }
   return out;
+}
+
+// ---------- Editarea fișei în editorul local (Alex, 2026-11-20): „să pot edita piesele din Harvest, ca să nu trebuiască să trec prin voi”. ----------
+export const MAX_FISA = 150000; // caractere; cea mai lungă fișă de azi are ~17 000
+const TIP_RO = { teorie: 'teorie', model: 'model', poveste: 'poveste', exercitiu: 'exercițiu', challenge: 'challenge', reflectie: 'reflecție', energizant: 'energizant', deschidere: 'deschidere', inchidere: 'închidere', mesaj: 'mesaj', pauza: 'pauză' };
+
+/** Fișa nouă, cu secțiunile din D-078 (docs/procese/curs-nou.md, „Harvest pas cu pas”), în ordinea lor. */
+export function sablonFisa({ id, titlu = '', durata = null, tip = '' } = {}, azi = new Date().toISOString().slice(0, 10)) {
+  const fel = [tip ? `**Fel:** ${TIP_RO[tip] ?? tip}` : '**Fel:** ', durata != null ? `**Durată:** ${durata} min` : '**Durată:** '].join(' · ');
+  return `# ${titlu || id}
+- **ID:** ${id}
+- **Adăugată:** ${azi}, de Alex
+- ${fel}
+- **Bloc propus:** 
+- **Stare:** în Harvest, verdict „nou”
+
+## Input-ul lui Alex
+> 
+
+## Pe scurt
+
+
+## Obiectivul piesei
+
+
+## Knowledge
+**Ideea 1**
+- **Statement principal:** 
+- **Explicație:** 
+- **Exemple:** 
+- **Impact:** 
+- **Așa da / așa nu:** 
+
+## Micro-comportamentul
+
+
+## Experiența
+
+
+## Integrarea
+
+
+## Materiale necesare
+
+
+## Research-ul pentru trainer
+
+
+## Întrebare pentru Alex
+
+`;
+}
+
+/** Calea de scriere a fișei: doar harvest/<id>.md, cu folderul harvest/ în curs (nu o legătură spre altundeva), fișierul nu e legătură. */
+function caleScriere(folder, id) {
+  if (!ID_OK.test(String(id ?? ''))) throw new EroareEditor(`id greșit: „${String(id ?? '').slice(0, 60)}”`, 400);
+  const rel = `${DOSAR}/${id}.md`, cale = caleSigura(folder, rel), dosar = caleSigura(folder, DOSAR);
+  const radacina = realpathSync(folder);
+  if (existsSync(dosar)) {
+    if (lstatSync(dosar).isSymbolicLink() || !realpathSync(dosar).startsWith(radacina + sep)) throw new EroareEditor(`cale interzisă: ${DOSAR}/`, 403);
+  }
+  let st = null; try { st = lstatSync(cale); } catch { /* nu există încă */ }
+  if (st && (st.isSymbolicLink() || !st.isFile())) throw new EroareEditor(`cale interzisă: ${rel}`, 403);
+  return { rel, cale, dosar };
+}
+
+/** Textul de editat: Markdown-ul de pe disc (cu hash-ul lui) sau, dacă fișa lipsește, șablonul D-078 (exista: false, hash: null). */
+export function fisaDeEditat(folder, id, candidata = {}) {
+  const { rel, cale } = caleScriere(folder, id);
+  if (existsSync(cale)) { const md = citesteSigur(folder, rel); return { id, fisier: rel, exista: true, md, hash: hash(md) }; }
+  return { id, fisier: rel, exista: false, md: sablonFisa({ id, ...candidata }), hash: null };
+}
+
+/** Verifică textul fișei: un șir, fără caractere nule, cel mult MAX_FISA. Rândurile se normalizează la \n, cu un \n la final. */
+export function verificaFisa(md) {
+  if (typeof md !== 'string') throw new EroareEditor('Textul fișei lipsește.');
+  if (md.length > MAX_FISA) throw new EroareEditor(`Fișa e prea lungă (${md.length} caractere; cel mult ${MAX_FISA}).`, 413);
+  if (md.includes('\0')) throw new EroareEditor('Fișa conține un caracter nul.');
+  const t = md.replace(/\r\n?/g, '\n').replace(/\s+$/, '');
+  if (!t.trim()) throw new EroareEditor('Fișa nu poate rămâne goală.');
+  return t + '\n';
+}
+
+/**
+ * Scrie harvest/<id>.md în `folder` (orice folder cu forma unui curs; nu depinde de curs.yml). Conflict (409, conflict: true) dacă fișierul de pe disc nu mai e cel deschis: alt hash, sau a apărut
+ * între timp (hashCitit null), sau a dispărut. Înainte să suprascrie, copie în .editor-istoric/. Întoarce { fisier, inainte, copie }.
+ */
+export function scrieFisa(folder, id, md, hashCitit) {
+  const text = verificaFisa(md);
+  const { rel, cale, dosar } = caleScriere(folder, id);
+  const exista = existsSync(cale);
+  const inainte = exista ? readFileSync(cale, 'utf8') : null;
+  if ((hashCitit ?? null) !== (exista ? hash(inainte) : null)) {
+    const e = new EroareEditor('Fișa s-a schimbat între timp (probabil un agent). Nu am suprascris-o.', 409);
+    e.conflict = { fisa: true, fisier: rel, hash: exista ? hash(inainte) : null, md: inainte }; // per fișier: aceeași formă pentru orice folder-curs (și biblioteca de bază, dacă o aprobă Alex)
+    throw e;
+  }
+  if (inainte === text) return { fisier: rel, inainte, copie: null, neschimbat: true, hash: hash(text) };
+  const copie = exista ? copieIstoric(folder, rel) : null;
+  mkdirSync(dosar, { recursive: true });
+  writeFileSync(cale, text);
+  return { fisier: rel, inainte, copie, hash: hash(text) };
+}
+
+/** Id-ul unei piese noi, din titlu: litere mici fără diacritice, cifre și cratimă, cel mult 60 de caractere; unic în curs. */
+export function idDinTitlu(titlu, ocupate = new Set()) {
+  let baza = String(titlu ?? '').normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase()
+    .replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '');
+  if (baza.length > 60) baza = baza.slice(0, 60).replace(/-[^-]*$/, '') || baza.slice(0, 60);
+  baza = baza.replace(/-+$/, '') || 'piesa';
+  let id = baza, n = 2;
+  while (ocupate.has(id)) id = `${baza}-${n++}`;
+  if (!ID_OK.test(id)) throw new EroareEditor(`nu pot face un id din „${String(titlu).slice(0, 60)}”`);
+  return id;
+}
+
+/** Fișele care există deja în harvest/ (pentru unicitatea id-ului nou). */
+export function fiseExistente(folder) {
+  try { return readdirSync(join(folder, DOSAR)).filter((f) => f.endsWith('.md')).map((f) => f.slice(0, -3)); } catch { return []; }
 }

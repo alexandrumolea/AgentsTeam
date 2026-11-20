@@ -29,3 +29,30 @@
 .ed-subsol { display: flex; flex-wrap: wrap; align-items: center; gap: .5rem 1rem; padding: .8rem 1rem; }
 .ed-subsol .ed-taste { margin-right: auto; font-size: .8rem; }
 @media (max-width: 760px) { .ed-corp { grid-template-columns: 1fr; } }
+
+/* Fișa piesei, editabilă (2026-11-20): textul mare, monospace lizibil; câmpurile rândului din harvest.yml deasupra. */
+.fisa-dialog.fe-activ { width: min(1100px, calc(100vw - 2rem)); }
+.fe-editeaza { flex: none; align-self: center; margin-left: auto; font-size: .85rem; padding: .25rem .8rem; min-height: 36px; border-color: var(--t-accent); color: var(--t-accent); background: var(--t-suprafata); }
+.fe-editeaza:hover { background: var(--t-accent); color: var(--t-pe-accent); }
+.fe-editeaza[hidden] { display: none; }
+.fe { display: flex; flex-direction: column; gap: .5rem; padding: .6rem 1.2rem 0; overflow: auto; min-height: 0; }
+.fe[hidden] { display: none; }
+.fe-campuri { display: grid; grid-template-columns: minmax(0, 1fr) 7rem 11rem; gap: .5rem .8rem; }
+.fe-camp { display: flex; flex-direction: column; gap: .2rem; min-width: 0; }
+.fe-camp .eticheta { margin: 0; }
+.fe-tot { grid-column: 1 / -1; }
+.fe-camp input, .fe-camp select { font: inherit; padding: .4rem .55rem; border: 1px solid var(--t-linie); border-radius: 6px; background: var(--t-suprafata); color: var(--t-text); min-height: 2.4rem; }
+.fe-camp input:disabled, .fe-camp select:disabled { opacity: .6; }
+.fe-nota { grid-column: 1 / -1; margin: 0; font-size: .8rem; }
+.fe-eticheta { margin: .3rem 0 0; overflow-wrap: anywhere; }
+#fe-text { height: min(62vh, 46rem); min-height: 18rem; resize: vertical; padding: .7rem .8rem; font: .95rem/1.6 ui-monospace, "SF Mono", Menlo, monospace; tab-size: 2; border: 1px solid var(--t-linie); border-radius: 6px; background: var(--t-suprafata); color: var(--t-text); }
+#fe-text:focus, .fe-camp input:focus, .fe-camp select:focus { outline: 2px solid var(--t-accent); outline-offset: 1px; }
+.fe-conflict { display: flex; flex-wrap: wrap; align-items: center; gap: .5rem .8rem; padding: .6rem .8rem; border: 2px solid var(--cronometru-gata); border-radius: 8px; background: var(--t-suprafata); }
+.fe-conflict[hidden] { display: none; }
+.fe-conflict p { margin: 0; flex: 1 1 16rem; font-weight: 600; }
+.fe .ed-eroare { margin: 0; }
+.fe-info { margin: 0; font-size: .85rem; min-height: 1em; }
+.fe-subsol { position: sticky; bottom: 0; display: flex; flex-wrap: wrap; align-items: center; gap: .5rem 1rem; padding: .7rem 0 .9rem; background: var(--t-fundal); }
+.fe-taste { margin-right: auto; font-size: .8rem; }
+.fe-optiuni:empty { display: none; }
+@media (max-width: 640px) { .fe-campuri { grid-template-columns: 1fr 1fr; } .fe-lat { grid-column: 1 / -1; } }

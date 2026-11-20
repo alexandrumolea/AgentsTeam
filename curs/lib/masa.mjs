@@ -15,6 +15,35 @@ export const fisierMasa = (folder) => (existsSync(join(folder, FISIER)) || !exis
 export const VERDICTE = ['nou', 'da', 'poate', 'nu'];
 const ID_OK = /^[a-z0-9]+(-[a-z0-9]+)*$/;
 const CAMPURI = ['id', 'titlu', 'scop', 'durata', 'tip', 'sursa', 'verdict', 'bloc', 'ordine', 'obiective', 'nota'];
+/** Câmpurile rândului care se editează din fișa piesei (Alex, 2026-11-20). */
+export const CAMPURI_FISA = ['titlu', 'scop', 'durata', 'tip'];
+
+/** Verifică titlu / scop / durata / tip venite din editor (doar cele prezente). Întoarce valorile curățate. */
+export function verificaCampuri(s) {
+  const v = {};
+  if ('titlu' in s) {
+    const t = String(s.titlu ?? '').trim();
+    if (!t) throw new EroareEditor('Titlul nu poate rămâne gol.');
+    if (t.length > 200 || /[\r\n\0]/.test(t)) throw new EroareEditor('Titlul e un singur rând, de cel mult 200 de caractere.');
+    v.titlu = t;
+  }
+  if ('scop' in s) {
+    const t = String(s.scop ?? '').trim();
+    if (t.length > 600 || /[\r\n\0]/.test(t)) throw new EroareEditor('Obiectivul piesei e un singur rând, de cel mult 600 de caractere.');
+    v.scop = t;
+  }
+  if ('durata' in s) {
+    const n = typeof s.durata === 'string' && /^\d+$/.test(s.durata.trim()) ? +s.durata : s.durata;
+    if (!Number.isInteger(n) || n < 0 || n > 600) throw new EroareEditor('Durata e un număr întreg de minute, între 0 și 600.');
+    v.durata = n;
+  }
+  if ('tip' in s) {
+    const t = String(s.tip ?? '').trim();
+    if (t && !TIPURI_PIESA.includes(t)) throw new EroareEditor(`tip „${t.slice(0, 40)}” necunoscut (${TIPURI_PIESA.join(' / ')})`);
+    v.tip = t;
+  }
+  return v;
+}
 
 /** O piesă e „produsă” când are deja fișierul ei (piese/<id>.md) sau e un modul al cursului. */
 const produsa = (c, id) => c.piese.has(id) || c.module.some((m) => m.id === id);
@@ -210,7 +239,33 @@ export function scrieMasa(c, schimbari, hashCitit) {
     if ('verdict' in s) { if (!VERDICTE.includes(s.verdict)) throw new EroareEditor(`verdict „${s.verdict}” necunoscut`); item.set('verdict', s.verdict); }
     if ('bloc' in s) { if (s.bloc == null) item.delete('bloc'); else if (Number.isInteger(s.bloc) && s.bloc > 0) item.set('bloc', s.bloc); else throw new EroareEditor(`bloc „${s.bloc}” greșit`); }
     if ('ordine' in s) { if (s.ordine == null) item.delete('ordine'); else if (Number.isInteger(s.ordine) && s.ordine > 0) item.set('ordine', s.ordine); else throw new EroareEditor(`ordine „${s.ordine}” greșită`); }
+    // Câmpurile rândului, din fișa piesei (2026-11-20): titlu, scop, durata, tip. Un scop sau un tip gol se scoate din rând.
+    const v = verificaCampuri(s);
+    for (const k of CAMPURI_FISA) if (k in v) { if (v[k] === '') item.delete(k); else item.set(k, v[k]); }
   }
+  const dupa = doc.toString({ lineWidth: 0 });
+  const erori = [];
+  verificaCandidate(parseYaml(dupa)?.candidate ?? [], c, erori, []);
+  if (erori.length) throw new EroareEditor(erori.join('; '), 422);
+  const copie = copieIstoric(c.folder, fisier);
+  writeFileSync(cale, dupa);
+  return { hash: hash(dupa), inainte, copie, fisier };
+}
+
+/** „Piesă nouă” (Alex, 2026-11-20): un rând nou la finalul listei, cu verdict „nou”. Păstrează comentariile; validează înainte. */
+export function adaugaCandidata(c, rand, hashCitit) {
+  const fisier = fisierMasa(c.folder), cale = join(c.folder, fisier);
+  if (!existsSync(cale)) throw new EroareEditor(`Cursul nu are încă ${FISIER}. Apasă întâi „Creează ${FISIER}”.`, 404);
+  const inainte = readFileSync(cale, 'utf8');
+  if (hashCitit != null && hash(inainte) !== hashCitit) throw new EroareEditor(`${fisier} s-a schimbat pe disc între timp. Nu l-am suprascris: reîncarcă pagina.`, 409);
+  if (!ID_OK.test(String(rand.id ?? ''))) throw new EroareEditor(`id greșit: „${String(rand.id).slice(0, 60)}”`);
+  const v = verificaCampuri({ titlu: rand.titlu, scop: rand.scop, durata: rand.durata, tip: rand.tip });
+  const doc = parseDocument(inainte);
+  let lista = doc.get('candidate');
+  if (lista == null) { doc.set('candidate', doc.createNode([])); lista = doc.get('candidate'); }
+  if (!Array.isArray(lista.items)) throw new EroareEditor(`${fisier} nu are lista „candidate”.`, 422);
+  if (lista.items.some((n) => n && typeof n.get === 'function' && String(n.get('id')) === rand.id)) throw new EroareEditor(`id „${rand.id}” există deja în ${fisier}`, 409);
+  lista.items.push(doc.createNode({ id: rand.id, titlu: v.titlu, ...(v.scop ? { scop: v.scop } : {}), durata: v.durata, ...(v.tip ? { tip: v.tip } : {}), sursa: rand.sursa || 'Alex', verdict: 'nou' }));
   const dupa = doc.toString({ lineWidth: 0 });
   const erori = [];
   verificaCandidate(parseYaml(dupa)?.candidate ?? [], c, erori, []);

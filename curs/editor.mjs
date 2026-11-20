@@ -15,9 +15,10 @@ import { citesteCurs } from './lib/sursa.mjs';
 import { ecranul } from './lib/trainer.mjs';
 import { creeazaRandare, escapeHtml } from './lib/randare.mjs';
 import { citesteBloc, scrieBloc, EroareEditor, citesteRef, caleSigura, copieIstoric } from './lib/editor-sursa.mjs';
-import { citesteMasa, scrieMasa, agendaDinMasa, textAgenda, inlocuiesteAgenda, textMasa, propunere, FISIER as MASA, FISIER_VECHI as MASA_VECHI } from './lib/masa.mjs';
+import { citesteMasa, scrieMasa, adaugaCandidata, agendaDinMasa, textAgenda, inlocuiesteAgenda, textMasa, propunere, CAMPURI_FISA, FISIER as MASA, FISIER_VECHI as MASA_VECHI } from './lib/masa.mjs';
+import { TIPURI_PIESA } from './lib/sursa.mjs';
 import { mkdirSync, rmSync } from 'node:fs';
-import { fisaPiesei } from './lib/fisa.mjs';
+import { fisaPiesei, fisaDeEditat, scrieFisa, sablonFisa, idDinTitlu, fiseExistente, DOSAR as HARVEST } from './lib/fisa.mjs';
 
 const AICI = dirname(fileURLToPath(import.meta.url));
 const IMPLICIT = join(AICI, '..', 'privat', 'cursuri', 'change-agility');
@@ -151,7 +152,77 @@ export async function pornesteEditor({ folder = IMPLICIT, port = 4747, deschide 
     const scurt = (l) => l.map((x) => ({ id: x.id, titlu: x.titlu }));
     return { cod: 200, corp: { ok: true, fisier, copie, randuri, linii: a.linii, deProdus: scurt(a.deProdus), nehotarate: scurt(a.nehotarate) } };
   }
-  const MASA_API = { '/api/masa': masaSchimba, '/api/masa/creeaza': masaCreeaza, '/api/masa/agenda': masaAgenda };
+
+  // Fișa piesei, editabilă (Alex, 2026-11-20): harvest/<id>.md și câmpurile rândului din harvest.yml (titlu, scop, durata, tip).
+  const campuriDin = (x) => (x ? { titlu: x.titlu, scop: x.scop ?? '', durata: x.durata, tip: x.tip ?? '' } : null);
+  function candidataAcum(c, id) {
+    const m = citesteMasa(c, [], []);
+    return { m, x: m.candidate.find((y) => y.id === id) ?? null };
+  }
+  function fisaSursa(id) {
+    const c = cursAcum();
+    const { m, x } = candidataAcum(c, String(id ?? ''));
+    const f = fisaDeEditat(folder, id, campuriDin(x) ?? {});
+    return { ...f, campuri: campuriDin(x), areMasa: m.exista, fisierMasa: m.fisier, hashMasa: m.hash, tipuri: TIPURI_PIESA };
+  }
+  /** Scrie fișierele în ordine; dacă build-ul refuză, toate revin la ce erau. */
+  function cuBuildMulte(scrise) {
+    const r = construieste();
+    if (r.ok) { ultim = r; return null; }
+    for (const { rel, inainte } of scrise.reverse()) { if (inainte == null) rmSync(caleSigura(folder, rel), { force: true }); else writeFileSync(caleSigura(folder, rel), inainte); }
+    ultim = construieste();
+    return { cod: 422, corp: { eroare: `Build-ul a refuzat schimbarea, așa că ${scrise.map((s) => s.rel).join(' și ')} ${scrise.length === 1 ? 'a rămas cum era' : 'au rămas cum erau'}.`, erori: r.erori } };
+  }
+  function fisaSalveaza(date) {
+    const id = String(date.id ?? '');
+    const c = cursAcum();
+    const { m, x } = candidataAcum(c, id);
+    // Câmpurile: se trimit doar cele schimbate, cu valoarea de la deschidere; conflict dacă pe disc nu mai e aceea.
+    const cerute = date.campuri && typeof date.campuri === 'object' ? Object.fromEntries(Object.entries(date.campuri).filter(([k]) => CAMPURI_FISA.includes(k))) : {};
+    const deLa = date.campuriInainte && typeof date.campuriInainte === 'object' ? date.campuriInainte : {};
+    if (Object.keys(cerute).length) {
+      if (!m.exista) throw new EroareEditor(`Cursul nu are încă ${MASA}: titlul, durata și tipul se pot schimba după „Creează ${MASA}”.`, 404);
+      if (!x) throw new EroareEditor(`nu găsesc piesa „${id}” în ${m.fisier}`, 404);
+      const acum = campuriDin(x);
+      if (Object.keys(cerute).some((k) => String(acum[k] ?? '') !== String(deLa[k] ?? ''))) {
+        const e = new EroareEditor(`Rândul piesei din ${m.fisier} s-a schimbat între timp (probabil un agent). Nu l-am suprascris.`, 409);
+        e.conflict = { campuri: acum, hashMasa: m.hash }; throw e;
+      }
+    }
+    const scrise = [];
+    let f = null, s = null;
+    try {
+      if (typeof date.md === 'string') { f = scrieFisa(folder, id, date.md, date.hash ?? null); if (!f.neschimbat) scrise.push({ rel: f.fisier, inainte: f.inainte }); }
+      if (Object.keys(cerute).length) {
+        s = scrieMasa(c, [{ id, ...cerute }], m.hash);
+        if (!s.neschimbat) scrise.push({ rel: s.fisier, inainte: s.inainte });
+      }
+    } catch (e) { // a doua scriere a eșuat: prima revine
+      for (const { rel, inainte } of scrise.reverse()) { if (inainte == null) rmSync(caleSigura(folder, rel), { force: true }); else writeFileSync(caleSigura(folder, rel), inainte); }
+      throw e;
+    }
+    if (scrise.length) { const rau = cuBuildMulte(scrise); if (rau) return rau; }
+    const dupa = fisaSursa(id);
+    if (scrise.length) log(`  fișa: ${scrise.map((x) => x.rel).join(', ')}${f?.copie ? `; copie: ${f.copie}` : ''}${s?.copie ? `; copie: ${s.copie}` : ''}`);
+    return { cod: 200, corp: { ok: true, neschimbat: !scrise.length, fisa: fisaPiesei(folder, id), sursa: dupa, copie: f?.copie ?? null, copieMasa: s?.copie ?? null } };
+  }
+  function fisaNoua(date) {
+    const c = cursAcum();
+    const m = citesteMasa(c, [], []);
+    if (!m.exista) throw new EroareEditor(`Cursul nu are încă ${MASA}. Apasă întâi „Creează ${MASA}”.`, 404);
+    const ocupate = new Set([...m.candidate.map((x) => x.id), ...c.piese.keys(), ...c.module.map((x) => x.id).filter(Boolean), ...fiseExistente(folder)]);
+    const id = idDinTitlu(date.titlu, ocupate);
+    const s = adaugaCandidata(c, { id, titlu: date.titlu, scop: date.scop, durata: date.durata, tip: date.tip }, null);
+    const scrise = [{ rel: s.fisier, inainte: s.inainte }];
+    try {
+      const f = scrieFisa(folder, id, sablonFisa({ id, titlu: String(date.titlu).trim(), durata: +date.durata, tip: date.tip || '' }), null);
+      scrise.push({ rel: f.fisier, inainte: null });
+    } catch (e) { writeFileSync(caleSigura(folder, s.fisier), s.inainte); throw e; }
+    const rau = cuBuildMulte(scrise); if (rau) return rau;
+    log(`  piesă nouă: ${id} (${s.fisier} + ${HARVEST}/${id}.md)`);
+    return { cod: 200, corp: { ok: true, id, fisier: `${HARVEST}/${id}.md` } };
+  }
+  const MASA_API = { '/api/masa': masaSchimba, '/api/masa/creeaza': masaCreeaza, '/api/masa/agenda': masaAgenda, '/api/fisa/salveaza': fisaSalveaza, '/api/fisa/noua': fisaNoua };
 
   const server = createServer((req, res) => {
     const trimite = (cod, corp, tip = 'application/json; charset=utf-8') => {
@@ -177,6 +248,9 @@ export async function pornesteEditor({ folder = IMPLICIT, port = 4747, deschide 
     if (req.method === 'GET' && u.pathname === '/api/fisa') {
       try { return trimite(200, fisaPiesei(folder, u.searchParams.get('id'))); } catch (e) { return trimite(e.cod ?? 500, { eroare: e.message }); }
     }
+    if (req.method === 'GET' && u.pathname === '/api/fisa/sursa') {
+      try { return trimite(200, fisaSursa(u.searchParams.get('id'))); } catch (e) { return trimite(e.cod ?? 500, { eroare: e.message }); }
+    }
     if (req.method !== 'POST' || !['/api/bloc', '/api/previzualizare', ...Object.keys(MASA_API)].includes(u.pathname)) return trimite(404, { eroare: 'nu există' });
     if (!/^application\/json\b/.test(req.headers['content-type'] ?? '')) return trimite(415, { eroare: 'se trimite JSON' });
     let corp = '';
@@ -190,7 +264,9 @@ export async function pornesteEditor({ folder = IMPLICIT, port = 4747, deschide 
         if (ocupat) return trimite(409, { eroare: 'Se salvează altceva chiar acum. Mai încearcă o dată.' });
         ocupat = true;
         if (MASA_API[u.pathname]) {
-          try { const r = MASA_API[u.pathname](date ?? {}); return trimite(r.cod, r.corp); } finally { ocupat = false; }
+          try { const r = MASA_API[u.pathname](date ?? {}); return trimite(r.cod, r.corp); }
+          catch (e) { return trimite(e.cod ?? 500, { eroare: e.message, ...(e.conflict ? { conflict: e.conflict } : {}) }); }
+          finally { ocupat = false; }
         }
         try {
           const s = scrieBloc(folder, date.ref, date.md, date.hash);

@@ -176,4 +176,191 @@
     stare(dupa.neschimbat ? ' · nimic de salvat' : ' · salvat în ' + escape(dupa.fisier) + ', materialul e refăcut');
   } else stare();
   window.__editor = { deschide: deschide };
+
+  // ---------- fișa piesei din Harvest, editabilă (Alex, 2026-11-20) ----------
+  // „Editează” în dialogul fișei: Markdown-ul din harvest/<id>.md (sau șablonul D-078) și câmpurile rândului din harvest.yml.
+  // „Piesă nouă” în bara Harvest: rândul (verdict „nou”) + fișa din șablon. Conflict: dacă fișierul s-a schimbat pe disc, nu suprascriem.
+  function pornesteFisa() {
+    var d = $('fisa-dialog'), MF = window.__masa && window.__masa.fisa;
+    if (!d || !MF) return;
+    var cap = d.querySelector('.fisa-cap'), corp = $('fisa-corp');
+    var be = document.createElement('button');
+    be.type = 'button'; be.id = 'fe-editeaza'; be.className = 'fe-editeaza'; be.textContent = 'Editează';
+    cap.insertBefore(be, $('fisa-inchide'));
+    var p = document.createElement('div');
+    p.className = 'fe'; p.id = 'fe'; p.hidden = true;
+    p.innerHTML =
+      '<div class="fe-campuri" id="fe-campuri">' +
+      '<label class="fe-camp fe-lat"><span class="eticheta">Titlu</span><input id="fe-titlu" type="text" maxlength="200" autocomplete="off"></label>' +
+      '<label class="fe-camp"><span class="eticheta">Durata (min)</span><input id="fe-durata" type="number" min="0" max="600" step="1" inputmode="numeric"></label>' +
+      '<label class="fe-camp"><span class="eticheta">Tip</span><select id="fe-tip"></select></label>' +
+      '<label class="fe-camp fe-tot"><span class="eticheta">Obiectivul piesei (scop, în harvest.yml)</span><input id="fe-scop" type="text" maxlength="600" autocomplete="off"></label>' +
+      '<p class="fe-nota sters" id="fe-campuri-nota" hidden></p></div>' +
+      '<label class="eticheta fe-eticheta" for="fe-text" id="fe-text-eticheta">Fișa (Markdown)</label>' +
+      '<textarea id="fe-text" spellcheck="true" lang="ro"></textarea>' +
+      '<div class="fe-conflict" id="fe-conflict" role="alert" hidden><p id="fe-conflict-text"></p>' +
+      '<button type="button" id="fe-reincarca">Reîncarcă</button><button type="button" class="principal" id="fe-pastreaza">Păstrează textul meu</button></div>' +
+      '<p class="ed-eroare" id="fe-eroare" role="alert" hidden></p>' +
+      '<p class="fe-info sters" id="fe-info" role="status"></p>' +
+      '<footer class="fe-subsol"><span class="sters fe-taste"><kbd>⌘</kbd>+<kbd>S</kbd> salvează · <kbd>Esc</kbd> renunță</span>' +
+      '<span class="fe-optiuni" id="fe-optiuni"></span><button type="button" id="fe-renunta">Renunță</button><button type="button" class="principal" id="fe-salveaza">Salvează</button></footer>'; // fe-optiuni: loc pentru opțiuni lângă „Salvează” (de exemplu bifa bibliotecii de bază, dacă o aprobă Alex)
+    d.appendChild(p);
+    var noua = document.createElement('button');
+    noua.type = 'button'; noua.id = 'fe-noua'; noua.textContent = 'Piesă nouă';
+    var dreapta = document.querySelector('.masa-bara-dreapta'); if (dreapta) dreapta.insertBefore(noua, dreapta.firstChild);
+    if (MF.propunere()) { noua.disabled = true; noua.title = 'Întâi „Creează harvest.yml”.'; }
+
+    var ed = null, ciorne = {}, CAMP = ['titlu', 'scop', 'durata', 'tip'];
+    var tipuri = [];
+    var val = function () { return { titlu: $('fe-titlu').value, scop: $('fe-scop').value, durata: $('fe-durata').value, tip: $('fe-tip').value }; };
+    var schimbate = function () { var v = val(), o = {}; if (!ed || !ed.campuri0) return o; CAMP.forEach(function (k) { if (String(v[k]).trim() !== String(ed.campuri0[k] == null ? '' : ed.campuri0[k])) o[k] = k === 'durata' ? (/^\s*\d+\s*$/.test(v[k]) ? +v[k] : v[k]) : v[k].trim(); }); return o; };
+    var murdar = function () { return !!ed && ((ed.mod === 'fisa' && $('fe-text').value !== ed.md0) || Object.keys(schimbate()).length > 0); };
+    function feEroare(t, lista) { var e = $('fe-eroare'); e.hidden = !t; e.innerHTML = t ? escape(t) + (lista && lista.length ? '<ul>' + lista.map(function (x) { return '<li>' + escape(x) + '</li>'; }).join('') + '</ul>' : '') : ''; }
+    function info(t) { $('fe-info').textContent = t || ''; }
+    function puneTipuri(lista, ales) {
+      if (lista && lista.length) tipuri = lista;
+      var TIP = { exercitiu: 'exercițiu', reflectie: 'reflecție', inchidere: 'închidere', pauza: 'pauză' };
+      $('fe-tip').innerHTML = '<option value="">(fără tip)</option>' + tipuri.map(function (t) { return '<option value="' + escape(t) + '">' + escape(TIP[t] || t) + '</option>'; }).join('');
+      $('fe-tip').value = ales || '';
+    }
+    function puneCampuri(c, activ, nota) {
+      $('fe-titlu').value = c ? c.titlu : ''; $('fe-scop').value = c ? c.scop || '' : ''; $('fe-durata').value = c && c.durata != null ? c.durata : ''; puneTipuri(null, c ? c.tip : '');
+      [].forEach.call($('fe-campuri').querySelectorAll('input, select'), function (x) { x.disabled = !activ; });
+      $('fe-campuri-nota').hidden = !nota; $('fe-campuri-nota').textContent = nota || '';
+    }
+    function activeaza(mod) {
+      d.classList.add('fe-activ'); p.hidden = false; corp.hidden = true; be.hidden = true;
+      $('fe-text').hidden = mod === 'nou'; $('fe-text-eticheta').hidden = mod === 'nou';
+      $('fe-salveaza').textContent = mod === 'nou' ? 'Creează piesa' : 'Salvează';
+      $('fe-conflict').hidden = true; feEroare(''); info('');
+    }
+    function iesi() {
+      ed = null; d.classList.remove('fe-activ'); p.hidden = true; corp.hidden = false; be.hidden = false;
+    }
+    function intra(id) {
+      feEroare('');
+      api('/api/fisa/sursa?id=' + encodeURIComponent(id)).then(function (j) {
+        if (j._cod !== 200) { info(''); feEroare(j.eroare || 'Nu pot deschide fișa pentru editare.'); if (!d.open) d.showModal(); return; }
+        if (MF.deschisa() !== id && d.open) return; // între timp s-a deschis altă piesă
+        if (!d.open) MF.deschide(id);
+        ed = { mod: 'fisa', id: id, md0: j.md, hash: j.hash, exista: j.exista, fisier: j.fisier, campuri0: j.campuri, hashMasa: j.hashMasa, fisierMasa: j.fisierMasa };
+        activeaza('fisa');
+        puneTipuri(j.tipuri, '');
+        var areRand = j.areMasa && j.campuri;
+        puneCampuri(j.campuri, !!areRand, !j.areMasa ? 'Cursul nu are încă harvest.yml: titlul, durata și tipul se pot schimba după „Creează harvest.yml”.' : !j.campuri ? 'Piesa nu e în ' + j.fisierMasa + '.' : '');
+        $('fe-text').value = j.md;
+        $('fe-text-eticheta').textContent = 'Fișa (Markdown) · ' + j.fisier + (j.exista ? '' : ' · nouă, din șablonul D-078; se creează la „Salvează”');
+        var c = ciorne[id];
+        if (c) {
+          $('fe-text').value = c.md; CAMP.forEach(function (k) { if (k in c.v) $('fe-' + k).value = c.v[k]; });
+          info('Am pus înapoi textul nesalvat de data trecută. „Renunță” îl aruncă.');
+        }
+        $('fe-text').focus(); $('fe-text').setSelectionRange(0, 0); $('fe-text').scrollTop = 0;
+      }, function () { feEroare('Editorul nu răspunde. Fereastra Terminal în care rulează e încă deschisă?'); });
+    }
+    function renunta() {
+      if (!ed) return true;
+      if (murdar() && !confirm(ed.mod === 'nou' ? 'Renunți la piesa nouă?' : 'Renunți la schimbările din fișă?')) return false;
+      var nou = ed.mod === 'nou', id = ed.id; delete ciorne[id];
+      iesi();
+      if (nou) d.close();
+      return true;
+    }
+    function salveaza() {
+      if (!ed) return;
+      if (ed.mod === 'nou') return creeaza();
+      var b = $('fe-salveaza'); b.disabled = true; b.textContent = 'Salvez…'; feEroare('');
+      var campuri = schimbate(), id = ed.id;
+      api('/api/fisa/salveaza', 'POST', { id: id, md: $('fe-text').value, hash: ed.hash, campuri: campuri, campuriInainte: ed.campuri0 }).then(function (j) {
+        b.disabled = false; b.textContent = 'Salvează';
+        if (!ed || ed.id !== id) return;
+        if (j._cod === 409 && j.conflict) { arataConflict(j); return; }
+        if (j._cod !== 200) { feEroare(j.eroare || 'Nu s-a salvat.', j.erori); return; } // textul rămâne în câmp
+        delete ciorne[id];
+        if (j.sursa) MF.actualizeaza(id, j.sursa.campuri, j.sursa.hashMasa);
+        iesi();
+        MF.arata(id, j.fisa);
+        stare(j.neschimbat ? ' · nimic de salvat' : ' · salvat în ' + escape(j.sursa ? j.sursa.fisier : 'harvest/') + (Object.keys(campuri).length ? ' și ' + escape(j.sursa.fisierMasa) : '') + ', materialul e refăcut');
+        $('fisa-sursa').textContent += j.neschimbat ? ' · nimic de salvat' : ' · salvat';
+        be.focus();
+      }, function () { b.disabled = false; b.textContent = 'Salvează'; feEroare('Editorul nu răspunde. Fereastra Terminal în care rulează e încă deschisă? Textul tău e tot aici.'); });
+    }
+    function arataConflict(j) {
+      ed.conflict = j.conflict;
+      $('fe-conflict-text').textContent = j.conflict.fisa ? 'Fișa s-a schimbat între timp (probabil un agent). Nu am suprascris-o.' : j.eroare;
+      $('fe-conflict').hidden = false;
+      $('fe-pastreaza').focus();
+    }
+    function copiaza(text) {
+      var rezerva = function () { var t = $('fe-text'); t.focus(); t.select(); try { return document.execCommand('copy'); } catch (e) { return false; } };
+      return new Promise(function (ok) {
+        try { if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(text).then(function () { ok(true); }, function () { ok(rezerva()); }); else ok(rezerva()); } catch (e) { ok(rezerva()); }
+      });
+    }
+    $('fe-reincarca').addEventListener('click', function () { if (!ed) return; var id = ed.id; delete ciorne[id]; ed = null; intra(id); });
+    $('fe-pastreaza').addEventListener('click', function () {
+      if (!ed || !ed.conflict) return;
+      var c = ed.conflict;
+      if ('hash' in c) { ed.hash = c.hash; ed.exista = c.hash != null; }
+      if (c.campuri) { ed.campuri0 = c.campuri; ed.hashMasa = c.hashMasa; }
+      ed.conflict = null; $('fe-conflict').hidden = true;
+      copiaza($('fe-text').value).then(function (ok) {
+        info((ok ? 'Textul tău e copiat în clipboard și' : 'Nu l-am putut copia în clipboard, dar textul tău') + ' rămâne aici. „Salvează” înlocuiește acum versiunea de pe disc (aceea rămâne în .editor-istoric/).');
+        $('fe-text').focus();
+      });
+    });
+    // Piesă nouă: titlu, durată, tip, scop; serverul face id-ul, rândul și fișa din șablon, apoi o deschidem în modul de editare.
+    noua.addEventListener('click', function () {
+      if (MF.propunere()) return;
+      api('/api/fisa/sursa?id=piesa-noua-model').then(function (j) {
+        ed = { mod: 'nou', id: null, md0: '', campuri0: { titlu: '', scop: '', durata: '', tip: '' } };
+        $('fisa-titlu').textContent = 'Piesă nouă'; $('fisa-sursa').textContent = 'Harvest · rând nou în harvest.yml + fișă în harvest/';
+        activeaza('nou');
+        puneTipuri(j.tipuri || [], '');
+        puneCampuri(null, true, 'Id-ul se face din titlu (litere mici, fără diacritice). Piesa intră în Harvest cu verdict „nou”, iar fișa pornește din șablonul D-078.');
+        if (!d.open) d.showModal();
+        $('fe-titlu').focus();
+      });
+    });
+    function creeaza() {
+      var v = val();
+      if (!v.titlu.trim()) { feEroare('Scrie un titlu.'); $('fe-titlu').focus(); return; }
+      var b = $('fe-salveaza'); b.disabled = true; b.textContent = 'Creez…'; feEroare('');
+      api('/api/fisa/noua', 'POST', { titlu: v.titlu, scop: v.scop, durata: /^\s*\d+\s*$/.test(v.durata) ? +v.durata : v.durata, tip: v.tip }).then(function (j) {
+        b.disabled = false; b.textContent = 'Creează piesa';
+        if (j._cod !== 200) { feEroare(j.eroare || 'Nu am putut crea piesa.', j.erori); return; }
+        ed = null;
+        try { sessionStorage.setItem('masa:mesaj', 'Am creat piesa „' + v.titlu.trim() + '” (' + j.fisier + ', verdict „nou”). Fișa e deschisă pentru editare.'); sessionStorage.setItem('masa:editeaza', j.id); } catch (e) { /* nimic */ }
+        location.hash = '#masa'; location.reload();
+      }, function () { b.disabled = false; b.textContent = 'Creează piesa'; feEroare('Editorul nu răspunde. Fereastra Terminal în care rulează e încă deschisă?'); });
+    }
+
+    be.addEventListener('click', function () { var id = MF.deschisa(); if (id) intra(id); });
+    $('fe-salveaza').addEventListener('click', salveaza);
+    $('fe-renunta').addEventListener('click', renunta);
+    // Esc în modul de editare = „Renunță” (cu întrebare dacă ai scris ceva); nu închide fișa pe nevăzute.
+    d.addEventListener('keydown', function (ev) {
+      if (!ed) return;
+      if (ev.key === 'Escape') { ev.preventDefault(); ev.stopPropagation(); renunta(); return; }
+      if ((ev.metaKey || ev.ctrlKey) && (ev.key === 's' || ev.key === 'S' || ev.key === 'Enter')) { ev.preventDefault(); salveaza(); }
+    }, true);
+    d.addEventListener('cancel', function (ev) { if (ed) { ev.preventDefault(); renunta(); } });
+    window.__fisaPaza = function () {
+      if (!ed) return true;
+      if (murdar() && !confirm('Închizi fișa fără să salvezi schimbările?')) return false;
+      if (ed.id) delete ciorne[ed.id];
+      iesi(); return true;
+    };
+    // Dacă fișa se închide totuși cu text nesalvat, textul rămâne ca ciornă pentru următorul „Editează”.
+    d.addEventListener('close', function () {
+      if (ed && ed.mod === 'fisa' && murdar()) ciorne[ed.id] = { md: $('fe-text').value, v: val() };
+      if (ed) iesi();
+    });
+    window.addEventListener('beforeunload', function (ev) { if (murdar()) { ev.preventDefault(); ev.returnValue = ''; } });
+
+    var deEditat = null; try { deEditat = sessionStorage.getItem('masa:editeaza'); sessionStorage.removeItem('masa:editeaza'); } catch (e) { /* nimic */ }
+    if (deEditat && MF.candidata(deEditat)) { MF.deschide(deEditat); intra(deEditat); }
+    window.__fisaEditor = { stare: function () { return ed ? { mod: ed.mod, id: ed.id, murdar: murdar(), hash: ed.hash } : null; }, ciorne: function () { return Object.keys(ciorne); } };
+  }
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', pornesteFisa); else pornesteFisa();
 })();

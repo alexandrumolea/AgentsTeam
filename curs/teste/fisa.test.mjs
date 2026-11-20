@@ -109,3 +109,133 @@ test('editorul: /api/fisa cere token, validează id-ul și recitește fișa de p
     assert.equal(j.sursa, 'harvest'); assert.match(j.html, /Scrisă acum de Irina/);
   } finally { await e.inchide(); }
 });
+
+// ---------- Editarea fișei (Alex, 2026-11-20) ----------
+import { parse as parseYaml } from 'yaml';
+import { scrieFisa, fisaDeEditat, sablonFisa, idDinTitlu, MAX_FISA } from '../lib/fisa.mjs';
+import { existsSync, readdirSync, rmSync } from 'node:fs';
+import { createHash } from 'node:crypto';
+const sha = (t) => createHash('sha256').update(t).digest('hex');
+const citeste = (d, rel) => readFileSync(join(d, rel), 'utf8');
+function posteaza(e, cale, corp, token = e.token) {
+  const port = e.server.address().port, text = JSON.stringify(corp);
+  return new Promise((ok, rau) => {
+    const r = request({ host: '127.0.0.1', port, path: cale, method: 'POST', headers: { Host: `127.0.0.1:${port}`, 'Content-Type': 'application/json', 'Content-Length': Buffer.byteLength(text), ...(token ? { 'X-Editor-Token': token } : {}) } },
+      (res) => { let t = ''; res.setEncoding('utf8'); res.on('data', (x) => { t += x; }); res.on('end', () => ok({ cod: res.statusCode, json: JSON.parse(t || '{}') })); });
+    r.on('error', rau); r.end(text);
+  });
+}
+
+test('șablonul are secțiunile D-078, în ordine', () => {
+  const t = sablonFisa({ id: 'x', titlu: 'Titlul', durata: 15, tip: 'exercitiu' }, '2026-11-20');
+  const s = [...t.matchAll(/^## (.+)$/gm)].map((m) => m[1]);
+  assert.deepEqual(s, ['Input-ul lui Alex', 'Pe scurt', 'Obiectivul piesei', 'Knowledge', 'Micro-comportamentul', 'Experiența', 'Integrarea', 'Materiale necesare', 'Research-ul pentru trainer', 'Întrebare pentru Alex']);
+  assert.match(t, /^# Titlul\n- \*\*ID:\*\* x\n/); assert.match(t, /\*\*Fel:\*\* exercițiu · \*\*Durată:\*\* 15 min/);
+});
+
+test('scrieFisa: fișă nouă, apoi suprascriere cu copie în istoric; conflict la hash vechi sau la fișă apărută între timp', () => {
+  const d = copie();
+  const f0 = fisaDeEditat(d, 'harta-emotiilor', { titlu: 'Harta' });
+  assert.equal(f0.exista, false); assert.equal(f0.hash, null); assert.match(f0.md, /^# Harta/);
+  const s1 = scrieFisa(d, 'harta-emotiilor', 'Prima\r\nvariantă   \n\n', null);
+  assert.equal(s1.copie, null); assert.equal(citeste(d, 'harvest/harta-emotiilor.md'), 'Prima\nvariantă\n');
+  assert.throws(() => scrieFisa(d, 'harta-emotiilor', 'Altceva', null), (e) => e.cod === 409 && e.conflict.fisa && e.conflict.hash === s1.hash, 'a apărut între timp');
+  assert.throws(() => scrieFisa(d, 'harta-emotiilor', 'Altceva', 'vechi'), (e) => e.cod === 409);
+  writeFileSync(join(d, 'harvest', 'harta-emotiilor.md'), 'Scris de Daria\n'); // un agent scrie între timp
+  assert.throws(() => scrieFisa(d, 'harta-emotiilor', 'Al meu', s1.hash), (e) => e.cod === 409 && e.conflict.md === 'Scris de Daria\n');
+  assert.equal(citeste(d, 'harvest/harta-emotiilor.md'), 'Scris de Daria\n', 'nu a suprascris');
+  const s2 = scrieFisa(d, 'harta-emotiilor', 'Al meu', sha('Scris de Daria\n'));
+  assert.match(s2.copie, /^\.editor-istoric\/.+__harvest__harta-emotiilor\.md$/);
+  assert.equal(citeste(d, s2.copie), 'Scris de Daria\n'); assert.equal(citeste(d, 'harvest/harta-emotiilor.md'), 'Al meu\n');
+  assert.equal(scrieFisa(d, 'harta-emotiilor', 'Al meu\n', s2.hash).neschimbat, true);
+  rmSync(join(d, 'harvest', 'harta-emotiilor.md'));
+  assert.throws(() => scrieFisa(d, 'harta-emotiilor', 'x', s2.hash), (e) => e.cod === 409, 'ștearsă între timp');
+});
+
+test('scrieFisa: fără path traversal, fără legături simbolice, fără texte uriașe sau goale', () => {
+  const d = copie(), afara = mkdtempSync(join(tmpdir(), 'curs-afara-'));
+  for (const id of ['../curs', '..', '../../etc/passwd', '/etc/passwd', 'harvest/../curs', 'Curba', '', 'a.md', null]) {
+    assert.throws(() => scrieFisa(d, id, 'x', null), (e) => e.cod === 400, String(id));
+  }
+  assert.throws(() => scrieFisa(d, 'x', 'a'.repeat(MAX_FISA + 1), null), (e) => e.cod === 413);
+  assert.throws(() => scrieFisa(d, 'x', '   \n', null), (e) => e.cod === 400);
+  assert.throws(() => scrieFisa(d, 'x', 'a\0b', null), (e) => e.cod === 400);
+  assert.throws(() => scrieFisa(d, 'x', 42, null), (e) => e.cod === 400);
+  mkdirSync(join(d, 'harvest'));
+  writeFileSync(join(afara, 'secret.md'), 'SECRET');
+  symlinkSync(join(afara, 'secret.md'), join(d, 'harvest', 'leg.md'));
+  assert.throws(() => scrieFisa(d, 'leg', 'x', null), (e) => e.cod === 403);
+  assert.equal(readFileSync(join(afara, 'secret.md'), 'utf8'), 'SECRET');
+  const d2 = copie(); symlinkSync(afara, join(d2, 'harvest'));
+  assert.throws(() => scrieFisa(d2, 'nou', 'x', null), (e) => e.cod === 403, 'harvest/ e o legătură spre afară');
+  assert.ok(!existsSync(join(afara, 'nou.md')));
+});
+
+test('idDinTitlu: fără diacritice, unic, scurt', () => {
+  assert.equal(idDinTitlu('Ce ține de mine?'), 'ce-tine-de-mine');
+  assert.equal(idDinTitlu('Ce ține de mine', new Set(['ce-tine-de-mine', 'ce-tine-de-mine-2'])), 'ce-tine-de-mine-3');
+  assert.equal(idDinTitlu('../../etc/passwd'), 'etc-passwd');
+  assert.equal(idDinTitlu('—'), 'piesa');
+  assert.ok(idDinTitlu('cuvânt '.repeat(30)).length <= 60);
+});
+
+test('editorul: salvează fișa și câmpurile rândului (comentariile rămân), conflicte, token, piesă nouă', async () => {
+  const d = copie(), e = await pornesteEditor({ folder: d, port: 0, log: () => {} });
+  try {
+    const src = (await cere(e, '/api/fisa/sursa?id=harta-emotiilor', e.token)).json;
+    assert.equal(src.exista, false); assert.match(src.md, /## Input-ul lui Alex/);
+    assert.deepEqual(src.campuri, { titlu: 'Harta emoțiilor din echipă', scop: '[EXEMPLU] Ce simte grupul, pe un perete', durata: 15, tip: 'exercitiu' });
+    assert.equal((await cere(e, '/api/fisa/sursa?id=..%2Fcurs', e.token)).cod, 400);
+    assert.equal((await posteaza(e, '/api/fisa/salveaza', { id: 'harta-emotiilor', md: 'x', hash: null }, null)).cod, 403, 'fără token');
+    assert.equal((await posteaza(e, '/api/fisa/salveaza', { id: '../curs', md: 'x', hash: null })).cod, 400);
+    const yml0 = citeste(d, 'harvest.yml');
+    const s = await posteaza(e, '/api/fisa/salveaza', { id: 'harta-emotiilor', md: src.md.replace('## Pe scurt\n', '## Pe scurt\nScris de Alex.\n'), hash: null,
+      campuri: { titlu: 'Harta emoțiilor', durata: 20, scop: '', tip: 'challenge' }, campuriInainte: src.campuri });
+    assert.equal(s.cod, 200, JSON.stringify(s.json));
+    assert.match(citeste(d, 'harvest/harta-emotiilor.md'), /Scris de Alex/);
+    assert.match(s.json.fisa.html, /Scris de Alex/);
+    const yml = citeste(d, 'harvest.yml');
+    assert.match(yml, /^# \[EXEMPLU\] Harvest/, 'comentariile de sus rămân');
+    assert.match(yml, /id: harta-emotiilor\n\s+titlu: "Harta emoțiilor"\n\s+durata: 20\n\s+tip: challenge\n/, 'scopul gol iese din rând; ghilimelele rămân');
+    assert.match(yml, /nota: "\[EXEMPLU\] De scris piesa; Irina are două variante\."/, 'restul rândului rămâne');
+    const alte = (t) => JSON.stringify(parseYaml(t).candidate.filter((x) => x.id !== 'harta-emotiilor'));
+    assert.equal(alte(yml), alte(yml0), 'celelalte rânduri au aceleași valori');
+    assert.ok(s.json.copieMasa && existsSync(join(d, s.json.copieMasa)));
+    assert.equal(s.json.sursa.hashMasa, sha(yml));
+    assert.ok(readFileSync(e.ultim().fisiere[1], 'utf8').includes('Harta emoțiilor'), 'materialul e refăcut');
+    // conflict pe fișă: hash vechi
+    const c1 = await posteaza(e, '/api/fisa/salveaza', { id: 'harta-emotiilor', md: 'Altceva', hash: null });
+    assert.equal(c1.cod, 409); assert.equal(c1.json.conflict.fisa, true); assert.equal(c1.json.conflict.hash, s.json.sursa.hash);
+    // conflict pe rând: un agent a schimbat durata între timp
+    writeFileSync(join(d, 'harvest.yml'), yml.replace('titlu: "Harta emoțiilor"\n    durata: 20', 'titlu: "Harta emoțiilor"\n    durata: 25'));
+    const c2 = await posteaza(e, '/api/fisa/salveaza', { id: 'harta-emotiilor', md: 'Al meu', hash: s.json.sursa.hash, campuri: { durata: 30 }, campuriInainte: s.json.sursa.campuri });
+    assert.equal(c2.cod, 409); assert.equal(c2.json.conflict.campuri.durata, 25);
+    assert.match(citeste(d, 'harvest/harta-emotiilor.md'), /Scris de Alex/, 'la conflictul pe rând, nici fișa nu se scrie');
+    // câmp greșit: refuzat, nimic scris
+    const g = await posteaza(e, '/api/fisa/salveaza', { id: 'harta-emotiilor', md: 'Al meu', hash: s.json.sursa.hash, campuri: { tip: 'dans' }, campuriInainte: { tip: 'challenge' } });
+    assert.equal(g.cod, 400); assert.match(citeste(d, 'harvest/harta-emotiilor.md'), /Scris de Alex/);
+    assert.equal((await posteaza(e, '/api/fisa/salveaza', { id: 'harta-emotiilor', md: 'x', hash: s.json.sursa.hash, campuri: { titlu: '' }, campuriInainte: { titlu: 'Harta emoțiilor' } })).cod, 400);
+    // piesă nouă
+    const n = await posteaza(e, '/api/fisa/noua', { titlu: 'Harta emoțiilor', durata: 10, tip: 'exercitiu', scop: 'Un perete' });
+    assert.equal(n.cod, 200, JSON.stringify(n.json)); assert.equal(n.json.id, 'harta-emotiilor-2', 'id unic, fără să atingă piesa existentă');
+    assert.match(citeste(d, 'harvest.yml'), /- id: harta-emotiilor-2\n\s+titlu: Harta emoțiilor\n\s+scop: Un perete\n\s+durata: 10\n\s+tip: exercitiu\n\s+sursa: Alex\n\s+verdict: nou/);
+    assert.match(citeste(d, 'harvest/harta-emotiilor-2.md'), /^# Harta emoțiilor\n- \*\*ID:\*\* harta-emotiilor-2[\s\S]*## Întrebare pentru Alex/);
+    assert.equal((await posteaza(e, '/api/fisa/noua', { titlu: 'Fără durată' })).cod, 400);
+    assert.equal((await posteaza(e, '/api/fisa/noua', { titlu: '  ', durata: 5 })).cod, 400);
+    assert.equal(fiseNr(d), 2, 'cererile refuzate nu lasă fișe');
+  } finally { await e.inchide(); }
+});
+const fiseNr = (d) => readdirSync(join(d, 'harvest')).length;
+
+test('editorul: fără harvest.yml, fișa se poate scrie, câmpurile și „Piesă nouă” nu', async () => {
+  const d = copie(); rmSync(join(d, 'harvest.yml'));
+  const e = await pornesteEditor({ folder: d, port: 0, log: () => {} });
+  try {
+    const src = (await cere(e, '/api/fisa/sursa?id=perechi-curba', e.token)).json;
+    assert.equal(src.areMasa, false);
+    assert.equal((await posteaza(e, '/api/fisa/salveaza', { id: 'perechi-curba', md: '# Fișa\n', hash: null })).cod, 200);
+    assert.equal((await posteaza(e, '/api/fisa/salveaza', { id: 'perechi-curba', md: '# Fișa\n', hash: sha('# Fișa\n'), campuri: { durata: 3 }, campuriInainte: { durata: src.campuri?.durata } })).cod, 404);
+    assert.equal((await posteaza(e, '/api/fisa/noua', { titlu: 'X', durata: 5 })).cod, 404);
+    assert.ok(!existsSync(join(d, 'harvest.yml')));
+  } finally { await e.inchide(); }
+});

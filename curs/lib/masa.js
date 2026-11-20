@@ -359,8 +359,10 @@
   }
   function initFisa() {
     var d = $('fisa-dialog'); if (!d) return;
-    $('fisa-inchide').addEventListener('click', function () { d.close(); });
-    d.addEventListener('click', function (ev) { if (ev.target === d) d.close(); }); // clic pe fundal
+    // În editorul local, fișa poate fi în modul de editare: editorul local pune o pază care întreabă înainte să piardă textul.
+    var inchide = function () { if (!window.__fisaPaza || window.__fisaPaza()) d.close(); };
+    $('fisa-inchide').addEventListener('click', inchide);
+    d.addEventListener('click', function (ev) { if (ev.target === d) inchide(); }); // clic pe fundal
     d.addEventListener('keydown', function (ev) { ev.stopPropagation(); }); // tastele din fișă nu ajung la cartonașe sau la prezentare
     d.addEventListener('close', function () {
       var id = fisaDe; fisaDe = null;
@@ -468,7 +470,21 @@
     document.addEventListener('pointerup', gata);
     document.addEventListener('pointercancel', gata);
     randeaza();
-    window.__masa = { stare: function () { return cand.map(function (x) { return { id: x.id, verdict: x.verdict, bloc: x.bloc, ordine: x.ordine }; }); }, text: textMasa, agenda: agendaDinMasa, hash: function () { return M.hash; } };
+    window.__masa = { stare: function () { return cand.map(function (x) { return { id: x.id, verdict: x.verdict, bloc: x.bloc, ordine: x.ordine }; }); }, text: textMasa, agenda: agendaDinMasa, hash: function () { return M.hash; },
+      // Pentru editarea fișei (editorul local, 2026-11-20): ce piesă e deschisă, randarea fișei și câmpurile rândului după salvare.
+      fisa: {
+        deschisa: function () { return fisaDe; },
+        candidata: function (id) { var x = ID[id]; return x ? { id: x.id, titlu: x.titlu, scop: x.scop || '', durata: x.durata, tip: x.tip || '' } : null; },
+        propunere: function () { return !!M.propunere; },
+        deschide: deschideFisa,
+        arata: function (id, f) { var x = ID[id]; if (!x) return; FISE[id] = f && f.sursa ? f : null; arataFisa(x, f); var b = document.querySelector('.mc-fisa[data-fisa="' + id + '"]'); if (b) b.classList.toggle('fara', !(f && f.sursa)); },
+        actualizeaza: function (id, campuri, hashMasa) {
+          var x = ID[id]; if (!x || !campuri) return;
+          ['titlu', 'scop', 'durata', 'tip'].forEach(function (k) { if (k in campuri) x[k] = campuri[k]; });
+          if (hashMasa) M.hash = hashMasa;
+          fokus = null; randeaza();
+        },
+      } };
   }
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', init); else init();
 })();
