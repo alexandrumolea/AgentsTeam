@@ -165,7 +165,7 @@ test('editorul: obiectiv nou (rând + fișă), fișa obiectivului (text + Markdo
     assert.equal(n.cod, 200, JSON.stringify(n.json)); assert.equal(n.json.id, 'obiectiv-fiecare-isi-numeste-o');
     const o = parseYaml(citeste(d, 'harvest-obiective.yml')).obiective.at(-1);
     assert.deepEqual(o, { id: 'obiectiv-fiecare-isi-numeste-o', text: 'Fiecare își numește o resursă [EXEMPLU]', sursa: 'alex', verdict: 'nou' });
-    assert.match(citeste(d, `harvest/obiective/${n.json.id}.md`), /^# Fiecare își numește o resursă \[EXEMPLU\]\n- \*\*ID:\*\* obiectiv-fiecare-isi-numeste-o[\s\S]*## Cum îl recunoaștem la final de zi/);
+    assert.match(citeste(d, `harvest/obiective/${n.json.id}.md`), /^# Fiecare își numește o resursă \[EXEMPLU\]\n- \*\*ID:\*\* obiectiv-fiecare-isi-numeste-o[\s\S]*## Cum arată succesul/);
     const s = (await e.api(`/api/fisa/sursa?fel=obiectiv&id=${n.json.id}`)).json;
     assert.equal(s.exista, true); assert.deepEqual(s.campuri, { text: 'Fiecare își numește o resursă [EXEMPLU]' });
     const w = await e.api('/api/fisa/salveaza', { fel: 'obiectiv', id: n.json.id, md: '# Resursa mea\n\nScris de Alex.', hash: s.hash, campuri: { text: 'Fiecare își numește o resursă' }, campuriInainte: s.campuri });

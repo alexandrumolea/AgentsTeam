@@ -151,7 +151,7 @@ ${text}
 ## De ce contează
 
 
-## Cum îl recunoaștem la final de zi
+## Cum arată succesul
 - 
 
 ## Piesele care îl servesc
