@@ -3,6 +3,8 @@
 // Obiectivele cu „da”, în ordinea din fișier, sunt obiectivele zilei (Schița, rezumatul, cursul participanților).
 // Fără fișier: curs.yml „obiective” (rezervă, ca la exemple). Ediția le poate înlocui, ca înainte.
 // Legătura piesă → obiectiv: `obiective: [obiectiv-1, …]` (id-uri). Numerele vechi rămân valide: 1 = primul obiectiv cu „da”.
+// Obiectivul blocului (Alex, 2026-11-20): `bloc: N` opțional pe rândul unui obiectiv cu „da” = stă în Blocul N din Flow, nu în cutia zilei.
+// Rămâne obiectiv al zilei (numărul, limita de 4, legăturile nu se schimbă); Schița și cursul participanților ignoră câmpul.
 // Modulul ăsta nu importă nimic din curs/lib (sursa.mjs îl citește), ca să nu facă cicluri.
 import { readFileSync, existsSync, writeFileSync } from 'node:fs';
 import { join } from 'node:path';
@@ -14,7 +16,7 @@ export const DOSAR_OB = 'harvest/obiective';
 export const MAX_OB = 4; // docs/procese/curs-nou.md, pasul 3: în curs rămân cel mult 4
 export const VERDICTE_OB = ['nou', 'da', 'poate', 'nu'];
 const ID_OK = /^[a-z0-9]+(-[a-z0-9]+)*$/;
-const CAMPURI = ['id', 'text', 'sursa', 'verdict', 'piese', 'nota'];
+const CAMPURI = ['id', 'text', 'sursa', 'verdict', 'piese', 'nota', 'bloc'];
 const MAX_TEXT = 400;
 
 const unRand = (t, ce, max = MAX_TEXT) => {
@@ -52,8 +54,14 @@ export function verificaObiective(v, erori, avertismente, unde = FISIER_OB) {
     if (piese == null) { erori.push(`${loc}: „piese” e o listă de id-uri, de exemplu [ contract, curba ]`); piese = []; }
     const rele = piese.filter((p) => !ID_OK.test(p));
     if (rele.length) avertismente.push(`${loc}: „piese” are id-uri greșite (${rele.join(', ')}); le ignor`);
+    let bloc = null;
+    if (x.bloc != null && x.bloc !== '') {
+      if (!Number.isInteger(x.bloc) || x.bloc < 1) erori.push(`${loc}: „bloc” e numărul blocului din Flow (1, 2, 3…) sau lipsește (= în cutia zilei)`);
+      else if (verdict !== 'da') avertismente.push(`${loc}: „bloc” contează doar la verdict „da”; îl ignor`);
+      else bloc = x.bloc;
+    }
     obiective.push({ id, text: typeof x.text === 'string' ? x.text.trim() : id, sursa: x.sursa == null ? '' : String(x.sursa),
-      verdict: VERDICTE_OB.includes(verdict) ? verdict : 'nou', piese: piese.filter((p) => ID_OK.test(p)), nota: x.nota == null ? '' : String(x.nota) });
+      verdict: VERDICTE_OB.includes(verdict) ? verdict : 'nou', piese: piese.filter((p) => ID_OK.test(p)), nota: x.nota == null ? '' : String(x.nota), bloc });
   });
   return { viziune, obiective };
 }
@@ -114,7 +122,8 @@ function scrieDoc(folder, cale, inainte, doc) {
 const gaseste = (lista, id) => lista.items.find((n) => n && typeof n.get === 'function' && String(n.get('id')) === String(id));
 
 /**
- * Schimbările din vederea Harvest: [{ id, verdict?, text?, inainteDe? | dupa?, scoatePiesa? }] și/sau viziune (textul nou).
+ * Schimbările din vederea Harvest: [{ id, verdict?, text?, bloc?, inainteDe? | dupa?, scoatePiesa? }] și/sau viziune (textul nou).
+ * bloc: N = obiectivul blocului N; null = în cutia zilei. Un verdict care nu e „da” scoate și blocul.
  * Păstrează comentariile și restul câmpurilor; conflict (409) dacă fișierul s-a schimbat pe disc.
  */
 export function scrieObiective(folder, { schimbari = [], viziune } = {}, hashCitit) {
@@ -126,6 +135,12 @@ export function scrieObiective(folder, { schimbari = [], viziune } = {}, hashCit
     const item = gaseste(lista, s?.id);
     if (!item) throw new EroareEditor(`nu găsesc obiectivul „${String(s?.id).slice(0, 60)}” în ${FISIER_OB}`, 404);
     if ('verdict' in s) { if (!VERDICTE_OB.includes(s.verdict)) throw new EroareEditor(`verdict „${String(s.verdict).slice(0, 20)}” necunoscut`); item.set('verdict', s.verdict); }
+    if ('bloc' in s) {
+      if (s.bloc == null) item.delete('bloc');
+      else if (Number.isInteger(s.bloc) && s.bloc >= 1 && s.bloc <= 20) item.set('bloc', s.bloc);
+      else throw new EroareEditor(`bloc „${String(s.bloc).slice(0, 10)}” greșit (1, 2, 3… sau null = cutia zilei)`);
+    }
+    if (String(item.get('verdict') ?? '') !== 'da' && item.has('bloc')) item.delete('bloc');
     if ('text' in s) item.set('text', unRand(s.text, 'Textul obiectivului'));
     // Ordinea zilei = ordinea din fișier (Obiectivele zilei din Flow, 2026-11-20): mută rândul înaintea / după alt obiectiv.
     if (s.inainteDe != null || s.dupa != null) {
@@ -167,6 +182,7 @@ export function textObiectiveNou(obiective = []) {
   const q = (t) => JSON.stringify(String(t));
   const l = ['# Harvest de obiective: obiectivele candidate ale cursului, fără durată (Alex, 2026-11-20).',
     '# verdict: nou / da / poate / nu · sursa: alex / daria · piese: id-urile din harvest.yml care servesc obiectivul.',
+    '# bloc: N (opțional, doar la „da”) = obiectivul Blocului N din Flow; fără bloc = în cutia „Obiectivele zilei”.',
     `# Fișele: ${DOSAR_OB}/<id>.md. Obiectivele cu „da”, în ordinea de aici, sunt obiectivele zilei; în curs rămân cel mult ${MAX_OB}.`,
     'obiective:'];
   if (!obiective.length) l[l.length - 1] = 'obiective: []';

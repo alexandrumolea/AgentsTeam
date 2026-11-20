@@ -230,3 +230,45 @@ test('core: obiectivele nu se trimit în core (sunt ale cursului)', async () => 
     assert.ok(!existsSync(join(core, 'harvest-obiective.yml')) && !existsSync(join(core, 'harvest', 'obiective')));
   } finally { await e.inchide(); }
 });
+
+test('obiectivul blocului (bloc: N): rămâne obiectiv al zilei cu același număr; Schița îl ignoră; validare și avertismente', () => {
+  const cuBloc = OBIECTIVE.replace('    verdict: da\n    piese: [ harta-emotiilor ]', '    verdict: da\n    bloc: 2\n    piese: [ harta-emotiilor ]');
+  const d = curs({ obiective: cuBloc }), r = construieste(d);
+  assert.equal(r.ok, true, r.erori?.join('\n'));
+  assert.deepEqual(citesteCurs(d).obiectiveZi.map((o) => o.id), ['ob-curba', 'ob-pas'], 'numerotarea: toate cele cu „da”, oriunde stau');
+  assert.equal(citesteCurs(d).harvestObiective.obiective[0].bloc, 2);
+  assert.equal(r.export.obiective.length, 2, 'cursul participanților: tot 2');
+  assert.ok(!JSON.stringify(r.export).includes('"bloc":2'), 'câmpul bloc nu ajunge în cursul participanților');
+  assert.ok(!r.avertismente.some((a) => /câmp necunoscut/.test(a)));
+  const departe = construieste(curs({ obiective: cuBloc.replace('bloc: 2', 'bloc: 9') }));
+  assert.equal(departe.ok, true);
+  assert.ok(departe.avertismente.some((a) => /„ob-curba” are bloc: 9, dar ziua are \d+ blocuri; îl arăt în cutia zilei/.test(a)), departe.avertismente.join('\n'));
+  const fara = construieste(curs({ obiective: OBIECTIVE.replace('    verdict: nou\n', '    verdict: nou\n    bloc: 1\n') }));
+  assert.ok(fara.avertismente.some((a) => /„bloc” contează doar la verdict „da”/.test(a)));
+  assert.equal(construieste(curs({ obiective: cuBloc.replace('bloc: 2', 'bloc: doi') })).ok, false, 'bloc greșit oprește build-ul');
+});
+
+test('editorul: obiectivul blocului (bloc: N / null), mutat cu ordinea; verdictul fără „da” scoate blocul; comentariile rămân', async () => {
+  const d = curs(), e = await editor(d);
+  const ob = () => parseYaml(citeste(d, 'harvest-obiective.yml')).obiective;
+  const pune = async (s) => { const r = await e.api('/api/obiective', { schimbari: [s], hash: hashOb(d) }); assert.equal(r.cod, 200, JSON.stringify(r.json)); return r; };
+  try {
+    await pune({ id: 'ob-pas', bloc: 2 });
+    assert.equal(ob().find((o) => o.id === 'ob-pas').bloc, 2);
+    assert.deepEqual(citesteCurs(d).obiectiveZi.map((o) => o.id), ['ob-curba', 'ob-pas'], 'numărul nu se schimbă');
+    await pune({ id: 'ob-nou', verdict: 'da', bloc: 2, dupa: 'ob-pas' });
+    assert.deepEqual(ob().filter((o) => o.bloc === 2).map((o) => o.id), ['ob-pas', 'ob-nou'], 'din Obiective direct într-un bloc: „da” + bloc, după cel de acolo');
+    assert.match(citeste(d, 'harvest-obiective.yml'), /sursa: daria # propunerea Dariei/, 'comentariul rămâne');
+    await pune({ id: 'ob-nou', bloc: 3, inainteDe: 'ob-curba' });
+    assert.deepEqual(citesteCurs(d).obiectiveZi.map((o) => o.id), ['ob-nou', 'ob-curba', 'ob-pas']);
+    assert.equal(ob().find((o) => o.id === 'ob-nou').bloc, 3, 'dintr-un bloc în altul');
+    await pune({ id: 'ob-pas', bloc: null });
+    assert.ok(!('bloc' in ob().find((o) => o.id === 'ob-pas')), 'înapoi în cutia zilei: câmpul dispare');
+    await pune({ id: 'ob-nou', verdict: 'poate' });
+    assert.ok(!('bloc' in ob().find((o) => o.id === 'ob-nou')), 'Scoate (poate): fără bloc');
+    assert.equal(ob().length, 4, 'niciun rând pierdut');
+    assert.equal((await e.api('/api/obiective', { schimbari: [{ id: 'ob-pas', bloc: 'doi' }], hash: hashOb(d) })).cod, 400);
+    assert.equal((await e.api('/api/obiective', { schimbari: [{ id: 'ob-pas', bloc: 1 }], hash: 'vechi' })).cod, 409, 'conflict');
+    assert.ok(readdirSync(join(d, '.editor-istoric')).some((f) => f.endsWith('__harvest-obiective.yml')), 'copie în istoric');
+  } finally { await e.inchide(); }
+});

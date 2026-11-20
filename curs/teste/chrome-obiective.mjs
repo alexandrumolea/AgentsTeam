@@ -134,6 +134,46 @@ try {
   await b.click(e, '.obz-carte[data-ob="ob-respins"] button[data-obz="scoate"]'); await pauza(900);
   ok(yml('harvest-obiective.yml').obiective.find((o) => o.id === 'ob-respins').verdict === 'poate' && !(await fe('document.getElementById("obz").classList.contains("depasire")')), 'Scoate: verdict „poate”, înapoi la 4');
   ok(await fe('document.querySelector(\'.masa-bloc[data-bloc="1"] .masa-bloc-total\').textContent') === totalB1, 'totalul Blocului 1 nu se schimbă (obiectivele nu au durată)');
+  // Obiectivul blocului (Alex, 2026-11-20): în cutia zilei sau într-un bloc; „Unde”, tragerea între cutie și blocuri, din Obiective direct într-un bloc.
+  const totaluri = () => fe('[...document.querySelectorAll(\'.masa-bloc[data-bloc] .masa-bloc-total\')].map(x => x.textContent).join(" | ")');
+  // Toată coloana Flow în fereastră: tragerea merge doar între puncte vizibile.
+  await b.send('Emulation.setDeviceMetricsOverride', { width: 1360, height: 2600, deviceScaleFactor: 1, mobile: false }, e.sessionId); await pauza(300);
+  const t0 = await totaluri();
+  const loc = (id) => yml('harvest-obiective.yml').obiective.find((o) => o.id === id).bloc ?? null;
+  const inBloc = (k) => fe(`[...document.querySelectorAll('.masa-bloc[data-bloc="${k}"] .obb-carte')].map(x => x.dataset.ob + "=" + x.querySelector(".obh-nr").textContent).join(" ")`);
+  const unde = (id, val) => fe(`(() => { const s = document.querySelector('.obz-carte[data-ob="${id}"] select[data-obz="unde"]'); s.value = "${val}"; s.dispatchEvent(new Event("change", { bubbles: true })); return 1; })()`);
+  ok(await fe('!document.querySelector(".obb")'), 'fără obiective în blocuri, blocurile nu au zonă (nu ocupă loc)');
+  await unde('ob-pas', 2); await pauza(900);
+  ok(loc('ob-pas') === 2 && await inBloc(2) === 'ob-pas=3' && !(await fe('!!document.querySelector(\'#obz .obz-carte[data-ob="ob-pas"]\')')), '„Unde: Blocul 2”: bloc: 2 în fișier; cartonașul stă în Blocul 2, cu numărul lui din zi (3)');
+  ok(ziY() === `ob-curba ob-nou ob-pas ${nouId}`, 'numerotarea zilei nu se schimbă');
+  ok(/4 din 4 · 1 în blocuri/.test(await fe('document.querySelector("#obz .masa-bloc-total").textContent')), 'cutia: „4 din 4 · 1 în blocuri” (limita e pe toate)');
+  ok(await fe('document.activeElement && document.activeElement.dataset.obz === "unde" && document.activeElement.closest(".obz-carte").dataset.ob === "ob-pas"'), 'focusul rămâne pe „Unde”, în noul loc');
+  ok(await fe('(() => { const c = document.querySelector(\'.masa-bloc[data-bloc="2"]\'); return !!(c.querySelector(".obb").compareDocumentPosition(c.querySelector(".masa-lista")) & Node.DOCUMENT_POSITION_FOLLOWING); })()'), 'obiectivul blocului stă deasupra pieselor');
+  ok(/în agendă · \d+ în bloc$|^neacoperit$/.test(await fe('document.querySelector(\'.obb-carte[data-ob="ob-pas"] .obh-piese\').textContent')), 'cartonașul din bloc: piese în agendă și câte din bloc');
+  ok(/Blocul 2/.test(await fe('document.querySelector(\'.obh-carte[data-ob="ob-pas"]\').textContent')), 'în Obiective, cartonașul spune „Blocul 2”');
+  await fe('scrollTo(0, 0); 1'); await pauza(200);
+  await b.trage(e, '#obz .obz-carte[data-ob="ob-nou"] .obh-text', '.masa-bloc[data-bloc="1"] .masa-bloc-cap'); await pauza(900);
+  ok(loc('ob-nou') === 1 && /^ob-nou=\d$/.test(await inBloc(1)), 'tras din cutia zilei într-un bloc gol: bloc: 1');
+  ok(ziY() === `ob-curba ob-nou ob-pas ${nouId}`, 'într-un bloc gol, obiectivul își păstrează numărul');
+  await b.trage(e, '.obb-carte[data-ob="ob-nou"] .obh-text', '.masa-bloc[data-bloc="2"] .masa-bloc-cap'); await pauza(900);
+  ok(loc('ob-nou') === 2 && (await inBloc(2)).startsWith('ob-nou=') && (await inBloc(2)).includes('ob-pas=') && !(await inBloc(1)), 'dintr-un bloc în altul, deasupra celui de acolo');
+  await b.trage(e, '.obb-carte[data-ob="ob-pas"] .obh-text', '#obz .masa-bloc-cap'); await pauza(900);
+  ok(loc('ob-pas') === null && await fe('document.querySelector("#obz .obz-carte").dataset.ob') === 'ob-pas', 'din bloc înapoi în cutia zilei (câmpul bloc dispare), primul');
+  ok(yml('harvest-obiective.yml').obiective.find((o) => o.id === 'ob-respins').verdict === 'poate', 'ob-respins e „poate” înainte de tragere');
+  await fe('scrollTo(0, 0); 1'); await pauza(200);
+  await b.trage(e, '.obh-carte[data-ob="ob-respins"] .obh-text', '.masa-bloc[data-bloc="1"] .masa-bloc-cap'); await pauza(900);
+  ok(loc('ob-respins') === 1 && yml('harvest-obiective.yml').obiective.find((o) => o.id === 'ob-respins').verdict === 'da' && (await inBloc(1)).startsWith('ob-respins='), 'din Obiective direct într-un bloc: „da” + bloc: 1');
+  ok(await fe('document.getElementById("obz").classList.contains("depasire") && /5 din 4/.test(document.querySelector("#obz .masa-bloc-total").textContent)'), 'limita de 4 numără și obiectivele din blocuri');
+  await b.click(e, '.obb-carte[data-ob="ob-respins"] button[data-obz="scoate"]'); await pauza(900);
+  const dupaScoate = yml('harvest-obiective.yml').obiective.find((o) => o.id === 'ob-respins');
+  ok(dupaScoate.verdict === 'poate' && !('bloc' in dupaScoate) && !(await inBloc(1)), 'Scoate din bloc: „poate”, fără bloc');
+  ok(await totaluri() === t0, 'totalurile blocurilor nu se schimbă (obiectivele nu au durată)');
+  ok(await fe('!document.querySelector(".masa-bloc.tinta") && !document.body.classList.contains("obz-tragere")'), 'după tragere nu rămâne nicio țintă marcată');
+  ok(/sursa: daria # propunerea Dariei/.test(readFileSync(join(dirEd, 'harvest-obiective.yml'), 'utf8')), 'comentariile din fișier rămân');
+  await unde('ob-curba', 2); await pauza(900);
+  ok(loc('ob-curba') === 2 && (await inBloc(2)).replace(/=\d/g, '') === 'ob-nou ob-curba', '„Unde: Blocul 2” într-un bloc cu obiective: la finalul lor');
+  await b.click(e, '.obb-carte[data-ob="ob-nou"] button[data-obz="jos"]'); await pauza(900);
+  ok((await inBloc(2)).replace(/=\d/g, '') === 'ob-curba ob-nou' && await fe('document.querySelector(\'.obb-carte[data-ob="ob-curba"] button[data-obz="sus"]\').disabled'), '↓ în bloc: ordinea se schimbă doar între obiectivele blocului');
   for (const w of [1360, 800, 375, 320]) {
     await b.send('Emulation.setDeviceMetricsOverride', { width: w, height: 900, deviceScaleFactor: 1, mobile: w < 700 }, e.sessionId); await pauza(200);
     const rau = await fe(`[...document.querySelectorAll(".obz-carte")].filter(x => { const r = x.getBoundingClientRect(), l = x.parentNode.getBoundingClientRect(); return r.left < l.left - .5 || r.right > l.right + .5 || x.scrollWidth > x.clientWidth + 1; }).length`);

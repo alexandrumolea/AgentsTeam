@@ -25,7 +25,7 @@
   var cand = M.candidate.map(function (x) { var y = {}; for (var k in x) y[k] = x[k]; return y; });
   // Harvest de obiective (2026-11-20): { viziune, lista, hash, fisier } sau null (cursul nu are harvest-obiective.yml).
   var OBH = M.obiective || null;
-  var OB = OBH ? OBH.lista.map(function (o) { return { id: o.id, text: o.text, sursa: o.sursa, verdict: o.verdict, piese: o.piese.slice(), nota: o.nota }; }) : [];
+  var OB = OBH ? OBH.lista.map(function (o) { return { id: o.id, text: o.text, sursa: o.sursa, verdict: o.verdict, piese: o.piese.slice(), nota: o.nota, bloc: o.bloc == null ? null : o.bloc }; }) : [];
   var OBID = {}; OB.forEach(function (o) { OBID[o.id] = o; });
   var FO = OBH ? OBH.fisier : 'harvest-obiective.yml', MAX_OB = 4;
   var ID = {}; cand.forEach(function (x) { ID[x.id] = x; });
@@ -165,7 +165,7 @@
       var ale = dinBloc(b.nr); nOrd += ale.length;
       var t = totalBloc(b, ale.map(function (x) { return x.id; }));
       var p = b.pauzaDupa;
-      return '<div class="masa-bloc ' + t.clasa + '" data-bloc="' + b.nr + '"><p class="masa-bloc-cap" id="masa-cap-' + b.nr + '">' + capBloc(b, t) + '</p>' +
+      return '<div class="masa-bloc ' + t.clasa + '" data-bloc="' + b.nr + '"><p class="masa-bloc-cap" id="masa-cap-' + b.nr + '">' + capBloc(b, t) + '</p>' + obBloc(b.nr) +
         '<ol class="masa-lista" data-lista="bloc" data-bloc="' + b.nr + '" aria-labelledby="masa-cap-' + b.nr + '">' + ale.map(carte).join('') + '</ol></div>' +
         (p ? '<p class="masa-pauza"><span class="semn-mic fel-pauza" aria-hidden="true"></span>' + oraDin(p.la) + ' · ' + esc(p.titlu) + ' · ' + p.min + ' min</p>' : '');
     }).join('');
@@ -181,8 +181,9 @@
     var r = $('masa-respinse'); r.setAttribute('aria-pressed', respinse ? 'true' : 'false'); r.textContent = respinse ? 'Ascunde „Nu” (' + nu.length + ')' : 'Arată și „Nu” (' + nu.length + ')'; r.disabled = !nu.length && !respinse;
     $('masa-reset').hidden = !!editor() || !local;
     $('masa-agenda').disabled = blocat();
+    col.classList.toggle('poate-trage-zi', poatePune());
     rezumat(); stare(); randeazaOb();
-    if (fokusZi) { var fz = col.querySelector('.obz-carte[data-ob="' + fokusZi.id + '"] button[data-obz="' + fokusZi.ce + '"]:not([disabled])') || col.querySelector('.obz-carte[data-ob="' + fokusZi.id + '"]') || $('obz-h'); fokusZi = null; if (fz) fz.focus({ preventScroll: true }); return; }
+    if (fokusZi) { var fz = col.querySelector('.obz-carte[data-ob="' + fokusZi.id + '"] [data-obz="' + fokusZi.ce + '"]:not([disabled])') || col.querySelector('.obz-carte[data-ob="' + fokusZi.id + '"]') || $('obz-h'); fokusZi = null; if (fz) fz.focus({ preventScroll: true }); return; }
     if (fokus) { var f = col.querySelector('.masa-carte[data-id="' + fokus + '"]'); if (f) f.focus({ preventScroll: false }); }
   }
   var ultimaStare = '';
@@ -426,6 +427,7 @@
       '<p class="obh-text">' + (nr ? '<span class="obh-nr" title="Al ' + nr + '-lea obiectiv al zilei">' + nr + '</span>' : '') + '<span>' + esc(o.text) + '</span></p>' +
       '<div class="mc-jos"><span class="mc-meta"><button type="button" class="mc-fisa' + (areFisa ? '' : ' fara') + '" data-fisa-ob="' + esc(o.id) + '" aria-label="Deschide fișa obiectivului" title="' + (areFisa ? 'Fișa obiectivului (tasta F)' : 'Fișa nu e scrisă încă') + '">Fișa</button>' +
       (o.sursa ? '<span class="mc-sursa">' + esc(o.sursa) + '</span>' : '') +
+      (o.verdict === 'da' && locOb(o) ? '<span class="obh-loc" title="Obiectivul Blocului ' + locOb(o) + ' (Flow)">Blocul ' + locOb(o) + '</span>' : '') +
       '<span class="obh-piese' + (p.length ? '' : ' lipsa') + '" title="' + esc(p.length ? p.map(function (x) { return x.titlu; }).join(' · ') : 'Nicio piesă din Harvest nu îl servește încă') + '">' + p.length + (p.length === 1 ? ' piesă' : ' piese') + '</span></span>' +
       (o.verdict !== 'da' && poatePune() ? '<button type="button" class="obh-mic obh-pune" data-pune="' + esc(o.id) + '" title="Verdict „Da”, la finalul obiectivelor zilei (Flow)">+ Pune în zi</button>' : '') +
       '<span class="mc-verdict" role="group" aria-label="Verdict">' + ['da', 'poate', 'nu'].map(function (v) {
@@ -471,74 +473,118 @@
   function verdictOb(id, v) {
     var o = OBID[id]; if (!o || o.verdict === v) return;
     if (!editor()) { mesajOb('Verdictul obiectivelor se schimbă în editorul local (Editeaza curs.command).'); return; }
-    var vechi = o.verdict; o.verdict = v; fokusOb = id; randeaza();
-    trimiteOb({ schimbari: [{ id: id, verdict: v }] }, function () { o.verdict = vechi; }, function () {
+    var vechi = o.verdict, vechiBloc = o.bloc; o.verdict = v; if (v !== 'da') o.bloc = null; fokusOb = id; randeaza();
+    trimiteOb({ schimbari: [{ id: id, verdict: v }] }, function () { o.verdict = vechi; o.bloc = vechiBloc; }, function () {
       var da = OB.filter(function (x) { return x.verdict === 'da'; }).length;
       mesajOb(da > MAX_OB ? da + ' obiective au „Da”; în curs rămân cel mult ' + MAX_OB + '.' : 'Salvat. Schița și cursul participanților iau obiectivele cu „Da” la reîncărcare.', da > MAX_OB);
     });
   }
   // ---------- Obiectivele zilei în Flow (Alex, 2026-11-20): „Vreau să am un spațiu în Flow să pun obiectivele zilei, deasupra Blocului 1.” ----------
   // Aceleași obiective ca obiectiveZi(): cele cu „Da”, în ordinea din harvest-obiective.yml. Fără durată, nu intră în totalurile blocurilor.
-  // A pune în zi = verdict „Da” + rândul mutat la finalul zilei (sau unde îl lași); ↑ ↓ mută rândul în fișier; Scoate = verdict „Poate”.
+  // Obiectivul blocului (Alex, 2026-11-20): un obiectiv cu „Da” stă într-un singur loc, în cutia zilei sau într-un bloc (`bloc: N`),
+  // ca un cartonaș fără timp deasupra pieselor blocului. Numărul rămâne cel din zi (toate cele cu „Da”), deci legăturile nu se schimbă.
+  // A pune în zi = verdict „Da”; ↑ ↓ mută rândul în fișier, în locul lui; „Unde” mută între zi și blocuri; Scoate = verdict „Poate”.
   var fokusZi = null;
   var poatePune = function () { return !!(editor() && OBH && DATA.obiectiveFel === 'harvest'); };
+  /** Blocul în care stă un obiectiv, sau null (cutia zilei; tot acolo și când blocul din fișier nu există). */
+  function locOb(o) { return o && o.bloc != null && o.bloc >= 1 && o.bloc <= BLOCURI.length ? o.bloc : null; }
+  /** Obiectivele zilei cu numărul lor și locul: [{ id, text, nr, loc }]. */
+  function ziCuLoc() {
+    return obiectiveZi().map(function (z, i) { return { id: z.id, text: z.text, nr: i + 1, loc: DATA.obiectiveFel === 'harvest' ? locOb(OBID[z.id]) : null }; });
+  }
+  var dinLoc = function (loc) { return ziCuLoc().filter(function (z) { return z.loc === loc; }); };
   function mesajZi(t, eroare) { var m = $('obz-mesaj'); if (m) { m.textContent = t || ''; m.classList.toggle('eroare', !!eroare); } }
+  /** Un cartonaș de obiectiv în Flow (în cutia zilei sau într-un bloc): numărul din zi, câte piese din agendă îl servesc, acțiunile. */
+  function carteZi(z, i, n, bloc) {
+    var k = pieseInZi(z.nr), ed = poatePune();
+    var j = bloc ? dinBloc(bloc).filter(function (x) { return x.verdict === 'da' && obiectiveDe(x)[z.nr]; }).length : 0;
+    var unde = '<select class="obz-unde" data-obz="unde" aria-label="Unde stă obiectivul: ' + esc(z.text) + '" title="Unde stă obiectivul: ziua întreagă sau un bloc"><option value=""' + (bloc ? '' : ' selected') + '>Ziua</option>' +
+      BLOCURI.map(function (b) { return '<option value="' + b.nr + '"' + (bloc === b.nr ? ' selected' : '') + '>Blocul ' + b.nr + '</option>'; }).join('') + '</select>';
+    return '<li class="obz-carte' + (bloc ? ' obb-carte' : '') + '" data-ob="' + esc(z.id || '') + '"><p class="obh-text"><span class="obh-nr" title="Al ' + z.nr + '-lea obiectiv al zilei">' + z.nr + '</span><span>' + esc(z.text) + '</span></p>' +
+      '<div class="mc-jos"><span class="mc-meta"><span class="obh-piese' + (k ? '' : ' lipsa') + '">' + (k ? k + (k === 1 ? ' piesă' : ' piese') + ' în agendă' + (bloc ? ' · ' + j + ' în bloc' : '') : 'neacoperit') + '</span></span>' +
+      (ed ? '<span class="obz-act">' + unde + '<button type="button" class="obh-mic" data-obz="sus" aria-label="Mută mai sus: ' + esc(z.text) + '"' + (i ? '' : ' disabled') + '>↑</button>' +
+        '<button type="button" class="obh-mic" data-obz="jos" aria-label="Mută mai jos: ' + esc(z.text) + '"' + (i < n - 1 ? '' : ' disabled') + '>↓</button>' +
+        '<button type="button" class="obh-mic" data-obz="scoate" aria-label="Scoate din zi (verdict Poate): ' + esc(z.text) + '" title="Scoate din zi (verdict „Poate”)">Scoate</button></span>' : '') +
+      '</div></li>';
+  }
   function ziOb() {
-    var zi = obiectiveZi(), ed = poatePune(), peste = zi.length > MAX_OB;
+    var toate = ziCuLoc(), zi = toate.filter(function (z) { return z.loc == null; }), ed = poatePune(), peste = toate.length > MAX_OB, inBlocuri = toate.length - zi.length;
     var ajutor = DATA.obiectiveFel === 'editie' ? 'Din ediție: ediția are propriile obiective, care le înlocuiesc pe cele cu „Da”.'
       : !OBH ? 'Din curs.yml. Cu harvest-obiective.yml (butonul din Obiective), le alegi aici.'
-      : zi.length ? '' : ed ? 'Aici se pun obiectivele zilei: trage un obiectiv din Obiective sau apasă „Pune în zi” pe cartonașul lui.' : 'Aici se pun obiectivele zilei, în editorul local.';
-    var rand = function (o, i) {
-      var k = pieseInZi(i + 1);
-      return '<li class="obz-carte" data-ob="' + esc(o.id || '') + '"><p class="obh-text"><span class="obh-nr">' + (i + 1) + '</span><span>' + esc(o.text) + '</span></p>' +
-        '<div class="mc-jos"><span class="mc-meta"><span class="obh-piese' + (k ? '' : ' lipsa') + '">' + (k ? k + (k === 1 ? ' piesă' : ' piese') + ' în agendă' : 'neacoperit') + '</span></span>' +
-        (ed ? '<span class="obz-act"><button type="button" class="obh-mic" data-obz="sus" aria-label="Mută mai sus: ' + esc(o.text) + '"' + (i ? '' : ' disabled') + '>↑</button>' +
-          '<button type="button" class="obh-mic" data-obz="jos" aria-label="Mută mai jos: ' + esc(o.text) + '"' + (i < zi.length - 1 ? '' : ' disabled') + '>↓</button>' +
-          '<button type="button" class="obh-mic" data-obz="scoate" aria-label="Scoate din zi (verdict Poate): ' + esc(o.text) + '" title="Scoate din zi (verdict „Poate”)">Scoate</button></span>' : '') +
-        '</div></li>';
-    };
+      : zi.length ? '' : inBlocuri ? 'Obiectivele zilei stau acum în blocuri. Trage unul aici dacă e al zilei întregi.'
+      : ed ? 'Aici se pun obiectivele zilei: trage un obiectiv din Obiective sau apasă „Pune în zi” pe cartonașul lui. Îl poți trage și într-un bloc.' : 'Aici se pun obiectivele zilei, în editorul local.';
     return '<div class="masa-bloc obz' + (peste ? ' depasire' : '') + '" id="obz"><p class="masa-bloc-cap"><span class="masa-bloc-nume"><b id="obz-h" tabindex="-1">Obiectivele zilei</b></span>' +
-      '<span class="masa-bloc-total">' + zi.length + ' din ' + MAX_OB + '</span>' + (peste ? '<span class="masa-bloc-stare">peste ' + MAX_OB + ': alege cel mult ' + MAX_OB + '</span>' : '') + '</p>' +
+      '<span class="masa-bloc-total">' + toate.length + ' din ' + MAX_OB + (inBlocuri ? ' · ' + inBlocuri + ' în blocuri' : '') + '</span>' + (peste ? '<span class="masa-bloc-stare">peste ' + MAX_OB + ': alege cel mult ' + MAX_OB + '</span>' : '') + '</p>' +
       (ajutor ? '<p class="masa-col-ajutor sters">' + ajutor + '</p>' : '') +
-      '<ol class="obz-lista" aria-labelledby="obz-h">' + zi.map(rand).join('') + '</ol><p class="mesaj" id="obz-mesaj" role="status"></p></div>';
+      '<ol class="obz-lista" aria-labelledby="obz-h">' + zi.map(function (z, i) { return carteZi(z, i, zi.length, null); }).join('') + '</ol><p class="mesaj" id="obz-mesaj" role="status"></p></div>';
   }
-  /** O schimbare a zilei: { id, verdict?, inainteDe? | dupa? }. O aplicăm pe loc (ordinea lui OB = ordinea din fișier), apoi o scriem. */
+  /** Obiectivele Blocului nr, deasupra pieselor. Fără obiective, nimic: la tragere, tot blocul e țintă (vezi initTragereOb). */
+  function obBloc(nr) {
+    var ale = OBH && DATA.obiectiveFel === 'harvest' ? dinLoc(nr) : [];
+    if (!ale.length) return '';
+    return '<div class="obb" data-bloc="' + nr + '"><ol class="obz-lista obb-lista" aria-label="Obiectivele Blocului ' + nr + '">' +
+      ale.map(function (z, i) { return carteZi(z, i, ale.length, nr); }).join('') + '</ol></div>';
+  }
+  /** O schimbare: { id, verdict?, bloc?, inainteDe? | dupa? }. O aplicăm pe loc (ordinea lui OB = ordinea din fișier), apoi o scriem. */
   function schimbaZi(s, fok) {
     if (!poatePune()) { mesajZi('Obiectivele zilei se pun în editorul local (Editeaza curs.command).'); return; }
     var o = OBID[s.id]; if (!o) return;
-    var inainte = OB.slice(), vechi = o.verdict, cheie = function () { return OB.map(function (x) { return x.id + ':' + x.verdict; }).join(' '); }, k0 = cheie();
+    var inainte = OB.slice(), vechi = o.verdict, vechiBloc = o.bloc;
+    var cheie = function () { return OB.map(function (x) { return x.id + ':' + x.verdict + ':' + (x.bloc == null ? '' : x.bloc); }).join(' '); }, k0 = cheie();
     if (s.verdict) o.verdict = s.verdict;
+    if ('bloc' in s) o.bloc = s.bloc;
+    if (o.verdict !== 'da') o.bloc = null; // ca în lib/obiective.mjs: fără „Da”, fără bloc
     var ref = s.inainteDe || s.dupa;
     if (ref && ref !== s.id && OBID[ref]) { OB.splice(OB.indexOf(o), 1); OB.splice(OB.indexOf(OBID[ref]) + (s.inainteDe ? 0 : 1), 0, o); }
     if (cheie() === k0) return; // e deja acolo
     fokusZi = fok || null; randeaza();
-    trimiteOb({ schimbari: [s] }, function () { o.verdict = vechi; OB.length = 0; [].push.apply(OB, inainte); }, function () {
+    trimiteOb({ schimbari: [s] }, function () { o.verdict = vechi; o.bloc = vechiBloc; OB.length = 0; [].push.apply(OB, inainte); }, function () {
       var n = obiectiveZi().length;
       mesajZi(n > MAX_OB ? n + ' obiective au „Da”; în curs rămân cel mult ' + MAX_OB + '.' : 'Salvat în ' + FO + '.', n > MAX_OB);
     });
   }
-  /** Pune obiectivul în zi: la final sau înaintea altui obiectiv al zilei. */
-  function puneInZi(id, inainteDe, fok) {
+  /**
+   * Mută obiectivul în cutia zilei (bloc null) sau în Blocul bloc, cu „Da”. Locul: înaintea lui inainteDe, altfel la finalul obiectivelor de acolo;
+   * într-un loc gol, un obiectiv care avea deja „Da” își păstrează numărul, iar unul nou vine după toate obiectivele zilei.
+   */
+  function mutaOb(id, bloc, inainteDe, fok) {
     var o = OBID[id]; if (!o) return;
-    var zi = obiectiveZi().filter(function (z) { return z.id !== id; }), s = { id: id };
-    if (o.verdict !== 'da') s.verdict = 'da';
-    if (inainteDe && inainteDe !== id) s.inainteDe = inainteDe; else if (zi.length) s.dupa = zi[zi.length - 1].id;
+    bloc = bloc || null;
+    var s = { id: id }, eraDa = o.verdict === 'da', fara = function (z) { return z.id !== id; };
+    if (!eraDa) s.verdict = 'da';
+    if ((o.bloc == null ? null : o.bloc) !== bloc) s.bloc = bloc;
+    var acolo = dinLoc(bloc).filter(fara), toate = ziCuLoc().filter(fara);
+    if (inainteDe && inainteDe !== id) s.inainteDe = inainteDe;
+    else if (acolo.length) s.dupa = acolo[acolo.length - 1].id;
+    else if (!eraDa && toate.length) s.dupa = toate[toate.length - 1].id;
     schimbaZi(s, fok);
   }
   function actiuneZi(ce, id) {
-    var zi = obiectiveZi(), i = zi.map(function (z) { return z.id; }).indexOf(id); if (i < 0) return;
-    if (ce === 'sus' && i > 0) schimbaZi({ id: id, inainteDe: zi[i - 1].id }, { id: id, ce: 'sus' });
-    else if (ce === 'jos' && i < zi.length - 1) schimbaZi({ id: id, dupa: zi[i + 1].id }, { id: id, ce: 'jos' });
-    else if (ce === 'scoate') { schimbaZi({ id: id, verdict: 'poate' }, { id: id, ce: 'scoate' }); }
+    var z = ziCuLoc().filter(function (x) { return x.id === id; })[0]; if (!z) return;
+    var fr = dinLoc(z.loc), i = fr.map(function (x) { return x.id; }).indexOf(id);
+    if (ce === 'sus' && i > 0) schimbaZi({ id: id, inainteDe: fr[i - 1].id }, { id: id, ce: 'sus' });
+    else if (ce === 'jos' && i < fr.length - 1) schimbaZi({ id: id, dupa: fr[i + 1].id }, { id: id, ce: 'jos' });
+    else if (ce === 'scoate') schimbaZi({ id: id, verdict: 'poate' }, { id: id, ce: 'scoate' });
   }
-  /** Tragerea unui cartonaș din Obiective în cutie (mouse). Pe tabletă și cu tastatura: „Pune în zi”. */
-  function initTragereOb(z) {
+  /**
+   * Tragerea obiectivelor cu mouse-ul: din Obiective (z) sau din Flow (col), în cutia zilei sau în orice bloc (oriunde pe bloc).
+   * Pe tabletă și cu tastatura: „Pune în zi” și „Unde”.
+   */
+  function initTragereOb(z, col) {
     var t = null;
-    z.addEventListener('pointerdown', function (ev) {
-      var li = ev.target.closest('.obh-carte'); if (!li || ev.target.closest('button') || ev.button > 0 || ev.pointerType !== 'mouse' || !poatePune()) return;
-      t = { li: li, id: li.getAttribute('data-ob'), x: ev.clientX, y: ev.clientY, sx: scrollX, sy: scrollY, p: ev.pointerId, activ: false };
-    });
-    var sub = function (ev) { var e = document.elementFromPoint(ev.clientX, ev.clientY); return e && e.closest ? e.closest('#obz') : null; };
+    var porneste = function (ev, sel) {
+      var li = ev.target.closest(sel); if (!li || ev.target.closest('button, select') || ev.button > 0 || ev.pointerType !== 'mouse' || !poatePune()) return;
+      t = { li: li, id: li.getAttribute('data-ob'), dinOb: sel === '.obh-carte', x: ev.clientX, y: ev.clientY, sx: scrollX, sy: scrollY, p: ev.pointerId, activ: false, tinta: null };
+    };
+    z.addEventListener('pointerdown', function (ev) { porneste(ev, '.obh-carte'); });
+    if (col) col.addEventListener('pointerdown', function (ev) { porneste(ev, '.obz-carte'); });
+    var sub = function (ev) {
+      var e = document.elementFromPoint(ev.clientX, ev.clientY); if (!e || !e.closest) return null;
+      var c = e.closest('#obz'); if (c) return { el: c, bloc: null, lista: c.querySelector('.obz-lista') };
+      var b = e.closest('.masa-bloc[data-bloc]'); if (b) return { el: b, bloc: +b.getAttribute('data-bloc'), lista: b.querySelector('.obb-lista') };
+      return null;
+    };
+    var marcheaza = function (x) { if (t.tinta && (!x || t.tinta !== x.el)) t.tinta.classList.remove('tinta'); t.tinta = x ? x.el : null; if (x) x.el.classList.add('tinta'); };
     document.addEventListener('pointermove', function (ev) {
       if (!t || ev.pointerId !== t.p) return;
       if (!t.activ) {
@@ -549,18 +595,22 @@
       ev.preventDefault();
       if (ev.clientY < 50) scrollBy(0, -12); else if (ev.clientY > innerHeight - 50) scrollBy(0, 12);
       t.li.style.transform = 'translate(' + (ev.clientX - t.x + scrollX - t.sx) + 'px,' + (ev.clientY - t.y + scrollY - t.sy) + 'px)';
-      var c = $('obz'), s = sub(ev); if (c) c.classList.toggle('tinta', !!s);
+      marcheaza(sub(ev));
     });
     var gata = function (ev) {
       if (!t || ev.pointerId !== t.p) return;
       var x = t; t = null;
       if (!x.activ) return;
+      var tinta = ev.type === 'pointerup' ? sub(ev) : null, inainte = null;
+      if (tinta && tinta.lista) [].some.call(tinta.lista.querySelectorAll('.obz-carte'), function (li) {
+        if (li === x.li) return false;
+        var r = li.getBoundingClientRect(); if (ev.clientY < r.top + r.height / 2) { inainte = li.getAttribute('data-ob'); return true; } return false;
+      });
       x.li.classList.remove('trage'); x.li.style.transform = ''; document.body.classList.remove('obz-tragere');
-      var c = $('obz'); if (c) c.classList.remove('tinta');
-      if (ev.type !== 'pointerup' || !sub(ev)) return;
-      var inainte = null;
-      [].some.call(c.querySelectorAll('.obz-carte'), function (li) { var r = li.getBoundingClientRect(); if (ev.clientY < r.top + r.height / 2) { inainte = li.getAttribute('data-ob'); return true; } return false; });
-      fokusOb = x.id; puneInZi(x.id, inainte);
+      if (x.tinta) x.tinta.classList.remove('tinta');
+      if (!tinta) return;
+      if (x.dinOb) fokusOb = x.id;
+      mutaOb(x.id, tinta.bloc, inainte);
     };
     document.addEventListener('pointerup', gata);
     document.addEventListener('pointercancel', gata);
@@ -568,11 +618,11 @@
 
   function initOb() {
     var z = $('obh'); if (!z) return;
-    initTragereOb(z);
+    initTragereOb(z, $('masa-coloane'));
     z.addEventListener('click', function (ev) {
       var b = ev.target.closest('button'); if (!b) return;
       if (b.hasAttribute('data-fisa-ob')) { deschideFisa(b.getAttribute('data-fisa-ob'), 'obiectiv'); return; }
-      if (b.hasAttribute('data-pune')) { fokusOb = b.getAttribute('data-pune'); puneInZi(fokusOb); return; }
+      if (b.hasAttribute('data-pune')) { fokusOb = b.getAttribute('data-pune'); mutaOb(fokusOb, null); return; }
       if (b.hasAttribute('data-ov')) { verdictOb(b.closest('.obh-carte').getAttribute('data-ob'), b.getAttribute('data-ov')); return; }
       if (b.id === 'obh-viz-ed') { vizEdit = true; randeazaOb(); var t = $('obh-viz-text'); t.focus(); t.setSelectionRange(t.value.length, t.value.length); return; }
       if (b.id === 'obh-viz-renunta') { vizEdit = false; randeazaOb(); $('obh-viz-ed').focus(); return; }
@@ -658,10 +708,15 @@
     initFisa(); initOb();
     col.addEventListener('click', function (ev) {
       var zb = ev.target.closest('button[data-obz]'); if (zb) { actiuneZi(zb.getAttribute('data-obz'), zb.closest('.obz-carte').getAttribute('data-ob')); return; }
-      var fb =ev.target.closest('button[data-fisa]'); if (fb) { deschideFisa(fb.getAttribute('data-fisa')); return; }
+      var fb = ev.target.closest('button[data-fisa]'); if (fb) { deschideFisa(fb.getAttribute('data-fisa')); return; }
       var b = ev.target.closest('button[data-v]'); if (!b) return;
       var li = b.closest('.masa-carte'); fokus = li.getAttribute('data-id');
       verdict(fokus, b.getAttribute('data-v'));
+    });
+    col.addEventListener('change', function (ev) {
+      var u = ev.target.closest && ev.target.closest('select[data-obz="unde"]'); if (!u) return;
+      var id = u.closest('.obz-carte').getAttribute('data-ob');
+      mutaOb(id, u.value ? +u.value : null, null, { id: id, ce: 'unde' });
     });
     col.addEventListener('keydown', function (ev) {
       var li = ev.target.classList && ev.target.classList.contains('masa-carte') ? ev.target : null; if (!li || ev.metaKey || ev.ctrlKey || ev.altKey) return;

@@ -535,7 +535,20 @@ main > section#masa { max-width: 1440px; }
 #obz-mesaj.eroare { color: var(--cronometru-gata); }
 .obh-carte.trage { position: relative; z-index: 5; opacity: .9; box-shadow: 0 0 0 2px var(--t-accent); pointer-events: none; cursor: grabbing; }
 .obz-tragere, .obz-tragere * { user-select: none; -webkit-user-select: none; cursor: grabbing; }
-@media (pointer: coarse) { .obz-act button { min-height: 40px; min-width: 44px; } }
+/* Obiectivul blocului (Alex, 2026-11-20): deasupra pieselor blocului, fără timp. Fără obiective, blocul nu are zonă:
+   în timpul tragerii, tot blocul e țintă (contur, fără să mute nimic în pagină). */
+.obb { margin: 0 0 .35rem; }
+.obb-lista { min-height: 0; padding: .25rem; background: color-mix(in srgb, var(--t-accent) 7%, transparent); }
+.masa-bloc.tinta .obb-lista { box-shadow: inset 0 0 0 2px var(--t-accent); }
+.obz-tragere .masa-bloc[data-bloc] { outline: 1px dashed color-mix(in srgb, var(--t-accent) 55%, transparent); outline-offset: 2px; border-radius: 12px; }
+.obz-tragere .masa-bloc[data-bloc].tinta { position: relative; outline: 2px solid var(--t-accent); }
+.masa-bloc[data-bloc].tinta::before { content: "Obiectivul blocului"; position: absolute; z-index: 4; top: -.55rem; left: 50%; transform: translateX(-50%); padding: 0 .5rem; border-radius: 999px; font-size: .72rem; line-height: 1.1rem; white-space: nowrap; background: var(--t-accent); color: var(--t-pe-accent); pointer-events: none; }
+.obz-carte.trage { position: relative; z-index: 5; opacity: .9; box-shadow: 0 0 0 2px var(--t-accent); pointer-events: none; cursor: grabbing; }
+.poate-trage-zi .obz-carte { cursor: grab; }
+.obz-act { flex-wrap: wrap; justify-content: flex-end; }
+.obz-unde { font: inherit; font-size: .76rem; padding: .05rem .25rem; max-width: 7.5rem; }
+.obh-loc { font-size: .74rem; color: var(--t-sters); }
+@media (pointer: coarse) { .obz-act button, .obz-unde { min-height: 40px; min-width: 44px; } }
 @media print { .obz-act, .obh-pune { display: none; } }
 @media (pointer: coarse) { .obh-carte .mc-verdict button { min-height: 40px; min-width: 44px; } }
 @media print { .obh .mc-verdict, #obh-nou, #obh-viz-ed { display: none; } }

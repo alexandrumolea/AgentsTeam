@@ -475,6 +475,7 @@ export function citesteCurs(folder, { editie: numeEditie } = {}) {
   if (editie.obiective !== undefined && editie.obiective !== null) { sursaOb = `ediția ${aleasa}`; felOb = 'editie'; zi = (citesteObiective(editie.obiective, sursaOb) ?? []).map((text) => ({ id: null, text })); }
   else if (ho) {
     sursaOb = FISIER_OB; felOb = 'harvest'; zi = ho.obiective.filter((o) => o.verdict === 'da').map((o) => ({ id: o.id, text: o.text }));
+    for (const o of ho.obiective) if (o.bloc != null && o.bloc > blocuri.length) avertismente.push(`${FISIER_OB}: obiectivul „${o.id}” are bloc: ${o.bloc}, dar ziua are ${blocuri.length} ${blocuri.length === 1 ? 'bloc' : 'blocuri'}; îl arăt în cutia zilei`);
     if (zi.length > MAX_OB) avertismente.push(`${FISIER_OB}: ${zi.length} obiective au „da”; în curs rămân cel mult ${MAX_OB} (docs/procese/curs-nou.md, pasul 3). Alege-le pe cele mai importante`);
     const dinCurs = Array.isArray(curs.obiective) ? curs.obiective.map((x) => String(x).trim()) : null;
     if (dinCurs && dinCurs.join('\n') !== zi.map((o) => o.text).join('\n')) avertismente.push(`curs.yml: „obiective” nu se mai folosește; obiectivele zilei vin din ${FISIER_OB} (cele cu „da”). Șterge lista din curs.yml, ca să nu încurce`);

@@ -51,11 +51,12 @@ Păstrează sub 150 de rânduri. Comprimă când crește. Fapte, nu povești.
 
 - 2026-11-20: harvest de obiective: un fixture comun importat dintr-un `*.test.mjs` rulează testele acelui fișier (node:test). Fixture-urile comune stau în module separate (`teste/obiective-exemplu.mjs`). Când migrez date ale colegilor (harvest.yml), verific mtime-ul chiar atunci, fac copie în .editor-istoric și compar YAML-ul înainte/după fără câmpul schimbat.
 - 2026-11-20: un element nou deasupra unei liste împinge ținte de tragere din fereastra testelor Chrome (chrome-fisa, 1200 px). Rulez toate suitele Chrome, nu doar pe a mea. Tabul de terminal al lui Alex (c1) nu îl pot opri; repornirea editorului o cer lui Tudor.
+- 2026-11-20: o țintă de tragere care apare abia la începutul tragerii mută layout-ul sub cursor (și coordonatele testelor). Țintă fără mutare: contur/outline pe zona existentă. Testele de tragere au nevoie de ambele capete în fereastră: mărește înălțimea emulată.
 
 ## Fișiere de memorie
 - [Stack și găzduire](project_stack-hosting.md) — GitHub Pages (D-036–D-038), CNAME ignorat la Actions; fapte Netlify/Cloudflare/Vercel
 - [Generatorul paginii echipei](generator-echipa.md) — Mike îl deține; puncte fragile tăcute; 2026-11-17: panoul de control, maparea statusurilor
-- [Generatorul de curs](project_generator-curs.md) — 2026-11-17: curs/ v1.2, Prezintă; 2026-11-18: pauze fixe/blocuri, Masa (masa.yml); 2026-11-19: fișa piesei, rebuild la refresh; 2026-11-20: tipul challenge, fișa editabilă, biblioteca core, harvest de obiective
+- [Generatorul de curs](project_generator-curs.md) — 2026-11-17: curs/ v1.2, Prezintă; 2026-11-18: pauze fixe/blocuri, Masa (masa.yml); 2026-11-19: fișa piesei, rebuild la refresh; 2026-11-20: tipul challenge, fișa editabilă, biblioteca core, harvest de obiective, obiectivul blocului
 - [Tema: culori, gradient, fonturi](project_tema-culori.md) — 2026-11-17: content/tema.yml → CSS, scenă, OG, contrast la build; branding BEMORE (D-057)
 
 ## Deschis
