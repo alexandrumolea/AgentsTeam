@@ -48,7 +48,7 @@ Păstrează sub 150 de rânduri. Comprimă când crește. Fapte, nu povești.
 ## Fișiere de memorie
 - [Stack și găzduire](project_stack-hosting.md) — GitHub Pages (D-036–D-038), CNAME ignorat la Actions; fapte Netlify/Cloudflare/Vercel
 - [Generatorul paginii echipei](generator-echipa.md) — Mike îl deține; puncte fragile tăcute; 2026-11-17: panoul de control, maparea statusurilor
-- [Generatorul de curs](project_generator-curs.md) — 2026-11-17: curs/ v1.2, Prezintă; 2026-11-18: pauze fixe/blocuri, Masa (masa.yml); 2026-11-19: fișa piesei, rebuild la refresh
+- [Generatorul de curs](project_generator-curs.md) — 2026-11-17: curs/ v1.2, Prezintă; 2026-11-18: pauze fixe/blocuri, Masa (masa.yml); 2026-11-19: fișa piesei, rebuild la refresh; 2026-11-20: tipul challenge
 - [Tema: culori, gradient, fonturi](project_tema-culori.md) — 2026-11-17: content/tema.yml → CSS, scenă, OG, contrast la build; branding BEMORE (D-057)
 
 ## Deschis

@@ -16,16 +16,16 @@ export const FEL = {
   teorie: 'teorie', model: 'teorie', poveste: 'teorie',
   reflectie: 'reflectie', deschidere: 'reflectie', inchidere: 'reflectie',
   mesaj: 'mesaj',
-  exercitiu: 'exercitiu', energizant: 'exercitiu',
+  exercitiu: 'exercitiu', energizant: 'exercitiu', challenge: 'exercitiu', // challenge: ecranele exercițiului până propune Ioana altele (D-075)
   pauza: 'pauza',
 };
 const ETICHETA_TIP = {
   teorie: 'Teorie', model: 'Model', poveste: 'Poveste', reflectie: 'Reflecție', deschidere: 'Deschidere', inchidere: 'Închidere',
-  mesaj: 'Mesaj cheie', exercitiu: 'Exercițiu', energizant: 'Energizant', pauza: 'Pauză',
+  mesaj: 'Mesaj cheie', exercitiu: 'Exercițiu', challenge: 'Challenge', energizant: 'Energizant', pauza: 'Pauză',
 };
 const FORMAT_SALA = { individual: 'singur', perechi: 'în perechi', grup: 'în grup', plen: 'toată sala' };
 const TIP = {
-  teorie: 'teorie', exercitiu: 'exercițiu', reflectie: 'reflecție', mesaj: 'mesaj', pauza: 'pauză',
+  teorie: 'teorie', exercitiu: 'exercițiu', challenge: 'challenge', reflectie: 'reflecție', mesaj: 'mesaj', pauza: 'pauză',
   model: 'model', poveste: 'poveste', energizant: 'energizant', deschidere: 'deschidere', inchidere: 'închidere',
 };
 const NUME_FAMILIE = { continut: 'conținut', activitate: 'activitate', punte: 'punte' };
@@ -225,7 +225,11 @@ const titluR = (r) => (r.fel === 'pauza' ? r.titlu : r.fel === 'piesa' ? r.piesa
 // Previzualizare: cronometrul arată durata și nu se leagă de cronometrul din Prezintă (fără data-cron).
 const ecranStatic = (x) => `<div class="cadru"><div class="ecran fel-${x.fel}">${x.html.replace(' data-cron>', '>')}</div></div>`;
 /** Tipul, cu semnul felului lui (același semn ca pe ecranele din sală și în banda din ecranul de comandă). */
-const tipSemn = (tip) => `<span class="tip"><span class="semn-mic fel-${FEL[tip] ?? 'teorie'}" aria-hidden="true"></span>${TIP[tip] ?? e(tip)}</span>`;
+// Semnul mic din Harvest și Bibliotecă: al felului; challenge-ul are semnul lui (◆), deși în sală e încă exercițiu (D-075).
+const semnMic = (tip) => `semn-mic fel-${FEL[tip] ?? 'teorie'}${tip === 'challenge' ? ' semn-challenge' : ''}`;
+// În Bibliotecă, eticheta de tip e text; doar challenge-ul primește și rombul, ca să se vadă printre exerciții.
+const semnChallenge = (tip) => (tip === 'challenge' ? `<span class="${semnMic(tip)}" aria-hidden="true"></span> ` : '');
+const tipSemn = (tip) => `<span class="tip"><span class="${semnMic(tip)}" aria-hidden="true"></span>${TIP[tip] ?? e(tip)}</span>`;
 
 /** Totalul zilei și diferența față de durata_zi, în Ziua și în Schiță (D-053). */
 function totalZi(c) {
@@ -388,7 +392,7 @@ function vedereaBanca(c) {
     return `<details class="ex" id="ex-${e(x.id)}" data-familie="${e(x.familie ?? '')}" data-tip="${e(x.tip)}" data-format="${e(x.format ?? '')}" data-energie="${e(x.energie ?? '')}" data-durata="${x.durata}" data-stare="produsa" data-folosit="${randuriAzi.length ? 1 : 0}" data-module="${mod.map((m) => e(m.id)).join(' ')}" data-etichete="|${x.etichete.map((t) => e(t.cheie)).join('|')}|" data-cauta="${e(cauta)}">
 <summary><span class="ex-rand"><span class="ex-durata"><b>${x.durata}</b> min</span>
 <span class="ex-cap"><span class="ex-titlu">${e(x.titlu)}</span>${x.obiectiv || x.ancora ? `<span class="ex-obiectiv">${e(x.obiectiv || x.ancora)}</span>` : ''}${badgeAzi}${x.etichete.length ? `<span class="ex-etichete">${x.etichete.map((t) => `<button type="button" class="et-chip" data-eticheta="${e(t.cheie)}" title="Arată toate piesele cu eticheta „${e(t.text)}”">${e(t.text)}</button>`).join('')}</span>` : ''}</span>
-<span class="ex-meta">${x.format ? `<span class="ex-format">${e(x.format)}</span>` : ''}${energie}${x.tip !== 'exercitiu' ? `<span class="ex-tip ex-tip-${e(x.familie ?? '')}">${TIP[x.tip] ?? e(x.tip)}</span>` : ''}</span><button type="button" class="prezinta-piesa" data-prezinta="${e(x.id)}" aria-label="Prezintă piesa ${e(x.titlu)}" title="Pune ecranele piesei după ecranul de acum și sari la ele">Prezintă</button><span class="ex-semn" aria-hidden="true"></span></span></summary>
+<span class="ex-meta">${x.format ? `<span class="ex-format">${e(x.format)}</span>` : ''}${energie}${x.tip !== 'exercitiu' ? `<span class="ex-tip ex-tip-${e(x.familie ?? '')}">${semnChallenge(x.tip)}${TIP[x.tip] ?? e(x.tip)}</span>` : ''}</span><button type="button" class="prezinta-piesa" data-prezinta="${e(x.id)}" aria-label="Prezintă piesa ${e(x.titlu)}" title="Pune ecranele piesei după ecranul de acum și sari la ele">Prezintă</button><span class="ex-semn" aria-hidden="true"></span></span></summary>
 <div class="ex-detalii">
 ${x.obiectiv ? `<p class="ex-obiectiv-tot">${e(x.obiectiv)}</p>` : ''}
 <div class="ex-fise">
@@ -410,7 +414,7 @@ ${x.segmente.map((s) => piesa(s, sursaPiesa(x), randeaza, x.id, c.curs.marca)).j
     return `<details class="ex ex-de-produs" id="ex-${e(x.id)}" data-familie="${e(familie)}" data-tip="${e(x.tip)}" data-format="" data-energie="" data-durata="${x.durata}" data-stare="de-produs" data-folosit="0" data-module="" data-etichete="||" data-cauta="${e(cauta)}">
 <summary><span class="ex-rand"><span class="ex-durata"><b>${x.durata}</b> min</span>
 <span class="ex-cap"><span class="ex-titlu">${e(x.titlu)}</span>${x.scop ? `<span class="ex-obiectiv">${e(x.scop)}</span>` : ''}</span>
-<span class="ex-meta"><span class="de-produs-semn">de produs</span>${x.tip ? `<span class="ex-tip ex-tip-${e(familie)}">${TIP[x.tip] ?? e(x.tip)}</span>` : ''}</span><span class="ex-semn" aria-hidden="true"></span></span></summary>
+<span class="ex-meta"><span class="de-produs-semn">de produs</span>${x.tip ? `<span class="ex-tip ex-tip-${e(familie)}">${semnChallenge(x.tip)}${TIP[x.tip] ?? e(x.tip)}</span>` : ''}</span><span class="ex-semn" aria-hidden="true"></span></span></summary>
 <div class="ex-detalii"><div class="ex-fise">
 <div><p class="eticheta">În Harvest</p><p>Sursa: ${x.sursa ? e(x.sursa) : '<span class="sters">–</span>'}${x.bloc ? ` · blocul ${x.bloc}` : ''}</p></div>
 <div><p class="eticheta">De produs</p><p>Nu are încă fișierul <code>piese/${e(x.id)}.md</code>, deci nici ecrane.</p></div>

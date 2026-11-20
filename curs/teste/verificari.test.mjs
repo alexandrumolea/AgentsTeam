@@ -178,6 +178,22 @@ test('piesă: „module” cu un id inexistent', () => opreste((e) => e('piese/p
 test('piesă: cronometru mai lung decât piesa', () => opreste((e) => e('piese/perechi-curba.md', (s) => s.replace('cronometru=10', 'cronometru=16')), /mai lung decât durata/));
 test('piesă: nota trainerului copiată în textul ei', () => opreste((e) => e('piese/perechi-curba.md', (s) => s + '\nFormează perechi între oameni care nu lucrează zilnic împreună.\n'), /exportul conține text din/));
 test('marcaj scris greșit (::piesa)', () => opreste((e) => e('02-curba-schimbarii.md', (s) => s.replace('::piese', '::piesa')), /nu e cunoscut/));
+// Challenge (D-075, Alex, 2026-11-20): tip nou de piesă, familia activitate; în sală are ecranele exercițiului, în Harvest și Bibliotecă semnul ◆.
+test('challenge: piesa și candidata trec validarea, cu eticheta și semnul lor', () => {
+  const r = cu((e, f) => {
+    writeFileSync(f('piese/planul-meu.md'), '---\ntitlu: "Planul meu pentru AI"\ndurata: 10\ntip: challenge\nformat: perechi\nenergie: mediu\nobiectiv: "Fiecare spune un plan concret"\n---\n\n:::sala cronometru=8\n**Care e planul tău pentru AI Literacy?**\n:::\n');
+    e('harvest.yml', (s) => s + '  - id: provocarea-zilei\n    titlu: "Provocarea zilei"\n    durata: 10\n    tip: challenge\n    sursa: Alex\n    verdict: nou\n');
+    AG('  - planul-meu\n  - deschidere')(e);
+  }); ok(r);
+  assert.ok(!r.avertismente.some((a) => /challenge/.test(a)), r.avertismente.join('\n'));
+  const d = date(r);
+  assert.equal(d.masa.candidate.find((c) => c.id === 'provocarea-zilei').tip, 'challenge');
+  const h = html(r);
+  assert.match(h, /semn-mic fel-exercitiu semn-challenge/, 'semnul ◆ în agendă și Bibliotecă');
+  assert.match(h, /Challenge · Planul meu pentru AI/, 'ecranul din sală poartă eticheta „Challenge”');
+  assert.match(h, /class="ecran fel-exercitiu/, 'și stilul exercițiului (familia activitate)');
+});
+test('challenge: fără format, energie, obiectiv se oprește, ca orice activitate', () => opreste((e, f) => writeFileSync(f('piese/planul-meu.md'), '---\ntitlu: "x"\ndurata: 5\ntip: challenge\n---\nx\n'), /lipsește „format”.*activități/));
 test('marcajul ::piese într-o piesă', () => opreste((e) => e('piese/perechi-curba.md', (s) => s + '\n::piese\n'), /doar într-un modul/));
 test('avertisment: piesă aleasă la un modul care nu e în lista ei', () => {
   const r = cu(AG('  - deschidere\n  - modul: pasul-de-luni\n    piese: [perechi-curba]')); ok(r);

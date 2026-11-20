@@ -8,11 +8,13 @@ import { parse as parseYaml } from 'yaml';
 import { normal } from './randare.mjs';
 
 export const STRATURI = ['sala', 'sala-si-curs', 'trainer', 'participant'];
-export const TIPURI = ['teorie', 'exercitiu', 'reflectie', 'mesaj', 'pauza'];
+export const TIPURI = ['teorie', 'exercitiu', 'challenge', 'reflectie', 'mesaj', 'pauza'];
+// Challenge (D-075, Alex, 2026-11-20): o întrebare care cere un răspuns concret despre o situație reală a participantului.
+// Familia activitate; în sală are deocamdată ecranele exercițiului (nota vizuală proprie o propune Ioana).
 // Piesele: tipul alege familia, iar familia alege lumea Ive a ecranelor (1.9). Pauza e o piesă din familia punte.
 export const FAMILIE = {
   teorie: 'continut', model: 'continut', poveste: 'continut',
-  exercitiu: 'activitate', reflectie: 'activitate', energizant: 'activitate',
+  exercitiu: 'activitate', challenge: 'activitate', reflectie: 'activitate', energizant: 'activitate',
   deschidere: 'punte', inchidere: 'punte', mesaj: 'punte', pauza: 'punte',
 };
 export const TIPURI_PIESA = Object.keys(FAMILIE);

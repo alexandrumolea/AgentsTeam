@@ -33,7 +33,7 @@ Detaliile sunt în documentul lui Radu (1.2–1.7). Un modul:
 id: curba                 # stabil, litere mici și cratimă
 titlu: "Ce se întâmplă cu noi când se schimbă ceva"
 durata: 50                # minute
-tip: teorie               # teorie · exercitiu · reflectie · mesaj · pauza (alege culoarea ecranelor)
+tip: teorie               # teorie · exercitiu · challenge · reflectie · mesaj · pauza (alege culoarea ecranelor)
 ancora: "Curba, nu linia"
 schita: ["…", "…", "…"]   # cel mult 3 puncte, cel mult 8 cuvinte fiecare
 materiale: ["flipchart"]  # opțional
@@ -170,6 +170,7 @@ Patru feluri, ca Alex să recunoască tipul dintr-o privire, pe proiector și î
 | Reflecție | `reflectie`, `deschidere`, `inchidere` | navy, semn ● de aur, text mare la stânga, un cerc subțire în dreapta |
 | Mesaj cheie | `mesaj` | câmp teal, semn ▬, o idee foarte mare, în centru, sub o linie groasă |
 | Pauză | `pauza` | salvie, semn ‖, totul în centru, cronometrul foarte mare |
+| Challenge (D-075) | `challenge`: o întrebare care cere un răspuns concret despre o situație reală a participantului; familia activitate (`format`, `energie`, `obiectiv` obligatorii) | deocamdată ecranele exercițiului, cu eticheta „Challenge”; în Harvest, Bibliotecă și agendă are semnul ◆. Nota vizuală proprie din sală o propune Ioana |
 
 Fiecare ecran are sus eticheta felului (de exemplu „Exercițiu · Unde sunt eu pe curbă”). În ecranul de comandă, sub „Acum”, **banda zilei** arată câte un semn pentru fiecare ecran, în ordine; un click sare la ecranul ales. Felul îl alege `FEL` din `lib/trainer.mjs`.
 

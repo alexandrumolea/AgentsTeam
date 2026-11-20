@@ -186,6 +186,8 @@ article.modul.sarit { opacity: .5; }
 .semn-mic.fel-mesaj { width: 16px; height: 6px; vertical-align: 2px; background: var(--fel-mesaj-fundal); }
 .semn-mic.fel-exercitiu { width: 12px; height: 14px; clip-path: polygon(0 0, 100% 50%, 0 100%); background: var(--fel-exercitiu-semn); }
 .semn-mic.fel-pauza { background: linear-gradient(to right, var(--fel-pauza-accent) 0 34%, transparent 34% 66%, var(--fel-pauza-accent) 66%); }
+/* Challenge (D-075): romb ◆, în culoarea exercițiului. Doar semnul mic din Harvest și Bibliotecă; ecranul din sală e al exercițiului. */
+.semn-mic.semn-challenge { width: 12px; height: 12px; clip-path: polygon(50% 0, 100% 50%, 50% 100%, 0 50%); background: var(--fel-exercitiu-semn); }
 .tip .semn-mic { margin-right: .4em; }
 
 /* Fereastra sălii și „Prezintă aici” */

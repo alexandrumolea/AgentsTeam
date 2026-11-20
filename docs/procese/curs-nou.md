@@ -44,6 +44,17 @@ Panoul acestei etape e vederea **Harvest** din materialul trainerului (fostă �
 3. **Flow:** începem firul roșu. Piesele „da” se așază în cele 4 blocuri ale zilei. Daria verifică timpii (fiecare bloc încape) și că fiecare obiectiv are cel puțin o piesă. Andrei verifică firul înainte să ajungă la Alex.
 - **Finalul etapei: firul roșu.**
 - **O piesă = o singură linie:** `id`, `titlu`, `scop`, `durata`, `tip`, `sursa`, `verdict` (nou / da / poate / nu), `bloc` (1–4), `ordine`. Fără text de slide, fără desene, fără ecrane. Așa consumăm puțini tokeni și Alex vede tot dintr-o privire.
+- **Fișa piesei:** detaliile stau în `harvest/<id>.md`, lângă rând. Se deschide din Harvest cu butonul „Fișa”.
+
+#### Harvest pas cu pas (Alex, 2026-11-19, primele 5 piese din Change Agility)
+1. **Alex dă piesa** în orice formă. Tudor creează fișa și trece textul lui exact, la „Ce mi-a dat Alex”. Comentariile ulterioare ale lui Alex se adaugă tot acolo, cu dată.
+2. **Irina:** „Pe scurt” și, doar dacă găsește research relevant, „Pentru trainer”: ce spune research-ul, unde susține și unde nuanțează ideea lui Alex, cum o folosești în sală (frază, întrebare, obiecție). Fiecare afirmație cu sursă. Un caz real, dacă are.
+3. **Daria:** „Instrucțiunile pentru participanți”, 2–3 „Exemple” (marcate ilustrativ sau real), „Clasificare” (fel, obiectiv, cum se folosește, durată, bloc propus) și „Ecran în sală (propunere)”. Apoi rândul în `harvest.yml`, cu verdict „nou”.
+4. **Cel mult o întrebare pentru Alex** pe piesă, doar dacă e necesară.
+5. **Alex dă verdictul** în Harvest: Da / Poate / Nu.
+- **Ecranul e doar o propunere** în Harvest. Ecranele finale le face Matei în etapa D, după poartă.
+- **Felurile de piese:** exercițiu, knowledge bite, experience, plus **challenge** (D-075): o întrebare care pune participantul față în față cu o situație reală a lui și cere un răspuns concret (ex.: „Care e planul tău pentru AI Literacy?”).
+- **Exercițiile sunt instrucțiuni exacte** (D-075): pașii pe care îi primesc participanții, ca un framework prin care trec. **Folosim des interacțiunea**, ca oamenii să învețe unii de la alții, mult mai mult decât prin reflecție individuală.
 
 ### Poarta: Alex aprobă firul roșu
 Fără ea nu se produce nimic.

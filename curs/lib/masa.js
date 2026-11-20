@@ -14,8 +14,8 @@
   var BLOCURI = DATA.blocuri && DATA.blocuri.length ? DATA.blocuri : [{ nr: 1, start: DATA.editie.start, sfarsit: null, disponibil: null, pauzaDupa: null }];
   var CHEIE = 'curs:' + DATA.curs.slug + ':masa';
   var CAMPURI = ['verdict', 'bloc', 'ordine'];
-  var TIP = { teorie: 'teorie', model: 'model', poveste: 'poveste', exercitiu: 'exercițiu', reflectie: 'reflecție', energizant: 'energizant', deschidere: 'deschidere', inchidere: 'închidere', mesaj: 'mesaj', pauza: 'pauză' };
-  var FEL = { teorie: 'teorie', model: 'teorie', poveste: 'teorie', reflectie: 'reflectie', deschidere: 'reflectie', inchidere: 'reflectie', mesaj: 'mesaj', exercitiu: 'exercitiu', energizant: 'exercitiu', pauza: 'pauza' };
+  var TIP = { teorie: 'teorie', model: 'model', poveste: 'poveste', exercitiu: 'exercițiu', challenge: 'challenge', reflectie: 'reflecție', energizant: 'energizant', deschidere: 'deschidere', inchidere: 'închidere', mesaj: 'mesaj', pauza: 'pauză' };
+  var FEL = { teorie: 'teorie', model: 'teorie', poveste: 'teorie', reflectie: 'reflectie', deschidere: 'reflectie', inchidere: 'reflectie', mesaj: 'mesaj', exercitiu: 'exercitiu', challenge: 'exercitiu', energizant: 'exercitiu', pauza: 'pauza' };
   var VERDICT = { da: 'Da', poate: 'Poate', nu: 'Nu' };
   var json = function (id) { try { return JSON.parse(document.getElementById(id).textContent) || {}; } catch (e) { return {}; } };
   var FISE = json('fise'), IMG = json('imagini'); // fișele incluse la build (offline); în editor se recitesc de pe disc
@@ -120,7 +120,7 @@
 
   // ---------- desenul ----------
   function carte(x) {
-    var meta = (x.tip ? '<span class="mc-tip"><span class="semn-mic fel-' + (FEL[x.tip] || 'teorie') + '" aria-hidden="true"></span>' + esc(TIP[x.tip] || x.tip) + '</span>' : '') +
+    var meta = (x.tip ? '<span class="mc-tip"><span class="semn-mic fel-' + (FEL[x.tip] || 'teorie') + (x.tip === 'challenge' ? ' semn-challenge' : '') + '" aria-hidden="true"></span>' + esc(TIP[x.tip] || x.tip) + '</span>' : '') +
       (x.sursa ? '<span class="mc-sursa">' + esc(x.sursa) + '</span>' : '') +
       (x.produsa ? '<span class="mc-produsa" title="Are deja fișierul în piese/">produsă</span>' : '') +
       (x.nota ? '<span class="mc-nota" title="' + esc(x.nota) + '">notă</span>' : '');
