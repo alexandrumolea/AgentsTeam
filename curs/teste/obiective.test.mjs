@@ -134,6 +134,30 @@ test('editorul: verdict și viziune (comentariile rămân, copie în istoric), c
   } finally { await e.inchide(); }
 });
 
+test('editorul: obiectivele zilei din Flow (pune în zi la final / înaintea altuia, ↑ ↓, scoate = poate); comentariile merg cu rândul', async () => {
+  const d = curs(), e = await editor(d);
+  const zi = () => citesteCurs(d).obiectiveZi.map((o) => o.id);
+  const pune = async (s) => { const r = await e.api('/api/obiective', { schimbari: [s], hash: hashOb(d) }); assert.equal(r.cod, 200, JSON.stringify(r.json)); return r; };
+  try {
+    assert.deepEqual(zi(), ['ob-curba', 'ob-pas']);
+    await pune({ id: 'ob-nou', verdict: 'da', dupa: 'ob-pas' });
+    assert.deepEqual(zi(), ['ob-curba', 'ob-pas', 'ob-nou'], 'pus în zi: la final');
+    assert.match(citeste(d, 'harvest-obiective.yml'), /- id: ob-pas[\s\S]*- id: ob-nou\n\s+text: [^\n]+\n\s+sursa: daria # propunerea Dariei/, 'rândul se mută cu tot cu comentariu');
+    await pune({ id: 'ob-nou', inainteDe: 'ob-pas' });
+    assert.deepEqual(zi(), ['ob-curba', 'ob-nou', 'ob-pas'], '↑');
+    await pune({ id: 'ob-curba', dupa: 'ob-nou' });
+    assert.deepEqual(zi(), ['ob-nou', 'ob-curba', 'ob-pas'], '↓');
+    await pune({ id: 'ob-respins', verdict: 'da', inainteDe: 'ob-nou' });
+    assert.deepEqual(zi(), ['ob-respins', 'ob-nou', 'ob-curba', 'ob-pas'], 'tras înaintea primului');
+    await pune({ id: 'ob-nou', verdict: 'poate' });
+    assert.deepEqual(zi(), ['ob-respins', 'ob-curba', 'ob-pas'], 'scoate = poate');
+    assert.equal(parseYaml(citeste(d, 'harvest-obiective.yml')).obiective.length, 4, 'niciun rând pierdut');
+    assert.equal((await pune({ id: 'ob-pas', dupa: 'ob-pas' })).json.neschimbat, true, 'mutat lângă el însuși: neschimbat');
+    assert.equal((await e.api('/api/obiective', { schimbari: [{ id: 'ob-pas', inainteDe: 'nu-exista' }], hash: hashOb(d) })).cod, 404);
+    assert.equal((await e.api('/api/obiective', { schimbari: [{ id: 'ob-pas', dupa: 'ob-curba' }], hash: 'vechi' })).cod, 409, 'conflict, ca la verdict');
+  } finally { await e.inchide(); }
+});
+
 test('editorul: obiectiv nou (rând + fișă), fișa obiectivului (text + Markdown), fișierul de pornire din curs.yml', async () => {
   const d = curs(), e = await editor(d);
   try {

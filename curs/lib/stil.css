@@ -453,8 +453,8 @@ main > section#masa { max-width: 1440px; }
 .masa-col { min-width: 0; }
 .masa-col > h3 { margin: 0 0 .15rem; }
 .masa-col-ajutor { margin: 0 0 .5rem; font-size: .8rem; }
-.masa-lista { list-style: none; margin: 0; padding: .35rem; min-height: 3.5rem; display: grid; gap: .4rem; border-radius: 12px; background: color-mix(in srgb, var(--t-linie) 22%, transparent); }
-.masa-lista:empty::after { content: "Trage aici"; display: grid; place-items: center; min-height: 2.8rem; font-size: .82rem; color: var(--t-sters); }
+.masa-lista, .obz-lista { list-style: none; margin: 0; padding: .35rem; min-height: 3.5rem; display: grid; gap: .4rem; border-radius: 12px; background: color-mix(in srgb, var(--t-linie) 22%, transparent); }
+.masa-lista:empty::after, .obz-lista:empty::after { content: "Trage aici"; display: grid; place-items: center; min-height: 2.8rem; font-size: .82rem; color: var(--t-sters); }
 .masa-carte { position: relative; display: grid; gap: .2rem; padding: .45rem .55rem .45rem 2.4rem; background: var(--t-suprafata); border: 1px solid var(--t-linie); border-radius: 10px; user-select: none; -webkit-user-select: none; cursor: grab; }
 .masa-carte:focus-visible { outline: 2px solid var(--t-accent); outline-offset: 2px; }
 .masa-carte.trage { opacity: .85; box-shadow: 0 0 0 2px var(--t-accent); pointer-events: none; cursor: grabbing; }
@@ -510,8 +510,8 @@ main > section#masa { max-width: 1440px; }
 .obh-mic { font-size: .76rem; padding: .05rem .5rem; }
 .obh-nota { margin: 0 0 .5rem; font-size: .84rem; }
 .obh-lista { list-style: none; margin: 0; padding: .35rem; display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 19rem), 1fr)); gap: .4rem; border-radius: 12px; background: color-mix(in srgb, var(--t-linie) 22%, transparent); }
-.obh-carte { display: grid; gap: .3rem; align-content: space-between; padding: .45rem .6rem; background: var(--t-suprafata); border: 1px solid var(--t-linie); border-radius: 10px; min-width: 0; }
-.obh-carte:focus-visible { outline: 2px solid var(--t-accent); outline-offset: 2px; }
+.obh-carte, .obz-carte { display: grid; gap: .3rem; align-content: space-between; padding: .45rem .6rem; background: var(--t-suprafata); border: 1px solid var(--t-linie); border-radius: 10px; min-width: 0; }
+.obh-carte:focus-visible, .obz-carte:focus-visible { outline: 2px solid var(--t-accent); outline-offset: 2px; }
 .obh-carte.v-da { border-color: var(--t-text); }
 .obh-carte.v-poate { border-style: dashed; }
 .obh-carte.v-nu { opacity: .5; }
@@ -523,6 +523,20 @@ main > section#masa { max-width: 1440px; }
 #obh-mesaj { margin: .3rem 0 0; }
 #obh-mesaj:empty { display: none; }
 #obh-mesaj.eroare { color: var(--cronometru-gata); }
+/* Obiectivele zilei în Flow (Alex, 2026-11-20): deasupra Blocului 1, fără durată. Tragerea din Obiective, cu mouse-ul. */
+.obz-lista { min-height: 2.6rem; }
+.obz-act { display: inline-flex; gap: .25rem; }
+.obz.tinta .obz-lista { box-shadow: inset 0 0 0 2px var(--t-accent); }
+.obz.depasire .obz-lista { box-shadow: inset 0 0 0 2px var(--cronometru-gata); }
+.masa-bloc.obz { margin-bottom: .6rem; }
+.obh.poate-trage .obh-carte { cursor: grab; }
+#obz-mesaj { margin: .3rem 0 0; font-size: .82rem; }
+#obz-mesaj:empty { display: none; }
+#obz-mesaj.eroare { color: var(--cronometru-gata); }
+.obh-carte.trage { position: relative; z-index: 5; opacity: .9; box-shadow: 0 0 0 2px var(--t-accent); pointer-events: none; cursor: grabbing; }
+.obz-tragere, .obz-tragere * { user-select: none; -webkit-user-select: none; cursor: grabbing; }
+@media (pointer: coarse) { .obz-act button { min-height: 40px; min-width: 44px; } }
+@media print { .obz-act, .obh-pune { display: none; } }
 @media (pointer: coarse) { .obh-carte .mc-verdict button { min-height: 40px; min-width: 44px; } }
 @media print { .obh .mc-verdict, #obh-nou, #obh-viz-ed { display: none; } }
 

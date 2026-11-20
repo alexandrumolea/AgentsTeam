@@ -114,7 +114,7 @@ function scrieDoc(folder, cale, inainte, doc) {
 const gaseste = (lista, id) => lista.items.find((n) => n && typeof n.get === 'function' && String(n.get('id')) === String(id));
 
 /**
- * Schimbările din vederea Harvest: [{ id, verdict?, text?, scoatePiesa? }] și/sau viziune (textul nou).
+ * Schimbările din vederea Harvest: [{ id, verdict?, text?, inainteDe? | dupa?, scoatePiesa? }] și/sau viziune (textul nou).
  * Păstrează comentariile și restul câmpurilor; conflict (409) dacă fișierul s-a schimbat pe disc.
  */
 export function scrieObiective(folder, { schimbari = [], viziune } = {}, hashCitit) {
@@ -127,6 +127,15 @@ export function scrieObiective(folder, { schimbari = [], viziune } = {}, hashCit
     if (!item) throw new EroareEditor(`nu găsesc obiectivul „${String(s?.id).slice(0, 60)}” în ${FISIER_OB}`, 404);
     if ('verdict' in s) { if (!VERDICTE_OB.includes(s.verdict)) throw new EroareEditor(`verdict „${String(s.verdict).slice(0, 20)}” necunoscut`); item.set('verdict', s.verdict); }
     if ('text' in s) item.set('text', unRand(s.text, 'Textul obiectivului'));
+    // Ordinea zilei = ordinea din fișier (Obiectivele zilei din Flow, 2026-11-20): mută rândul înaintea / după alt obiectiv.
+    if (s.inainteDe != null || s.dupa != null) {
+      const ref = s.inainteDe != null ? s.inainteDe : s.dupa, tinta = gaseste(lista, ref);
+      if (!tinta) throw new EroareEditor(`nu găsesc obiectivul „${String(ref).slice(0, 60)}” în ${FISIER_OB}`, 404);
+      if (tinta !== item) {
+        lista.items.splice(lista.items.indexOf(item), 1);
+        lista.items.splice(lista.items.indexOf(tinta) + (s.inainteDe != null ? 0 : 1), 0, item);
+      }
+    }
     if ('scoatePiesa' in s) {
       const p = item.get('piese');
       if (p && Array.isArray(p.items)) p.items = p.items.filter((n) => String(n?.value ?? n) !== String(s.scoatePiesa));

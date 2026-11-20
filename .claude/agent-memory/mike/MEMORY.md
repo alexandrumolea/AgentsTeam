@@ -50,6 +50,7 @@ Păstrează sub 150 de rânduri. Comprimă când crește. Fapte, nu povești.
 - 2026-11-20: biblioteca core: testele cu două cursuri au nevoie de forma reală (`<tmp>/cursuri/a`, `<tmp>/biblioteca`), iar detectarea automată a core-ului merge doar sub `cursuri/`: altfel `../../biblioteca` dintr-un tmp ar ieși în foldere străine. Numele variabilelor din editor.mjs se ciocnesc ușor cu importurile (amprenta): aliasuri.
 
 - 2026-11-20: harvest de obiective: un fixture comun importat dintr-un `*.test.mjs` rulează testele acelui fișier (node:test). Fixture-urile comune stau în module separate (`teste/obiective-exemplu.mjs`). Când migrez date ale colegilor (harvest.yml), verific mtime-ul chiar atunci, fac copie în .editor-istoric și compar YAML-ul înainte/după fără câmpul schimbat.
+- 2026-11-20: un element nou deasupra unei liste împinge ținte de tragere din fereastra testelor Chrome (chrome-fisa, 1200 px). Rulez toate suitele Chrome, nu doar pe a mea. Tabul de terminal al lui Alex (c1) nu îl pot opri; repornirea editorului o cer lui Tudor.
 
 ## Fișiere de memorie
 - [Stack și găzduire](project_stack-hosting.md) — GitHub Pages (D-036–D-038), CNAME ignorat la Actions; fapte Netlify/Cloudflare/Vercel

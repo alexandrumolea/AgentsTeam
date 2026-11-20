@@ -48,6 +48,11 @@ try {
   ok(await v('[...document.querySelectorAll("#obh button[data-ov]")].every(x => x.disabled)'), 'offline: verdictul nu se schimbă (butoane inactive)');
   ok(await v('!document.getElementById("obh-nou") && !document.getElementById("obh-viz-ed")'), 'offline: fără „Obiectiv nou” și fără Editează');
   ok(await v('[...document.querySelectorAll("#masa-rezumat .rz[data-rz=obiective]")].length === 2'), 'rezumatul are 2 obiective (cele cu „Da”)');
+  // Obiectivele zilei în Flow (Alex, 2026-11-20): deasupra Blocului 1, aceleași ca în rezumat, fără durată.
+  ok(await v('(() => { const z = document.getElementById("obz"), b1 = document.querySelector(\'.masa-bloc[data-bloc="1"]\'); return z && z.closest(\'[data-col="agenda"]\') && z.compareDocumentPosition(b1) & Node.DOCUMENT_POSITION_FOLLOWING; })()'), 'Flow: cutia „Obiectivele zilei” stă deasupra Blocului 1');
+  ok(await v('[...document.querySelectorAll("#obz .obz-carte")].map(x => x.dataset.ob + "=" + x.querySelector(".obh-nr").textContent).join(" ") === "ob-curba=1 ob-pas=2" && /2 din 4/.test(document.querySelector("#obz .masa-bloc-total").textContent)'), 'cutia: cele 2 cu „Da”, numerotate ca în zi, „2 din 4”');
+  ok(await v('[...document.querySelectorAll("#obz .obz-carte")].every((x, i) => { const r = document.querySelectorAll("#masa-rezumat .rz[data-rz=obiective]")[i]; const k = x.querySelector(".obh-piese").textContent; return /neacoperit/.test(r.title) ? k === "neacoperit" : r.title.includes(k); })'), 'cutia: numărul de piese din agendă e cel din rezumat');
+  ok(await v('!document.querySelector("#obz button") && !document.querySelector(".obh-pune")'), 'offline: cutia doar se citește (fără butoane, fără „Pune în zi”)');
   await b.click(c, '.obh-carte[data-ob="ob-curba"] .mc-fisa');
   ok(await v('document.getElementById("fisa-dialog").open && /Fișa obiectivului · harvest\\/obiective\\/ob-curba\\.md/.test(document.getElementById("fisa-sursa").textContent) && /Fiecare se vede pe curbă/.test(document.getElementById("fisa-corp").textContent)'), '„Fișa” deschide fișa obiectivului din harvest/obiective/');
   await b.key(c, 'Escape'); await pauza(150);
@@ -110,6 +115,31 @@ try {
   const nou = yml('harvest-obiective.yml').obiective.at(-1);
   ok(nou.verdict === 'nou' && nou.sursa === 'alex' && /om alături/.test(nou.text), 'obiectivul nou e în fișier, cu verdict „nou”');
   ok(await fe(`!!document.querySelector('.obh-carte[data-ob="${nou.id}"]') && document.getElementById("fisa-dialog").open && __fisaEditor.stare() && __fisaEditor.stare().fel === "obiectiv" && __fisaEditor.stare().id === "${nou.id}"`), 'după reîncărcare: cartonașul e acolo, iar fișa lui e deschisă pentru editare');
+  // Obiectivele zilei în Flow, în editor: Pune în zi, ↑, tragerea, limita de 4, Scoate.
+  await fe('document.getElementById("fisa-dialog").close(); 1'); await pauza(300);
+  const totalB1 = await fe('document.querySelector(\'.masa-bloc[data-bloc="1"] .masa-bloc-total\').textContent');
+  const ziY = () => yml('harvest-obiective.yml').obiective.filter((o) => o.verdict === 'da').map((o) => o.id).join(' ');
+  const cutie = () => fe('[...document.querySelectorAll("#obz .obz-carte")].map(x => x.dataset.ob).join(" ")');
+  await b.click(e, '.obh-carte[data-ob="ob-nou"] .obh-pune'); await pauza(900);
+  ok(ziY() === 'ob-curba ob-pas ob-nou' && await cutie() === 'ob-curba ob-pas ob-nou', '„+ Pune în zi”: verdict „da”, la finalul zilei (fișier și cutie)');
+  await b.click(e, '.obz-carte[data-ob="ob-nou"] button[data-obz="sus"]'); await pauza(900);
+  ok(ziY() === 'ob-curba ob-nou ob-pas' && await cutie() === 'ob-curba ob-nou ob-pas', '↑ mută obiectivul în zi (și în fișier)');
+  ok(await fe('document.activeElement && document.activeElement.dataset.obz === "sus" && document.activeElement.closest(".obz-carte").dataset.ob === "ob-nou"'), 'focusul rămâne pe ↑');
+  await fe('scrollTo(0, 0); 1'); await pauza(200);
+  await b.trage(e, '.obh-carte[data-ob="ob-respins"] .obh-text', '#obz .masa-bloc-cap'); await pauza(900);
+  ok(ziY() === 'ob-respins ob-curba ob-nou ob-pas' && await cutie() === 'ob-respins ob-curba ob-nou ob-pas', 'tras din Obiective deasupra primului: „da”, primul în zi');
+  const nouId = yml('harvest-obiective.yml').obiective.find((o) => o.verdict === 'nou').id;
+  await b.click(e, `.obh-carte[data-ob="${nouId}"] .obh-pune`); await pauza(900);
+  ok(await fe('document.getElementById("obz").classList.contains("depasire") && /5 din 4/.test(document.querySelector("#obz .masa-bloc-total").textContent) && /cel mult 4/.test(document.getElementById("obz-mesaj").textContent) && document.getElementById("obz-mesaj").classList.contains("eroare")'), 'al 5-lea: avertismentul (cel mult 4)');
+  await b.click(e, '.obz-carte[data-ob="ob-respins"] button[data-obz="scoate"]'); await pauza(900);
+  ok(yml('harvest-obiective.yml').obiective.find((o) => o.id === 'ob-respins').verdict === 'poate' && !(await fe('document.getElementById("obz").classList.contains("depasire")')), 'Scoate: verdict „poate”, înapoi la 4');
+  ok(await fe('document.querySelector(\'.masa-bloc[data-bloc="1"] .masa-bloc-total\').textContent') === totalB1, 'totalul Blocului 1 nu se schimbă (obiectivele nu au durată)');
+  for (const w of [1360, 800, 375, 320]) {
+    await b.send('Emulation.setDeviceMetricsOverride', { width: w, height: 900, deviceScaleFactor: 1, mobile: w < 700 }, e.sessionId); await pauza(200);
+    const rau = await fe(`[...document.querySelectorAll(".obz-carte")].filter(x => { const r = x.getBoundingClientRect(), l = x.parentNode.getBoundingClientRect(); return r.left < l.left - .5 || r.right > l.right + .5 || x.scrollWidth > x.clientWidth + 1; }).length`);
+    ok(!rau && await fe('document.documentElement.scrollWidth <= innerWidth'), `${w}px: cutia încape, fără derulare orizontală`);
+    if (poze && (w === 1360 || w === 375)) await b.screenshot(e, join(poze, `obiective-zi-${w}.png`));
+  }
   ok(!b.exceptii.length, `nicio eroare JavaScript${b.exceptii.length ? ': ' + b.exceptii.join(' | ') : ''}`);
 } finally { await ed.inchide(); await b.close(); }
 console.log(esecuri ? `\n${esecuri} verificări au eșuat.` : '\nToate verificările au trecut.');

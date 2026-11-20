@@ -56,6 +56,7 @@ try {
   const v0 = await b.evaluate(c, '__masa.stare().find(x => x.id === "studiu-adaptare").verdict');
   await b.click(c, '.masa-carte[data-id="studiu-adaptare"] button[data-v="poate"]');
   ok(v0 === 'nou' && (await b.evaluate(c, '__masa.stare().find(x => x.id === "studiu-adaptare").verdict')) === 'poate' && !(await deschis(c)), 'butoanele de verdict merg ca înainte și nu deschid fișa');
+  await b.evaluate(c, 'scrollTo(0, 300); 1'); // cutia „Obiectivele zilei” (2026-11-20) împinge Blocul 2 sub 1200 px; ambele capete trebuie să fie în fereastră
   await b.trage(c, '.masa-carte[data-id="studiu-adaptare"] .mc-cap', '.masa-lista[data-bloc="2"]');
   ok((await b.evaluate(c, '__masa.stare().find(x => x.id === "studiu-adaptare").bloc')) === 2 && !(await deschis(c)), 'tragerea merge ca înainte');
 
