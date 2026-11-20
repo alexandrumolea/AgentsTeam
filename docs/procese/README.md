@@ -13,6 +13,7 @@
 | [Curs nou](curs-nou.md) (întâi masa, apoi producția) | Andrei | la fiecare curs și la fiecare ediție |
 | [Lansare de invenție](lansare-inventie.md) | Maria | apare un curs, o aplicație sau un tool nou |
 | [Raport săptămânal](raport-saptamanal.md) | Tudor | în fiecare săptămână |
+| [Trello: Planning](trello.md) | Tudor | la fiecare schimbare de task sau idee |
 | [Retrospectiva lunară](retro-lunara.md) | Elena | în fiecare lună |
 | [Review-ul echipei](review-echipa.md) | Tudor | în fiecare lună, după retro |
 | [Automatizare: fiecare flux devine automat](automatizare.md) | Tudor | după ce un flux a mers o dată de mână |
