@@ -1,12 +1,13 @@
 #!/usr/bin/env node
 // Editorul local al cursului (1.11, Alex, 2026-11-17): materialul trainerului, cu butonul „Editează” pe fiecare ecran.
-//   node editor.mjs [<folderul cursului>] [--port 4747] [--fara-browser]
+//   node editor.mjs [<folderul cursului>] [--port 4747] [--fara-browser] [--biblioteca <folderul core>]
 //   npm run editor -- <folder>          (implicit: privat/cursuri/change-agility)
-// Serverul ascultă doar pe 127.0.0.1, cere un token aleator (în linkul deschis la pornire) și scrie doar în folderul cursului.
+// Serverul ascultă doar pe 127.0.0.1, cere un token aleator (în linkul deschis la pornire) și scrie doar în folderul cursului
+// și în biblioteca core (implicit <curs>/../../biblioteca, dacă cursul e în cursuri/; altfel --biblioteca <cale>).
 // Fișierul HTML normal (offline) rămâne exact cum e: editarea se adaugă doar în paginile servite de aici.
 import { createServer } from 'node:http';
 import { readFileSync, writeFileSync, existsSync, readdirSync, statSync } from 'node:fs';
-import { resolve, join, dirname } from 'node:path';
+import { resolve, join, dirname, basename } from 'node:path';
 import { fileURLToPath, pathToFileURL } from 'node:url';
 import { randomBytes, timingSafeEqual } from 'node:crypto';
 import { spawn, spawnSync } from 'node:child_process';
@@ -19,14 +20,18 @@ import { citesteMasa, scrieMasa, adaugaCandidata, agendaDinMasa, textAgenda, inl
 import { TIPURI_PIESA } from './lib/sursa.mjs';
 import { mkdirSync, rmSync } from 'node:fs';
 import { fisaPiesei, fisaDeEditat, scrieFisa, sablonFisa, idDinTitlu, fiseExistente, DOSAR as HARVEST } from './lib/fisa.mjs';
+import { gasesteCore, citesteCore, amprenta as amprentaPiesei, stare as stareCore, STARI, idDinLegatura, trimiteInCore, iaDinCore, adaugaDinCore, PREFIX, Scrieri } from './lib/core.mjs';
 
 const AICI = dirname(fileURLToPath(import.meta.url));
 const IMPLICIT = join(AICI, '..', 'privat', 'cursuri', 'change-agility');
 const MAX_CORP = 256 * 1024;
+const scurt = (p) => p.split('/').slice(-2).join('/');
 
-export async function pornesteEditor({ folder = IMPLICIT, port = 4747, deschide = false, log = console.log } = {}) {
+export async function pornesteEditor({ folder = IMPLICIT, port = 4747, deschide = false, log = console.log, biblioteca } = {}) {
   folder = resolve(folder);
   if (!existsSync(join(folder, 'curs.yml'))) throw new Error(`${folder} nu e folderul unui curs (lipsește curs.yml)`);
+  // Biblioteca core (2026-11-20). biblioteca: null = fără core (testele). Folderul se creează abia la prima trimitere.
+  const core = biblioteca === null ? null : gasesteCore(folder, biblioteca);
   const token = randomBytes(18).toString('hex');
   const out = join(folder, 'dist');
   let amprenta = null; // fișierele cursului la ultimul build (2026-11-19: Daria și Irina scriu și direct pe disc)
@@ -37,15 +42,18 @@ export async function pornesteEditor({ folder = IMPLICIT, port = 4747, deschide 
    *  O piesă nouă, una ștearsă sau una schimbată dau altă amprentă. */
   function amprentaAcum() {
     const parti = [];
-    (function umbla(rel) {
-      let intrari; try { intrari = readdirSync(join(folder, rel), { withFileTypes: true }); } catch { return; }
-      for (const x of intrari) {
-        if (x.name.startsWith('.') || (!rel && x.name === 'dist') || x.name === 'node_modules') continue;
-        const r = rel ? `${rel}/${x.name}` : x.name;
-        if (x.isDirectory()) umbla(r);
-        else if (x.isFile()) { try { const st = statSync(join(folder, r)); parti.push(`${r}:${st.mtimeMs}:${st.size}`); } catch { /* șters între timp */ } }
-      }
-    })('');
+    // Și core: o piesă schimbată din alt curs schimbă starea cartonașelor de aici („nouă în core”).
+    for (const [radacina, eticheta] of [[folder, ''], ...(core ? [[core, 'core:']] : [])]) {
+      (function umbla(rel) {
+        let intrari; try { intrari = readdirSync(join(radacina, rel), { withFileTypes: true }); } catch { return; }
+        for (const x of intrari) {
+          if (x.name.startsWith('.') || (!rel && x.name === 'dist') || x.name === 'node_modules') continue;
+          const r = rel ? `${rel}/${x.name}` : x.name;
+          if (x.isDirectory()) umbla(r);
+          else if (x.isFile()) { try { const st = statSync(join(radacina, r)); parti.push(`${eticheta}${r}:${st.mtimeMs}:${st.size}`); } catch { /* șters între timp */ } }
+        }
+      })('');
+    }
     return parti.sort().join('|');
   }
   /** La deschiderea paginii: dacă un fișier al cursului s-a schimbat pe disc de la ultimul build, build din nou. */
@@ -59,7 +67,7 @@ export async function pornesteEditor({ folder = IMPLICIT, port = 4747, deschide 
   function construieste() {
     amprenta = amprentaAcum(); // înainte de build: o scriere din timpul build-ului cere încă un build data viitoare
     const linii = [];
-    const r = build(folder, { out, log: (x) => linii.push(x) });
+    const r = build(folder, { out, log: (x) => linii.push(x), biblioteca: core });
     return { ...r, log: linii.join('\n') };
   }
   function tokenBun(t) {
@@ -80,7 +88,7 @@ export async function pornesteEditor({ folder = IMPLICIT, port = 4747, deschide 
     }
     const css = readFileSync(join(AICI, 'lib', 'editor.css'), 'utf8');
     const js = readFileSync(join(AICI, 'lib', 'editor-client.js'), 'utf8');
-    const config = JSON.stringify({ token, folder: folder.split('/').slice(-2).join('/') }).replace(/</g, '\\u003c');
+    const config = JSON.stringify({ token, folder: folder.split('/').slice(-2).join('/'), core: core ? scurt(core) : null }).replace(/</g, '\\u003c');
     return readFileSync(fisier, 'utf8').replace(/<\/body>\s*<\/html>\s*$/, `<style id="editor-css">${css}</style>
 <script>window.__EDITOR = ${config};</script>
 <script>${js}</script>
@@ -222,7 +230,108 @@ export async function pornesteEditor({ folder = IMPLICIT, port = 4747, deschide 
     log(`  piesă nouă: ${id} (${s.fisier} + ${HARVEST}/${id}.md)`);
     return { cod: 200, corp: { ok: true, id, fisier: `${HARVEST}/${id}.md` } };
   }
-  const MASA_API = { '/api/masa': masaSchimba, '/api/masa/creeaza': masaCreeaza, '/api/masa/agenda': masaAgenda, '/api/fisa/salveaza': fisaSalveaza, '/api/fisa/noua': fisaNoua };
+  // ---------- Biblioteca core (spec Radu, 2026-11-20): copie cu legătură; nimic nu se sincronizează singur ----------
+  function farCore() { if (!core) throw new EroareEditor('Editorul nu are biblioteca core (cursul nu e în privat/cursuri/). Pornește-l cu --biblioteca <cale>.', 404); }
+  function legaturaPe(id) {
+    const c = cursAcum(), { m, x } = candidataAcum(c, String(id ?? ''));
+    if (!m.exista) throw new EroareEditor(`Cursul nu are încă ${MASA}. Apasă întâi „Creează ${MASA}”.`, 404);
+    if (!x) throw new EroareEditor(`nu găsesc piesa „${String(id).slice(0, 60)}” în ${m.fisier}`, 404);
+    return { c, m, x };
+  }
+  /** Rândul din harvest.yml primește (sau pierde) din/baza; scrierea intră în aceleași scrieri, ca să revină la nevoie. */
+  function scrieLegatura(c, m, id, campuri, s) {
+    try { const r = scrieMasa(c, [{ id, ...campuri }], m.hash); if (!r.neschimbat) s.adaugaScris(caleSigura(folder, r.fisier), r.inainte); }
+    catch (e) { s.inapoi(); throw e; }
+  }
+  function buildSauInapoi(s, ce) {
+    const r = construieste();
+    if (r.ok) { ultim = r; log(`  core: ${ce} (${s.fisiere.join(', ')})`); return null; }
+    s.inapoi(); ultim = construieste();
+    return { cod: 422, corp: { eroare: 'Build-ul cursului a refuzat schimbarea, așa că fișierele au rămas cum erau (și în curs, și în core).', erori: r.erori } };
+  }
+  function coreStare(id) {
+    if (!core) return { activ: false };
+    id = String(id ?? '');
+    const c = cursAcum(), { m, x } = candidataAcum(c, id);
+    const C = amprentaPiesei(folder, id), idc = idDinLegatura(x?.din), L = idc ? amprentaPiesei(core, idc) : null;
+    const st = idc ? stareCore(x.baza ?? null, L, C) : null;
+    const randuri = citesteCore(core).piese;
+    return { activ: true, core: scurt(core), areMasa: m.exista, areRand: !!x, legata: !!idc, din: x?.din ?? null, idCore: idc, B: x?.baza ?? null, L, C,
+      stare: st, text: st ? STARI[st] : null, areCeva: C != null, ocupat: !idc && (randuri.some((r) => r.id === id) || amprentaPiesei(core, id) != null) };
+  }
+  function coreLista() {
+    if (!core) return { activ: false, piese: [] };
+    const k = citesteCore(core), c = cursAcum(), m = citesteMasa(c, [], []);
+    const legate = new Set(m.candidate.map((x) => idDinLegatura(x.din)).filter(Boolean));
+    return { activ: true, core: scurt(core), exista: k.exista, erori: k.erori, piese: k.piese.map(({ amprenta: _a, ...r }) => ({ ...r, inCurs: legate.has(r.id) })) };
+  }
+  function coreCompara(id) {
+    farCore();
+    const { x } = legaturaPe(id), idc = idDinLegatura(x.din);
+    if (!idc) throw new EroareEditor('Piesa nu e legată de core.', 422);
+    return { curs: fisaPiesei(folder, x.id), core: existsSync(core) ? fisaPiesei(core, idc) : { sursa: null, html: '' }, din: x.din };
+  }
+  function coreTrimite(date) {
+    farCore();
+    const { c, m, x } = legaturaPe(date.id);
+    const t = trimiteInCore({ curs: folder, core, id: x.id, rand: { titlu: x.titlu, scop: x.scop, durata: x.durata, tip: x.tip, etichete: (c.piese.get(x.id)?.etichete ?? []).map((e) => (typeof e === 'string' ? e : e.text)) },
+      legatura: x.din ?? null, baza: x.baza ?? null, idCore: date.idCore == null || date.idCore === '' ? undefined : String(date.idCore),
+      asteptat: 'asteptat' in date ? date.asteptat : undefined, dinCurs: basename(folder) });
+    scrieLegatura(c, m, x.id, { din: t.din, baza: t.baza }, t.s);
+    const rau = buildSauInapoi(t.s, `${x.id} → ${t.din}`); if (rau) return rau;
+    return { cod: 200, corp: { ok: true, din: t.din, baza: t.baza, fisiere: t.s.fisiere } };
+  }
+  function coreIa(date) {
+    farCore();
+    const { c, m, x } = legaturaPe(date.id);
+    const t = iaDinCore({ curs: folder, core, id: x.id, legatura: x.din, vazut: { C: date.C ?? null, L: date.L ?? null } });
+    scrieLegatura(c, m, x.id, { baza: t.baza }, t.s);
+    const rau = buildSauInapoi(t.s, `${x.din} → ${x.id}`); if (rau) return rau;
+    return { cod: 200, corp: { ok: true, baza: t.baza, fisiere: t.s.fisiere } };
+  }
+  function coreRaman(date) {
+    farCore();
+    const { c, m, x } = legaturaPe(date.id), idc = idDinLegatura(x.din);
+    if (!idc) throw new EroareEditor('Piesa nu e legată de core.', 422);
+    const L = amprentaPiesei(core, idc);
+    if (L == null || L !== date.L) throw new EroareEditor('Core s-a schimbat între timp. Redeschide fișa.', 409);
+    const s = new Scrieri();
+    scrieLegatura(c, m, x.id, { baza: L }, s);
+    const rau = buildSauInapoi(s, `${x.id}: rămân la versiunea cursului`); if (rau) return rau;
+    return { cod: 200, corp: { ok: true, baza: L } };
+  }
+  function coreDezleaga(date) {
+    const { c, m, x } = legaturaPe(date.id);
+    if (!x.din) return { cod: 200, corp: { ok: true, neschimbat: true } };
+    const s = new Scrieri();
+    scrieLegatura(c, m, x.id, { din: null, baza: null }, s);
+    const rau = buildSauInapoi(s, `${x.id}: dezlegată de ${x.din}`); if (rau) return rau;
+    return { cod: 200, corp: { ok: true } };
+  }
+  function coreAdauga(date) {
+    farCore();
+    const c = cursAcum(), m = citesteMasa(c, [], []);
+    if (!m.exista) throw new EroareEditor(`Cursul nu are încă ${MASA}. Apasă întâi „Creează ${MASA}”.`, 404);
+    const idc = String(date.idCore ?? '');
+    if (m.candidate.some((x) => x.din === `${PREFIX}${idc}`)) throw new EroareEditor(`${PREFIX}${idc} e deja în curs.`, 409);
+    const idNou = date.idNou == null || date.idNou === '' ? idc : String(date.idNou);
+    const ocupate = new Set([...m.candidate.map((x) => x.id), ...c.piese.keys(), ...c.module.map((x) => x.id).filter(Boolean), ...fiseExistente(folder)]);
+    if (ocupate.has(idNou)) {
+      let propus = `${idc}-core`, n = 2; while (ocupate.has(propus)) propus = `${idc}-core-${n++}`;
+      const e = new EroareEditor(`Cursul are deja o piesă „${idNou}”. Dă alt id piesei din core.`, 409);
+      e.conflict = { ocupat: true, propus }; throw e;
+    }
+    const t = adaugaDinCore({ curs: folder, core, idCore: idc, idNou });
+    try {
+      const r = t.rand, s = adaugaCandidata(cursAcum(), { id: t.id, titlu: r.titlu, scop: r.scop, durata: r.durata, tip: r.tip, sursa: 'core', din: t.din, baza: t.baza }, m.hash);
+      t.s.adaugaScris(caleSigura(folder, s.fisier), s.inainte);
+    } catch (e) { t.s.inapoi(); throw e; }
+    const rau = buildSauInapoi(t.s, `${t.din} → ${t.id}`); if (rau) return rau;
+    return { cod: 200, corp: { ok: true, id: t.id, din: t.din, fisiere: t.s.fisiere } };
+  }
+
+  const MASA_API = { '/api/core/trimite': coreTrimite, '/api/core/ia': coreIa, '/api/core/raman': coreRaman, '/api/core/dezleaga': coreDezleaga, '/api/core/adauga': coreAdauga,
+    '/api/masa': masaSchimba, '/api/masa/creeaza': masaCreeaza, '/api/masa/agenda': masaAgenda, '/api/fisa/salveaza': fisaSalveaza, '/api/fisa/noua': fisaNoua };
 
   const server = createServer((req, res) => {
     const trimite = (cod, corp, tip = 'application/json; charset=utf-8') => {
@@ -247,6 +356,10 @@ export async function pornesteEditor({ folder = IMPLICIT, port = 4747, deschide 
     // Fișa piesei din Harvest (2026-11-19): citită acum de pe disc, ca să se vadă ce scriu Irina și Daria între timp.
     if (req.method === 'GET' && u.pathname === '/api/fisa') {
       try { return trimite(200, fisaPiesei(folder, u.searchParams.get('id'))); } catch (e) { return trimite(e.cod ?? 500, { eroare: e.message }); }
+    }
+    const CORE_GET = { '/api/core': () => coreLista(), '/api/core/stare': () => coreStare(u.searchParams.get('id')), '/api/core/compara': () => coreCompara(u.searchParams.get('id')) };
+    if (req.method === 'GET' && CORE_GET[u.pathname]) {
+      try { return trimite(200, CORE_GET[u.pathname]()); } catch (e) { return trimite(e.cod ?? 500, { eroare: e.message }); }
     }
     if (req.method === 'GET' && u.pathname === '/api/fisa/sursa') {
       try { return trimite(200, fisaSursa(u.searchParams.get('id'))); } catch (e) { return trimite(e.cod ?? 500, { eroare: e.message }); }
@@ -294,18 +407,20 @@ export async function pornesteEditor({ folder = IMPLICIT, port = 4747, deschide 
   });
   const url = `http://127.0.0.1:${server.address().port}/?t=${token}#ecrane`;
   if (deschide && process.platform === 'darwin') spawn('open', [url], { stdio: 'ignore', detached: true }).unref();
-  return { url, token, server, folder, inchide: () => new Promise((ok) => server.close(ok)), ultim: () => ultim, laZi };
+  return { url, token, server, folder, core, inchide: () => new Promise((ok) => server.close(ok)), ultim: () => ultim, laZi };
 }
 
 // Linia de comandă
 if (process.argv[1] && import.meta.url === pathToFileURL(process.argv[1]).href) {
   const args = process.argv.slice(2);
   const val = (n) => { const i = args.indexOf(n); return i >= 0 ? args[i + 1] : undefined; };
-  const folder = args.find((a, i) => !a.startsWith('--') && args[i - 1] !== '--port') ?? IMPLICIT;
+  const folder = args.find((a, i) => !a.startsWith('--') && !['--port', '--biblioteca'].includes(args[i - 1])) ?? IMPLICIT;
   try {
-    const e = await pornesteEditor({ folder: resolve(process.cwd(), folder), port: val('--port') ? +val('--port') : 4747, deschide: !args.includes('--fara-browser') });
+    const e = await pornesteEditor({ folder: resolve(process.cwd(), folder), port: val('--port') ? +val('--port') : 4747, deschide: !args.includes('--fara-browser'),
+      biblioteca: val('--biblioteca') ? resolve(process.cwd(), val('--biblioteca')) : undefined });
     const ok = e.ultim().ok;
     console.log(`\nEditorul cursului rulează pentru ${e.folder}${ok ? '' : ' (ATENȚIE: build-ul e oprit; pagina arată de ce)'}.`);
+    console.log(e.core ? `Biblioteca core: ${e.core}${existsSync(e.core) ? '' : ' (se creează la prima piesă trimisă)'}` : 'Biblioteca core: niciuna (cursul nu e în privat/cursuri/; pornește cu --biblioteca <cale>)');
     console.log(`Deschide: ${e.url}`);
     console.log('Fereastra asta trebuie să rămână deschisă cât editezi. Ca să oprești editorul: Ctrl+C sau închide fereastra.\n');
     process.on('SIGINT', () => { e.inchide().then(() => process.exit(0)); });

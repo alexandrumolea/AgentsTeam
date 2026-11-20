@@ -14,7 +14,9 @@ export const FISIER_VECHI = 'masa.yml';
 export const fisierMasa = (folder) => (existsSync(join(folder, FISIER)) || !existsSync(join(folder, FISIER_VECHI)) ? FISIER : FISIER_VECHI);
 export const VERDICTE = ['nou', 'da', 'poate', 'nu'];
 const ID_OK = /^[a-z0-9]+(-[a-z0-9]+)*$/;
-const CAMPURI = ['id', 'titlu', 'scop', 'durata', 'tip', 'sursa', 'verdict', 'bloc', 'ordine', 'obiective', 'nota'];
+const CAMPURI = ['id', 'titlu', 'scop', 'durata', 'tip', 'sursa', 'verdict', 'bloc', 'ordine', 'obiective', 'nota', 'din', 'baza'];
+// Legătura cu biblioteca core (2026-11-20): din = comun/<id>, baza = amprenta versiunii luate (8 caractere hex). Vezi lib/core.mjs.
+const DIN_OK = /^comun\/[a-z0-9]+(-[a-z0-9]+)*$/, BAZA_OK = /^[0-9a-f]{8}$/;
 /** Câmpurile rândului care se editează din fișa piesei (Alex, 2026-11-20). */
 export const CAMPURI_FISA = ['titlu', 'scop', 'durata', 'tip'];
 
@@ -73,12 +75,17 @@ export function verificaCandidate(lista, c, erori, avertismente, unde = FISIER) 
     }
     if (verdict === 'nu' && bloc != null) bloc = null; // respinsă: nu stă într-un bloc
     if (x.ordine != null && typeof x.ordine !== 'number') erori.push(`${loc}: „ordine” e un număr`);
+    const din = x.din == null || x.din === '' ? null : String(x.din), baza = x.baza == null || x.baza === '' ? null : String(x.baza);
+    if (din != null && !DIN_OK.test(din)) avertismente.push(`${loc}: „din” e de forma comun/<id> (biblioteca core); „${din.slice(0, 60)}” nu e`);
+    if (baza != null && din == null) erori.push(`${loc}: „baza” fără „din”: scoate-o sau pune și legătura comun/<id>`);
+    else if (baza != null && !BAZA_OK.test(baza)) erori.push(`${loc}: „baza” e amprenta din core, 8 caractere 0-9a-f`);
     if (x.obiective != null && !(Array.isArray(x.obiective) && x.obiective.every((n) => Number.isInteger(n) && n > 0))) erori.push(`${loc}: „obiective” e o listă de numere, de exemplu [1, 3]`);
     out.push({
       id, titlu: String(x.titlu ?? id), scop: x.scop == null ? '' : String(x.scop), durata: typeof x.durata === 'number' ? x.durata : 0,
       tip: x.tip == null ? '' : String(x.tip), sursa: x.sursa == null ? '' : String(x.sursa), verdict: VERDICTE.includes(verdict) ? verdict : 'nou',
       bloc, ordine: typeof x.ordine === 'number' ? x.ordine : null, obiective: Array.isArray(x.obiective) ? x.obiective : [],
       nota: x.nota == null ? '' : String(x.nota), produsa: produsa(c, id),
+      ...(din != null && DIN_OK.test(din) ? { din, baza } : {}),
     });
   });
   return out;
@@ -242,6 +249,8 @@ export function scrieMasa(c, schimbari, hashCitit) {
     // Câmpurile rândului, din fișa piesei (2026-11-20): titlu, scop, durata, tip. Un scop sau un tip gol se scoate din rând.
     const v = verificaCampuri(s);
     for (const k of CAMPURI_FISA) if (k in v) { if (v[k] === '') item.delete(k); else item.set(k, v[k]); }
+    // Legătura cu core (2026-11-20): null o scoate (Dezleagă de core).
+    for (const k of ['din', 'baza']) if (k in s) { if (s[k] == null) item.delete(k); else if ((k === 'din' ? DIN_OK : BAZA_OK).test(String(s[k]))) item.set(k, String(s[k])); else throw new EroareEditor(`${k} „${String(s[k]).slice(0, 40)}” greșit`); }
   }
   const dupa = doc.toString({ lineWidth: 0 });
   const erori = [];
@@ -265,7 +274,9 @@ export function adaugaCandidata(c, rand, hashCitit) {
   if (lista == null) { doc.set('candidate', doc.createNode([])); lista = doc.get('candidate'); }
   if (!Array.isArray(lista.items)) throw new EroareEditor(`${fisier} nu are lista „candidate”.`, 422);
   if (lista.items.some((n) => n && typeof n.get === 'function' && String(n.get('id')) === rand.id)) throw new EroareEditor(`id „${rand.id}” există deja în ${fisier}`, 409);
-  lista.items.push(doc.createNode({ id: rand.id, titlu: v.titlu, ...(v.scop ? { scop: v.scop } : {}), durata: v.durata, ...(v.tip ? { tip: v.tip } : {}), sursa: rand.sursa || 'Alex', verdict: 'nou' }));
+  if (rand.din != null && !(DIN_OK.test(rand.din) && BAZA_OK.test(String(rand.baza ?? '')))) throw new EroareEditor('legătura cu core e greșită');
+  lista.items.push(doc.createNode({ id: rand.id, titlu: v.titlu, ...(v.scop ? { scop: v.scop } : {}), durata: v.durata, ...(v.tip ? { tip: v.tip } : {}), sursa: rand.sursa || 'Alex', verdict: 'nou',
+    ...(rand.din != null ? { din: rand.din, baza: String(rand.baza) } : {}) }));
   const dupa = doc.toString({ lineWidth: 0 });
   const erori = [];
   verificaCandidate(parseYaml(dupa)?.candidate ?? [], c, erori, []);

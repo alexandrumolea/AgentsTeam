@@ -10,12 +10,15 @@ import { citesteCurs } from './lib/sursa.mjs';
 import { construiesteExport, verificaExport } from './lib/export.mjs';
 import { construiesteTrainer, caleTema, pregatesteEcrane } from './lib/trainer.mjs';
 import { citesteMasa } from './lib/masa.mjs';
+import { gasesteCore, marcheazaCore } from './lib/core.mjs';
 
 const CHROME = ['/Applications/Google Chrome.app/Contents/MacOS/Google Chrome', '/Applications/Chromium.app/Contents/MacOS/Chromium'];
 
-export function build(folder, { editie, out, pdf = false, log = console.log } = {}) {
+export function build(folder, { editie, out, pdf = false, log = console.log, biblioteca } = {}) {
   const c = citesteCurs(resolve(folder), { editie });
   if (c.piese) c.masa = citesteMasa(c, c.erori, c.avertismente); // masa.yml (etapa A, Alex, 2026-11-18); lipsa lui nu e eroare
+  // Biblioteca core (2026-11-20): starea pieselor legate (la zi / modificată aici / nouă în core / diferă), calculată acum. Build-ul doar citește core.
+  if (c.masa) marcheazaCore(c.masa.candidate, c.folder, biblioteca === null ? null : gasesteCore(c.folder, biblioteca), c.avertismente);
   const erori = [...c.erori];
   let exp, html, ascunse = 0, nrEcrane = 0;
   if (!erori.length) {
@@ -71,10 +74,10 @@ if (process.argv[1] && import.meta.url === pathToFileURL(process.argv[1]).href) 
   const args = process.argv.slice(2);
   const opt = { pdf: args.includes('--pdf') };
   const val = (n) => { const i = args.indexOf(n); return i >= 0 ? args[i + 1] : undefined; };
-  opt.editie = val('--editie'); opt.out = val('--out');
-  const folder = args.find((a, i) => !a.startsWith('--') && !['--editie', '--out'].includes(args[i - 1]));
+  opt.editie = val('--editie'); opt.out = val('--out'); opt.biblioteca = val('--biblioteca');
+  const folder = args.find((a, i) => !a.startsWith('--') && !['--editie', '--out', '--biblioteca'].includes(args[i - 1]));
   if (!folder) {
-    console.log('Folosire: node build.mjs <folderul-cursului> [--editie AAAA-LL-ZZ] [--out <folder>] [--pdf]');
+    console.log('Folosire: node build.mjs <folderul-cursului> [--editie AAAA-LL-ZZ] [--out <folder>] [--pdf] [--biblioteca <folderul core>]');
     process.exit(2);
   }
   process.exit(build(folder, opt).ok ? 0 : 1);

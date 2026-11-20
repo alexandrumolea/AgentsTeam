@@ -473,6 +473,9 @@ main > section#masa { max-width: 1440px; }
 .mc-tip { display: inline-flex; align-items: center; gap: .3rem; white-space: nowrap; }
 .mc-produsa { color: var(--t-accent); font-weight: 600; }
 .mc-nota { text-decoration: underline dotted; text-underline-offset: 2px; cursor: help; }
+/* Biblioteca core (2026-11-20): semnul piesei legate; starea apare doar când nu e la zi. */
+.mc-core { white-space: nowrap; color: var(--t-text); font-weight: 600; }
+.mc-core-noua, .mc-core-difera, .mc-core-lipsa { color: var(--t-accent); }
 .mc-verdict { display: inline-flex; gap: 0; }
 .mc-verdict button { font-size: .74rem; padding: .1rem .5rem; border-radius: 0; margin-left: -1px; }
 .mc-verdict button:first-child { border-radius: 999px 0 0 999px; margin-left: 0; }

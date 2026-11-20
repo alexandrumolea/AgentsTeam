@@ -17,6 +17,8 @@
   var TIP = { teorie: 'teorie', model: 'model', poveste: 'poveste', exercitiu: 'exercițiu', challenge: 'challenge', reflectie: 'reflecție', energizant: 'energizant', deschidere: 'deschidere', inchidere: 'închidere', mesaj: 'mesaj', pauza: 'pauză' };
   var FEL = { teorie: 'teorie', model: 'teorie', poveste: 'teorie', reflectie: 'reflectie', deschidere: 'reflectie', inchidere: 'reflectie', mesaj: 'mesaj', exercitiu: 'exercitiu', challenge: 'exercitiu', energizant: 'exercitiu', pauza: 'pauza' };
   var VERDICT = { da: 'Da', poate: 'Poate', nu: 'Nu' };
+  // Biblioteca core (2026-11-20): starea piesei legate, calculată la build (lib/core.mjs, STARI). „La zi” nu se scrie pe cartonaș.
+  var STARE_CORE = { modificata: 'modificată aici', noua: 'nouă în core', difera: 'diferă', lipsa: 'lipsește din core' };
   var json = function (id) { try { return JSON.parse(document.getElementById(id).textContent) || {}; } catch (e) { return {}; } };
   var FISE = json('fise'), IMG = json('imagini'); // fișele incluse la build (offline); în editor se recitesc de pe disc
 
@@ -123,9 +125,10 @@
     var meta = (x.tip ? '<span class="mc-tip"><span class="semn-mic fel-' + (FEL[x.tip] || 'teorie') + (x.tip === 'challenge' ? ' semn-challenge' : '') + '" aria-hidden="true"></span>' + esc(TIP[x.tip] || x.tip) + '</span>' : '') +
       (x.sursa ? '<span class="mc-sursa">' + esc(x.sursa) + '</span>' : '') +
       (x.produsa ? '<span class="mc-produsa" title="Are deja fișierul în piese/">produsă</span>' : '') +
+      (x.core ? '<span class="mc-core' + (x.core.stare && x.core.stare !== 'la-zi' ? ' mc-core-' + esc(x.core.stare) : '') + '" title="Din biblioteca core (' + esc(x.core.din) + ')">◇ core' + (STARE_CORE[x.core.stare] ? ' · ' + STARE_CORE[x.core.stare] : '') + '</span>' : '') +
       (x.nota ? '<span class="mc-nota" title="' + esc(x.nota) + '">notă</span>' : '');
     var areFisa = !!FISE[x.id];
-    return '<li class="masa-carte v-' + x.verdict + (x.produsa ? ' produsa' : '') + '" data-id="' + esc(x.id) + '" tabindex="0" aria-label="' + esc(x.titlu + ', ' + x.durata + ' min, verdict ' + x.verdict + (x.produsa ? ', produsă' : '')) + '"' + (x.nota ? ' title="' + esc(x.nota) + '"' : '') + '>' +
+    return '<li class="masa-carte v-' + x.verdict + (x.produsa ? ' produsa' : '') + '" data-id="' + esc(x.id) + '" tabindex="0" aria-label="' + esc(x.titlu + ', ' + x.durata + ' min, verdict ' + x.verdict + (x.produsa ? ', produsă' : '') + (x.core ? ', din core' : '')) + '"' + (x.nota ? ' title="' + esc(x.nota) + '"' : '') + '>' +
       '<span class="ec-maner masa-maner" aria-hidden="true" title="Trage ca să muți">⠿</span>' +
       '<div class="mc-rand"><span class="mc-durata"><b>' + x.durata + '</b> min</span><span class="mc-cap"><span class="mc-titlu">' + esc(x.titlu) + '</span>' + (x.scop ? '<span class="mc-scop">' + esc(x.scop) + '</span>' : '') + '</span></div>' +
       '<div class="mc-jos"><span class="mc-meta"><button type="button" class="mc-fisa' + (areFisa ? '' : ' fara') + '" data-fisa="' + esc(x.id) + '" aria-label="Deschide fișa: ' + esc(x.titlu) + '" title="' + (areFisa ? 'Toată logica piesei (tasta F)' : 'Fișa nu e scrisă încă') + '">Fișa</button>' + meta + '</span><span class="mc-verdict" role="group" aria-label="Verdict">' +
@@ -347,6 +350,7 @@
   function deschideFisa(id) {
     var x = ID[id]; if (!x) return;
     fisaDe = id;
+    if (window.__fisaLaDeschidere) window.__fisaLaDeschidere(id); // editorul local: rândul „Din core” al fișei
     var ed = editor();
     if (!ed || !ed.fisa) { arataFisa(x, FISE[id]); return; }
     arataFisa(x, FISE[id] || { sursa: 'harvest', fisier: 'harvest/' + id + '.md', html: '<p class="sters">Se citește fișa…</p>' });

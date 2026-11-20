@@ -56,3 +56,47 @@
 .fe-taste { margin-right: auto; font-size: .8rem; }
 .fe-optiuni:empty { display: none; }
 @media (max-width: 640px) { .fe-campuri { grid-template-columns: 1fr 1fr; } .fe-lat { grid-column: 1 / -1; } }
+
+/* Biblioteca core (2026-11-20): rândul „Din core” sub titlul fișei, alegerea alăturată, bifa lângă „Salvează”, „Adaugă din core”. */
+.fe-core { display: flex; flex-wrap: wrap; align-items: center; gap: .4rem .7rem; padding: .5rem 1.2rem; border-bottom: 1px solid var(--t-linie); font-size: .88rem; }
+.fe-core[hidden], .fe-cmp[hidden], .fe-bifa[hidden], .core-id[hidden] { display: none; }
+.fe-core-text { margin-right: auto; min-width: 0; overflow-wrap: anywhere; }
+.fe-core-semn { font-weight: 700; }
+.fe-core button { font-size: .82rem; padding: .2rem .7rem; min-height: 32px; }
+.fe-core-discret { border-color: transparent; background: none; color: var(--t-sters); text-decoration: underline; text-underline-offset: 2px; }
+.fe-core-id label { display: inline-flex; align-items: center; gap: .4rem; }
+.fe-core input, .core-id input { font: inherit; padding: .25rem .45rem; border: 1px solid var(--t-linie); border-radius: 6px; background: var(--t-suprafata); color: var(--t-text); min-width: 0; width: 14rem; max-width: 100%; }
+.fe-core-mesaj { flex-basis: 100%; margin: 0; font-size: .82rem; color: var(--t-sters); }
+.fe-core-mesaj:empty { display: none; }
+.fe-core-mesaj.eroare { color: var(--cronometru-gata); font-weight: 600; }
+.fe-cmp { display: flex; flex-direction: column; min-height: 0; overflow: auto; padding: .6rem 1.2rem 1rem; gap: .6rem; }
+.fe-cmp-cols { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: .8rem; }
+.fe-cmp-col { min-width: 0; border: 1px solid var(--t-linie); border-radius: 8px; padding: .5rem .8rem; background: var(--t-suprafata); }
+.fe-cmp-col .eticheta { margin: 0 0 .3rem; }
+.fe-cmp-corp { font-size: .9rem; line-height: 1.5; overflow-wrap: anywhere; }
+.fe-cmp-alege { position: sticky; bottom: 0; display: flex; flex-wrap: wrap; align-items: center; gap: .5rem .8rem; padding: .6rem 0 .2rem; background: var(--t-fundal); }
+.fe-cmp-alege .sters { flex-basis: 100%; font-size: .8rem; }
+.fe-bifa { display: inline-flex; align-items: center; gap: .35rem; font-size: .88rem; cursor: pointer; min-height: 32px; }
+.fe-bifa input { width: 1.1rem; height: 1.1rem; margin: 0; accent-color: var(--t-accent); }
+.core-dialog { width: min(760px, calc(100vw - 2rem)); }
+.core-cauta { display: flex; flex-direction: column; gap: .5rem; padding: .7rem 1.2rem .3rem; }
+.core-cauta input { font: inherit; padding: .45rem .6rem; border: 1px solid var(--t-linie); border-radius: 6px; background: var(--t-suprafata); color: var(--t-text); }
+.core-filtre { display: flex; flex-wrap: wrap; gap: .3rem; }
+.core-filtre:empty { display: none; }
+.core-filtre button { font-size: .78rem; padding: .1rem .6rem; border-radius: 999px; }
+.core-filtre button[aria-pressed="true"] { background: var(--t-text); color: var(--t-suprafata); border-color: var(--t-text); }
+.core-dialog .ed-eroare { margin: .3rem 1.2rem 0; }
+.core-lista { list-style: none; margin: 0; padding: .3rem 1.2rem 1.2rem; overflow: auto; min-height: 0; }
+.core-rand { display: grid; grid-template-columns: 3.1rem minmax(0, 1fr) auto; gap: .3rem .6rem; align-items: center; padding: .5rem 0; border-bottom: 1px solid var(--t-linie); }
+.core-cap { display: grid; min-width: 0; }
+.core-meta { font-size: .76rem; color: var(--t-sters); overflow-wrap: anywhere; }
+.core-act button { font-size: .82rem; padding: .2rem .8rem; min-height: 32px; }
+.core-id { grid-column: 2 / -1; display: flex; flex-wrap: wrap; align-items: center; gap: .4rem .6rem; font-size: .85rem; }
+.core-id label { display: inline-flex; align-items: center; gap: .4rem; min-width: 0; }
+.core-gol { padding: 0 1.2rem 1.2rem; margin: 0; }
+@media (max-width: 640px) {
+  .fe-cmp-cols { grid-template-columns: 1fr; }
+  .core-rand { grid-template-columns: 2.6rem minmax(0, 1fr); }
+  .core-act { grid-column: 2; }
+}
+@media (pointer: coarse) { .fe-core button, .core-act button, .core-filtre button { min-height: 44px; } }

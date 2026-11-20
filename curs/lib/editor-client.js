@@ -233,9 +233,13 @@
       $('fe-text').hidden = mod === 'nou'; $('fe-text-eticheta').hidden = mod === 'nou';
       $('fe-salveaza').textContent = mod === 'nou' ? 'Creează piesa' : 'Salvează';
       $('fe-conflict').hidden = true; feEroare(''); info('');
+      // Bifa core: nebifată la fiecare deschidere (spec Radu), ca personalizarea să nu ajungă din greșeală în core.
+      if (CORE) { $('fe-core-bifa').checked = false; puneBifa(mod); }
+      bc.hidden = true; cmp.hidden = true;
     }
     function iesi() {
       ed = null; d.classList.remove('fe-activ'); p.hidden = true; corp.hidden = false; be.hidden = false;
+      deseneazaCore();
     }
     function intra(id) {
       feEroare('');
@@ -270,7 +274,7 @@
       if (!ed) return;
       if (ed.mod === 'nou') return creeaza();
       var b = $('fe-salveaza'); b.disabled = true; b.textContent = 'Salvez…'; feEroare('');
-      var campuri = schimbate(), id = ed.id;
+      var campuri = schimbate(), id = ed.id, inCore = CORE && $('fe-core-bifa').checked;
       api('/api/fisa/salveaza', 'POST', { id: id, md: $('fe-text').value, hash: ed.hash, campuri: campuri, campuriInainte: ed.campuri0 }).then(function (j) {
         b.disabled = false; b.textContent = 'Salvează';
         if (!ed || ed.id !== id) return;
@@ -283,6 +287,7 @@
         stare(j.neschimbat ? ' · nimic de salvat' : ' · salvat în ' + escape(j.sursa ? j.sursa.fisier : 'harvest/') + (Object.keys(campuri).length ? ' și ' + escape(j.sursa.fisierMasa) : '') + ', materialul e refăcut');
         $('fisa-sursa').textContent += j.neschimbat ? ' · nimic de salvat' : ' · salvat';
         be.focus();
+        if (inCore) trimiteCore(id, {}, 'Fișa e salvată în curs.');
       }, function () { b.disabled = false; b.textContent = 'Salvează'; feEroare('Editorul nu răspunde. Fereastra Terminal în care rulează e încă deschisă? Textul tău e tot aici.'); });
     }
     function arataConflict(j) {
@@ -330,8 +335,12 @@
         b.disabled = false; b.textContent = 'Creează piesa';
         if (j._cod !== 200) { feEroare(j.eroare || 'Nu am putut crea piesa.', j.erori); return; }
         ed = null;
-        try { sessionStorage.setItem('masa:mesaj', 'Am creat piesa „' + v.titlu.trim() + '” (' + j.fisier + ', verdict „nou”). Fișa e deschisă pentru editare.'); sessionStorage.setItem('masa:editeaza', j.id); } catch (e) { /* nimic */ }
-        location.hash = '#masa'; location.reload();
+        var gata = function (extra) {
+          try { sessionStorage.setItem('masa:mesaj', 'Am creat piesa „' + v.titlu.trim() + '” (' + j.fisier + ', verdict „nou”). Fișa e deschisă pentru editare.' + (extra || '')); sessionStorage.setItem('masa:editeaza', j.id); } catch (e) { /* nimic */ }
+          location.hash = '#masa'; location.reload();
+        };
+        if (!(CORE && $('fe-core-bifa').checked)) return gata();
+        api('/api/core/trimite', 'POST', { id: j.id }).then(function (k) { gata(k._cod === 200 ? ' E și în core: ' + k.din + '.' : ' Nu a intrat în core: ' + (k.eroare || 'eroare')); }, function () { gata(' Nu a intrat în core: editorul nu a răspuns.'); });
       }, function () { b.disabled = false; b.textContent = 'Creează piesa'; feEroare('Editorul nu răspunde. Fereastra Terminal în care rulează e încă deschisă?'); });
     }
 
@@ -358,8 +367,187 @@
     });
     window.addEventListener('beforeunload', function (ev) { if (murdar()) { ev.preventDefault(); ev.returnValue = ''; } });
 
+    // ---------- Biblioteca core (spec Radu, 2026-11-20): copie cu legătură; fiecare copiere e un buton apăsat de Alex ----------
+    // Rândul „Din core” sub titlul fișei (stare + acțiuni), alegerea alăturată la „diferă”, bifa lângă „Salvează”, „Adaugă din core” în Harvest.
+    var CORE = CFG.core || null, ci = null, coreMesaj = '';
+    var bc = document.createElement('div'); bc.className = 'fe-core'; bc.id = 'fe-core'; bc.hidden = true; bc.setAttribute('role', 'region'); bc.setAttribute('aria-label', 'Biblioteca core');
+    var cmp = document.createElement('div'); cmp.className = 'fe-cmp'; cmp.id = 'fe-cmp'; cmp.hidden = true;
+    cap.parentNode.insertBefore(bc, cap.nextSibling); bc.parentNode.insertBefore(cmp, bc.nextSibling);
+    if (CORE) $('fe-optiuni').innerHTML = '<label class="fe-bifa" id="fe-core-eticheta"><input type="checkbox" id="fe-core-bifa"> <span id="fe-core-bifa-text">Salvează și în core</span></label>';
+    function puneBifa(mod) {
+      if (!CORE) return;
+      var legata = mod !== 'nou' && ci && ci.id === (ed && ed.id) && ci.legata;
+      $('fe-core-bifa-text').textContent = legata ? 'Actualizează și în core' : 'Salvează și în core';
+      $('fe-core-eticheta').hidden = mod !== 'nou' && !(ci && ci.activ && ci.areRand && ci.id === (ed && ed.id));
+    }
+    window.__fisaLaDeschidere = function (id) {
+      ci = null; bc.hidden = true; cmp.hidden = true; if (!ed) corp.hidden = false;
+      if (!CORE) return;
+      api('/api/core/stare?id=' + encodeURIComponent(id)).then(function (j) {
+        if (MF.deschisa() !== id || j._cod !== 200) return;
+        ci = j; ci.id = id; deseneazaCore(); if (ed) puneBifa(ed.mod);
+      });
+    };
+    var buton2 = function (id, text, cls) { return '<button type="button" id="' + id + '"' + (cls ? ' class="' + cls + '"' : '') + '>' + text + '</button>'; };
+    function deseneazaCore() {
+      if (!ci || !ci.activ || !ci.areRand || ed || ci.id !== MF.deschisa()) { bc.hidden = true; return; }
+      var h = '', din = '<code>' + escape(ci.din || '') + '</code>';
+      if (!ci.legata) {
+        h = '<span class="fe-core-text sters">Doar în acest curs.</span>' + buton2('fe-core-trimite', 'Trimite în core') +
+          (ci.propus ? '<span class="fe-core-id"><label>Id în core <input id="fe-core-id" type="text" maxlength="60" autocomplete="off" spellcheck="false" value="' + escape(ci.propus) + '"></label></span>' : '');
+      } else {
+        h = '<span class="fe-core-text"><span class="fe-core-semn" aria-hidden="true">◇</span> Din core ' + din + ' · <b>' + escape(ci.text) + '</b></span>';
+        if (ci.stare === 'modificata') h += buton2('fe-core-trimite', 'Actualizează în core');
+        if (ci.stare === 'noua') h += buton2('fe-core-ia', 'Ia versiunea din core', 'principal') + buton2('fe-core-raman', 'Rămân la a mea');
+        if (ci.stare === 'difera') h += buton2('fe-core-compara', 'Compară și alege', 'principal');
+        if (ci.stare === 'lipsa') h += buton2('fe-core-trimite', 'Trimite din nou în core');
+        h += buton2('fe-core-dezleaga', 'Dezleagă de core', 'fe-core-discret');
+      }
+      bc.innerHTML = h + '<p class="fe-core-mesaj" id="fe-core-mesaj" role="status">' + escape(coreMesaj) + '</p>';
+      coreMesaj = '';
+      bc.hidden = false;
+      if (!ci.areCeva && $('fe-core-trimite')) { $('fe-core-trimite').disabled = true; $('fe-core-trimite').title = 'Piesa nu are încă nimic scris: nici fișă, nici piesă produsă.'; }
+    }
+    function mesajCore(t, rau) { var m = $('fe-core-mesaj'); if (m) { m.textContent = t || ''; m.classList.toggle('eroare', !!rau); } }
+    function dupaCore(id, mesaj) {
+      try { sessionStorage.setItem('masa:mesaj', mesaj); sessionStorage.setItem('masa:core-mesaj', mesaj); sessionStorage.setItem('masa:fisa', id); } catch (e) { /* nimic */ }
+      location.hash = '#masa'; location.reload();
+    }
+    var lucreaza = function (on) { [].forEach.call(bc.querySelectorAll('button'), function (b) { b.disabled = on; }); [].forEach.call(cmp.querySelectorAll('button'), function (b) { b.disabled = on; }); };
+    function trimiteCore(id, extra, inainte) {
+      var corpCerere = { id: id }; for (var k in extra) corpCerere[k] = extra[k];
+      lucreaza(true); mesajCore('Trimit în core…');
+      return api('/api/core/trimite', 'POST', corpCerere).then(function (j) {
+        lucreaza(false);
+        if (j._cod === 200) return dupaCore(id, (inainte ? inainte + ' ' : '') + 'E și în core: ' + j.din + '.');
+        if (!ci || ci.id !== id) return;
+        if (j._cod === 409 && j.conflict && j.conflict.ocupat) { ci.propus = j.conflict.propus; deseneazaCore(); mesajCore((inainte ? inainte + ' ' : '') + j.eroare, true); var c = $('fe-core-id'); if (c) { c.focus(); c.select(); } return; }
+        if (j._cod === 409 && j.conflict && j.conflict.stare === 'difera') { ci.L = j.conflict.L; ci.C = j.conflict.C; ci.stare = 'difera'; ci.text = 'diferă'; deseneazaCore(); mesajCore((inainte ? inainte + ' ' : '') + j.eroare, true); return compara(); }
+        mesajCore((inainte ? inainte + ' ' : '') + (j.eroare || 'Nu a intrat în core.'), true);
+      }, function () { lucreaza(false); mesajCore('Editorul nu răspunde. Fereastra Terminal în care rulează e încă deschisă?', true); });
+    }
+    function cere(cale, corpCerere, mesaj) {
+      var id = ci.id; lucreaza(true);
+      api(cale, 'POST', corpCerere).then(function (j) {
+        lucreaza(false);
+        if (j._cod === 200) return dupaCore(id, mesaj);
+        mesajCore(j.eroare || 'Nu s-a putut.', true);
+      }, function () { lucreaza(false); mesajCore('Editorul nu răspunde. Fereastra Terminal în care rulează e încă deschisă?', true); });
+    }
+    function compara() {
+      if (!ci) return;
+      var id = ci.id;
+      api('/api/core/compara?id=' + encodeURIComponent(id)).then(function (j) {
+        if (MF.deschisa() !== id || ed) return;
+        if (j._cod !== 200) { mesajCore(j.eroare || 'Nu pot compara.', true); return; }
+        // HTML-ul vine randat și escapat de server (lib/fisa.mjs), ca fișa obișnuită.
+        var col = function (titlu, f) { return '<section class="fe-cmp-col"><p class="eticheta">' + titlu + '</p><div class="fe-cmp-corp">' + (f && f.sursa ? f.html : '<p class="sters">Nimic scris.</p>') + '</div></section>'; };
+        cmp.innerHTML = '<div class="fe-cmp-cols">' + col('În acest curs', j.curs) + col('În core · ' + escape(j.din), j.core) + '</div>' +
+          '<div class="fe-cmp-alege"><span class="sters">Fără îmbinare automată: alegi una. Cealaltă rămâne în .editor-istoric/.</span>' +
+          buton2('fe-cmp-inapoi', 'Înapoi la fișă') + buton2('fe-cmp-curs', 'Păstrez a cursului') + buton2('fe-cmp-core', 'Iau din core') + buton2('fe-cmp-trimit', 'Trimit a cursului în core', 'principal') + '</div>';
+        [].forEach.call(cmp.querySelectorAll('img[data-img]'), function (im) { if (IMG[im.getAttribute('data-img')]) im.src = IMG[im.getAttribute('data-img')]; });
+        corp.hidden = true; cmp.hidden = false; $('fe-cmp-trimit').focus();
+      });
+    }
+    bc.addEventListener('click', function (ev) {
+      var b = ev.target.closest('button'); if (!b || !ci) return;
+      if (b.id === 'fe-core-trimite') {
+        var c = $('fe-core-id'), extra = {};
+        if (c) { if (!/^[a-z0-9]+(-[a-z0-9]+)*$/.test(c.value)) { mesajCore('Id-ul are doar litere mici, cifre și cratimă.', true); c.focus(); return; } extra.idCore = c.value; }
+        if (ci.stare === 'lipsa') extra.asteptat = null;
+        trimiteCore(ci.id, extra);
+      } else if (b.id === 'fe-core-ia') {
+        if (confirm('Copia din curs devine versiunea din core. Cea de acum rămâne în .editor-istoric/. Continui?')) cere('/api/core/ia', { id: ci.id, C: ci.C, L: ci.L }, 'Am luat versiunea din core.');
+      } else if (b.id === 'fe-core-raman') cere('/api/core/raman', { id: ci.id, L: ci.L }, 'Rămâne versiunea cursului; nu mai întreb de versiunea asta din core.');
+      else if (b.id === 'fe-core-compara') compara();
+      else if (b.id === 'fe-core-dezleaga') {
+        if (confirm('Dezlegi piesa de ' + ci.din + '? Rămâne a cursului, iar core nu se schimbă.')) cere('/api/core/dezleaga', { id: ci.id }, 'Piesa e acum doar a cursului.');
+      }
+    });
+    cmp.addEventListener('click', function (ev) {
+      var b = ev.target.closest('button'); if (!b || !ci) return;
+      if (b.id === 'fe-cmp-inapoi') { cmp.hidden = true; corp.hidden = false; return; }
+      if (b.id === 'fe-cmp-curs') cere('/api/core/raman', { id: ci.id, L: ci.L }, 'Păstrezi versiunea cursului; core rămâne cum e.');
+      if (b.id === 'fe-cmp-core') cere('/api/core/ia', { id: ci.id, C: ci.C, L: ci.L }, 'Am luat versiunea din core.');
+      if (b.id === 'fe-cmp-trimit') trimiteCore(ci.id, { asteptat: ci.L });
+    });
+
+    // „Adaugă din core”, lângă „Piesă nouă”: lista compactă, căutare, filtre-buton după tip.
+    if (CORE) {
+      var ad = document.createElement('button');
+      ad.type = 'button'; ad.id = 'core-deschide'; ad.textContent = 'Adaugă din core';
+      if (dreapta) dreapta.insertBefore(ad, noua.nextSibling);
+      if (MF.propunere()) { ad.disabled = true; ad.title = 'Întâi „Creează harvest.yml”.'; }
+      var cd = document.createElement('dialog');
+      cd.className = 'fisa-dialog core-dialog'; cd.id = 'core-dialog'; cd.setAttribute('aria-labelledby', 'core-titlu');
+      cd.innerHTML = '<header class="fisa-cap"><div><p class="eticheta">Biblioteca core · ' + escape(CORE) + '</p><h2 id="core-titlu">Adaugă din core</h2></div><button type="button" class="fisa-inchide" id="core-inchide" aria-label="Închide">×</button></header>' +
+        '<div class="core-cauta"><input type="search" id="core-q" placeholder="Caută: titlu, scop, etichetă" aria-label="Caută în core" autocomplete="off"><div class="core-filtre" id="core-filtre" role="group" aria-label="Filtrează după tip"></div></div>' +
+        '<p class="ed-eroare" id="core-eroare" role="alert" hidden></p><ul class="core-lista" id="core-lista"></ul><p class="sters core-gol" id="core-gol" hidden></p>';
+      document.body.appendChild(cd);
+      var lista = [], tipAles = '', TIPRO = { exercitiu: 'exercițiu', reflectie: 'reflecție', inchidere: 'închidere', pauza: 'pauză' };
+      var norm = function (t) { return String(t || '').normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase(); };
+      var coreEroare = function (t) { $('core-eroare').hidden = !t; $('core-eroare').textContent = t || ''; };
+      function randCore(x) {
+        return '<li class="core-rand" data-id="' + escape(x.id) + '"><span class="mc-durata"><b>' + escape(x.durata) + '</b> min</span>' +
+          '<span class="core-cap"><span class="mc-titlu">' + escape(x.titlu) + (x.tip === 'challenge' ? ' <span title="challenge">◆</span>' : '') + '</span>' + (x.scop ? '<span class="mc-scop">' + escape(x.scop) + '</span>' : '') +
+          '<span class="core-meta">' + escape([x.tip ? TIPRO[x.tip] || x.tip : '', (x.etichete || []).join(', '), 'comun/' + x.id].filter(Boolean).join(' · ')) + '</span></span>' +
+          '<span class="core-act">' + (x.inCurs ? '<span class="sters">e deja în curs</span>' : '<button type="button" class="core-adauga" data-id="' + escape(x.id) + '">Adaugă</button>') + '</span>' +
+          '<span class="core-id" hidden><label>Id în curs <input type="text" maxlength="60" autocomplete="off" spellcheck="false"></label><button type="button" class="core-adauga principal" data-id="' + escape(x.id) + '" data-cu-id="1">Adaugă cu acest id</button></span></li>';
+      }
+      function deseneazaLista() {
+        var q = norm($('core-q').value).trim();
+        var vazute = lista.filter(function (x) { return (!tipAles || x.tip === tipAles) && (!q || norm([x.titlu, x.scop, x.id, (x.etichete || []).join(' ')].join(' ')).indexOf(q) >= 0); });
+        $('core-lista').innerHTML = vazute.map(randCore).join('');
+        $('core-gol').hidden = vazute.length > 0;
+        $('core-gol').textContent = lista.length ? 'Nicio piesă nu se potrivește.' : 'Core e încă gol. Trimiți piese din Fișa: „Trimite în core” sau bifa „Salvează și în core”.';
+      }
+      function deseneazaFiltre() {
+        var tipuri = []; lista.forEach(function (x) { if (x.tip && tipuri.indexOf(x.tip) < 0) tipuri.push(x.tip); });
+        $('core-filtre').innerHTML = tipuri.length > 1 ? ['<button type="button" data-tip="" aria-pressed="' + !tipAles + '">Toate</button>'].concat(tipuri.sort().map(function (t) { return '<button type="button" data-tip="' + escape(t) + '" aria-pressed="' + (tipAles === t) + '">' + escape(TIPRO[t] || t) + '</button>'; })).join('') : '';
+      }
+      ad.addEventListener('click', function () {
+        coreEroare(''); $('core-q').value = ''; tipAles = '';
+        api('/api/core').then(function (j) {
+          if (j._cod !== 200) { coreEroare(j.eroare || 'Nu pot citi core.'); lista = []; }
+          else { lista = j.piese || []; if (j.erori && j.erori.length) coreEroare(j.erori.join(' · ')); }
+          deseneazaFiltre(); deseneazaLista();
+          if (!cd.open) cd.showModal();
+          $('core-q').focus();
+        }, function () { coreEroare('Editorul nu răspunde.'); if (!cd.open) cd.showModal(); });
+      });
+      $('core-q').addEventListener('input', deseneazaLista);
+      $('core-filtre').addEventListener('click', function (ev) { var b = ev.target.closest('button[data-tip]'); if (!b) return; tipAles = b.getAttribute('data-tip'); deseneazaFiltre(); deseneazaLista(); });
+      $('core-inchide').addEventListener('click', function () { cd.close(); });
+      cd.addEventListener('click', function (ev) { if (ev.target === cd) cd.close(); });
+      cd.addEventListener('keydown', function (ev) { ev.stopPropagation(); }); // tastele nu ajung la cartonașe sau la prezentare
+      cd.addEventListener('close', function () { ad.focus(); });
+      $('core-lista').addEventListener('click', function (ev) {
+        var b = ev.target.closest('button.core-adauga'); if (!b) return;
+        var li = b.closest('.core-rand'), idc = b.getAttribute('data-id'), corpCerere = { idCore: idc };
+        if (b.getAttribute('data-cu-id')) {
+          var v = li.querySelector('.core-id input').value;
+          if (!/^[a-z0-9]+(-[a-z0-9]+)*$/.test(v)) { coreEroare('Id-ul are doar litere mici, cifre și cratimă.'); li.querySelector('.core-id input').focus(); return; }
+          corpCerere.idNou = v;
+        }
+        b.disabled = true; coreEroare('');
+        api('/api/core/adauga', 'POST', corpCerere).then(function (j) {
+          b.disabled = false;
+          if (j._cod === 200) {
+            try { sessionStorage.setItem('masa:mesaj', 'Am adus comun/' + idc + ' în Harvest, cu verdict „nou” (' + j.id + ').'); } catch (e) { /* nimic */ }
+            location.hash = '#masa'; location.reload(); return;
+          }
+          if (j._cod === 409 && j.conflict && j.conflict.ocupat) {
+            var z = li.querySelector('.core-id'); z.hidden = false; var inp = z.querySelector('input'); inp.value = j.conflict.propus; inp.focus(); inp.select();
+          }
+          coreEroare(j.eroare || 'Nu am putut aduce piesa.');
+        }, function () { b.disabled = false; coreEroare('Editorul nu răspunde. Fereastra Terminal în care rulează e încă deschisă?'); });
+      });
+    }
+
     var deEditat = null; try { deEditat = sessionStorage.getItem('masa:editeaza'); sessionStorage.removeItem('masa:editeaza'); } catch (e) { /* nimic */ }
     if (deEditat && MF.candidata(deEditat)) { MF.deschide(deEditat); intra(deEditat); }
+    var deVazut = null; try { deVazut = sessionStorage.getItem('masa:fisa'); sessionStorage.removeItem('masa:fisa'); coreMesaj = sessionStorage.getItem('masa:core-mesaj') || ''; sessionStorage.removeItem('masa:core-mesaj'); } catch (e) { /* nimic */ }
+    if (deVazut && !deEditat && MF.candidata(deVazut)) MF.deschide(deVazut);
     window.__fisaEditor = { stare: function () { return ed ? { mod: ed.mod, id: ed.id, murdar: murdar(), hash: ed.hash } : null; }, ciorne: function () { return Object.keys(ciorne); } };
   }
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', pornesteFisa); else pornesteFisa();

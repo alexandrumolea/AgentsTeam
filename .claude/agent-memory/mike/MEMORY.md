@@ -47,10 +47,12 @@ Păstrează sub 150 de rânduri. Comprimă când crește. Fapte, nu povești.
 
 - 2026-11-20: în editor-client.js, orice buton cu clasa `.ed-btn` e prins de handler-ul global (capture + stopPropagation) și deschide editorul de ecran. Butoanele noi primesc clasă proprie. Esc în dialog: preventDefault pe keydown (al doilea Esc fără activare nu mai e anulabil în Chrome). Textul `editor-client` nu are voie să apară în masa.js (testul offline îl caută).
 
+- 2026-11-20: biblioteca core: testele cu două cursuri au nevoie de forma reală (`<tmp>/cursuri/a`, `<tmp>/biblioteca`), iar detectarea automată a core-ului merge doar sub `cursuri/`: altfel `../../biblioteca` dintr-un tmp ar ieși în foldere străine. Numele variabilelor din editor.mjs se ciocnesc ușor cu importurile (amprenta): aliasuri.
+
 ## Fișiere de memorie
 - [Stack și găzduire](project_stack-hosting.md) — GitHub Pages (D-036–D-038), CNAME ignorat la Actions; fapte Netlify/Cloudflare/Vercel
 - [Generatorul paginii echipei](generator-echipa.md) — Mike îl deține; puncte fragile tăcute; 2026-11-17: panoul de control, maparea statusurilor
-- [Generatorul de curs](project_generator-curs.md) — 2026-11-17: curs/ v1.2, Prezintă; 2026-11-18: pauze fixe/blocuri, Masa (masa.yml); 2026-11-19: fișa piesei, rebuild la refresh; 2026-11-20: tipul challenge, fișa editabilă
+- [Generatorul de curs](project_generator-curs.md) — 2026-11-17: curs/ v1.2, Prezintă; 2026-11-18: pauze fixe/blocuri, Masa (masa.yml); 2026-11-19: fișa piesei, rebuild la refresh; 2026-11-20: tipul challenge, fișa editabilă, biblioteca core
 - [Tema: culori, gradient, fonturi](project_tema-culori.md) — 2026-11-17: content/tema.yml → CSS, scenă, OG, contrast la build; branding BEMORE (D-057)
 
 ## Deschis

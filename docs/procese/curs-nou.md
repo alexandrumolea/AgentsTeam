@@ -73,6 +73,7 @@ Panoul acestei etape e vederea **Harvest** din materialul trainerului (fostă �
 - **Felurile de piese:** exercițiu, knowledge bite, experience, plus **challenge** (D-075): o întrebare care pune participantul față în față cu o situație reală a lui și cere un răspuns concret.
 - **Exercițiile sunt instrucțiuni exacte** (D-075), un framework prin care trec participanții. **Folosim des interacțiunea**, ca oamenii să învețe unii de la alții, mult mai mult decât prin reflecție individuală.
 - **În etapa C se actualizează doar Harvest-ul.** Restul se generează din el după poartă.
+- **Biblioteca core** (Alex, 2026-11-20; spec Radu `biblioteca-de-baza.md`): piesele care se refolosesc între cursuri stau în `privat/biblioteca/`. Alex le trimite din editor (Fișa: „Trimite în core” sau bifa „Salvează și în core”) și le aduce în alt curs cu „Adaugă din core”. Cursul are mereu copia lui (`din: comun/<id>`, `baza`); nimic nu se sincronizează singur. Agenții nu scriu direct în core.
 
 #### Ce am învățat din editările lui Alex (2026-11-20: contract, toleranță, de ce contează)
 - **Obiectivul piesei spune ce se schimbă în om, nu ce face.** Ex.: „Să creeze conștientizare că există riscul ca unele schimbări să ne crească toleranța, nu neapărat capacitatea.” Nu „Fiecare se așază în colț și numește…”. La piesele de deschidere, obiectivul spune și **ce simte trainerul** când piesa a mers (ex. îi e clar ce înseamnă succesul pentru participanți, e în armonie cu asta, e atent la energia oamenilor).
