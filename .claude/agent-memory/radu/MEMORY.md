@@ -31,5 +31,7 @@ Păstrează sub 150 de rânduri. Comprimă când crește. Fapte, nu povești.
 - 2026-11-15: împărțirea cu Maria merge: ea numele și textele, eu structura și adresele. Preiau formatele ei (Knowledge, povești) ca schelet, nu le dublez.
 - 2026-11-15: v1 scris fără lista reală a invențiilor. Taxonomia și exemplele sunt ipoteze până răspunde Alex la întrebările 20–21.
 
+- 2026-11-20: la piese refolosite între cursuri, Alex vrea să aleagă el (nu sincronizare automată). Propun copie cu legătură, nu referință: personalizarea pe curs e normalul.
+
 ## Deschis
 - Vezi `docs/intrebari-pentru-alex.md`.

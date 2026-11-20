@@ -19,5 +19,7 @@ Adăugat: 2026-11-17
 
 2026-11-17 (v1.2, propunere 1.9): piesa = unitatea de bază (tip: teorie/model/poveste · exercitiu/reflectie/energizant · deschidere/inchidere/mesaj). Piese locale `piese/` acum, `comun/<id>` din `privat/piese/` după 25. Modulul = secvență subțire (titlu, ancora, schita, `piese.implicite/alternative`, `::piese`). Agenda: modul, piesă singură sau pauză; id-uri unice în curs. Mike: 4–6 h, termen Mi 18 seara, altfel îngheț v1.1.
 
+2026-11-20: biblioteca de bază propusă (`team/radu/documente/biblioteca-de-baza.md`): `privat/biblioteca/` ca un curs fără ediții; copie cu legătură (`din: comun/<id>`, `baza: <amprentă>` în harvest.yml), stările calculate, bifa nebifată implicit în Fișa, „Adaugă din bibliotecă”. Înlocuiește `privat/piese/` din 1.9. De aprobat de Alex.
+
 **Why:** Alex (2026-11-17) vrea ca o modificare în materialul trainerului să schimbe și cursul participanților; GitHub Pages nu are parole; repo-ul e public.
 **How to apply:** Pentru 25.11 (Self-management cu AI) și orice curs nou: același format, folder nou, fără cod. Actualizează după deciziile lui Alex. Taskuri: T-022 (Mike), T-023 (Ioana). Vezi [[project-arhitectura-v2]].

@@ -12,6 +12,7 @@ Utilitate: 1 = inutil, 3 = ok, 5 = exact ce trebuia. Feedback Alex: completat de
 | 2026-11-17 | Arhitectura curs v1: materialul trainerului e și prezentarea (mod Prezintă, două ferestre, straturile `:::sala`), slide-urile Ive ca temă, PPTX opțional | același document, jurnal v1, T-022 și T-023 actualizate, textele noi pentru D-048–D-051 | 4 | – | Aș fi întrebat din v0 cum prezintă Alex în sală; „material al trainerului” ascundea și prezentarea |
 | 2026-11-17 | Arhitectura curs v1.1: formatul băncii de exerciții (I-021) și agenda din ediție | secțiunea 1.8, exemplu actualizat, verificări noi, T-022 extins | 4 | – | Banca era previzibilă din v0 (ediția alegea deja module); aș fi pus de la început exercițiile ca fișiere separate |
 | 2026-11-17 | Arhitectura curs v1.2: piesa de workshop ca unitate de bază (1.9) | variantă minimă de 4–6 ore pentru 23, bibliotecă comună după 25, decizie pentru Alex | 4 | – | Am citit codul lui Mike înainte de estimare; bine. Aș fi propus „piesa” direct în v1.1, banca era deja jumătate din drum |
+| 2026-11-20 | Biblioteca de bază pentru piese (cererea lui Alex: „salvez și în părinte”) | `team/radu/documente/biblioteca-de-baza.md`: copie cu legătură, bifa în Fișa, „Adaugă din bibliotecă”, spec pentru Mike, 3 decizii pentru Alex | 4 | – | Aș fi verificat cu Mike forma exactă a detectării de conflict din editor, ca stările să folosească același mecanism |
 
 ## Review-uri lunare
 | Lună | Verdict (păstrăm / ajustăm / renunțăm) | Note |
