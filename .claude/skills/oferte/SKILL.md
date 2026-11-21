@@ -27,6 +27,17 @@ O ofertă bună nu e o listă de prețuri. E răspunsul la întrebarea clientulu
 6. **Ce e inclus / ce nu** (transport, cazare, limba rapoartelor etc.): onest, fără surprize mai târziu.
 7. **Dacă vi se potrivește**: o invitație deschisă, fără să presupună acceptul („mă bucur să ajustăm propunerea”), plus valabilitatea ofertei, spusă blând (de exemplu 30 de zile).
 
+## 2b. Structura unei propuneri pentru clienți care nu sunt din training (2026-11-21, Alex)
+Clientul nu caută un program de training, caută o zi utilă pentru oamenii lui. Propunerea răspunde, în ordinea asta:
+1. **De ce e relevant:** problema pe care o recunosc ei în viața de zi cu zi a echipei, pe limba lor (cum se simte la birou), nu pe limba de training.
+2. **Agenda:** blocuri cu **titlu pe limba clientului, subtitlu de o frază și durată**, pe ziua standard (D-069: 9:30–11:00, 11:15–12:45, 13:45–15:15, 15:30–17:30; pauzele și prânzul într-un rând sub tabel).
+3. **Ce iau oamenii cu ei:** 3 beneficii concrete.
+4. **Formatul pe scurt:** durata, față în față sau online, câți participanți, limba.
+5. **Investiția** și ce e inclus, apoi „Dacă vi se potrivește”.
+- Titlurile de pe agendă sunt pe limba clientului, nu termeni de facilitator. Temele lui Alex rămân esența, dar se redenumesc: „Contractarea” devine „Cum pornim bine o colaborare”; „Contractul și așteptările” devine „Ce așteptăm unii de la alții”.
+- Fără promisiuni de adaptare sau discuții prealabile, dacă Alex nu le cere. O zi dintr-o serie se prezintă ca o zi bună și singură; legătura cu restul seriei, cel mult o mențiune.
+- Pe șablon: agenda folosește tabelul existent (Ora / Ce lucrăm cu subtitlul în small / Durata), fără stil nou. Dacă agenda nu încape pe foaia 1, beneficiile trec pe foaia 2, deasupra formatului.
+
 ## 3. Tonul
 - Vocea lui Alex (skill `vocea-alex`): cald, direct, în română, fără jargon și fără presiune. Vânzare prin claritate și prin rezultat, nu prin adjective.
 - Fraze scurte. Verbe la persoana I („vă propun”, „lucrăm”), cu „dumneavoastră” sau „voi” după cum vorbește Alex deja cu clientul în email.
