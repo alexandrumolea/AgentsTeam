@@ -41,7 +41,7 @@
 Panoul acestei etape e vederea **Harvest** din materialul trainerului (fostă „Masa”; fișierul `harvest.yml`, fost `masa.yml`).
 1. **Harvest:** toate piesele din Laborator, dintr-o privire.
 2. **Curate:** alegem ce e suficient de actual și cu sens ca să rămână în Bibliotecă. Alex dă Da / Poate / Nu.
-3. **Flow:** începem firul roșu. Piesele „da” se așază în cele 4 blocuri ale zilei. Daria verifică timpii (fiecare bloc încape) și că fiecare obiectiv are cel puțin o piesă. Andrei verifică firul înainte să ajungă la Alex.
+3. **Flow:** începem firul roșu. Piesele „da” se așază în cele 4 blocuri ale zilei, fiecare bloc după structura D-079 (nuggets → awareness → micro-comportament → aplicare). Daria verifică timpii (fiecare bloc încape) și că fiecare obiectiv are cel puțin o piesă. Andrei verifică firul înainte să ajungă la Alex.
 - **Finalul etapei: firul roșu.**
 - **O piesă = o singură linie:** `id`, `titlu`, `scop`, `durata`, `tip`, `sursa`, `verdict` (nou / da / poate / nu), `bloc` (1–4), `ordine`. Fără text de slide, fără desene, fără ecrane. Așa consumăm puțini tokeni și Alex vede tot dintr-o privire.
 - **Fișa piesei:** detaliile stau în `harvest/<id>.md`, lângă rând. Se deschide din Harvest cu butonul „Fișa”.
@@ -146,6 +146,19 @@ Blocurile 1–3 au câte 90 de minute, blocul 4 are 120 (Alex, 2026-11-18). Pauz
 | 8 | **Curs online** | exportul `<slug>-participanti.json`, fără note de trainer și fără nume; pe site prin PR | Matei. Mike pentru PR | aprobă PR-ul |
 | 9 | **Feedback către participanți** | draft: mulțumire, linkul cursului online, formular de 3 întrebări (ce iei cu tine, ce aplici luni, ce ai schimba). Răspunsurile în `feedback/<data>.md` | Daria | **trimite**, în 1–3 zile |
 | 10 | **Verificare centralizată**, lunar | concluziile în `privat/concluzii-feedback.md`; ce e general merge în `team/elena/documente/lectii.md`; harta cursurilor se actualizează | Andrei, cu Elena | în raportul lunar |
+
+## Structura unui bloc (D-079, Alex, 2026-11-21)
+Orice bloc de conținut, în orice curs construit de la zero, are patru pași, în ordinea asta:
+1. **Nuggets of knowledge.** Una sau două idei scurte, interesante, care stârnesc curiozitatea și motivația. Răspund la „De ce contează pentru tine ideea asta?” și „Cum arată succesul?”. Tip `teorie`, câteva minute fiecare.
+2. **Exercițiu de awareness.** Omul vede cum face azi, **fără** modelul (nu i-l dăm încă). Ce scrie aici devine materialul pe care trainerul îl folosește la pasul 3. Tip `exercitiu`.
+3. **Micro-comportamentul introdus.** Modelul sau comportamentul concret, explicat simplu (exemplu: strategia de învățare, cu cele patru mișcări). Trainerul se leagă de ce a ieșit la awareness. Tip `model`.
+4. **Exercițiu de aplicare, ghidat.** Omul aplică micro-comportamentul pe cazul lui, pas cu pas după model. Tip `exercitiu` sau `challenge`.
+
+Cum o folosim:
+- **La Laborator și Harvest:** pentru fiecare bloc, Daria verifică dacă există câte o piesă pentru fiecare pas. Ce lipsește devine întrebare pentru Alex, nu piesă inventată.
+- **La Flow:** ordinea din bloc urmează cei patru pași. Contractul și closing-ul stau în afara structurii.
+- **Fișele:** puntea de la finalul fiecărei piese duce spre pasul următor (nugget → awareness → model → aplicare).
+- **Exemplul de referință:** blocul 4 din Change Agility (Adaptare sau Learning Agility? · Viteza și efortul → Cum îți dezvolți AI Literacy? → Strategia de învățare → Care e planul tău pentru AI Literacy?).
 
 ## Două piese pe care le are orice curs
 - **Contractul** (`contract`, tip `deschidere`): după un șablon comun, personalizat pe curs.

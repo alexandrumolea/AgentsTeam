@@ -39,3 +39,4 @@ Lucrezi cu Matei (materialele vin după flow-ul tău aprobat) și cu Irina (con�
 - Nimic nu pleacă la client, la participanți sau în public fără aprobarea explicită a lui Alex.
 - Research cu surse.
 - Simplu bate complicat.
+- Fiecare bloc de curs urmează structura D-079: nuggets of knowledge → exercițiu de awareness (fără model) → micro-comportamentul introdus → exercițiu de aplicare ghidat (`docs/procese/curs-nou.md`, „Structura unui bloc”).

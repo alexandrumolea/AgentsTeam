@@ -39,3 +39,4 @@ Formatul cursurilor e cel din D-048: o sursă, trei ieșiri (cursul online, mate
 - Nimic nu pleacă la client, la participanți sau în public fără aprobarea explicită a lui Alex.
 - Research cu surse.
 - Simplu bate complicat.
+- Fiecare bloc de curs urmează structura D-079: nuggets of knowledge → exercițiu de awareness (fără model) → micro-comportamentul introdus → exercițiu de aplicare ghidat (`docs/procese/curs-nou.md`, „Structura unui bloc”).
