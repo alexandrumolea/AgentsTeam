@@ -15,3 +15,6 @@ Utilitate: 1 = inutil, 3 = ok, 5 = exact ce trebuia. Feedback Alex: completat de
 | 2026-11-22 | Coperta (varianta 2 + lumina care trece, cu animație) în Coperta.pptx și ca slide 1 în deck | Gata; deck regenerat, doar slide 1 diferit; animația netestată în PowerPoint | – | – | – |
 | 2026-11-22 | Slide-ul BANI, varianta B pasul 1, în BANI.pptx (fundal lumina-cer fără piersică, note cu exemple, întrebări și Cascio) | Gata, verificat vizual cu Quick Look | – | – | – |
 | 2026-11-22 | Exercițiul în perechi, runda 4 A „Cer viu”, în Exercitiu-perechi.pptx (un slide, fundal cer-viu, instrucțiuni în note) | Gata, verificat vizual cu Quick Look | – | – | – |
+| 2026-11-22 | Incertitudine.pptx (4 slide-uri: 1B cu culorile 1A, 3A, 4B Noapte, 5A), note din Harvest | Gata; umbre și xmllint verificate, capturi văzute | – | – | – |
+| 2026-11-22 | Nu-stiu.pptx (exercițiul „Nu știu…” în stilul Cer viu) | Gata; bară pe două rânduri ca textul lui B să încapă întreg | – | – | – |
+| 2026-11-22 | Clustere-convergenta.pptx (varianta C, firele ca PNG transparent) | Gata; xmllint verificat, captură văzută | – | – | – |
