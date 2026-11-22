@@ -43,6 +43,7 @@ Utilitate: 1 = inutil, 3 = ok, 5 = exact ce trebuia. Feedback Alex: completat de
 | 2026-11-22 | Exercițiu în perechi, runda 2 (varianta A refăcută, 3 versiuni) | Gata: Conversația (recomandat), Noapte, Parcursul; un slide, 24 pt, fără piersică, model gol la cea recomandată | 4/5 | Să întreb din prima rundă ce culoare vrea să distingă exercițiile, în loc să copiez panoul din deck |
 | 2026-11-22 | Mock-up slide BANI (Change Agility, 3 variante + model gol la B) | Gata: B litere mari în 2 pași (recomandat), A plăci 2×2, C VUCA→BANI; text verbatim la 32 px, 0 depășiri măsurate | 4/5 | Aș fi verificat de la început fundalul generatorului (colțul piersică) |
 | 2026-11-22 | Exercițiu în perechi, runda 3 (4 direcții noi) | Gata: Cer plin (recomandat), Doar tipografie, Destinația întâi, Etapele; un slide, întrebări 32–34 px, fără piersică | 3/5 | După două runde respinse, aș cere de la început 1–2 slide-uri care îi plac lui Alex, ca reper, înainte de variante |
+| 2026-11-22 | Slide insight Convergence Outlook 2026 (3 variante, model gol la A) | Gata: A Două citiri (recomandat), C Frânghia, B Intersecția; mecanismul vizibil, text verbatim | 4/5 | Să verific de la început că etichetele mici de diagramă (rezultatul) ating 24 pt |
 
 ## Review-uri lunare
 | Lună | Verdict (păstrăm / ajustăm / renunțăm) | Note |
