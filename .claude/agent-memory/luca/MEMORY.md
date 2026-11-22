@@ -11,3 +11,6 @@ Fiecare intrare începe cu data. Sub 150 de rânduri.
 - 2026-11-22: Un produs din curs folosește doar piese cu verdict „da”; piesele „nou” intră doar după verdictul lui Alex.
 - 2026-11-22: Harta conținutului pe abilități (D-080) × pașii blocului (D-079) arată repede ce lipsește: în Harvest lipsesc consecințele alegerilor și tips-urile scurte, cu surse.
 - 2026-11-22: Exemplele personale ale lui Alex (sănătate, viață privată) nu se folosesc fără textul și acordul lui.
+- 2026-11-22: Alex a ales (D-084): atelierul e o ZI ÎNTREAGĂ ÎN SALĂ, pe proiector, cu self-assessments live; fără exemplele lui în texte (le dă el în sală, marcaj ⟡); întâi îl testează el în sală, NU pe site/Innovations; vrea mai multe răscruci (planul v1 are 11, 2–3 pe bloc). Recomandarea mea: atelierul = Flow-ul Change Agility, după 25.11.
+- 2026-11-22: REGULĂ ALEX: echipa e independentă; Alex revizuiește ÎNTREGUL, nu bucățile. Nu-i cer aprobări una câte una (răscruci, piese): decid cu Daria, îi arăt ziua o dată, ca experiență. Întrebările pentru el doar când îi schimbă direcția, cel mult 3–4.
+- 2026-11-22: Lecție: recomandarea mea inițială (individual, online) a fost greșită pentru Alex: el gândește întâi în sală, cu grupul. La produse din cursuri, întreb întâi formatul.
