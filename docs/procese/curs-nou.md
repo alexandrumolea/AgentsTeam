@@ -147,6 +147,9 @@ Blocurile 1–3 au câte 90 de minute, blocul 4 are 120 (Alex, 2026-11-18). Pauz
 | 9 | **Feedback către participanți** | draft: mulțumire, linkul cursului online, formular de 3 întrebări (ce iei cu tine, ce aplici luni, ce ai schimba). Răspunsurile în `feedback/<data>.md` | Daria | **trimite**, în 1–3 zile |
 | 10 | **Verificare centralizată**, lunar | concluziile în `privat/concluzii-feedback.md`; ce e general merge în `team/elena/documente/lectii.md`; harta cursurilor se actualizează | Andrei, cu Elena | în raportul lunar |
 
+## Suprapunerile sunt nuanțe (Alex, 2026-11-22)
+În Harvest, două piese care se suprapun nu sunt o problemă: lucrăm cu nuanțe, iar exercițiile diferite pot avea nuanțe diferite. Fișa leagă piesele înrudite la „Legată de” și spune care e nuanța ei. Nu punem suprapunerea ca întrebare pentru Alex și nu tăiem din cauza ei; alegerea se face la Flow.
+
 ## Structura unui bloc (D-079, Alex, 2026-11-21)
 Orice bloc de conținut, în orice curs construit de la zero, are patru pași, în ordinea asta:
 1. **Nuggets of knowledge.** Una sau două idei scurte, interesante, care stârnesc curiozitatea și motivația. Răspund la „De ce contează pentru tine ideea asta?” și „Cum arată succesul?”. Tip `teorie`, câteva minute fiecare.
