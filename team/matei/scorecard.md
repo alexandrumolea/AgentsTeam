@@ -13,3 +13,4 @@ Utilitate: 1 = inutil, 3 = ok, 5 = exact ce trebuia. Feedback Alex: completat de
 | 2026-11-22 | Slide-ul despre încărcarea alostatică, varianta C (completat + model), în PowerPoint | Gata, verificat vizual | – | – | – |
 | 2026-11-22 | Schema M2 (încărcarea alostatică) ca prim slide, vectorial, cu rândul de jos la clic | Gata, verificat vizual și XML; animația netestată în PowerPoint | – | – | – |
 | 2026-11-22 | Coperta (varianta 2 + lumina care trece, cu animație) în Coperta.pptx și ca slide 1 în deck | Gata; deck regenerat, doar slide 1 diferit; animația netestată în PowerPoint | – | – | – |
+| 2026-11-22 | Slide-ul BANI, varianta B pasul 1, în BANI.pptx (fundal lumina-cer fără piersică, note cu exemple, întrebări și Cascio) | Gata, verificat vizual cu Quick Look | – | – | – |

@@ -23,3 +23,4 @@ Păstrează sub 150 de rânduri. Comprimă când crește. Fapte, nu povești.
 - 2026-11-22: Fundalurile în pptx: JPEG pe layout (defineSlideMaster cu background), nu pe fiecare slide. Cu PNG pe slide, deck-ul de 135 de slide-uri ieșea 232 MB; cu layout + JPEG, 3,3 MB.
 - 2026-11-22: Quick Look se blochează pe un .pptx al cărui singur slide e ascuns; în previzualizările separate nu ascund slide-urile.
 - 2026-11-22: Animație în pptx din pptxgenjs: după writeFile, cu JSZip, inserez `<p:timing>` cu `p:animMotion` (path relativ, fracțiuni din slide, „M 0 0 L … E”, repeatCount="indefinite", start onBegin = With Previous) după `</p:clrMapOvr>`. Formele vectoriale cu `custGeom` (puncte + cubic). Quick Look nu redă animația; o verifică doar PowerPoint.
+- 2026-11-22: Fundalul „lumina-cer” (lumina fără piersică) e în fundaluri.py; Alex nu vrea piersică pe slide-urile cu lumină. `python3 fundaluri.py <nume>` randează doar fundalul cerut.
