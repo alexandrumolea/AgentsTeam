@@ -10,3 +10,4 @@ Utilitate: 1 = inutil, 3 = ok, 5 = exact ce trebuia. Feedback Alex: completat de
 | 2026-11-22 | Generatorul PowerPoint din slides.yml (brand BEMORE, Sora + Inter Tight, sticlă peste gradient) + deck-ul zilei de curs | Generator și deck gata, rezervele ascunse, verificat vizual cu Quick Look | – | – | Aș fi verificat din prima cum randez pptx fără LibreOffice (PowerPoint prin AppleScript s-a blocat într-un dialog) |
 | 2026-11-22 | Două slide-uri Homeostaza/Alostaza (A și D2) direct în PowerPoint, cu animație pe traseu injectată în XML | Gata, verificat vizual și ca XML; animația netestată în PowerPoint | – | – | – |
 | 2026-11-22 | Slide-ul de întrebare, varianta A (întrebarea lui Alex + model), în PowerPoint | Gata, verificat vizual | – | – | – |
+| 2026-11-22 | Slide-ul despre încărcarea alostatică, varianta C (completat + model), în PowerPoint | Gata, verificat vizual | – | – | – |
