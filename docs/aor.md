@@ -21,4 +21,5 @@
 | Social media | Sofia | Maria | `team/sofia/documente/` | săptămânal | calendarul e respectat |
 | Oportunități, speaking, strategia cărții | Victor | Maria | `team/victor/documente/` | lunar | oportunități calificate pe lună |
 | Oferte și relația comercială cu clienții | Ana | Tudor | `.claude/agent-memory-local/ana/` (privat), metoda în `.claude/skills/oferte/` | la fiecare cerere | timpul până la draft, oferte fără corecturi de fond |
+| Produse digitale de learning (simulări, ateliere interactive, tool-uri) | Luca | Andrei | `privat/produse/`, `team/luca/documente/` | la fiecare produs | Alex aprobă planul din prima sau a doua iterație |
 | Calitatea sistemului și lecțiile | Elena | Tudor | `team/elena/documente/` | lunar (retro) | îmbunătățiri adoptate |

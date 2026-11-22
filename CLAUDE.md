@@ -27,6 +27,7 @@ Vezi [ECHIPA.md](ECHIPA.md) pentru roluri, statusuri și cine ce face.
 | sofia | Social Media | Calendar editorial, postări, adaptare pe platforme. |
 | victor | Impresar | Oportunități: speaking, podcasturi, parteneriate, carte. |
 | ana | Ofertare și clienți | Oferte către clienți, evidența clienților, follow-up (doar privat). |
+| luca | Product Owner | Simulări și ateliere interactive: viziune, planning, backlog. |
 | elena | Coach extern | Auditează fluxurile echipei, colectează lecții. |
 | andrei | Head of Learning | Strategia și portofoliul de cursuri; conduce echipa Learning Studio. |
 | daria | Designer de learning (Learning Studio) | Flow-ul unui workshop, ghidul facilitatorului. |
