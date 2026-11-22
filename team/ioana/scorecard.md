@@ -41,6 +41,7 @@ Utilitate: 1 = inutil, 3 = ok, 5 = exact ce trebuia. Feedback Alex: completat de
 | 2026-11-22 | Coperta cursului Change Agility (3 variante) | 1 infinitul care se deschide (recomandat), 3 Noapte cu lumina pe curba alostazei, 2 tipografică; fiecare cu rețeta PowerPoint; verificat pe ambele teme | Mare (estimare) | Să verific greutățile fontului în captură: clasa CSS anula diferența 200/400 din varianta 2 |
 | 2026-11-22 | Mock-up slide exercițiu în perechi (Change Agility, 3 variante + modele goale) | Gata: A panou lateral, B două slide-uri (recomandat), C plăci sus; text verbatim, 0 depășiri, întrebări la 24 pt | 4/5 | Aș fi generat SVG-urile dintr-un script de la început și aș fi testat lungimile înainte de a alege variantele |
 | 2026-11-22 | Exercițiu în perechi, runda 2 (varianta A refăcută, 3 versiuni) | Gata: Conversația (recomandat), Noapte, Parcursul; un slide, 24 pt, fără piersică, model gol la cea recomandată | 4/5 | Să întreb din prima rundă ce culoare vrea să distingă exercițiile, în loc să copiez panoul din deck |
+| 2026-11-22 | Mock-up slide BANI (Change Agility, 3 variante + model gol la B) | Gata: B litere mari în 2 pași (recomandat), A plăci 2×2, C VUCA→BANI; text verbatim la 32 px, 0 depășiri măsurate | 4/5 | Aș fi verificat de la început fundalul generatorului (colțul piersică) |
 
 ## Review-uri lunare
 | Lună | Verdict (păstrăm / ajustăm / renunțăm) | Note |
