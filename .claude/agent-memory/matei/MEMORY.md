@@ -29,3 +29,4 @@ Păstrează sub 150 de rânduri. Comprimă când crește. Fapte, nu povești.
 - 2026-11-22: Quick Look nu desenează vârfurile de săgeată (tailEnd) pe custGeom și ignoră custDash: pun vârful ca triunghi separat și linia punctată ca puncte (elipse). Pentru deck-uri cu mai multe slide-uri, opțiunea `--doar=N` dă câte un .pptx pe slide pentru previzualizare.
 - 2026-11-22: Fiecare formă primește `shadow: { ...UMBRA }` (pptxgenjs modifică obiectul pe loc). Înainte de livrare: unzip, verific alpha/blurRad/dir, apoi xmllint (scriptul verifica.sh din scratchpad).
 - 2026-11-22: Curbele complicate (fire împletite) merg ca PNG transparent randat cu Chrome (`--default-background-color=00000000`, scara 4), iar textele rămân casete editabile.
+- 2026-11-22: Slide-urile de knowledge stau în familia Lumină (brand-bemore, punctul 7); lavandă = pașii de ruptură/amenințare, albastru = drumul spre oportunitate. Înainte să așez textul, măsor rândurile cu canvas în Chrome (measureText).

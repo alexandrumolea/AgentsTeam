@@ -18,3 +18,4 @@ Utilitate: 1 = inutil, 3 = ok, 5 = exact ce trebuia. Feedback Alex: completat de
 | 2026-11-22 | Incertitudine.pptx (4 slide-uri: 1B cu culorile 1A, 3A, 4B Noapte, 5A), note din Harvest | Gata; umbre și xmllint verificate, capturi văzute | – | – | – |
 | 2026-11-22 | Nu-stiu.pptx (exercițiul „Nu știu…” în stilul Cer viu) | Gata; bară pe două rânduri ca textul lui B să încapă întreg | – | – | – |
 | 2026-11-22 | Clustere-convergenta.pptx (varianta C, firele ca PNG transparent) | Gata; xmllint verificat, captură văzută | – | – | – |
+| 2026-11-22 | Drumul incertitudinii în 6 pași (Drumul-incertitudinii.pptx), schemă pe 2 rânduri, familia Lumină | Gata; umbre și xmllint verificate, captură văzută | – | – | – |
