@@ -18,6 +18,7 @@ Sursa completă, citește-o când lucrezi efectiv la un material:
 4. **Esență, nu elemente.** Simboluri geometrice, nu mobilier sau decor literal. Un obiect înseamnă o idee.
 5. **Aer.** Cel mult 5–6 grupuri pe ecran, un singur buton plin.
 6. **Sage** doar în lecții (ce ai terminat, masa de lucru) și în pauză.
+7. **Slide-uri de curs (Alex, 2026-11-22):** knowledge pe fundal **Lumină** (lumina-cer, sticlă albă, colțuri rotunjite); **Noapte** (fundal închis) doar pentru **întrebări** și **mesaje cheie**. Nu propunem Noapte pentru knowledge: rupe coerența. Fără piersică pe slide-uri. Culori cu sens constant: lavandă = amenințare, albastru = oportunitate.
 
 ## Ce brand poartă un material
 - Clientul vine prin **Innersis** → `innersis-ive`.
