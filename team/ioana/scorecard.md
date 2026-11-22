@@ -36,6 +36,7 @@ Utilitate: 1 = inutil, 3 = ok, 5 = exact ce trebuia. Feedback Alex: completat de
 | 2026-11-22 | D refăcută ca infinit, după feedbackul lui Alex | D1 static cu săgeți (PNG în PowerPoint), D2 cu punct de lumină animat (CSS, reduced-motion respectat), model gol; scoase formulările inventate | Mare (estimare) | Să nu pun formulări proprii pe slide: Alex vrea doar cuvintele lui |
 | 2026-11-22 | Mock-up slide de întrebări (4 variante + modele) | A una mare, B Da/Nu, C principală + adâncire, D pe rând (recomandat); întrebarea lui Alex + întrebări din deck cuvânt cu cuvânt; verificat pe temă deschisă și închisă | Mare (estimare) | Să construiesc paginile de mock-up dintr-un script comun de la început: am refolosit stilul homeostazei prin copiere |
 | 2026-11-22 | Mock-up slide încărcare alostatică (3 variante + modele) | B costul care se adună (recomandat), A statement + 4 tipare cu semne care arată tiparul, C pauză/sens/control; textele din fișă cuvânt cu cuvânt; verificat pe ambele teme | Mare (estimare) | Să estimez lățimea textului din SVG cu marjă: etichetele din C ieșeau din slide la prima randare |
+| 2026-11-22 | Schema uzurii cumulate (3 scheme noi, după feedbackul lui Alex) | Rezervor cu straturi, prag și robinetul-pauză (recomandat), trepte spre zona de risc, două rezervoare cu/fără pauză; verificat pe ambele teme | Mare (estimare) | Prima schemă a arătat mișcarea, nu acumularea: întâi întreb ce trebuie să se vadă dintr-o privire (aici: pragul) |
 
 ## Review-uri lunare
 | Lună | Verdict (păstrăm / ajustăm / renunțăm) | Note |
