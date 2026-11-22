@@ -53,9 +53,9 @@ Panoul acestei etape e vederea **Harvest** din materialul trainerului (fostă �
 3. **Obiectivul piesei:** ce pleacă omul cu el, într-o propoziție.
 4. **Knowledge:** ce trebuie să știe participanții ca să înțeleagă și să-și dezvolte mindset-ul. Fiecare idee e formulată la fel:
    - **Statement principal:** un mesaj cheie catchy, contraintuitiv sau construit după principiile din *Made to Stick* (Heath & Heath: simplu, neașteptat, concret, credibil, emoțional, cu poveste);
-   - **Explicație**;
-   - **Exemple**;
-   - **Impact**;
+   - **Explicație = argumentele care susțin statement-ul** (Alex, 2026-11-22): de ce e adevărat (mecanismul, studiul, logica, observația din practică), nu o descriere a ce spune trainerul sau a ce conține piesa. Test: un sceptic din sală întreabă „de ce aș crede asta?”, iar explicația îi răspunde. Argumentele cu studiu au sursa la Research.
+   - **Exemple:** situații concrete, pe care publicul le recunoaște din viața lui, cu o miză reală și un detaliu specific. Nu o poveste construită ca să bifeze fiecare concept („…(toleranță) …(sensemaking)”), care sună a vorbe puse ca să fie puse. Mai bine un exemplu bun decât trei generice.
+   - **Impact = ce se întâmplă pe termen lung** (Alex, 2026-11-22): riscurile dacă omul nu aplică ideea și beneficiile dacă o aplică. Exemplul lui Alex: „Dacă înveți să lucrezi cu incertitudinea nu vei mai consuma timp și energie într-un mod inutil, devii o persoană mai eficace, care ajunge mai repede la obiective.” Nu un pas imediat („poți începe de azi”).
    - **Așa da / așa nu:** pattern-urile, unul lângă altul.
 5. **Micro-comportamentul:** ce abilitate integrează participantul ca să dezvolte competența principală, sau dacă piesa creează mai degrabă awareness. În sistemul nostru, o piesă face una dintre trei:
    - **schimbă mindset-ul prin idei** diferite;
