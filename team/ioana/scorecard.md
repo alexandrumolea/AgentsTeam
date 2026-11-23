@@ -52,3 +52,5 @@ Utilitate: 1 = inutil, 3 = ok, 5 = exact ce trebuia. Feedback Alex: completat de
 ## Review-uri lunare
 | Lună | Verdict (păstrăm / ajustăm / renunțăm) | Note |
 |---|---|---|
+| 2026-11-23 | Micro-skill-uri C + prisma (C1/C2 + hărți) | Mock-up livrat, verificare depășiri OK | mare (răspuns direct la întrebarea lui Alex) | Am refolosit head-ul paginii vechi dintr-un script; rapid. |
+| 2026-11-23 | Change Agility: intrarea în Emotional Regulation + etapele schimbării (3+3 variante) | 2 mock-up-uri, 0 depășiri, capturi verificate | mare (două slide-uri cerute azi, rapid) | Un generator pentru ambele pagini; din B (etape) am scos bucla alunecării, se încurca cu barele. |

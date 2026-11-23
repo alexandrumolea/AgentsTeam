@@ -22,3 +22,4 @@ Utilitate: 1 = inutil, 3 = ok, 5 = exact ce trebuia. Feedback Alex: completat de
 | 2026-11-22 | Notele din Drumul-incertitudinii.pptx refăcute după fișa nouă (6 pași) | Gata; verificat XML și notele | – | – | – |
 | 2026-11-23 | Detector-de-fum.pptx (varianta A, Balanța costurilor), un slide, familia Lumină, note cu input, statement-uri, nuanțe și surse | Gata; umbre și xmllint verificate, captură comparată cu mock-up-ul | – | – | – |
 | 2026-11-23 | Micro-skills.pptx (varianta C, Drumul), 4 slide-uri: întreg + 3 hărți, generator cu harta 0–3, note cu ancoră, cele trei, ordinea și tranziția | Gata; umbre și xmllint verificate, 4 capturi comparate cu mock-up-ul | – | – | – |
+| 2026-11-23 | Micro-skills.pptx trecut pe varianta C1 (Prisma la intrare): prisma cu gradient, semnal 7 px, opriri la 470/656/842, ieșiri la 1010, propoziția despre prismă în note | Gata; umbre și xmllint verificate, 4 capturi comparate cu SVG-ul C1 | – | – | – |
