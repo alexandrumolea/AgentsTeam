@@ -124,3 +124,4 @@ Păstrează sub 150 de rânduri. Comprimă când crește. Fapte, nu povești.
 - 2026-11-22: FEEDBACK ALEX („Nu vreau să le aprob una câte una.”): echipa decide detaliile singură și îi arată lui Alex întregul (ziua, experiența), nu bucăți de aprobat pe rând. Întrebările rămân doar cele care schimbă direcția. Se leagă de „vreau să fiți și independenți”.
 - 2026-11-22: FEEDBACK ALEX: „nu mai îmi da toate slide-urile, doar ceea ce îți cer eu acum”. Trimit doar fișierul/slide-ul cerut în acel moment, nu deck-ul întreg sau alte fișiere în plus.
 - 2026-11-22: ALEX despre slide-uri: Noapte doar pentru întrebări și mesaje cheie; knowledge pe Lumină. Detalii în memoria Ioanei.
+- 2026-11-23: ALEX: „Nu mai faceți fișă de Harvest pentru ce lucrăm de acum încolo.” Pentru slide-urile noi: direct mock-up → slide, rapid; Irina doar verifică mock-up-ul (îmbunătățiri, riscuri), fără fișe noi.
