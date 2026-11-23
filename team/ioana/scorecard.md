@@ -47,6 +47,7 @@ Utilitate: 1 = inutil, 3 = ok, 5 = exact ce trebuia. Feedback Alex: completat de
 | 2026-11-22 | Slide insight Convergence Outlook 2026 (3 variante, model gol la A) | Gata: A Două citiri (recomandat), C Frânghia, B Intersecția; mecanismul vizibil, text verbatim | 4/5 | Să verific de la început că etichetele mici de diagramă (rezultatul) ating 24 pt |
 | 2026-11-22 | Slide-uri incertitudine (5 slide-uri × 2 familii, sticlă) | Gata: familia A Lumină recomandată, B Noapte; listele de 6 la 34 px, culori cu sens pe tot setul | 4/5 | Aș fi pus de la început etichetele de legătură („de acolo apare”, „sau chiar”) în ordinea frazei, nu după schemă |
 | 2026-11-23 | Slide Detectorul de fum (Nesse), 3 variante Lumină | Gata: B 100 de alarme (recomandat), A Balanța costurilor, C Pragul alarmei; note cu textul integral și sursa | 4/5 | Să pornesc direct cu greutăți opace și un singur fir la balanță; am pierdut două capturi pe suprapuneri |
+| 2026-11-23 | Slide Cele trei micro-skill-uri (Change Agility), 3 variante + starea „hartă” | Gata: B Prisma (recomandat), A Secvența, C Drumul (cu ieșirile din definiție); fiecare cu 2 hărți (skill 1 și 2 evidențiate) | 4/5 | Am refolosit generatorul și scriptul de verificare de la detector: 0 depășiri din a doua rulare. Să pun de la început un fond opac sub elementele estompate |
 
 ## Review-uri lunare
 | Lună | Verdict (păstrăm / ajustăm / renunțăm) | Note |
