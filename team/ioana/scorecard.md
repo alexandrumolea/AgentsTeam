@@ -46,6 +46,7 @@ Utilitate: 1 = inutil, 3 = ok, 5 = exact ce trebuia. Feedback Alex: completat de
 | 2026-11-22 | Exercițiu în perechi, runda 4 (între v1 și v2, înapoi pe sticlă) | Gata: A Cer viu (recomandat, model gol), B Sticlă de cer, C Banda de noapte; trei locuri diferite pentru timp; verificat în Chrome headless, deschis și închis | 4/5 | Trebuia să țin sticla din deck încă din runda 3: am scos-o ca să diferențiez și Alex a simțit imediat că se pierde linia |
 | 2026-11-22 | Slide insight Convergence Outlook 2026 (3 variante, model gol la A) | Gata: A Două citiri (recomandat), C Frânghia, B Intersecția; mecanismul vizibil, text verbatim | 4/5 | Să verific de la început că etichetele mici de diagramă (rezultatul) ating 24 pt |
 | 2026-11-22 | Slide-uri incertitudine (5 slide-uri × 2 familii, sticlă) | Gata: familia A Lumină recomandată, B Noapte; listele de 6 la 34 px, culori cu sens pe tot setul | 4/5 | Aș fi pus de la început etichetele de legătură („de acolo apare”, „sau chiar”) în ordinea frazei, nu după schemă |
+| 2026-11-23 | Slide Detectorul de fum (Nesse), 3 variante Lumină | Gata: B 100 de alarme (recomandat), A Balanța costurilor, C Pragul alarmei; note cu textul integral și sursa | 4/5 | Să pornesc direct cu greutăți opace și un singur fir la balanță; am pierdut două capturi pe suprapuneri |
 
 ## Review-uri lunare
 | Lună | Verdict (păstrăm / ajustăm / renunțăm) | Note |
