@@ -21,6 +21,18 @@
         "4321"
       ],
       "port": 4321
+    },
+    {
+      "name": "curs-editor",
+      "runtimeExecutable": "node",
+      "runtimeArgs": [
+        "curs/editor.mjs",
+        "privat/cursuri/change-agility",
+        "--port",
+        "4747",
+        "--fara-browser"
+      ],
+      "port": 4747
     }
   ]
 }
