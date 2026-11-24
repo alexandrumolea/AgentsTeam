@@ -177,6 +177,15 @@ Modulul „Toleranță și capacitate”, contractul și closing-urile au fost p
 ## Când e un curs stabilizat
 2 livrări la rând fără schimbări mari în agendă (nicio piesă nouă de conținut, cel mult o piesă schimbată pe bloc) și cu obiectivele atinse. După aceea bucla se oprește: research doar la revizia trimestrială a hărții. Rămân diagnosticarea, ajustările de agendă și cele două feedbackuri. Bucla se redeschide dacă feedbackul scade două ediții la rând sau dacă harta schimbă eticheta cursului.
 
+## Lecțiile după prima livrare Change Agility (Alex, 2026-11-24)
+- **Mai personal, mai adânc, mai puțin general.** Oamenii au apreciat cel mai mult discuțiile oneste despre ei înșiși (exercițiul în perechi, detectivul de resurse). Ziua a părut „despre lucruri generale pe care le știu” și prea tehnică pentru soft skills. Forța lui Alex e coaching-ul: flow-ul îi face loc.
+- **Teoria a fost apreciată; practica trebuie legată de realitatea lor.** Exercițiile care cer research serios (future thinking, AI) rămân la suprafață într-o zi de curs. Preferăm exerciții imaginative și personale (ex. o scrisoare structurată despre viitor) în locul celor de research în echipă.
+- **Variază metoda.** Nu tot în echipe: perechi, individual, mindfulness, plen. Echipele mari au rămas superficiale.
+- **Mai puțin, mai adânc.** Ziua s-a simțit prea intensă. Mai puține piese, mai mult timp pe fiecare.
+- **Ce a prins:** bucla de feedback din strategia de învățare; partea de teorie de la început.
+- **Formatul piesei (D-086):** input-ul lui Alex · exercițiu sau prezentare · ideea principală + research (prezentare) sau mecanica pe scurt (exercițiu) · întrebări de critical thinking sau de debriefing. Fără idei de design în fișă.
+- **Cum face Alex slide-urile** (deck-ul final, `materiale/livrat-2026-11-23/`): etichete scurte de tip (REFLECȚIE, EXERCIȚIU, GOOD TO KNOW, IDEE, INSIGHT); întrebările de reflecție singure pe ecran; doar două blocuri mari în zi; a tăiat mult din ce i-am propus.
+
 ## Reguli
 - Nimic nu pleacă la participanți sau la client fără Alex. Echipa face doar draft-uri.
 - Fără date personale și fără numele clientului în repo-ul public.
