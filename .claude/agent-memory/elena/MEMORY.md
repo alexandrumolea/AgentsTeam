@@ -15,6 +15,7 @@ Păstrează sub 150 de rânduri. Comprimă când crește. Fapte, nu povești.
 
 ## Ce a mers / ce nu
 - (gol la 2026-11-15)
+- 2026-11-24: Lessons learnt Change Agility (privat/cursuri/change-agility/lessons-learnt.md): Alex vrea lecțiile în cuvintele lui, citate exacte cu dată, doar puțin structurate. Concluziile echipei nu intră ca ale lui. Extrasul de mesaje taie textele lungi: verifică în transcrierea .jsonl.
 
 ## Deschis
 - Vezi `docs/intrebari-pentru-alex.md`.
