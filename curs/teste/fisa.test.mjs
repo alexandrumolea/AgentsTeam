@@ -126,10 +126,10 @@ function posteaza(e, cale, corp, token = e.token) {
   });
 }
 
-test('șablonul are secțiunile D-078, în ordine', () => {
+test('șablonul are secțiunile D-086, în ordine', () => {
   const t = sablonFisa({ id: 'x', titlu: 'Titlul', durata: 15, tip: 'exercitiu' }, '2026-11-20');
   const s = [...t.matchAll(/^## (.+)$/gm)].map((m) => m[1]);
-  assert.deepEqual(s, ['Input-ul lui Alex', 'Pe scurt', 'Obiectivul piesei', 'Knowledge', 'Micro-comportamentul', 'Experiența', 'Integrarea', 'Materiale necesare', 'Research-ul pentru trainer', 'Întrebare pentru Alex']);
+  assert.deepEqual(s, ['Input-ul lui Alex', 'Tip', 'Ideea principală', 'Ce spune research-ul', 'Mecanica pe scurt', 'Întrebări']);
   assert.match(t, /^# Titlul\n- \*\*ID:\*\* x\n/); assert.match(t, /\*\*Fel:\*\* exercițiu · \*\*Durată:\*\* 15 min/);
 });
 
@@ -190,7 +190,7 @@ test('editorul: salvează fișa și câmpurile rândului (comentariile rămân),
     assert.equal((await posteaza(e, '/api/fisa/salveaza', { id: 'harta-emotiilor', md: 'x', hash: null }, null)).cod, 403, 'fără token');
     assert.equal((await posteaza(e, '/api/fisa/salveaza', { id: '../curs', md: 'x', hash: null })).cod, 400);
     const yml0 = citeste(d, 'harvest.yml');
-    const s = await posteaza(e, '/api/fisa/salveaza', { id: 'harta-emotiilor', md: src.md.replace('## Pe scurt\n', '## Pe scurt\nScris de Alex.\n'), hash: null,
+    const s = await posteaza(e, '/api/fisa/salveaza', { id: 'harta-emotiilor', md: src.md.replace('## Mecanica pe scurt\n', '## Mecanica pe scurt\nScris de Alex.\n'), hash: null,
       campuri: { titlu: 'Harta emoțiilor', durata: 20, scop: '', tip: 'challenge' }, campuriInainte: src.campuri });
     assert.equal(s.cod, 200, JSON.stringify(s.json));
     assert.match(citeste(d, 'harvest/harta-emotiilor.md'), /Scris de Alex/);
@@ -220,7 +220,7 @@ test('editorul: salvează fișa și câmpurile rândului (comentariile rămân),
     const n = await posteaza(e, '/api/fisa/noua', { titlu: 'Harta emoțiilor', durata: 10, tip: 'exercitiu', scop: 'Un perete' });
     assert.equal(n.cod, 200, JSON.stringify(n.json)); assert.equal(n.json.id, 'harta-emotiilor-2', 'id unic, fără să atingă piesa existentă');
     assert.match(citeste(d, 'harvest.yml'), /- id: harta-emotiilor-2\n\s+titlu: Harta emoțiilor\n\s+scop: Un perete\n\s+durata: 10\n\s+tip: exercitiu\n\s+sursa: Alex\n\s+verdict: nou/);
-    assert.match(citeste(d, 'harvest/harta-emotiilor-2.md'), /^# Harta emoțiilor\n- \*\*ID:\*\* harta-emotiilor-2[\s\S]*## Întrebare pentru Alex/);
+    assert.match(citeste(d, 'harvest/harta-emotiilor-2.md'), /^# Harta emoțiilor\n- \*\*ID:\*\* harta-emotiilor-2[\s\S]*## Întrebări\n/);
     assert.equal((await posteaza(e, '/api/fisa/noua', { titlu: 'Fără durată' })).cod, 400);
     assert.equal((await posteaza(e, '/api/fisa/noua', { titlu: '  ', durata: 5 })).cod, 400);
     assert.equal(fiseNr(d), 2, 'cererile refuzate nu lasă fișe');

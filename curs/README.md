@@ -90,14 +90,14 @@ Fluxul: **Harvest → Curate → Flow**, iar rezultatul e **firul roșu** (agend
 
 „Să pot deschide fiecare piesă și să-i văd toată logica.” Pe fiecare cartonaș din Harvest e butonul **Fișa** (punctat când nu e nimic scris încă); pe cartonașul selectat merg și `F` sau `Enter`. Se deschide un dialog cu fișa randată; se închide cu `Esc`, × sau clic pe fundal, iar focusul revine pe cartonaș. Verdictul și tragerea merg ca înainte.
 
-- **Sursa, în ordine:** `harvest/<id>.md` (fișa scrisă de Irina și Daria: Ce mi-a dat Alex, Pe scurt, Pentru trainer, Exemple, Clasificare, Întrebare pentru Alex); dacă lipsește, piesa produsă (`piese/<id>.md` sau modulul cu acest id): antetul ca listă scurtă (durată, tip, format, energie, obiectiv, materiale), apoi blocurile (ecranele din sală, nota trainerului, participantul). Dacă nu există nimic: „Fișa nu e scrisă încă.”
+- **Sursa, în ordine:** `harvest/<id>.md` (fișa scrisă de Irina și Daria; de la 2026-11-24 în formatul D-086: Input-ul lui Alex, Tip, Ideea principală, Ce spune research-ul, Mecanica pe scurt, Întrebări); dacă lipsește, piesa produsă (`piese/<id>.md` sau modulul cu acest id): antetul ca listă scurtă (durată, tip, format, energie, obiectiv, materiale), apoi blocurile (ecranele din sală, nota trainerului, participantul). Dacă nu există nimic: „Fișa nu e scrisă încă.”
 - **În editorul local** fișa se recitește de pe disc la fiecare deschidere (`GET /api/fisa?id=…`, cu token), deci se vede ce scriu colegii între timp, fără refresh. **În fișierul offline** fișele se includ la build.
 - **Siguranța:** aceeași randare ca restul materialului (HTML-ul brut apare ca text, linkurile `javascript:`/`data:` devin text); linkurile `http(s)` se deschid în tab nou (`noopener`). Id-ul e validat (litere mici, cifre, cratimă), iar fișierul se citește doar dacă și ținta lui reală (după legăturile simbolice) e în folderul cursului.
 
 ### Editezi fișa direct în Harvest (Alex, 2026-11-20)
 „Să pot edita piesele din Harvest, ca să nu trebuiască să trec prin voi.” Doar în **editorul local** (fișierul offline din `dist/` rămâne doar de citit).
 - În dialogul Fișa, **Editează** deschide Markdown-ul din `harvest/<id>.md` într-un câmp mare, plus câmpurile rândului din `harvest.yml`: **titlu, scop (Obiectivul piesei), durata, tip**. **Salvează** (sau `⌘S`) scrie, reface materialul și arată din nou fișa randată; **Renunță** sau `Esc` revin la fișă (întreabă dacă ai scris ceva). Dacă fișa se închide totuși cu text nesalvat, textul revine la următorul „Editează” (până la reîncărcarea paginii).
-- Piesa nu are fișă în `harvest/`: „Editează” pornește din șablonul D-078 (Input-ul lui Alex … Întrebare pentru Alex); fișierul se creează la „Salvează”.
+- Piesa nu are fișă în `harvest/`: „Editează” pornește din șablonul D-086: Input-ul lui Alex · Tip (exercițiu / prezentare) · Ideea principală și Ce spune research-ul (doar la prezentare) · Mecanica pe scurt (doar la exercițiu) · Întrebări (de critical thinking la prezentare, de debriefing la exercițiu); fișierul se creează la „Salvează”.
 - **Piesă nouă** (bara Harvest): titlu, durată, tip, scop → rând nou în `harvest.yml` (verdict „nou”, sursa Alex) + `harvest/<id>.md` din șablon, deschisă apoi pentru editare. Id-ul se face din titlu (fără diacritice, unic în curs).
 - **Siguranța:** copie în `.editor-istoric/` înainte de fiecare suprascriere; dacă fișa (hash) sau rândul piesei s-au schimbat pe disc de la deschidere, nu suprascrie: „Fișa s-a schimbat între timp (probabil un agent)”, cu **Reîncarcă** (iei versiunea de pe disc) sau **Păstrează textul meu** (îl copiază în clipboard și îl lasă în câmp; următorul „Salvează” înlocuiește versiunea de pe disc, care rămâne în istoric). Scrie doar în `harvest/` și `harvest.yml`, id validat (fără `..`, fără legături simbolice), token obligatoriu, doar 127.0.0.1, cel mult 150 000 de caractere pe fișă. Dacă build-ul refuză schimbarea, ambele fișiere revin la ce erau.
 
@@ -221,7 +221,7 @@ Culorile și litera stau doar în teme (tokeni): `tema/innersis.css` (Innersis I
 | `lib/masa.mjs` | `harvest.yml`: citire și verificare, propunerea de pornire, „Trimite în agendă”, scrierea din editor |
 | `lib/obiective.mjs` | `harvest-obiective.yml`: citire și verificare, rezolvarea legăturilor (id sau număr → obiectivul zilei), scrierea din editor (verdict, text, viziune, obiectiv nou, fișierul de pornire) |
 | `lib/masa.js` | vederea Harvest (`#masa`), în browser (offline și în editor): obiectivele, piesele, fișa |
-| `lib/fisa.mjs` | fișa piesei: `harvest/<id>.md` sau piesa produsă, randată sigur; fișa obiectivului (`harvest/obiective/<id>.md`); id validat; scrierea fișei (șablon D-078 / șablonul obiectivului, conflict, id din titlu) |
+| `lib/fisa.mjs` | fișa piesei: `harvest/<id>.md` sau piesa produsă, randată sigur; fișa obiectivului (`harvest/obiective/<id>.md`); id validat; scrierea fișei (șablon D-086 / șablonul obiectivului, conflict, id din titlu) |
 | `lib/export.mjs` | cursul participanților și verificarea pe rezultat |
 | `lib/trainer.mjs` | materialul trainerului (HTML), ecranele din sală |
 | `lib/prezinta.js` | partea care rulează în browser (vederi, Prezintă, cronometru, tipar) |

@@ -91,7 +91,7 @@ try {
   await b.click(e, '.mc-fisa[data-fisa="studiu-adaptare"]'); await pauza(300);
   await b.click(e, '#fe-editeaza'); await pauza(500);
   ok(await fe('document.getElementById("fisa-dialog").classList.contains("fe-activ") && !document.getElementById("fe").hidden && document.getElementById("fisa-corp").hidden'), '„Editează” deschide modul de editare');
-  ok(await fe('/## Input-ul lui Alex[\\s\\S]*## Pe scurt[\\s\\S]*## Întrebare pentru Alex/.test(document.getElementById("fe-text").value)'), 'fără fișă: textarea pornește din șablonul D-078');
+  ok(await fe('/## Input-ul lui Alex[\\s\\S]*## Tip[\\s\\S]*## Mecanica pe scurt[\\s\\S]*## Întrebări/.test(document.getElementById("fe-text").value)'), 'fără fișă: textarea pornește din șablonul D-086');
   ok(await fe('document.getElementById("fe-titlu").value === "Ce spun studiile despre adaptare" && document.getElementById("fe-durata").value === "10" && document.getElementById("fe-tip").value === "model"'), 'câmpurile rândului din harvest.yml sunt completate');
   ok(await fe('getComputedStyle(document.getElementById("fe-text")).fontFamily.includes("monospace") && document.getElementById("fe-text").getBoundingClientRect().height >= 280'), 'textarea e monospace și înaltă');
   ok(await fe('document.activeElement.id === "fe-text"'), 'focusul e în text');

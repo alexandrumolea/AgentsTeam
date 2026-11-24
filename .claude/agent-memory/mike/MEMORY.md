@@ -61,3 +61,5 @@ Păstrează sub 150 de rânduri. Comprimă când crește. Fapte, nu povești.
 
 ## Deschis
 - Vezi `docs/intrebari-pentru-alex.md`.
+
+- 2026-11-24: formatul fișei de piesă se schimbă des (D-077 → D-078 → D-086). Textul șablonului stă în `sablonFisa` (curs/lib/fisa.mjs), dar e repetat în teste (fisa.test.mjs: lista secțiunilor + regex la piesa nouă; chrome-fisa.mjs), editor-client.js (etichete) și README. La o schimbare, `grep -rn "D-0xx"` pe curs/ prinde tot.

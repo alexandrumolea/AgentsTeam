@@ -88,50 +88,31 @@ export function fiseleMasa(c) {
 export const MAX_FISA = 150000; // caractere; cea mai lungă fișă de azi are ~17 000
 const TIP_RO = { teorie: 'teorie', model: 'model', poveste: 'poveste', exercitiu: 'exercițiu', challenge: 'challenge', reflectie: 'reflecție', energizant: 'energizant', deschidere: 'deschidere', inchidere: 'închidere', mesaj: 'mesaj', pauza: 'pauză' };
 
-/** Fișa nouă, cu secțiunile din D-078 (docs/procese/curs-nou.md, „Harvest pas cu pas”), în ordinea lor. */
+/** Fișa nouă, cu secțiunile din D-086 (docs/procese/curs-nou.md, „Lecțiile după prima livrare…”), în ordinea lor. */
 export function sablonFisa({ id, titlu = '', durata = null, tip = '' } = {}, azi = new Date().toISOString().slice(0, 10)) {
   const fel = [tip ? `**Fel:** ${TIP_RO[tip] ?? tip}` : '**Fel:** ', durata != null ? `**Durată:** ${durata} min` : '**Durată:** '].join(' · ');
   return `# ${titlu || id}
 - **ID:** ${id}
 - **Adăugată:** ${azi}, de Alex
 - ${fel}
-- **Bloc propus:** 
-- **Stare:** în Harvest, verdict „nou”
+- **Format:** D-086
 
 ## Input-ul lui Alex
-> 
 
-## Pe scurt
+## Tip
+exercițiu / prezentare
 
+## Ideea principală
+(doar la prezentare)
 
-## Obiectivul piesei
+## Ce spune research-ul
+(doar la prezentare)
 
+## Mecanica pe scurt
+(doar la exercițiu)
 
-## Knowledge
-**Ideea 1**
-- **Statement principal:** 
-- **Explicație:** 
-- **Exemple:** 
-- **Impact:** 
-- **Așa da / așa nu:** 
-
-## Micro-comportamentul
-
-
-## Experiența
-
-
-## Integrarea
-
-
-## Materiale necesare
-
-
-## Research-ul pentru trainer
-
-
-## Întrebare pentru Alex
-
+## Întrebări
+(de critical thinking la prezentare, de debriefing la exercițiu)
 `;
 }
 
@@ -178,7 +159,7 @@ function caleScriere(folder, id, fel) {
   return { rel, cale, dosar };
 }
 
-/** Textul de editat: Markdown-ul de pe disc (cu hash-ul lui) sau, dacă fișa lipsește, șablonul D-078 (exista: false, hash: null). */
+/** Textul de editat: Markdown-ul de pe disc (cu hash-ul lui) sau, dacă fișa lipsește, șablonul D-086 (exista: false, hash: null). */
 export function fisaDeEditat(folder, id, candidata = {}, { fel = 'piesa' } = {}) {
   const { rel, cale } = caleScriere(folder, id, fel);
   if (existsSync(cale)) { const md = citesteSigur(folder, rel); return { id, fisier: rel, exista: true, md, hash: hash(md) }; }

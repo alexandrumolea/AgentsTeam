@@ -182,7 +182,7 @@
   window.__editor = { deschide: deschide };
 
   // ---------- fișa piesei din Harvest, editabilă (Alex, 2026-11-20) ----------
-  // „Editează” în dialogul fișei: Markdown-ul din harvest/<id>.md (sau șablonul D-078) și câmpurile rândului din harvest.yml.
+  // „Editează” în dialogul fișei: Markdown-ul din harvest/<id>.md (sau șablonul D-086) și câmpurile rândului din harvest.yml.
   // „Piesă nouă” în bara Harvest: rândul (verdict „nou”) + fișa din șablon. Conflict: dacă fișierul s-a schimbat pe disc, nu suprascriem.
   function pornesteFisa() {
     var d = $('fisa-dialog'), MF = window.__masa && window.__masa.fisa;
@@ -287,7 +287,7 @@
           puneBifeOb(j.obiective, !!areRand);
         }
         $('fe-text').value = j.md;
-        $('fe-text-eticheta').textContent = 'Fișa (Markdown) · ' + j.fisier + (j.exista ? '' : (fel === 'obiectiv' ? ' · nouă; se creează la „Salvează”' : ' · nouă, din șablonul D-078; se creează la „Salvează”'));
+        $('fe-text-eticheta').textContent = 'Fișa (Markdown) · ' + j.fisier + (j.exista ? '' : (fel === 'obiectiv' ? ' · nouă; se creează la „Salvează”' : ' · nouă, din șablonul D-086; se creează la „Salvează”'));
         var c = ciorne[cheie];
         if (c) {
           $('fe-text').value = c.md;
@@ -369,7 +369,7 @@
         $('fisa-titlu').textContent = 'Piesă nouă'; $('fisa-sursa').textContent = 'Harvest · rând nou în harvest.yml + fișă în harvest/';
         activeaza('nou', 'piesa');
         puneTipuri(j.tipuri || [], '');
-        puneCampuri(null, true, 'Id-ul se face din titlu (litere mici, fără diacritice). Piesa intră în Harvest cu verdict „nou”, iar fișa pornește din șablonul D-078.');
+        puneCampuri(null, true, 'Id-ul se face din titlu (litere mici, fără diacritice). Piesa intră în Harvest cu verdict „nou”, iar fișa pornește din șablonul D-086.');
         if (!d.open) d.showModal();
         $('fe-titlu').focus();
       });
