@@ -14,8 +14,8 @@ Sursele interne au fost: flow-ul v2 (24.11), viziunea D-082, obiectivul central 
 
 # Change Agility
 
-**Subtitlul** (Alex alege una din cele 2 variante de mai jos; cea recomandată e A):
-Reinventarea e o abilitate. Și o ai deja.
+**Subtitlul** (ales de Alex, 2026-11-25):
+Ai trecut deja prin schimbări. Ai mai multe resurse decât crezi.
 
 **Promisiunea:**
 Un workshop în care fiecare om descoperă ce l-a ajutat deja în schimbări și pleacă acasă cu planul lui de reinventare.
