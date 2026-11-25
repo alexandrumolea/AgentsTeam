@@ -20,6 +20,8 @@ Păstrează sub 150 de rânduri. Comprimă când crește. Fapte, nu povești.
 - 2026-11-17: înainte să scriu despre un brand, citesc ultimele rânduri din `docs/decizii.md` și `docs/taskuri.md`: deciziile apar în alte sesiuni în aceeași zi (D-055 a apărut în timp ce lucram). ID-urile de task se iau după ultimul din tot fișierul, nu după ordinea rândurilor.
 - 2026-11-17: D-054 a mutat esteticul pe Sora + Liquid Glass; în `vocea-alex` păstrez doar regulile pentru cuvinte, valorile vizuale stau în manualul Ioanei.
 
+- 2026-11-25: titluri de ofertă pentru clienți din afara training-ului: formula „Teamship” = Concept – beneficiu (Title Case, EN) + subtitlu-aforism „X aduce Y”. Pentru zile vândute împreună propun nume-pereche (Thinking Clearly / Thinking Together), „Lab” ca etichetă, nu în titlu. Propuneri: team/maria/documente/titluri-laboratoare-2026-11-25.md.
+
 ## Proiecte
 - [Inspirație și invenții](project_inspiratie.md) — obiectivul 2; constructorul cu unealta, 3 piloni; Atelier = tot site-ul
 - 2026-11-17: [Arhitectura de brand](project_arhitectura_brand.md) — I-022: un brand pe material; Sora = noul BEMORE (D-057); semnătura site-ului
