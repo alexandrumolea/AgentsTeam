@@ -16,7 +16,7 @@
 1. **Tudor se uită peste zi.** Ce e în calendar azi și mâine (pregătire, drum, materiale), ce emailuri cer răspuns, ce follow-up-uri sunt datorate, ce carduri stau, ce decizii așteaptă. Cu o zi înainte de un training: amintirea cerută de Alex (coaching și conversații autentice, nu informație).
 2. **Echipa pregătește drafturile.** Tudor alege cel mult 3 lucruri care merită un draft azi și le dă agentului potrivit: Ana (răspunsuri și follow-up la clienți), Sofia (postări), Daria sau Matei (pregătirea unui training), Victor (oportunități). Drafturile de email intră ca ciorne în Gmail; restul în repo sau în folderul privat potrivit.
 3. **Tudor scrie agenda ședinței**, scurt, în sesiune:
-   - **Ce contează cel mai mult astăzi pentru a avansa lucrurile?** Întâi cele trei obiective globale pe scurt, ca amintire, apoi checklistul de 3–5 rânduri, fiecare cu obiectivul pe care îl avansează (O1, O2, O3). Regulile sunt în [`../obiective.md`](../obiective.md) (D-096).
+   - **Ce contează cel mai mult astăzi pentru a avansa lucrurile?** Întâi obiectivele globale pe scurt, ca amintire, apoi checklistul de 3–5 rânduri, fiecare cu obiectivul pe care îl avansează (O1–O4). Regulile sunt în [`../obiective.md`](../obiective.md) (D-096).
    - **Important azi:** 3–5 rânduri (ce, când, de ce contează).
    - **Drafturi gata de văzut:** fiecare cu un rând de context și unde e.
    - **Decizii de luat:** cel mult 3, fiecare cu recomandarea echipei.

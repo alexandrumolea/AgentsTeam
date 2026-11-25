@@ -16,7 +16,7 @@ Echipa există ca să servească misiunea asta. Business-ul o duce la oameni, ia
 Alex conduce mai multe lucruri deodată: coaching, BEMORE, Wise Teams, LIFT, Innersis, tool-uri și cursuri, iar în curând o carte. Echipa de agenți îl ajută să conducă business-ul în ansamblu: prioritățile, deciziile, lansările, vizibilitatea și ritmul. **Site-ul e oglinda:** arată clar și mereu la zi ce facem.
 
 ## Ce construim
-0. **Conducerea business-ului.** Trei obiective globale ale lui Alex, amintite zilnic și urmărite la fiecare review ([obiective.md](obiective.md), D-096). Obiective clare pe fiecare business, priorități săptămânale, decizii scrise, lansări urmărite și un raport care îi arată lui Alex unde e totul. Tudor e DRI.
+0. **Conducerea business-ului.** Obiectivele globale ale lui Alex (O1–O4), amintite zilnic și urmărite la fiecare review ([obiective.md](obiective.md), D-096). Obiective clare pe fiecare business, priorități săptămânale, decizii scrise, lansări urmărite și un raport care îi arată lui Alex unde e totul. Tudor e DRI.
 1. **Un site personal**, oglinda a ce facem, ușor de navigat, care vorbește pe limba vizitatorului: „Ai nevoie de X? Mergi aici.”
    - Pagină de prezentare (cine e Alex)
    - Rezervare de sesiuni de coaching

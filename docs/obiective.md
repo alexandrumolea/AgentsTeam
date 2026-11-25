@@ -8,6 +8,7 @@
 | **O1** | **Devin un coach extraordinar,** la nivelul tarifului-țintă pe oră pe care și l-a pus Alex (cifra e în nota privată a lui Tudor; repo-ul e public) | sesiuni de coaching, practică și formare de coach, coaching adus în training-uri, pagina de coaching, clienți noi de coaching |
 | **O2** | **Livrez lucruri din ce în ce mai valoroase, dar nu mă îngrop în livrare** | fiecare livrare urcă un nivel (mai personal, mai adânc); echipa preia pregătirea, materialele și follow-up-ul, ca Alex să rămână pe ce doar el poate face |
 | **O3** | **Creez sisteme de educație relevante, care produc bani în mod consecvent** | cursuri care se vând de mai multe ori (Latest Workshops, D-093), mini-cursuri (D-094), Wise Teams, oferte, pipeline, lucruri care merg fără Alex în sală |
+| **O4** | **Fac parte dintr-o echipă vibrantă, vie și agilă, smart** (Alex, 2026-11-25) | cu cine lucrează Alex (Wise Teams, BEMORE, Innersis, LIFT, echipa noastră de agenți), colaborări noi, ritualuri de echipă care îl energizează, oameni smart cu care construiește |
 
 ## Zilnic: checklistul din ședința de dimineață
 Agenda fiecărei ședințe (`procese/sedinta-dimineata.md`) începe cu:
@@ -16,10 +17,11 @@ Agenda fiecărei ședințe (`procese/sedinta-dimineata.md`) începe cu:
 > - [ ] … *(O1)*
 > - [ ] … *(O3)*
 > - [ ] … *(O2)*
+> - [ ] … *(O4)*
 
 Reguli:
-- 3–5 rânduri, nu mai mult. Fiecare rând e un lucru concret de azi și spune ce obiectiv avansează (O1, O2, O3).
-- Deasupra checklistului, cele trei obiective pe scurt, ca amintire.
+- 3–5 rânduri, nu mai mult. Fiecare rând e un lucru concret de azi și spune ce obiectiv avansează (O1–O4).
+- Deasupra checklistului, cele patru obiective pe scurt, ca amintire.
 - Dacă un obiectiv n-a apărut în checklist de 3 zile lucrătoare la rând, Tudor o spune într-un rând.
 - Pentru O2, Tudor semnalează ziua în care aproape tot timpul lui Alex e livrare sau pregătire de livrare și propune ce preia echipa.
 - Alex bifează sau schimbă rândurile în ședință. Ce nu s-a bifat apare a doua zi doar dacă încă e cel mai important.
@@ -27,7 +29,7 @@ Reguli:
 ## La review (la 2 săptămâni, D-092)
 Pentru fiecare obiectiv, câte un rând:
 1. **Ce a avansat** în ultimele 2 săptămâni (din checklisturile zilnice și din Trello „Planning”).
-2. **Semnale:** O1, cât timp a mers spre coaching; O2, cât din timpul lui Alex a fost livrare și ce a preluat echipa; O3, ce s-a vândut sau ce sistem a pornit.
+2. **Semnale:** O1, cât timp a mers spre coaching; O2, cât din timpul lui Alex a fost livrare și ce a preluat echipa; O3, ce s-a vândut sau ce sistem a pornit; O4, cu cine a lucrat Alex și cum s-a simțit echipa.
 3. **Următorul pas** pentru următoarele 2 săptămâni.
 
 Alex poate schimba formularea obiectivelor oricând; Tudor actualizează tabelul de sus și nota privată în aceeași sesiune.
