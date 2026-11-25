@@ -1,0 +1,627 @@
+<!doctype html>
+<html lang="ro">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>How I Work · mock-up v1</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Sora:wght@200;300;400&family=Inter+Tight:wght@400;500;600&display=swap">
+<style>
+/* Mock-up v1 · pagina „How I Work” din Innovations (Ioana, 2026-11-25).
+   Două compoziții pe aceeași pagină: #a Poveste, #b Sistem. Comutatorul e doar CSS (:target), fără script,
+   pentru că pagina finală stă în docs/procese/ și site-ul (site/pagina-html.mjs) nu acceptă <script>.
+   Tokenii: content/tema.yml (paleta Sora, D-054/D-057). Textul stă mereu pe sticlă 80 % / 93 % sau pe alb plin. */
+:root{color-scheme:light;
+  --bg:#F6F4FA; --sticla:rgb(255 255 255/.80); --sticla-citit:rgb(255 255 255/.93); --muchie:rgb(255 255 255/.6);
+  --ink:#14161F; --muted:#474A58; --line:rgb(20 22 31/.12);
+  --cer:#4FA3F0; --cer-d:#8FD3F7; --lavanda:#B7A6EA; --piersica:#F7B79A; --portocaliu:#F28C3B; --punct-inel:#C96A1E;
+  --accent:#2B44B8; --human:#8A4A14;
+  --f-titlu:"Sora",ui-sans-serif,system-ui,sans-serif; --f-text:"Inter Tight",ui-sans-serif,system-ui,sans-serif;
+  --r:20px;
+}
+*{box-sizing:border-box}
+body{margin:0;color:var(--ink);font:400 16px/1.6 var(--f-text);
+  background:
+    radial-gradient(45% 55% at 0% 0%,rgb(79 163 240/.30),transparent 70%),
+    radial-gradient(40% 50% at 100% 30%,rgb(247 183 154/.30),transparent 70%),
+    radial-gradient(40% 50% at 0% 100%,rgb(183 166 234/.30),transparent 70%),
+    radial-gradient(40% 50% at 100% 100%,rgb(242 140 59/.22),transparent 70%),
+    var(--bg);
+  background-attachment:fixed;
+  padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:0 64px}
+.wrap{max-width:1080px;margin:0 auto}
+h1,h2{font-family:var(--f-titlu);font-weight:300;text-wrap:balance;margin:0}
+h1{font-size:clamp(44px,7vw,76px);line-height:1;letter-spacing:-.025em;font-weight:200}
+h2{font-size:clamp(28px,3.4vw,38px);line-height:1.15}
+h3{font:600 18px/1.3 var(--f-text);margin:0}
+p{margin:0}
+ul,ol{margin:0;padding:0;list-style:none}
+.eyebrow{font:600 12px/1.2 var(--f-text);letter-spacing:.14em;text-transform:uppercase;color:var(--muted)}
+.punct{display:inline-block;width:9px;height:9px;border-radius:50%;background:var(--portocaliu);box-shadow:0 0 0 1px var(--punct-inel);vertical-align:middle;margin-right:8px}
+.sub{font:300 clamp(26px,2.6vw,30px)/1.2 var(--f-titlu);color:var(--ink);text-wrap:balance}
+.lead{font-size:18px;color:var(--muted);max-width:60ch}
+
+/* sticla: finisaj peste culoare; textul stă pe .80 sau .93 */
+.sticla{background:var(--sticla);-webkit-backdrop-filter:blur(18px) saturate(1.4);backdrop-filter:blur(18px) saturate(1.4);
+  border:1px solid var(--muchie);border-radius:var(--r);
+  box-shadow:inset 0 1px 0 rgb(255 255 255/.8),0 14px 34px -20px rgb(43 68 184/.40)}
+.citit{background:var(--sticla-citit)}
+@supports not ((backdrop-filter:blur(1px)) or (-webkit-backdrop-filter:blur(1px))){.sticla{background:#fff}}
+@media (prefers-reduced-transparency:reduce){.sticla{background:#fff;-webkit-backdrop-filter:none;backdrop-filter:none}}
+
+section{padding-block:44px 8px;display:grid;gap:20px}
+section>header{display:grid;gap:8px}
+section>header p{color:var(--muted);max-width:62ch}
+
+/* insignele: cine ține mingea (aceleași sensuri ca în Trello: agent albastru, Alex portocaliu-cald, idee lavandă) */
+.ins{display:inline-flex;align-items:center;gap:6px;font:600 12px/1 var(--f-text);letter-spacing:.04em;padding:5px 9px;border-radius:999px;white-space:nowrap;width:fit-content}
+.ins.ag{background:var(--accent);color:#fff}
+.ins.alex{background:var(--human);color:#fff}
+.ins.idee{background:var(--lavanda);color:var(--ink)}
+.ins::before{content:"";width:6px;height:6px;border-radius:50%;background:currentColor;opacity:.85}
+
+/* board-ul stilizat (comun A și B) */
+.board{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
+.col{background:rgb(255 255 255/.55);border:1px solid var(--muchie);border-radius:16px;padding:12px;display:grid;gap:8px;align-content:start}
+.col>h4{margin:0 0 2px;display:flex;justify-content:space-between;align-items:baseline;font:600 14px/1.2 var(--f-text);letter-spacing:.02em}
+.col>h4 small{font:500 12px/1 var(--f-text);color:var(--muted)}
+.card{background:#fff;border-radius:12px;padding:10px 12px;display:grid;gap:6px;box-shadow:0 1px 0 var(--line),0 6px 14px -12px rgb(20 22 31/.5)}
+.card p{font-size:16px;line-height:1.35}
+.card.gata p{color:var(--muted)}
+.card.gata p::before{content:"✓ ";color:var(--accent);font-weight:600}
+.exemplu{font-size:13px;color:var(--muted)}
+
+/* comutatorul de variante (doar în mock-up, nu intră în pagina finală) */
+.mock-bar{position:sticky;top:0;z-index:10;margin-inline:calc(-1 * max(16px,env(safe-area-inset-left,0px)));padding:10px 16px;
+  background:rgb(20 22 31/.92);color:#fff;display:flex;flex-wrap:wrap;gap:8px 16px;align-items:center;font-size:14px}
+.mock-bar b{font-weight:600}
+.mock-bar nav{display:flex;gap:8px;margin-left:auto}
+.mock-bar a{color:#fff;text-decoration:none;border:1px solid rgb(255 255 255/.4);border-radius:999px;padding:8px 14px;font-size:16px;min-height:44px;display:inline-flex;align-items:center}
+.var{display:none}
+.var:target,body:not(:has(.var:target)) #a{display:block}
+body:not(:has(.var:target)) .mock-bar a[href="#a"],body:has(#a:target) .mock-bar a[href="#a"],body:has(#b:target) .mock-bar a[href="#b"]{background:#fff;color:var(--ink)}
+.despre-var{margin-top:16px;border:1.5px dashed var(--muted);border-radius:14px;padding:12px 16px;font-size:15px;color:var(--muted);background:rgb(255 255 255/.7)}
+.despre-var b{color:var(--ink)}
+
+/* ========== A · POVESTE ========== */
+.a-hero{padding-block:56px 12px;display:grid;grid-template-columns:minmax(0,1.25fr) minmax(0,1fr);gap:28px;align-items:end}
+.a-hero .text{display:grid;gap:16px}
+.a-mesaj{padding:18px 20px;display:grid;gap:12px}
+.a-mesaj .bula{background:#fff;border-radius:18px 18px 18px 6px;padding:12px 16px;font-size:17px;line-height:1.4;box-shadow:0 1px 0 var(--line)}
+.a-mesaj .drum{display:flex;flex-wrap:wrap;gap:8px;align-items:center;font-size:14px;color:var(--muted)}
+.a-cifre{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;margin-top:8px}
+.a-cifre div{padding:14px 16px;display:grid;gap:2px}
+.a-cifre b{font:200 40px/1 var(--f-titlu);letter-spacing:-.02em}
+.a-cifre span{font-size:16px;color:var(--muted);line-height:1.3}
+
+.fir{position:relative;display:grid;gap:16px;padding-left:44px}
+.fir::before{content:"";position:absolute;left:15px;top:10px;bottom:30px;width:2px;border-radius:2px;
+  background:linear-gradient(var(--cer),var(--lavanda) 45%,var(--piersica) 75%,var(--portocaliu))}
+.fir::after{content:"";position:absolute;left:10px;top:4px;width:12px;height:12px;border-radius:50%;background:#fff;
+  box-shadow:0 0 0 2px var(--accent),0 0 18px 4px rgb(79 163 240/.6);animation:coboara 7s cubic-bezier(.45,0,.3,1) .6s 1 both}
+@keyframes coboara{from{top:4px}to{top:calc(100% - 44px)}}
+.statie{position:relative;padding:18px 20px;display:grid;gap:10px}
+.statie .nr{position:absolute;left:-44px;top:16px;width:32px;height:32px;border-radius:50%;background:#fff;border:2px solid var(--cer);
+  display:grid;place-items:center;font:600 14px/1 var(--f-text);color:var(--accent)}
+.statie p{max-width:64ch}
+.chips{display:flex;flex-wrap:wrap;gap:8px}
+.chips span{background:#fff;border:1px solid var(--line);border-radius:999px;padding:6px 12px;font-size:16px}
+.ramuri{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+.ramuri>div{background:#fff;border-radius:14px;padding:14px 16px;display:grid;gap:8px;align-content:start}
+.statie.poarta .nr{border-color:var(--portocaliu);border-radius:6px;transform:rotate(45deg)}
+.statie.poarta .nr i{transform:rotate(-45deg);font-style:normal;color:var(--human)}
+.statie.poarta{border:1.5px solid var(--portocaliu)}
+.in-lume{display:flex;align-items:center;gap:12px;margin-left:-44px;padding-left:4px}
+.in-lume::before{content:"";width:24px;height:24px;border-radius:50%;background:var(--portocaliu);box-shadow:0 0 0 6px rgb(242 140 59/.22)}
+.in-lume b{font:300 28px/1 var(--f-titlu)}
+.in-lume span{color:var(--muted);font-size:16px}
+
+.ritm{padding:18px 20px;display:grid;gap:12px}
+.zile{display:grid;grid-template-columns:repeat(10,minmax(0,1fr));gap:6px;align-items:end}
+.zile span{display:grid;justify-items:center;gap:6px;font-size:12px;color:var(--muted)}
+.zile span::before{content:"";width:12px;height:12px;border-radius:50%;background:var(--cer)}
+.zile span.rev::before{width:26px;height:26px;background:#fff;border:3px solid var(--portocaliu)}
+.zile .sapt{grid-column:span 5;border-top:1px solid var(--line);padding-top:4px;font-size:12px;color:var(--muted);text-align:center}
+.doua{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+.box{padding:18px 20px;display:grid;gap:10px;align-content:start}
+.box .cand{font:600 12px/1 var(--f-text);letter-spacing:.12em;text-transform:uppercase;color:var(--accent)}
+.box.rev .cand{color:var(--human)}
+.agenda{display:grid;gap:6px;counter-reset:a}
+.agenda li{display:flex;gap:10px;align-items:baseline;font-size:16px}
+.agenda li::before{counter-increment:a;content:"0" counter(a);font:600 12px/1 var(--f-text);color:var(--muted);min-width:20px}
+
+.grupuri{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
+.grup{padding:16px 18px;display:grid;gap:10px;align-content:start}
+.grup.lat{grid-column:span 2}
+.grup>.eyebrow{color:var(--accent)}
+.om{display:grid;gap:1px}
+.om b{font-weight:600;font-size:16px}
+.om b small{font-weight:500;color:var(--muted);font-size:14px}
+.om span{font-size:16px;color:var(--muted);line-height:1.4}
+.oameni{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:10px 18px}
+.grup.eu{background:var(--ink);border-color:var(--ink);color:#fff}
+.grup.eu .eyebrow,.grup.eu .om span,.grup.eu .om b small{color:rgb(255 255 255/.78)}
+
+.reguli{display:grid;gap:10px;counter-reset:r}
+.reguli li{padding:14px 18px;display:grid;grid-template-columns:auto 1fr;gap:4px 16px;align-items:baseline}
+.reguli li::before{counter-increment:r;content:"0" counter(r);font:200 28px/1 var(--f-titlu);color:var(--accent);grid-row:span 2}
+.reguli li span{color:var(--muted);font-size:16px}
+
+.final{padding:24px;display:grid;gap:14px}
+.final ol{display:grid;gap:8px;counter-reset:f}
+.final ol li{display:flex;gap:12px;align-items:baseline}
+.final ol li::before{counter-increment:f;content:counter(f);font:600 13px/1 var(--f-text);width:24px;height:24px;flex:none;border-radius:50%;display:grid;place-items:center;background:var(--accent);color:#fff;transform:translateY(-2px)}
+.intrebare{font:300 clamp(26px,3vw,32px)/1.2 var(--f-titlu)}
+
+/* ========== B · SISTEM ========== */
+.b-hero{padding-block:44px 8px;display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.3fr);gap:24px;align-items:center}
+.b-hero .text{display:grid;gap:14px}
+.mini{padding:14px;display:grid;gap:10px}
+.mini .cap{display:flex;justify-content:space-between;align-items:center;gap:8px;flex-wrap:wrap}
+.live{display:inline-flex;align-items:center;gap:8px;font:600 12px/1 var(--f-text);letter-spacing:.12em;text-transform:uppercase;color:var(--muted)}
+.live::before{content:"";width:9px;height:9px;border-radius:50%;background:var(--portocaliu);box-shadow:0 0 0 4px rgb(242 140 59/.25);animation:respira 2.4s ease-in-out 3}
+@keyframes respira{50%{box-shadow:0 0 0 7px rgb(242 140 59/.08)}}
+.mini .board .col{min-height:0}
+.loc{display:grid;border:1.5px dashed rgb(43 68 184/.35);border-radius:13px;min-height:84px}
+.loc>.card{grid-area:1/1}
+.trav{opacity:0;outline:2px solid var(--accent);outline-offset:1px}
+.trav.t2{opacity:1}
+@media (prefers-reduced-motion:no-preference){
+  .trav.t1{animation:t1 9s ease 1s 2 both}
+  .trav.t2{animation:t2 9s ease 1s 2 both}
+  .trav.t3{animation:t3 9s ease 1s 2 both}
+}
+@keyframes t1{0%,28%{opacity:1;transform:none}36%,100%{opacity:0;transform:translateX(16px)}}
+@keyframes t2{0%,30%{opacity:0;transform:translateX(-16px)}38%,61%{opacity:1;transform:none}69%,100%{opacity:0;transform:translateX(16px)}}
+@keyframes t3{0%,63%{opacity:0;transform:translateX(-16px)}71%,100%{opacity:1;transform:none}}
+
+.flux{padding:18px;display:grid;gap:14px}
+.noduri{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:22px;position:relative}
+.nod{position:relative;background:#fff;border-radius:16px;padding:12px 14px;display:grid;gap:6px;align-content:start;box-shadow:0 1px 0 var(--line)}
+.nod:not(:last-child)::after{content:"";position:absolute;right:-17px;top:28px;width:12px;height:12px;border-top:2px solid var(--accent);border-right:2px solid var(--accent);transform:rotate(45deg)}
+.nod .k{font:600 12px/1 var(--f-text);letter-spacing:.1em;text-transform:uppercase;color:var(--muted)}
+.nod b{font-weight:600;font-size:16px;line-height:1.25}
+.nod span{font-size:16px;color:var(--muted);line-height:1.35}
+.nod.split{gap:8px}
+.nod.split div{display:grid;gap:4px;border-top:1px solid var(--line);padding-top:8px}
+.nod.da{border:1.5px solid var(--portocaliu)}
+.nod.lume{background:var(--ink);color:#fff}
+.nod.lume span,.nod.lume .k{color:rgb(255 255 255/.78)}
+.intoarcere{display:flex;align-items:center;gap:12px;font-size:16px;color:var(--muted)}
+.intoarcere::before{content:"";flex:1;height:18px;border:2px dashed var(--lavanda);border-top:0;border-radius:0 0 14px 14px;max-width:60%;order:2}
+.intoarcere span{order:1;max-width:38ch}
+
+.b-board{padding:16px;display:grid;gap:12px}
+.leg{display:flex;flex-wrap:wrap;gap:8px 16px;align-items:center;font-size:14px;color:var(--muted)}
+.b-board .scroll{overflow-x:auto;scroll-snap-type:x mandatory;-webkit-overflow-scrolling:touch;border-radius:16px}
+.b-board .scroll:focus-visible{outline:2px solid var(--accent);outline-offset:3px}
+.b-board .col{scroll-snap-align:start}
+
+.b-ritm{display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,1fr) minmax(0,1fr);gap:12px}
+.cal{padding:16px;display:grid;gap:8px}
+.cal .grila{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:6px}
+.cal .zi{background:#fff;border-radius:10px;padding:8px 6px;display:grid;gap:4px;justify-items:center;font-size:12px;color:var(--muted);min-width:0}
+.cal .zi::after{content:"";width:10px;height:10px;border-radius:50%;background:var(--cer)}
+.cal .zi.rev{outline:2px solid var(--portocaliu);outline-offset:-2px;color:var(--human);font-weight:600}
+.cal .zi.rev::after{width:16px;height:16px;background:#fff;border:3px solid var(--portocaliu)}
+
+.org{padding:20px;display:grid;gap:0;justify-items:center}
+.org .nivel{display:flex;justify-content:center;gap:12px;flex-wrap:wrap;width:100%}
+.nodom.tudor span{font-size:16px}
+.org .leg-v{width:2px;height:22px;background:var(--line)}
+.nodom{background:#fff;border-radius:14px;padding:10px 14px;display:grid;gap:1px;box-shadow:0 1px 0 var(--line);min-width:0}
+.nodom b{font-weight:600}
+.nodom span{font-size:14px;color:var(--muted);line-height:1.35}
+.nodom.eu{background:var(--ink);color:#fff}
+.nodom.eu span{color:rgb(255 255 255/.78);font-size:16px}
+.nodom.cos{border:2px solid var(--accent)}
+.org-ramuri{display:grid;grid-template-columns:minmax(0,2.2fr) minmax(0,1fr);gap:14px;width:100%;position:relative;border-top:2px solid var(--line);padding-top:20px}
+.ramura{border-radius:16px;padding:14px;display:grid;gap:10px;align-content:start;background:rgb(255 255 255/.55);border:1px solid var(--muchie)}
+.ramura>.eyebrow{color:var(--accent)}
+.ramura .lista{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:8px}
+.ramura.ls{border:1.5px solid var(--lavanda)}
+.extern{margin-top:16px;width:100%;display:flex;gap:12px;align-items:center;flex-wrap:wrap;border:1.5px dashed var(--muted);border-radius:16px;padding:12px 14px;background:rgb(255 255 255/.7)}
+.extern span{color:var(--muted);font-size:16px}
+.privat{font:600 11px/1 var(--f-text);letter-spacing:.08em;text-transform:uppercase;color:var(--human);margin-left:6px}
+
+.b-reguli{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:10px;counter-reset:r}
+.b-reguli li{padding:14px;display:grid;gap:6px;align-content:start}
+.b-reguli li::before{counter-increment:r;content:"0" counter(r);font:200 28px/1 var(--f-titlu);color:var(--accent)}
+.b-reguli b{font-weight:600}
+.b-reguli span{font-size:16px;color:var(--muted);line-height:1.4}
+
+.b-final{padding:20px 24px;display:grid;grid-template-columns:minmax(0,1.3fr) minmax(0,1fr);gap:16px 28px;align-items:center}
+.b-final ol{display:grid;gap:8px;counter-reset:f}
+.b-final ol li{display:flex;gap:12px;align-items:baseline}
+.b-final ol li::before{counter-increment:f;content:counter(f);font:600 13px/1 var(--f-text);width:24px;height:24px;flex:none;border-radius:50%;display:grid;place-items:center;background:var(--accent);color:#fff;transform:translateY(-2px)}
+
+@media (prefers-reduced-motion:reduce){.fir::after{animation:none;top:calc(100% - 44px)}.live::before{animation:none}}
+
+/* telefon și tabletă */
+@media (max-width:900px){
+  .noduri{grid-template-columns:repeat(3,minmax(0,1fr))}
+  .nod:nth-child(3)::after{display:none}
+  .b-ritm{grid-template-columns:1fr 1fr}.cal{grid-column:span 2}
+  .b-reguli{grid-template-columns:repeat(2,minmax(0,1fr))}
+}
+@media (max-width:760px){
+  .a-hero,.b-hero,.b-final{grid-template-columns:1fr}
+  .a-hero{padding-top:32px}
+  .ramuri,.doua,.grupuri{grid-template-columns:1fr}
+  .grup.lat{grid-column:auto}
+  .board{grid-template-columns:1fr}
+  .b-board .board{grid-template-columns:repeat(3,82%);}
+  .mini .board{grid-template-columns:repeat(3,minmax(0,1fr));gap:6px}
+  .mini .board .col{min-height:0;padding:8px}
+  .mini .card p{font-size:14px}
+  .mini .col>h4{font-size:12px}
+  .noduri{grid-template-columns:1fr;gap:20px}
+  .nod:not(:last-child)::after,.nod:nth-child(3)::after{display:block;right:auto;left:24px;top:auto;bottom:-14px;transform:rotate(135deg)}
+  .intoarcere::before{display:none}
+  .b-ritm{grid-template-columns:1fr}.cal{grid-column:auto}
+  .org-ramuri{grid-template-columns:1fr}
+  .b-reguli{grid-template-columns:1fr}
+  .zile span{font-size:11px}
+}
+@media (max-width:420px){
+  .a-cifre{grid-template-columns:1fr 1fr}.a-cifre div:last-child{grid-column:span 2}
+  .mini .board{grid-template-columns:1fr}
+  .mini .card p{font-size:16px}
+  .mini .col>h4{font-size:14px}
+}
+</style>
+</head>
+<body>
+
+<div class="mock-bar" role="navigation" aria-label="Variante">
+  <span><b>Mock-up v1</b> · How I Work · Innovations</span>
+  <nav><a href="#a">A · Poveste</a><a href="#b">B · Sistem</a></nav>
+</div>
+
+<!-- =================== A · POVESTE =================== -->
+<div class="var" id="a">
+<div class="wrap">
+  <p class="despre-var"><b>A · Poveste.</b> Un singur fir de sus în jos: drumul unei idei, de la telefon până „în lume”. Punctul de lumină coboară o dată pe fir. Ritmurile, echipa și regulile vin după, ca întâlniri pe drum. Pentru cine citește în liniște.</p>
+
+  <header class="a-hero">
+    <div class="text">
+      <p class="eyebrow"><span class="punct"></span>Innovations · Cum lucrez</p>
+      <h1>How I Work</h1>
+      <p class="sub">Cum se organizează o minte creativă cu o echipă de agenți AI</p>
+      <p class="lead">Am multe idei și multe proiecte deodată: coaching, BEMORE, Wise Teams, cursuri, aplicații, o carte. Nu le mai țin în cap. Le țin într-un sistem, cu o echipă de agenți AI condusă de un Chief of Staff. Aici îți arăt cum funcționează pe dinăuntru.</p>
+    </div>
+    <div class="sticla a-mesaj" aria-label="Exemplu: cum ajunge o idee la echipă">
+      <p class="eyebrow">De pe telefon, oricând</p>
+      <p class="bula">Tudor, am o idee: să arătăm pe site cum lucrăm.</p>
+      <p class="drum"><span class="ins idee">Idee</span> → Backlog → <span class="ins ag">Agent · Ioana</span> → <span class="ins alex">Alex · da</span></p>
+      <p class="exemplu">Așa a început și pagina asta.</p>
+    </div>
+  </header>
+  <div class="a-cifre">
+    <div class="sticla"><b>14</b><span>agenți AI, fiecare cu un rol</span></div>
+    <div class="sticla"><b>1</b><span>singur loc pentru taskuri</span></div>
+    <div class="sticla"><b>10–15</b><span>minute pe zi, dimineața, cu echipa</span></div>
+  </div>
+
+  <section aria-labelledby="a-h-fir">
+    <header>
+      <p class="eyebrow">Drumul unei idei</p>
+      <h2 id="a-h-fir">De la o idee la ceva care pleacă în lume</h2>
+    </header>
+    <ol class="fir">
+      <li class="sticla citit statie">
+        <span class="nr" aria-hidden="true">1</span>
+        <h3>Îmi vine o idee. Oricând, de oriunde.</h3>
+        <p>Calculatorul meu rămâne pornit, iar eu scriu echipei de pe telefon: în drum, între două sesiuni, seara. Ideea nu trebuie să fie formulată frumos. Trebuie doar să nu se piardă.</p>
+      </li>
+      <li class="sticla citit statie">
+        <span class="nr" aria-hidden="true">2</span>
+        <h3>Tudor o primește.</h3>
+        <p>Tudor e Chief of Staff-ul meu, tot un agent AI. Mă întreabă trei lucruri, apoi decide unde merge.</p>
+        <div class="chips"><span>Ce vrei?</span><span>De ce?</span><span>Cum arată „gata”?</span></div>
+      </li>
+      <li class="sticla citit statie">
+        <span class="nr" aria-hidden="true">3</span>
+        <h3>Ideile merg în backlog. Taskurile, la agentul potrivit.</h3>
+        <div class="ramuri">
+          <div><span class="ins idee">Idee nouă</span><p>Intră în backlog și nu pornește încă. La triere, Tudor îmi propune una sau două, iar eu aleg.</p></div>
+          <div><span class="ins ag">Task</span><p>Merge la cine se pricepe: Ioana la design, Mike la cod, Matei la slide-uri. Tudor verifică rezultatul înainte să mi-l arate.</p></div>
+        </div>
+      </li>
+      <li class="sticla citit statie">
+        <span class="nr" aria-hidden="true">4</span>
+        <h3>Totul se vede pe board, în timp real.</h3>
+        <p>Un board Trello cu trei coloane. Pe fiecare card scrie cine ține mingea acum: un agent sau eu. E singurul loc în care stau taskurile, așa că oricând mă uit, știu unde suntem.</p>
+        <div class="board" role="img" aria-label="Board-ul, exemplu: Backlog cu idei, In Delivery cu taskuri la agenți și la Alex, Done cu ce s-a terminat">
+          <div class="col"><h4>Backlog <small>3</small></h4>
+            <div class="card"><span class="ins idee">Idee</span><p>Un exercițiu nou de reflecție</p></div>
+            <div class="card"><span class="ins idee">Idee</span><p>Un articol despre feedback</p></div>
+            <div class="card"><span class="ins ag">Agent · Radu</span><p>O pagină nouă pe site</p></div>
+          </div>
+          <div class="col"><h4>In Delivery <small>3</small></h4>
+            <div class="card"><span class="ins ag">Agent · Ioana</span><p>Mock-up pentru o pagină</p></div>
+            <div class="card"><span class="ins ag">Agent · Matei</span><p>Slide-uri pentru un workshop</p></div>
+            <div class="card"><span class="ins alex">Alex</span><p>Alege varianta de design</p></div>
+          </div>
+          <div class="col"><h4>Done <small>2</small></h4>
+            <div class="card gata"><span class="ins ag">Agent · Mike</span><p>Pagina publicată</p></div>
+            <div class="card gata"><span class="ins alex">Alex</span><p>Draftul aprobat</p></div>
+          </div>
+        </div>
+        <p class="exemplu">Carduri de exemplu.</p>
+      </li>
+      <li class="sticla citit statie poarta">
+        <span class="nr" aria-hidden="true"><i>5</i></span>
+        <h3>Nimic nu pleacă în lume fără „da”-ul meu.</h3>
+        <p>Agenții fac drafturi: emailuri, postări, pagini, materiale de curs. Eu le citesc și spun „da” sau „mai lucrăm puțin”. Abia apoi pleacă.</p>
+      </li>
+      <li class="in-lume"><b>În lume</b><span>publicat, trimis, livrat</span></li>
+    </ol>
+  </section>
+
+  <section aria-labelledby="a-h-ritm">
+    <header>
+      <p class="eyebrow">Ritmul</p>
+      <h2 id="a-h-ritm">Un daily scurt în fiecare dimineață. Un review la două săptămâni.</h2>
+    </header>
+    <div class="sticla ritm" role="img" aria-label="Două săptămâni de lucru: un daily în fiecare zi, un review în ultima zi">
+      <div class="zile">
+        <span>L</span><span>M</span><span>M</span><span>J</span><span>V</span><span>L</span><span>M</span><span>M</span><span>J</span><span class="rev">V</span>
+        <p class="sapt">săptămâna 1</p><p class="sapt">săptămâna 2 · review</p>
+      </div>
+    </div>
+    <div class="doua">
+      <div class="sticla citit box">
+        <p class="cand">Daily · în fiecare dimineață</p>
+        <h3>Echipa începe fără mine. Eu intru 10–15 minute.</h3>
+        <p>Echipa se uită peste email, calendar și board și îmi pregătește drafturi și o agendă scurtă. Când ajung, stabilim împreună ce e prioritar azi.</p>
+        <ol class="agenda"><li>Ce e important azi</li><li>Drafturi gata de văzut</li><li>Decizii de luat, cu recomandarea echipei</li><li>Ce propune echipa pentru azi</li></ol>
+      </div>
+      <div class="sticla citit box rev">
+        <p class="cand">Review · la două săptămâni</p>
+        <h3>Ne uităm înapoi, ca să mergem mai ușor înainte.</h3>
+        <p>Trei întrebări, mereu aceleași. Ce învățăm intră în procese, ca să nu învățăm același lucru de două ori.</p>
+        <ol class="agenda"><li>Ce am livrat?</li><li>Ce am învățat?</li><li>Ce urmează?</li></ol>
+      </div>
+    </div>
+  </section>
+
+  <section aria-labelledby="a-h-echipa">
+    <header>
+      <p class="eyebrow">Echipa</p>
+      <h2 id="a-h-echipa">Un om și 14 agenți AI</h2>
+      <p>Fiecare agent are un rol, o arie de care răspunde și un jurnal al muncii lui. Tudor îi coordonează. Echipa de cursuri, Learning Studio, are propriul șef: Andrei.</p>
+    </header>
+    <div class="grupuri">
+      <div class="sticla grup eu"><p class="eyebrow">Omul</p>
+        <div class="om"><b>Alex</b><span>ideile, direcția și „da”-ul</span></div></div>
+      <div class="sticla citit grup lat"><p class="eyebrow">Coordonare</p>
+        <div class="oameni">
+          <div class="om"><b>Tudor <small>Chief of Staff</small></b><span>ascultă, clarifică, deleagă, verifică</span></div>
+          <div class="om"><b>Elena <small>Coach extern</small></b><span>auditează cum lucrăm și strânge lecțiile; îmi raportează direct</span></div>
+        </div></div>
+      <div class="sticla citit grup lat"><p class="eyebrow">Produs</p>
+        <div class="oameni">
+          <div class="om"><b>Radu <small>Arhitect</small></b><span>structura site-ului și a tool-urilor</span></div>
+          <div class="om"><b>Ioana <small>Designer</small></b><span>cum arată și cum se simte totul</span></div>
+          <div class="om"><b>Mike <small>Developer</small></b><span>codul, site-ul, integrările</span></div>
+          <div class="om"><b>Luca <small>Product Owner</small></b><span>simulări și ateliere interactive</span></div>
+        </div></div>
+      <div class="sticla citit grup"><p class="eyebrow">Clienți</p>
+        <div class="om"><b>Ana <small>Ofertare și clienți</small></b><span>oferte și follow-up; lucrează doar privat</span></div></div>
+      <div class="sticla citit grup"><p class="eyebrow">Brand și vizibilitate</p>
+        <div class="oameni">
+          <div class="om"><b>Maria <small>Personal Branding</small></b><span>poziționare, mesaje, coerență</span></div>
+          <div class="om"><b>Sofia <small>Social Media</small></b><span>postări și calendar editorial</span></div>
+          <div class="om"><b>Victor <small>Impresar</small></b><span>conferințe, podcasturi, parteneriate</span></div>
+        </div></div>
+      <div class="sticla citit grup lat"><p class="eyebrow">Learning Studio</p>
+        <div class="oameni">
+          <div class="om"><b>Andrei <small>Head of Learning</small></b><span>strategia cursurilor, conduce Studio-ul</span></div>
+          <div class="om"><b>Daria <small>Designer de learning</small></b><span>obiective, flow, ghidul facilitatorului</span></div>
+          <div class="om"><b>Matei <small>Materiale</small></b><span>slide-uri, fișe, printabile</span></div>
+          <div class="om"><b>Irina <small>Cercetare</small></b><span>modele și studii, cu surse</span></div>
+        </div></div>
+    </div>
+  </section>
+
+  <section aria-labelledby="a-h-reguli">
+    <header>
+      <p class="eyebrow">Regulile casei</p>
+      <h2 id="a-h-reguli">Cinci reguli care țin totul simplu</h2>
+    </header>
+    <ol class="reguli">
+      <li class="sticla citit"><b>Totul la vedere.</b><span>Procesele, deciziile și documentele echipei stau într-un loc public. Datele clienților, niciodată.</span></li>
+      <li class="sticla citit"><b>Un singur loc pentru taskuri.</b><span>Board-ul. Dacă nu e acolo, nu se lucrează la el.</span></li>
+      <li class="sticla citit"><b>Un singur responsabil pe fiecare arie.</b><span>Fiecare arie are un om, adică un agent, care o duce, plus un backup.</span></li>
+      <li class="sticla citit"><b>Ideile noi merg în backlog, nu direct în lucru.</b><span>Așa pot avea multe idei fără să încep zece lucruri deodată.</span></li>
+      <li class="sticla citit"><b>Nimic nu pleacă fără „da”-ul meu.</b><span>Agenții pregătesc. Eu aleg.</span></li>
+    </ol>
+  </section>
+
+  <section aria-labelledby="a-h-tine">
+    <div class="sticla citit final">
+      <p class="eyebrow">Pentru tine</p>
+      <h2 id="a-h-tine">Dacă ai și tu multe idei</h2>
+      <p>Nu ai nevoie de 14 agenți ca să începi. Poate te ajută trei lucruri:</p>
+      <ol><li>Un singur loc în care ajung toate ideile.</li><li>Cineva care le triază: un om, un agent sau tu, o dată pe săptămână.</li><li>Un ritm scurt și fix, în care alegi ce contează acum.</li></ol>
+      <p class="intrebare">Tu unde îți ții ideile azi?</p>
+    </div>
+  </section>
+</div>
+</div>
+
+<!-- =================== B · SISTEM =================== -->
+<div class="var" id="b">
+<div class="wrap">
+  <p class="despre-var"><b>B · Sistem.</b> Primul ecran arată tot mecanismul: board-ul viu (un card trece singur din Backlog în Done și își schimbă stăpânul) și fluxul în șase noduri, cu bucla de învățare înapoi. Dedesubt, la cerere: board-ul mare, ritmul pe două săptămâni, organigrama. Compact, pentru cine vrea să copieze sistemul.</p>
+
+  <header class="b-hero">
+    <div class="text">
+      <p class="eyebrow"><span class="punct"></span>Innovations · Cum lucrez</p>
+      <h1>How I Work</h1>
+      <p class="sub">Un om creativ, 14 agenți AI, un singur board</p>
+      <p class="lead">Am multe idei și multe proiecte. Le țin într-un sistem pe care îl poți vedea aici, cum e: cine primește ideile, unde ajung și cine spune „da”.</p>
+    </div>
+    <div class="sticla mini" aria-label="Board-ul, live: un card trece din Backlog în In Delivery și apoi în Done">
+      <div class="cap"><span class="live">Board · live</span><span class="exemplu">carduri de exemplu</span></div>
+      <div class="board" aria-hidden="true">
+        <div class="col"><h4>Backlog</h4>
+          <div class="loc"><div class="card trav t1"><span class="ins idee">Idee</span><p>O pagină despre cum lucrăm</p></div></div>
+          <div class="card"><span class="ins idee">Idee</span><p>Un articol nou</p></div>
+        </div>
+        <div class="col"><h4>In Delivery</h4>
+          <div class="loc"><div class="card trav t2"><span class="ins ag">Agent · Ioana</span><p>O pagină despre cum lucrăm</p></div></div>
+          <div class="card"><span class="ins alex">Alex</span><p>Alege titlul</p></div>
+        </div>
+        <div class="col"><h4>Done</h4>
+          <div class="loc"><div class="card trav t3 gata"><span class="ins alex">Alex · da</span><p>O pagină despre cum lucrăm</p></div></div>
+          <div class="card gata"><span class="ins ag">Agent · Matei</span><p>Slide-uri</p></div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <section aria-labelledby="b-h-flux" style="padding-top:20px">
+    <div class="sticla flux">
+      <header><p class="eyebrow" id="b-h-flux">Fluxul</p></header>
+      <ol class="noduri">
+        <li class="nod"><p class="k">01 · Alex</p><b>O idee sau un task</b><span>oricând, de pe telefon; calculatorul rămâne pornit</span></li>
+        <li class="nod"><p class="k">02 · Tudor</p><b>Chief of Staff</b><span>clarifică: ce, de ce, cum arată „gata”</span></li>
+        <li class="nod split"><p class="k">03 · Unde merge</p>
+          <div><span class="ins idee">Idee</span><span>în backlog; aleg la triere</span></div>
+          <div><span class="ins ag">Task</span><span>la agentul potrivit</span></div></li>
+        <li class="nod"><p class="k">04 · Board</p><b>Backlog · In Delivery · Done</b><span>live, singurul loc al taskurilor</span></li>
+        <li class="nod da"><p class="k">05 · „Da”-ul meu</p><b>Agenții fac drafturi</b><span>eu aprob tot ce pleacă</span></li>
+        <li class="nod lume"><p class="k">06 · În lume</p><b>Publicat, trimis, livrat</b><span>și notat pe board ca Done</span></li>
+      </ol>
+      <p class="intoarcere"><span>La review, ce învățăm se întoarce în procese.</span></p>
+    </div>
+  </section>
+
+  <section aria-labelledby="b-h-board">
+    <header>
+      <p class="eyebrow">Board-ul</p>
+      <h2 id="b-h-board">Un singur loc de adevăr</h2>
+      <p>Pe fiecare card scrie cine ține mingea acum. Când mingea trece la mine, cardul își schimbă eticheta.</p>
+    </header>
+    <div class="sticla b-board">
+      <p class="leg"><span class="ins ag">Agent</span> lucrează un agent <span class="ins alex">Alex</span> așteaptă după mine <span class="ins idee">Idee</span> în backlog, de ales</p>
+      <div class="scroll" tabindex="0" role="region" aria-label="Board-ul, exemplu cu trei coloane">
+        <div class="board">
+          <div class="col"><h4>Backlog <small>4</small></h4>
+            <div class="card"><span class="ins idee">Idee</span><p>Un exercițiu nou de reflecție</p></div>
+            <div class="card"><span class="ins idee">Idee</span><p>Un articol despre feedback</p></div>
+            <div class="card"><span class="ins idee">Idee</span><p>O aplicație mică pentru jurnal</p></div>
+            <div class="card"><span class="ins ag">Agent · Radu</span><p>O pagină nouă pe site</p></div>
+          </div>
+          <div class="col"><h4>In Delivery <small>4</small></h4>
+            <div class="card"><span class="ins ag">Agent · Ioana</span><p>Mock-up pentru o pagină</p></div>
+            <div class="card"><span class="ins ag">Agent · Matei</span><p>Slide-uri pentru un workshop</p></div>
+            <div class="card"><span class="ins alex">Alex</span><p>Alege varianta de design</p></div>
+            <div class="card"><span class="ins alex">Alex</span><p>Citește draftul unui articol</p></div>
+          </div>
+          <div class="col"><h4>Done <small>3</small></h4>
+            <div class="card gata"><span class="ins ag">Agent · Mike</span><p>Pagina publicată</p></div>
+            <div class="card gata"><span class="ins ag">Agent · Daria</span><p>Flow-ul unei zile de curs</p></div>
+            <div class="card gata"><span class="ins alex">Alex</span><p>Draftul aprobat</p></div>
+          </div>
+        </div>
+      </div>
+      <p class="exemplu">Carduri de exemplu. Board-ul real e privat.</p>
+    </div>
+  </section>
+
+  <section aria-labelledby="b-h-ritm">
+    <header>
+      <p class="eyebrow">Ritmul</p>
+      <h2 id="b-h-ritm">Două ritmuri, mereu aceleași</h2>
+    </header>
+    <div class="b-ritm">
+      <div class="sticla citit cal" role="img" aria-label="Două săptămâni: daily în fiecare zi lucrătoare, review în ultima zi">
+        <p class="eyebrow">Două săptămâni</p>
+        <div class="grila">
+          <span class="zi">L</span><span class="zi">M</span><span class="zi">M</span><span class="zi">J</span><span class="zi">V</span>
+          <span class="zi">L</span><span class="zi">M</span><span class="zi">M</span><span class="zi">J</span><span class="zi rev">Review</span>
+        </div>
+        <p class="exemplu">● daily &nbsp; ◯ review</p>
+      </div>
+      <div class="sticla citit box">
+        <p class="cand">Daily · dimineața</p>
+        <h3>Echipa pregătește, eu intru 10–15 minute</h3>
+        <ol class="agenda"><li>Ce e important azi</li><li>Drafturi gata de văzut</li><li>Decizii de luat</li><li>Ce propune echipa</li></ol>
+      </div>
+      <div class="sticla citit box rev">
+        <p class="cand">Review · la două săptămâni</p>
+        <h3>Ne uităm înapoi împreună</h3>
+        <ol class="agenda"><li>Ce am livrat?</li><li>Ce am învățat?</li><li>Ce urmează?</li></ol>
+      </div>
+    </div>
+  </section>
+
+  <section aria-labelledby="b-h-org">
+    <header>
+      <p class="eyebrow">Echipa</p>
+      <h2 id="b-h-org">Cine ce face</h2>
+    </header>
+    <div class="sticla citit org">
+      <div class="nivel"><div class="nodom eu"><b>Alex</b><span>ideile, direcția, „da”-ul</span></div></div>
+      <div class="leg-v" aria-hidden="true"></div>
+      <div class="nivel"><div class="nodom cos tudor"><b>Tudor · Chief of Staff</b><span>primește, clarifică, deleagă, verifică</span></div></div>
+      <div class="leg-v" aria-hidden="true"></div>
+      <div class="org-ramuri">
+        <div class="ramura"><p class="eyebrow">Echipa CORE</p>
+          <div class="lista">
+            <div class="nodom"><b>Radu</b><span>Arhitect</span></div>
+            <div class="nodom"><b>Ioana</b><span>Designer</span></div>
+            <div class="nodom"><b>Mike</b><span>Developer</span></div>
+            <div class="nodom"><b>Luca</b><span>Product Owner</span></div>
+            <div class="nodom"><b>Maria</b><span>Personal Branding</span></div>
+            <div class="nodom"><b>Sofia</b><span>Social Media</span></div>
+            <div class="nodom"><b>Victor</b><span>Impresar</span></div>
+            <div class="nodom"><b>Ana <i class="privat">privat</i></b><span>Ofertare și clienți</span></div>
+          </div>
+        </div>
+        <div class="ramura ls"><p class="eyebrow">Learning Studio</p>
+          <div class="nodom cos"><b>Andrei</b><span>Head of Learning</span></div>
+          <div class="lista">
+            <div class="nodom"><b>Daria</b><span>Designer de learning</span></div>
+            <div class="nodom"><b>Matei</b><span>Materiale</span></div>
+            <div class="nodom"><b>Irina</b><span>Cercetare</span></div>
+          </div>
+        </div>
+      </div>
+      <div class="extern"><div class="nodom"><b>Elena</b><span>Coach extern</span></div><span>Din afară: auditează cum lucrăm, strânge lecțiile și îmi raportează direct.</span></div>
+    </div>
+  </section>
+
+  <section aria-labelledby="b-h-reguli">
+    <header>
+      <p class="eyebrow">Regulile casei</p>
+      <h2 id="b-h-reguli">Cinci reguli</h2>
+    </header>
+    <ol class="b-reguli">
+      <li class="sticla citit"><b>Totul la vedere</b><span>procesele și deciziile, într-un loc public; clienții, niciodată</span></li>
+      <li class="sticla citit"><b>Un loc pentru taskuri</b><span>board-ul, nimic în altă parte</span></li>
+      <li class="sticla citit"><b>Un responsabil pe arie</b><span>un agent care o duce, plus un backup</span></li>
+      <li class="sticla citit"><b>Ideile în backlog</b><span>nu direct în lucru; aleg una-două la triere</span></li>
+      <li class="sticla citit"><b>„Da”-ul meu</b><span>agenții pregătesc, eu aleg ce pleacă</span></li>
+    </ol>
+  </section>
+
+  <section aria-labelledby="b-h-tine">
+    <div class="sticla citit b-final">
+      <div style="display:grid;gap:10px">
+        <p class="eyebrow">Pentru tine</p>
+        <h2 id="b-h-tine">Nu ai nevoie de 14 agenți ca să începi</h2>
+        <ol><li>Un singur loc pentru idei.</li><li>Cineva care le triază.</li><li>Un ritm scurt și fix.</li></ol>
+      </div>
+      <p class="intrebare">Tu unde îți ții ideile azi?</p>
+    </div>
+  </section>
+</div>
+</div>
+
+</body>
+</html>
