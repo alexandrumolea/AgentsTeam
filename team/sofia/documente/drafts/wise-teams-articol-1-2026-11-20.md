@@ -1,33 +1,34 @@
-# Wise Teams, articolul 1: The 4 Layers of How a Team Works (v3)
+# Wise Teams, articolul 1: The 4 Layers of How a Team Works (v4)
 
 > Draft Sofia, 2026-11-25 (T-045). **Nepublicat. Așteaptă aprobarea lui Alex.**
-> v3: direcția aleasă de Alex pe 2026-11-25: „The 4 Layers of How a Team Works — îmi place ideea asta cu key insights de la fiecare nivel.” Structura e pe cele patru niveluri, cu 3 key insights pe fiecare, din cele 16 comportamente ale Strategic Focus Tool. Firul din v2 rămâne: rezultatele vin dintr-un sistem, iar cele 4 niveluri sunt sistemul.
-> v2 (titlul „It's Not a People Problem”): `arhiva/wise-teams-articol-1-2026-11-20-v2.md`. v1, în română: `arhiva/wise-teams-articol-1-2026-11-20-v1-ro.md`.
+> v4: rescris pe feedbackul lui Alex din 2026-11-25: „insight-urile nu prea sunt insight-uri… Am schițat ideile principale. Aș vrea ca articolul să fie mai scurt. Introducerea e foarte bună.” Fiecare nivel e construit acum pe ideile lui Alex (mecanismul din spate), nu pe cele 16 comportamente. Introducerea a rămas neschimbată. Am scos formatul „When it works / When it doesn't”, întrebările de la fiecare nivel, scena cu termenul ratat, planul de acțiune și mențiunea Strategic Focus Tool. ~730 de cuvinte (v3 avea ~1.000).
+> LinkedIn: scos din acest draft (Alex, 2026-11-25: „poate că ar fi mai logic să facem întâi articolul și apoi să pornească un flow pentru linkedin”). Postarea se face din articolul aprobat, ca pas separat. Variantele LinkedIn de până acum sunt în `arhiva/wise-teams-articol-1-2026-11-20-v3.md`.
+> v3 (key insights din cele 16 comportamente): `arhiva/wise-teams-articol-1-2026-11-20-v3.md`. v2: `arhiva/wise-teams-articol-1-2026-11-20-v2.md`. v1, în română: `arhiva/wise-teams-articol-1-2026-11-20-v1-ro.md`.
 
-- **Ideea într-o frază:** rezultatele unei echipe stau pe patru niveluri ale felului în care lucrează (Delivery, Anticipation, Flow, Trust) și pe containerul de dedesubt; ce vezi sus are, de multe ori, rădăcina mai jos.
+- **Ideea într-o frază:** rezultatele sunt doar nivelul care se vede; sub ele stau Anticipation, Flow și Trust, iar fiecare are un mecanism pe care echipele nu-l văd de obicei.
 - **Pentru cine:** lideri de echipă și manageri care vor să-și vadă echipa ca sistem, nu ca sumă de oameni.
-- **Presupunerea pe care o contrazicem:** „când rezultatele nu vin, e o problemă de oameni”.
-- **Cum continuă seria lui:** *The 3 Hidden Forces* („every team results in a repeatable system”), *9 Conditions* (condiția 6, „who does what, by when”, la Flow), *Your team needs two threads* (la Anticipation), *Why Smart Teams Get Stuck* („Trust is not admiration.”, la Trust).
-- **Ordinea nivelurilor în text:** Delivery → Anticipation → Flow → Trust, cum a dat-o Alex, citită de la ce se vede cel mai ușor la ce ține totul. Nu e ordinea în care credem că se construiesc (ipoteza din model e alta); textul nu spune nimic despre ordinea de construcție.
+- **Presupunerea pe care o contrazicem:** „când rezultatele nu vin, e o problemă de oameni, iar soluția e mai multă presiune”.
+- **Cum continuă seria lui:** *The 3 Hidden Forces* (în introducere), *Your team needs two threads* (la Anticipation, o singură propoziție).
+- **Ordinea nivelurilor:** Delivery → Anticipation → Flow → Trust, cum a dat-o Alex, de la ce se vede la ce ține totul.
 
 ## Variante de titlu
 1. **The 4 Layers of How a Team Works**
-   *Key insights from each layer, and the questions a team can ask itself*
-   (alegerea lui Alex; subtitlul e propunerea mea)
-2. Subtitlu alternativ: *What you see in results, and what holds them up*
-3. Subtitlu alternativ: *Why results are only the top layer*
+   *What sits underneath the results you see*
+   (titlul ales de Alex; subtitlul e nou, pentru că întrebările de la fiecare nivel au ieșit)
+2. Subtitlu alternativ: *And why pushing harder on results rarely moves them*
+3. Subtitlu alternativ: *Results are the top layer. Here is what holds them up.*
 
 Subiect de email: „The 4 Layers of How a Team Works”
 Text de previzualizare: „Results are the layer everyone sees. Here is what holds them up.”
 
-> **De confirmat (T-049):** numele în engleză Delivery, Anticipation, Flow, Trust, „the Container” și „Strategic Focus Tool” sunt traducerile mele, încă neaprobate.
+> **De confirmat (T-049):** numele în engleză Delivery, Anticipation, Flow, Trust și „the Container” sunt traducerile mele, încă neaprobate. Ioana le folosește la fel în schiță.
 
 ---
 
-## Textul pentru Substack (EN, ~1.000 de cuvinte)
+## Textul pentru Substack (EN, ~730 de cuvinte)
 
 # The 4 Layers of How a Team Works
-*Key insights from each layer, and the questions a team can ask itself*
+*What sits underneath the results you see*
 
 When a team isn't getting the results it wants, where do we look first?
 
@@ -44,89 +45,76 @@ So what does that system look like?
 
 At Wise Teams, we see it in four layers. The first one is the one everyone sees. The deeper you go, the less visible a layer becomes, and the more it holds.
 
+[SCHIȚA IOANEI: cele 4 niveluri + Containerul]
+
 Let's walk through them, from the top down.
 
 ### 📌 Layer 1: Delivery
 
-*The team knows what matters, and what it commits to actually happens.*
+Delivery is not where results are made. It's where they show up.
+It's the effect of a process.
 
-**Key insights**
+Yet when results don't come, this is where most of the pressure goes.
+More follow-ups. More urgency. More "we just need to push harder."
 
-- **Alignment is easy to test.** Ask five people for the team's three priorities. When it works, you hear the same three. When it doesn't, you hear five honest, different lists.
-- **A commitment is a small promise kept.** When it works, "I'll do it" means a date and a clear "done". When it doesn't, things are "almost ready" for weeks, and nobody is surprised anymore.
-- **Busy is not the same as delivering.** When it works, progress is visible without anyone chasing it, and the team can name what changed for the people it serves. When it doesn't, status meetings report activity, not results.
+Why? Because pressure is the tool closest at hand. When you don't know where to work more concretely, you push where you can see.
 
-💬 *Would each of us name the same three priorities right now?*
+And in the moment, it works. Pressure creates focus, and focus moves things.
+
+But will is not an endless resource. It erodes.
+
+The pressure doesn't disappear either. It turns into what's called **allostatic load**: the wear and tear that stress leaves on body and mind when it lasts. We keep adapting to keep up, and the adapting has a cost. Sooner or later, that load gets discharged somewhere: in tiredness, in tension between people, in quiet disengagement.
+
+👉 The feedback comes late. But it comes.
 
 ### 📌 Layer 2: Anticipation
 
-*The team sees change coming and gets ready for it while it delivers today.*
+Many teams get stuck running the same solutions on problems that don't get solved.
 
-**Key insights**
+They live more with the feeling of being behind than with the feeling of experimenting, playing, and being in rhythm with the market.
 
-- **Signals arrive early, or they arrive from a client.** When it works, someone says "I noticed this, it might affect us", and the team makes room for it. When it doesn't, change is discovered when a client mentions it, or a competitor does it.
-- **Preparing is a second thread, not an extra.** I wrote about [the two threads a team needs](https://alexandrumolea.substack.com/p/your-team-needs-two-threads): performing, and innovating on how you perform. Like firefighters, who train between fires.
-- **People take risks where a failed test counts as information.** When it works, small experiments are normal and the team knows how to try new things safely. When it doesn't, ideas stop at "we tried that before", and people only propose what can't fail.
+When a team can't integrate anticipation into how it works, you get a familiar effect: **always putting out fires.**
 
-💬 *What change are we already seeing that we haven't talked about yet?*
+Firefighters, by the way, train between fires. That's the [second thread a team needs](https://alexandrumolea.substack.com/p/your-team-needs-two-threads): not only performing, but innovating on how you perform.
+
+👉 Being always behind is rarely about speed. It's what happens when the future has no place in the team's week.
 
 ### 📌 Layer 3: Flow
 
-*Information, tasks and decisions move between people without getting stuck.*
+Here, the risk is to build processes and procedures that don't serve us.
 
-**Key insights**
+The mechanism underneath how we work should be as alive, and as regularly adapted, as everything else in a team.
 
-- **Information is found, not requested.** When it works, people find what they need on their own. When it doesn't, the leader becomes the router, and everything waits for them.
-- **The ball is passed, not dropped.** When it works, a handover sounds like "It's yours now, here's what you need." When it doesn't, tasks fall between chairs, and everyone thinks someone else has them.
-- **Meetings end with who does what, by when.** That's the sixth of the [9 Conditions of High Performing Teams](https://alexandrumolea.substack.com/p/8-conditions-of-high-performing-teams). And when it works, asking "where are we with this?" is a normal question, not an accusation. Nobody takes it personally, so people actually ask.
+Often, though, processes ossify. And the conversations about them stop happening.
 
-💬 *Where does work wait the longest in our team?*
+So instead of unblocking coordination, they block it.
+
+Most teams don't design their coordination. They don't look at how well the ball is passed from one person to the next.
+
+**Process is to a team what metacognition is to thinking.** Thinking about how we think. Working on how we work.
+
+👉 In an organization, that means stepping onto the sidelines from time to time and asking: *what needs to improve, so things can move forward?*
 
 ### 📌 Layer 4: Trust
 
-*The truth can be said, and the team decides on what is real.*
+Without trust, it's hard for people to commit to what was agreed.
 
-**Key insights**
+Lack of trust is a hidden culprit. It rarely shows up under its own name.
 
-- **Real difficulties reach the table.** When it works, "I'm stuck" is said in the meeting. When it doesn't, it's said in the hallway, in the meeting after the meeting.
-- **Tensions are named while they are small.** When it works, a small friction gets a short conversation. When it doesn't, it grows into resentment, and one day it looks like a "people problem".
-- **Mistakes teach, and data decides.** When it works, a mistake leads to "What did we learn?", not "Who did it?", and decisions rest on data, not on the loudest opinion or the strongest interest. As I wrote once, trust is not admiration. It's what lets a team look at reality together.
+Without trust, you delay going to the person who could unblock you.
+Without trust, silos form, and innovation and anticipation suffer.
+Without trust, decisions are hard to make.
+Without trust, you don't implement what someone else proposed. Or you conveniently postpone it, until everyone forgets.
+Without trust, conflicts start.
+Without trust, everyone pulls in a different direction.
 
-💬 *What is something we all know, but don't say in our meetings?*
+And here is the part we rarely say out loud: teams usually can't work on trust on their own. Different people, with different views, don't know how to align.
+
+👉 Not because they don't want to. Because aligning different views is hardest exactly where trust is missing.
 
 ### 📌 And underneath: the Container
 
-Below the four layers sits what we call **the Container**: why the team exists, what it delivers and to whom, who plays which role, and the rules it works by.
-
-👉 When the layers above keep shaking, it's often the ground underneath that asks for attention.
-
-### 📌 Let's imagine this
-
-A team misses an important deadline.
-
-At the top, it's a Delivery problem. The easy conclusion: people weren't committed enough.
-
-Go one layer down. The work waited three days between two people, because nobody said "it's yours now". That's Flow.
-
-Go one more. Two weeks earlier, someone thought the timeline wasn't realistic. They didn't say it. That's Trust.
-
-Same people. Same capabilities.
-The result was decided two layers below where it showed up.
-
-👉 **This is why the layers matter.** What you see in results often has its roots in a layer you don't see. And a change in the right layer moves the ones above it.
-
-At Wise Teams, our Strategic Focus Tool looks at 16 behaviours, four in each layer. It doesn't measure how good people are. **It measures how the team works.**
-
-### Your action plan
-
-You don't need a tool to start.
-
-1. Pick the layer that feels most fragile in your team.
-2. Bring its question to a team meeting.
-3. Listen, and write down what you hear where everyone can see it.
-4. Choose one small change in how you work. Just one.
-
-Then notice what it moves, in that layer and in the others.
+Below the four layers sits the Container: why the team exists, what it delivers and to whom, who plays which role, and the rules it works by. When the layers above keep shaking, it's often the ground underneath that asks for attention.
 
 ### Final thought
 
@@ -139,70 +127,17 @@ And if you'd like to look at the four layers together with your team, I'd be hap
 
 ---
 
-## Adaptare: postare LinkedIn (RO, ~180 de cuvinte)
-
-> Profilul LinkedIn al lui Alex e în engleză; limba postărilor nu am putut-o vedea. Am pus ambele variante; Alex alege. Linkul: în text sau în primul comentariu, cum preferă el. Numele în română ale nivelurilor (Livrare, Anticipare, Flux, Încredere) sunt cele din modelul Wise Teams.
-
-Când o echipă nu are rezultatele dorite, ne uităm întâi la oameni.
-
-Dar rezultatele vin din felul în care oamenii lucrează împreună.
-La Wise Teams vedem acest fel de lucru în 4 niveluri:
-
-📌 **Livrare.** Cere-le la cinci oameni cele trei priorități ale echipei. Dacă auzi cinci liste diferite, ai găsit primul lucru de lucrat.
-
-📌 **Anticipare.** Schimbarea ajunge în echipă fie devreme, printr-un om atent, fie târziu, printr-un client.
-
-📌 **Flux.** Unde informația trece doar prin lider, totul așteaptă după el.
-
-📌 **Încredere.** Dacă „m-am blocat” se spune pe hol, după ședință, adevărul nu ajunge la masă.
-
-Un termen ratat pare o problemă de Livrare.
-Un nivel mai jos: munca a stat trei zile între doi oameni.
-Încă unul: cineva știa că termenul nu e realist și n-a spus.
-
-👉 Rezultatul s-a decis cu două niveluri mai jos de unde s-a văzut.
-
-Am scris despre fiecare nivel, cu câte o întrebare pe care și-o poate pune echipa: [link]
-
-💬 Care nivel e cel mai puternic în echipa voastră acum? Și care cere atenție?
-
-## Adaptare: postare LinkedIn (EN, ~175 de cuvinte)
-
-When a team isn't getting results, we look at people first.
-
-But results come from how people work together.
-At Wise Teams, we see that in 4 layers:
-
-📌 **Delivery.** Ask five people for the team's three priorities. If you hear five different lists, you've found your first thing to work on.
-
-📌 **Anticipation.** Change reaches a team either early, through someone paying attention, or late, through a client.
-
-📌 **Flow.** Where information only passes through the leader, everything waits for the leader.
-
-📌 **Trust.** If "I'm stuck" is said in the hallway after the meeting, the truth never reaches the table.
-
-A missed deadline looks like a Delivery problem.
-One layer down: the work waited three days between two people.
-One more: someone knew the timeline wasn't realistic, and didn't say it.
-
-👉 The result was decided two layers below where it showed up.
-
-I wrote about each layer, with one question a team can ask itself: [link]
-
-💬 Which layer is strongest in your team right now? And which one is asking for attention?
-
----
-
 ## Surse
-- Articolele lui Alex la care trimite textul: [The 3 Hidden Forces that Shape High Performing Teams](https://alexandrumolea.substack.com/p/the-3-hidden-forces-that-shape-high) (2025-06-10), [9 Conditions of High Performing Teams](https://alexandrumolea.substack.com/p/8-conditions-of-high-performing-teams) (2025-05-20), [Your team needs two threads](https://alexandrumolea.substack.com/p/your-team-needs-two-threads) (2025-07-28), [Why Smart Teams Get Stuck—And How to Fix It](https://alexandrumolea.substack.com/p/why-smart-teams-get-stuckand-how) (2025-03-24, „Trust is not admiration.”).
-- Modelul Wise Teams (patru categorii, 16 comportamente, Containerul): skill-ul `wise-critical-path` al lui Alex și cele 16 dimensiuni ale Strategic Focus Tool, din brief-ul lui Tudor (2026-11-25).
-- Cercetarea din v2 (Beer et al. 2016, Google Project Aristotle) nu mai e în text: modelul lui Alex duce articolul, cum face el pe Substack. Rămâne în `arhiva/wise-teams-articol-1-2026-11-20-v2.md` și în `team/sofia/documente/copywriting-research-2026-11-20.md`, dacă Alex o vrea înapoi.
+- Ideile de la fiecare nivel: feedbackul lui Alex din 2026-11-25 (brief-ul lui Tudor), păstrate în ordinea lui.
+- Allostatic load (doar pentru verificare, nu în text): B. S. McEwen și E. Stellar, „Stress and the individual: mechanisms leading to disease”, *Archives of Internal Medicine*, 1993; B. S. McEwen, „Protective and damaging effects of stress mediators”, *New England Journal of Medicine*, 1998. Definiția folosită în text („the wear and tear that stress leaves on body and mind when it lasts”) e parafraza lor.
+- Metacogniția („thinking about thinking”), doar pentru verificare: J. H. Flavell, „Metacognition and cognitive monitoring”, *American Psychologist*, 1979.
+- Articolele lui Alex la care trimite textul: [The 3 Hidden Forces that Shape High Performing Teams](https://alexandrumolea.substack.com/p/the-3-hidden-forces-that-shape-high) (2025-06-10), [Your team needs two threads](https://alexandrumolea.substack.com/p/your-team-needs-two-threads) (2025-07-28).
 - Vocea: `team/sofia/documente/substack-voce-2026-11-20.md`.
 
 ## Ce am verificat
-- Fiecare key insight vine dintr-una din cele 16 dimensiuni: Delivery (aliniere, angajament, urmărirea progresului, rezultate), Anticipation (semnale din piață, pregătirea pentru viitor, context pentru risc, competențe de inovație), Flow (acces la informații, pasarea mingii, cine-ce-când, răspundere fără să fie luată personal), Trust (dificultăți reale, tensiuni clarificate devreme, greșeli constructive, decizii pe date). Câte 3 insights pe nivel; unde un insight acoperă două dimensiuni, le-am legat (ex.: Flow 3 = cine-ce-când + răspunderea).
-- Fără nume de clienți, fără date din chestionare sau rapoarte, fără cifre inventate. Singura cifră: 16 comportamente (modelul). Exemplul cu termenul ratat e generic, scris ca „Let's imagine this”.
-- Fără promisiuni de timp (regula din 2026-11-25): planul de acțiune spune ce face echipa, nu când se schimbă ceva („Then notice what it moves”). Am scos din v2 „in a few weeks, it will show you…” și „In your next team meeting”.
-- Fără ton de vânzare: Strategic Focus Tool e menționat o dată, descriptiv; planul de acțiune începe cu „You don't need a tool to start.” Invitația e cea din v2, permisivă („I'd be happy to talk”).
-- Lungime: ~1.000 de cuvinte în textul de Substack (ținta din brief: 900–1.100).
-- De confirmat: numele EN (T-049); subtitlul; dacă Alex vrea să citeze din propriul articol („Trust is not admiration”) sau preferă fără auto-citare; o diagramă cu cele 4 niveluri + Containerul (Ioana), cum are *3 Hidden Forces* și *Smart Teams*.
+- Introducerea e identică cu v3, cuvânt cu cuvânt; am adăugat doar locul pentru schiță înainte de „Let's walk through them”, unde cititorul vede întregul înainte de detalii.
+- Fiecare nivel urmează ideile și ordinea lui Alex: Delivery (efect al unui proces → presiunea, unealta la îndemână → focusul pe moment → voința se erodează → allostatic load → feedbackul vine târziu, dar vine); Anticipation (aceleași soluții → în urmă vs. experiment, joacă, ritm cu piața → mereu stingem incendii); Flow (procese care nu ne servesc → se osifică, conversațiile lipsesc → blochează coordonarea → designul coordonării, mingea → metacogniția → ieșim pe margine); Trust (aderarea la ce s-a agreat → vinovatul ascuns → lista lui de efecte, în ritmul „Without trust, …” → echipele nu pot lucra singure la încredere).
+- Trust se încheie cu o observație, nu cu o ofertă: invitația rămâne doar la final, aceeași ca în v3 („I'd be happy to talk”).
+- Ce am adăugat eu, de verificat de Alex: explicația pentru allostatic load („we keep adapting to keep up, and the adapting has a cost”) și cele trei locuri în care se descarcă (oboseală, tensiune între oameni, retragere tăcută); propoziția 👉 de la Anticipation („when the future has no place in the team's week”); propoziția 👉 de la Trust („aligning different views is hardest exactly where trust is missing”); „Working on how we work” la Flow.
+- Fără nume de clienți, fără cifre inventate, fără promisiuni de timp; Strategic Focus Tool nu mai apare.
+- Lungime: ~730 de cuvinte în textul de Substack (ținta: 600–750); postările LinkedIn ~170 (RO) și ~170 (EN).

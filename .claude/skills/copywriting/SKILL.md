@@ -86,6 +86,8 @@ Răspunde în scris, în 1–2 rânduri fiecare, înainte să scrii textul:
 ## 4. Același text pe trei platforme
 Pornim mereu de la articolul lung (Substack). Celelalte se taie din el, nu se scriu de la zero.
 
+**Ordinea (Alex, 2026-11-25):** întâi articolul, până la aprobarea lui Alex. Abia apoi pornește fluxul pentru LinkedIn (articol și/sau postare), din textul aprobat. Nu scriem adaptările în paralel cu draftul de articol: fiecare rundă de feedback le-ar face depășite.
+
 | | Substack | Articol LinkedIn | Postare LinkedIn |
 |---|---|---|---|
 | **Rol** | Textul-sursă, pentru cei care au ales să-l citească pe Alex | Același text, pentru rețeaua profesională; se găsește și prin căutare | Ușa: o idee, un exemplu, o invitație |
@@ -108,11 +110,12 @@ Fiecare draft stă în `team/sofia/documente/drafts/<subiect>-AAAA-LL-ZZ.md`, cu
 1. ideea într-o frază și pentru cine e;
 2. 3 variante de titlu, fiecare cu subtitlu;
 3. textul pentru Substack;
-4. adaptarea pentru postarea LinkedIn;
-5. sursele.
+4. sursele.
+Adaptarea LinkedIn e un draft separat, `drafts/<subiect>-linkedin-AAAA-LL-ZZ.md`, făcut după ce Alex aprobă articolul.
 Nimic nu se publică fără aprobarea explicită a lui Alex.
 
 ## Lecții (cu dată)
 - 2026-11-20: Skill creat. Primele texte scrise cu el: două articole despre valoarea Wise Teams. Încă fără feedback de la Alex.
 - 2026-11-20: **Înainte de a scrie în numele lui Alex, citesc ce a publicat deja pe canalul respectiv** (secțiunea 0). Primele draft-uri le-am scris fără Substack-ul lui: în română (el scrie acolo în engleză), proză curgătoare (el scrie sacadat, cu modele numite, bold, liste și emoji-marcaje), cu cercetarea în centru (el pune experiența și modelul în centru) și fără legătură cu seria lui despre echipe. Le-am rescris (v2).
 - 2026-11-20: Pe Substack, structura lui Alex: subtitluri cu 📌, un model numit, „Let's imagine this” pentru exemple, „Your action plan” și „Final thought” la final, apoi o întrebare reală și o invitație caldă. Regula mea veche „fără emoji” nu ținea pe canalul lui.
+- 2026-11-25: Alex: „poate că ar fi mai logic să facem întâi articolul și apoi să pornească un flow pentru linkedin.” Adaptările LinkedIn se fac după aprobarea articolului, ca draft separat (secțiunile 4 și 5).
