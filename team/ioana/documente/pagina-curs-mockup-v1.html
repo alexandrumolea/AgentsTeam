@@ -10,7 +10,7 @@
 <style>
 /* Mock-up v1 · șablonul paginii unui curs livrat, în Latest Workshops (Ioana, 2026-11-25, T-052, D-093).
    O singură compoziție, refolosită la toate cursurile: eticheta · titlul · subtitlul · promisiunea · planul (ce iei acasă)
-   → Pentru cine e + Ce se schimbă → Cum arată drumul (drumul cu opririle) → Format + Cum îl ceri → ușa spre mini-curs.
+   → Pentru cine e + Ce se schimbă → Cum arată drumul (drumul cu opririle) → Format + Hai să vorbim → ușa spre mini-curs.
    Fără script (site/pagina-html.mjs îl respinge). Tokenii: content/tema.yml (paleta Sora, D-054/D-057).
    Textul stă mereu pe sticlă 80 % / 93 % sau pe alb plin, niciodată direct pe gradient.
    Ce are clasa .mock e doar pentru echipă și nu intră pe site. */
@@ -182,7 +182,7 @@ section{padding-block:40px 4px;display:grid;gap:18px}
     <p class="sub">Reinventarea e o abilitate. Și o ai deja.</p>
     <p class="prom">Un workshop în care fiecare om descoperă ce l-a ajutat deja în schimbări și pleacă acasă cu planul lui de reinventare.</p>
     <div class="actiuni">
-      <a class="btn plin" href="#ceri">Cum îl ceri</a>
+      <a class="btn plin" href="#ceri">Hai să vorbim</a>
       <a class="btn gol" href="#ziua">Cum arată drumul</a>
     </div>
   </div>
@@ -258,12 +258,12 @@ section{padding-block:40px 4px;display:grid;gap:18px}
       </ul>
     </div>
     <div class="ceri sticla" id="ceri">
-      <h2>Cum îl ceri</h2>
-      <p>Dacă ți se pare potrivit pentru echipa ta, <span class="nw">scrie-mi</span> din Contact și vedem împreună ce variantă vi se potrivește.</p>
-      <a class="btn plin" href="#">Scrie-mi</a>
+      <h2>Hai să vorbim</h2>
+      <p>Spune-mi prin ce trece echipa ta acum și vedem împreună dacă workshopul vi se potrivește.</p>
+      <a class="btn plin wa" href="https://wa.me/?text=Bun%C4%83%2C%20Alex!%20A%C8%99%20vrea%20s%C4%83%20aflu%20mai%20multe%20despre%20workshopul%20Change%20Agility." target="_blank" rel="noopener">Scrie-mi pe WhatsApp</a>
     </div>
   </div>
-  <p class="mock">„Scrie-mi” deschide capsula Contact a site-ului (Mike: <code>popovertarget="contact"</code>, fără script). E singurul buton plin din acest ecran.</p>
+  <p class="mock">„Scrie-mi pe WhatsApp” deschide direct conversația pe WhatsApp (Alex, 2026-11-25). Mike: același număr ca în capsula Contact (secretul <code>CONTACT_WHATSAPP</code>), <code>https://wa.me/&lt;număr&gt;?text=…</code>, cu mesajul pregătit „Bună, Alex! Aș vrea să aflu mai multe despre workshopul Change Agility.” La fiecare curs se schimbă doar numele cursului din mesaj. Butonul „Hai să vorbim” de sus duce aici.</p>
 </section>
 
 <aside class="usa sticla" aria-label="Mini-cursul gratuit">
@@ -272,7 +272,7 @@ section{padding-block:40px 4px;display:grid;gap:18px}
   <p class="desc"><b>Planul tău de reinventare, în doi</b> <span class="mock-mic">nume de lucru</span><br>Patru pași, cu un partener ales de tine, în aproximativ 2 h 40, într-o săptămână.</p>
   <a class="link" href="#">Vezi mini-cursul</a>
 </aside>
-<p class="mock">Ușa spre mini-curs (Andrei, varianta A): o bandă subțire, sub workshop, fără buton plin, ca să nu concureze cu „Cum îl ceri”. Numele public și fraza le scrie Maria; „gratuit” și publicarea exercițiilor sunt decizii ale lui Alex (întrebările 2 și 3 din documentul lui Andrei). Semnul: două cercuri care se ating, adică doi oameni.</p>
+<p class="mock">Ușa spre mini-curs (Andrei, varianta A): o bandă subțire, sub workshop, fără buton plin, ca să nu concureze cu „Hai să vorbim”. Numele public și fraza le scrie Maria; „gratuit” și publicarea exercițiilor sunt decizii ale lui Alex (întrebările 2 și 3 din documentul lui Andrei). Semnul: două cercuri care se ating, adică doi oameni.</p>
 </main>
 
 </div>

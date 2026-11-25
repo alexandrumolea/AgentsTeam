@@ -46,8 +46,12 @@ Nu e un curs despre cum conduci o transformare în organizație. E despre omul c
 Teoria e scurtă și clară. Cea mai mare parte a timpului lucrăm în perechi, cu momente de liniște și fără lucru în echipe mari.
 Fiecare alege cât de personal vrea să fie, iar ce se spune în sală rămâne în sală.
 
-### Cum îl ceri
-Dacă ți se pare potrivit pentru echipa ta, scrie-mi din Contact și vedem împreună ce variantă vi se potrivește.
+### Hai să vorbim
+Spune-mi prin ce trece echipa ta acum și vedem împreună dacă workshopul vi se potrivește.
+
+**Butonul:** Scrie-mi pe WhatsApp (deschide direct WhatsApp, cu mesajul pregătit „Bună, Alex! Aș vrea să aflu mai multe despre workshopul Change Agility.”)
+
+> 2026-11-25, Alex: „Cum îl ceri, nu sună bine. De asemenea, la scrie-mi să îl trimită direct pe Whatsapp.”
 
 ---
 
