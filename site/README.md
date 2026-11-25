@@ -20,6 +20,10 @@ Scena se adaptează singură: cu cel mult 3 obiecte, orbita se strânge și obie
 ## Cum pui un element într-o secțiune (ex.: Innovations)
 
 În `content/categorii.yml`, la secțiune, lista `elemente`: `titlu`, `fraza` și fie `link: https://…`, fie `pagina` + `slug`.
+Fiecare element apare ca un **rând-drum** (varianta B din `team/ioana/documente/elemente-sectiune-v1.html`, aleasă de Alex pe 2026-11-25): tot rândul e un singur link, pe pagina secțiunii și în panoul de pe prima pagină. Două câmpuri opționale:
+- `tip`: eticheta din fața frazei (ex.: `"Workshop · 4 sau 6 ore"`, `"Ghid"`, `"Proces"`). Fără ea, rândul arată doar fraza.
+- `simbol`: desenul din stânga: `workshop` (inel), `ghid` (foaie), `proces` (puncte pe linie), `aplicatie` (telefon), `atelier`. Fără el, rândul începe cu titlul. Un nume necunoscut oprește build-ul. Desenele noi se adaugă în `SIMBOL` din `site/build.mjs`.
+În panoul de pe prima pagină, o secțiune cu elemente nu mai are butonul „Deschide pagina →” (rândul duce deja acolo); fără elemente, butonul rămâne.
 Cu `pagina` (un fișier `.html` din repo, ca `docs/procese/curs-nou-vizual.html`), build-ul publică pagina la `<secțiune>/<slug>/`, cu antetul și subsolul site-ului. **Sursa e una singură:** editezi fișierul din repo, iar site-ul îl preia la următorul build.
 Ce face build-ul cu pagina (`site/pagina-html.mjs`): scoate `<title>`, `<meta>` și `<link>` (fonturile de pe Google Fonts; site-ul are Sora și Inter Tight locale), prefixează clasele cu `pr-`, închide stilul sub `main.proces` și transformă `style="…"` în clase (CSP-ul are `style-src 'self'`). Stilul ajunge în `assets/pagini/<slug>.css`.
 Build-ul se oprește dacă pagina are `<script>` (chiar și scris într-un comentariu), `@import` sau resurse de pe alt site. `@keyframes` sunt permise și primesc și ele prefixul `pr-`.

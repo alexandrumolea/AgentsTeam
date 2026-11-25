@@ -89,6 +89,15 @@ if (!CATS.length) fail('content/categorii.yml: nicio secțiune nu e vizibilă. P
 { let n = 0; for (const c of CATS) if (c.pe_orbita !== false) c.nr = ++n; }
 const C = Object.fromEntries(CATS.map(c => [c.cheie, c]));
 
+// Simbolurile tipurilor de element (`simbol` în categorii.yml), din mock-up-ul Ioanei (elemente-sectiune-v1.html, varianta B).
+const SIMBOL = {
+  workshop: '<circle cx="14" cy="14" r="9"/><circle cx="14" cy="14" r="3.5"/>',
+  ghid: '<rect x="7" y="5" width="14" height="18" rx="3"/><path d="M10.5 11h7M10.5 15h7M10.5 19h4"/>',
+  proces: '<path d="M4 14h20"/><circle cx="6" cy="14" r="2.5"/><circle cx="14" cy="14" r="2.5"/><circle cx="22" cy="14" r="2.5"/>',
+  aplicatie: '<rect x="8" y="4" width="12" height="20" rx="3.5"/><path d="M12 20h4"/>',
+  atelier: '<rect x="5" y="5" width="18" height="18" rx="5"/><circle cx="14" cy="14" r="4"/>',
+};
+
 // Elementele unei secțiuni (câmpul `elemente` din categorii.yml), ex.: Innovations → „Procesul de training design cu AI”.
 // Fiecare are pagina lui, la <secțiune>/<slug>/. Cu `pagina`, conținutul vine direct dintr-un fișier HTML din repo
 // (o singură sursă: ce se schimbă acolo apare pe site la următorul build). Fără `pagina`, `link` duce în altă parte.
@@ -101,6 +110,8 @@ for (const c of CATS){
     if (!e || !e.titlu || !e.fraza) fail(`${w}: are nevoie de titlu și fraza.`);
     if (!e.pagina === !e.link) fail(`${w}: completează fie „pagina” (un fișier .html din repo), fie „link”.`);
     if (e.link && !/^https:\/\//.test(e.link)) fail(`${w}: „link” trebuie să înceapă cu https://.`);
+    if (e.tip !== undefined && (typeof e.tip !== 'string' || !e.tip.trim())) fail(`${w}: „tip” e un text (ex.: "Workshop · 4 sau 6 ore") sau lipsește.`);
+    if (e.simbol !== undefined && !Object.hasOwn(SIMBOL, e.simbol)) fail(`${w}: „simbol” poate fi ${Object.keys(SIMBOL).join(', ')}.`);
     if (e.pagina){
       if (!/^[a-z0-9]+(-[a-z0-9]+)*$/.test(e.slug || '')) fail(`${w}: „slug” lipsește sau are alte caractere decât litere mici, cifre și cratimă.`);
       if (slugs.has(e.slug)) fail(`${w}: slug-ul „${e.slug}” apare de două ori.`);
@@ -381,8 +392,15 @@ const contactPanel = () => CONTACT ? `<div class="contact glass-read" id="contac
 const coachingCta = () => rezervare
   ? `<p class="actions"><a class="btn" href="${esc(rezervare)}" rel="noopener">Alege o oră <span aria-hidden="true">→</span></a>${CONTACT ? contactBtn(CONTACT.peCoachingDupa, 'btn ghost') : ''}</p>`
   : CONTACT ? `<p class="actions">${contactBtn(CONTACT.peCoaching)}</p>` : '';
-// lista elementelor unei secțiuni: același rând ca în „Atelierul, la vedere” (ul.list), titlul ca link și fraza
-const elementeHtml = c => Array.isArray(c.elemente) && c.elemente.length ? `<ul class="list items">${c.elemente.map(e => `<li><a href="${esc(e.url ? u(e.url) : e.link)}"${e.link ? ' rel="noopener"' : ''}>${esc(e.titlu)}</a><span>${esc(e.fraza)}</span></li>`).join('')}</ul>` : '';
+// Elementele unei secțiuni, ca „rânduri-drum” (varianta B a Ioanei, aleasă de Alex pe 2026-11-25): tot rândul e un singur link,
+// cu simbolul tipului (opțional), titlul, „tip · fraza” și săgeata în cerc. Aceeași formă pe pagina secțiunii și în panoul de pe prima pagină.
+const elementeHtml = c => Array.isArray(c.elemente) && c.elemente.length ? `<ul class="rows">${c.elemente.map(e => `<li><a class="rb${e.simbol ? '' : ' fara-sim'}" href="${esc(e.url ? u(e.url) : e.link)}"${e.link ? ' rel="noopener"' : ''}>${e.simbol ? `<span class="sim"><svg viewBox="0 0 28 28" width="28" height="28" aria-hidden="true" focusable="false">${SIMBOL[e.simbol]}</svg></span>` : ''}<span class="tx"><span class="t">${esc(e.titlu)}</span><span class="f">${e.tip ? `<b>${esc(e.tip)}</b> · ` : ''}${esc(e.fraza)}</span></span><span class="go" aria-hidden="true"></span></a></li>`).join('')}</ul>` : '';
+// butoanele de la baza panoului: cu elemente, rândurile duc deja unde trebuie, deci „Deschide pagina” dispare
+const panouActiuni = c => {
+  const deschide = c.elemente?.length ? '' : `<a class="btn" href="${pageUrl(c)}">Deschide pagina →</a>`;
+  const live = C.live ? `<a class="btn ghost" href="${pageUrl(C.live)}" data-go="live">Vezi ce se lucrează acum</a>` : '';
+  return deschide || live ? `<p class="actions">${deschide}${live}</p>` : '';
+};
 const businessList = () => BUSINESS.length ? `<ul class="list biz">${BUSINESS.map(b => `<li><b>${b.link ? `<a href="${esc(b.link)}" rel="noopener">${esc(b.nume)}</a>` : esc(b.nume)}</b>${b.nevoie ? `<span>${esc(b.nevoie)}</span>` : ''}${b.rol ? `<small>${esc(b.rol)}</small>` : ''}${b.pod ? `<small class="pod">${esc(b.pod)}</small>` : ''}</li>`).join('')}</ul>` : '';
 // Despre (compoziția v2 a Ioanei, varianta A „Orbita în jurul lentilei”, aprobată de Alex pe 2026-11-18):
 // corpul din content/despre.md dă prima propoziție și misiunea; antetul dă propoziția de sub linie (cine), cărțile, parcursul și formarea.
@@ -512,7 +530,7 @@ function panelBody(c){
   ${C.live ? `<p class="actions"><a class="btn ink" href="${pageUrl(C.live)}" data-go="live">Vezi ce se lucrează acum →</a></p>` : ''}</div>`;
   return `<p class="eyebrow">${esc(c.eticheta)} · ${fam}</p><h2 id="pH">${esc(c.eticheta)}</h2>
   <p class="lead">${esc(c.fraza)}</p>${podHtml(c)}${detaliiHtml(c)}${elementeHtml(c)}${stateHtml(c)}${extra}
-  <p class="actions"><a class="btn" href="${pageUrl(c)}">Deschide pagina →</a>${C.live ? `<a class="btn ghost" href="${pageUrl(C.live)}" data-go="live">Vezi ce se lucrează acum</a>` : ''}</p>`;
+  ${panouActiuni(c)}`;
 }
 
 /* ---------- pagina principală: scena („1 · Sticlă colorată”, design v3.1) ---------- */
@@ -801,7 +819,7 @@ if (C.live) write('api/live.json', JSON.stringify(liveJson, null, 2) + '\n'); //
 write('api/continut.json', JSON.stringify({
   generat: new Date(NOW).toISOString(),
   site: { titlu: site.titlu, descriere: site.descriere, github: GH, rezervare: rezervare || null, intro: site.intro, in_pregatire: site.in_pregatire, in_centru: centru },
-  familii, categorii: CATS.map(c => ({ ...c, url: pageUrl(c), ...(c.elemente ? { elemente: c.elemente.map(({ titlu, fraza, url, link, pagina }) => ({ titlu, fraza, url: url ? u(url) : link, ...(pagina ? { sursa: pagina } : {}) })) } : {}) })),
+  familii, categorii: CATS.map(c => ({ ...c, url: pageUrl(c), ...(c.elemente ? { elemente: c.elemente.map(({ titlu, fraza, tip, simbol, url, link, pagina }) => ({ titlu, fraza, ...(tip ? { tip } : {}), ...(simbol ? { simbol } : {}), url: url ? u(url) : link, ...(pagina ? { sursa: pagina } : {}) })) } : {}) })),
   ...(C.companie ? { business: BUSINESS } : {}), nevoi,
   despre: { titlu: despre.data.titlu || 'Despre mine', markdown: despre.body, valori,
     cine: despre.data.cine || null,

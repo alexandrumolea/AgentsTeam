@@ -7,6 +7,12 @@
 #   scena 3D, pagină, sitemap, api/continut.json, linkuri). Adresa ei duce la prima pagină.
 #   Le facem vizibile pe măsură ce avem ce pune în ele (Alex, D-056, 2026-11-17).
 # `panou: false`: pe prima pagină, clicul (pe obiect, în legendă sau pe link) deschide direct pagina, fără panoul din stânga.
+# `elemente`: ce găsești într-o secțiune. Fiecare apare ca un rând pe care îl apeși în întregime (pe pagina secțiunii și în panoul
+#   de pe prima pagină): simbolul, titlul, „tip · fraza” și săgeata. Câmpuri: `titlu`, `fraza`, fie `pagina` + `slug`, fie `link: https://…`,
+#   plus două opționale (2026-11-25):
+#   `tip`: eticheta din fața frazei, ex. "Workshop · 4 sau 6 ore", "Ghid", "Proces". Fără `tip`, rândul arată doar fraza.
+#   `simbol`: desenul din stânga, unul din: workshop (inel), ghid (foaie), proces (puncte pe linie), aplicatie (telefon), atelier.
+#   Fără `simbol`, rândul începe direct cu titlul.
 
 familii:
   - cheie: direct
@@ -38,6 +44,8 @@ categorii:
     elemente:
       - titlu: "Pregătește-te pentru prima ta sesiune"
         fraza: "Răspunsuri la întrebările frecvente și câteva întrebări opționale pentru tine."
+        tip: "Ghid"
+        simbol: ghid
         slug: prima-sesiune
         pagina: content/coaching/prima-sesiune.html
         cadru: false
@@ -71,6 +79,8 @@ categorii:
     elemente:
       - titlu: "Change Agility"
         fraza: "Un workshop în care fiecare pleacă cu planul lui de reinventare."
+        tip: "Workshop · 4 sau 6 ore"
+        simbol: workshop
         slug: change-agility
         pagina: content/workshops/change-agility.html
         cadru: false
@@ -86,13 +96,15 @@ categorii:
     pe_orbita: true
     stare: deschis
     pod: ""
-    # Elementele secțiunii (Alex, 2026-11-18). Fiecare apare ca un rând: titlul (link) și fraza.
+    # Elementele secțiunii (Alex, 2026-11-18). Fiecare apare ca un rând-drum (vezi `elemente` sus, în comentariul fișierului).
     # `pagina`: un fișier .html din repo, publicat la innovations/<slug>/ cu antetul și subsolul site-ului.
     #   Sursa e una singură: ce schimbi în fișier apare pe site la următorul build. (Sau `link: https://…` spre altă adresă.)
     #   <title> din fișier e titlul din tab-ul browserului, <meta name="description"> descrierea; `titlu` de aici e cel din listă.
     elemente:
       - titlu: "Procesul de training design cu AI"
         fraza: "Cum construim un training cu o echipă de agenți AI și oameni: viziune, Laborator, harvest, firul roșu."
+        tip: "Proces"
+        simbol: proces
         slug: procesul-de-training-design-cu-ai
         pagina: docs/procese/curs-nou-vizual.html
 
