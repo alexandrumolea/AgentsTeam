@@ -16,7 +16,8 @@ Coloanele lui Alex (My Strategy, Opportunities, Design Needed, Gave Up Opportuni
 - le leagă de ce știe echipa (oferte, clienți, cursuri), ca să nu existe două carduri pentru același lucru;
 - semnalează ce s-a blocat sau a rămas vechi (fără activitate de peste o lună, termen care se apropie);
 - propune cine din echipă poate prelua ceva (Ana, Victor, Learning Studio etc.).
-Tudor nu mută și nu șterge cardurile lui Alex fără acordul lui. Propunerile i le dă în chat, iar ce aprobă Alex face în aceeași sesiune.
+- acționează direct: mută cardul în coloana în care e de fapt, unește dublurile (păstrează cardul lui Alex și arhivează copia echipei), completează descrierea cu starea și pasul următor.
+Tudor nu șterge și nu arhivează cardurile lui Alex. După fiecare sincronizare îi spune lui Alex, scurt, ce a schimbat (Alex, 2026-11-25: „N-am mutat și n-am schimbat nimic. — De ce?”).
 
 ## Cum arată un card
 - **Numele începe cu cine ține mingea acum:**
