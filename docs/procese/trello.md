@@ -12,7 +12,11 @@ Alex vede în Trello, într-un singur loc, tot ce are echipa de făcut și tot c
 | **In Delivery** | Tot ce e deschis: taskurile „în lucru”, „blocat”, „la Alex”, ideile „în analiză” sau „aprobată” și lucrurile de business pornite (oferte, clienți). |
 | **Done** | Ce s-a terminat. Tudor mută cardul când se termină. |
 
-Coloanele lui Alex (My Strategy, Opportunities, Design Needed, Gave Up Opportunities) rămân ale lui. Tudor nu le schimbă.
+Coloanele lui Alex (My Strategy, Opportunities, Design Needed, Gave Up Opportunities) și cardurile pe care le face el rămân ale lui. **Facem echipă** (Alex, 2026-11-25: „vreau să te uiți și peste cardurile mele, facem echipă”): la fiecare sincronizare, Tudor citește și cardurile lui Alex și:
+- le leagă de ce știe echipa (oferte, clienți, cursuri), ca să nu existe două carduri pentru același lucru;
+- semnalează ce s-a blocat sau a rămas vechi (fără activitate de peste o lună, termen care se apropie);
+- propune cine din echipă poate prelua ceva (Ana, Victor, Learning Studio etc.).
+Tudor nu mută și nu șterge cardurile lui Alex fără acordul lui. Propunerile i le dă în chat, iar ce aprobă Alex face în aceeași sesiune.
 
 ## Cum arată un card
 - **Numele începe cu cine ține mingea acum:**
