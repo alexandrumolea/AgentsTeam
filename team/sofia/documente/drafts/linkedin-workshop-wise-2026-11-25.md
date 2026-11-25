@@ -49,9 +49,9 @@ Când: [DATA], [ORA]
 Unde: [ONLINE/LOCUL]
 Înscriere: [CUM TE ÎNSCRII]
 
-👉 Dacă te regăsești aici, ne-ar bucura să fii unul dintre cei 10.
+Dacă te regăsești aici, ne-ar bucura să fii unul dintre cei 10.
 
-💬 Și dacă nu ajungi: ce trece astăzi prin tine și ți-ai dori să nu mai treacă?
+Și dacă nu ajungi: ce trece astăzi prin tine și ți-ai dori să nu mai treacă?
 
 ## Postarea (EN, ~155 de cuvinte)
 
@@ -70,9 +70,9 @@ When: [DATA], [ORA]
 Where: [ONLINE/LOCUL]
 Sign up: [CUM TE ÎNSCRII]
 
-👉 If this sounds like you, we'd be glad to have you as one of the 10.
+If this sounds like you, we'd be glad to have you as one of the 10.
 
-💬 And if you can't make it: what still goes through you today that you'd like to stop going through you?
+And if you can't make it: what still goes through you today that you'd like to stop going through you?
 
 ---
 
@@ -82,7 +82,7 @@ Sign up: [CUM TE ÎNSCRII]
 2. **Ce ar arăta diferit dacă echipa ta ar fi mai autonomă?** / *What would look different if your team were more autonomous?*
 3. **Ce trece astăzi prin tine și ți-ai dori să nu mai treacă?** / *What still goes through you today that you'd like to let go of?*
 
-(Dacă păstrăm întrebarea 3 la înscriere, întrebarea 💬 din postare se poate schimba sau scoate, ca să nu se repete.)
+(Dacă păstrăm întrebarea 3 la înscriere, întrebarea de final din postare se poate schimba sau scoate, ca să nu se repete.)
 
 ---
 
@@ -91,7 +91,7 @@ Sign up: [CUM TE ÎNSCRII]
 - Scopul e spus cu cuvintele lui Alex: noi împărtășim insight-urile, ei ne spun despre echipele lor, mapăm împreună nevoile reale de acum. E un schimb; nu promite rezultate și nu pomenește ce urmează după workshop.
 - Hook-urile vin din problemele pe care le formulează publicul Wise Teams (liderul crește mai repede decât echipa, totul trece prin lider, „am obosit să cresc oameni”), nu din model. Am lăsat conceptul Wise Teams în afara postării: într-o invitație ar suna a slogan.
 - Fără model, fără stivă, fără link spre articol, fără Strategic Focus Tool.
-- Limbaj permisiv („dacă te regăsești”, „ne-ar bucura”), fără promisiuni de timp, fără nume de clienți, fără cifre inventate (singura cifră: cele 10 locuri). Emoji doar 👉 și 💬.
+- Limbaj permisiv („dacă te regăsești”, „ne-ar bucura”), fără promisiuni de timp, fără nume de clienți, fără cifre inventate (singura cifră: cele 10 locuri). Fără emoji (regula canalelor Wise Teams, 2026-11-25).
 - RO la persoana a doua singular („tu”), ca postarea să vorbească fiecărui om în parte; v1 folosea „voi”.
 
 ## De decis de Alex

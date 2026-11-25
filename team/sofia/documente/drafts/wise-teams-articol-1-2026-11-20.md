@@ -1,7 +1,8 @@
-# Wise Teams, articolul 1: The 4 Layers of How a Team Works (v5)
+# Wise Teams, articolul 1: The 4 Layers of How a Team Works (v6)
 
 > Draft Sofia, 2026-11-25 (T-045). **Nepublicat. Așteaptă aprobarea lui Alex.**
-> v5: textul urmează acum drumul din imaginea aleasă de Alex („A · Drumul”, Ioana). Alex despre schițele în stivă: „contrazice puțin metodologia noastră, care zice că există o ordine.” Am scos stiva (intro, „from the top down”, „Layer 1–4”, finalul despre straturi), iar secțiunile merg pe drum: the Container → Delivery → Flow → Trust → Anticipation → an emergent team. Ordinea se vede, nu se anunță. Intro-ul lui Alex și ideile de la fiecare capabilitate au rămas. ~850 de cuvinte.
+> v6 (Alex, 2026-11-25): „aș vrea la fiecare capitol să găsești un key insight. De asemenea, scoate te rog emoji-urile. Suntem mai serioși decât eram pe contul meu.” Fiecare capitol începe acum cu un rând **Key insight:**, o singură frază. Am scos toate emoji-urile (📌, 👉, 💬). Structura pe drum din v5 a rămas. ~850 de cuvinte.
+> v5 (textul aliniat la drumul din imaginea „A · Drumul”; ordinea se vede, nu se anunță): `arhiva/wise-teams-articol-1-2026-11-20-v5.md`.
 > v4.1 (Containerul pe insight-ul lui Alex, motivația Wise Teams, „we'd be happy to talk”, propoziția despre Anticipation după Delivery): `arhiva/wise-teams-articol-1-2026-11-20-v4.md`. v3: `arhiva/…-v3.md`. v2: `arhiva/…-v2.md`. v1, în română: `arhiva/…-v1-ro.md`.
 > LinkedIn: nu e în acest draft (Alex, 2026-11-25: întâi articolul, apoi un flux separat pentru LinkedIn).
 
@@ -51,22 +52,21 @@ At Wise Teams, we see it as a path. It starts with the Container, moves through 
 
 Let's walk it, from where it starts.
 
-### 📌 The Container
+### The Container
+
+**Key insight:** When a team loses its why, work slides toward personal efficiency and personal goals.
 
 Every team starts from the Container: why the team exists, who it exists for, what its people want to inspire in each other, and the roles and rules it works by.
 
 Teams often forget it. They lose the why, and with it the big picture.
 
-And when that happens, work slides easily toward personal efficiency and personal goals. Doing the necessary minimum, as fast as possible.
+What's left is doing the necessary minimum, as fast as possible.
 
-👉 When everything along the way keeps shaking, it's often the starting point that asks for attention.
+### Delivery
 
-### 📌 Delivery
+**Key insight:** Delivery is not where results are made. It's where they show up.
 
-Delivery shows up twice on the path: first as alignment, priorities understood the same way; later as results that come steadily. In between is how the team works.
-
-That's why delivery is not where results are made. It's where they show up.
-It's the effect of a process.
+Delivery shows up twice on the path: first as alignment, priorities understood the same way; later as results that come steadily. In between is how the team works. Delivery is the effect of that process.
 
 Yet when results don't come, this is where most of the pressure goes.
 More follow-ups. More urgency. More "we just need to push harder."
@@ -79,9 +79,11 @@ But will is not an endless resource. It erodes.
 
 The pressure doesn't disappear either. It turns into what's called **allostatic load**: the wear and tear that stress leaves on body and mind when it lasts. Sooner or later, that load gets discharged somewhere: in tiredness, in tension between people, in quiet disengagement.
 
-👉 The feedback comes late. But it comes.
+The feedback comes late. But it comes.
 
-### 📌 Flow
+### Flow
+
+**Key insight:** Process is to a team what metacognition is to thinking: the way a team works on how it works.
 
 Here, the risk is to build processes and procedures that don't serve us.
 
@@ -93,16 +95,13 @@ So instead of unblocking coordination, they block it.
 
 Most teams don't design their coordination. They don't look at how well the ball is passed from one person to the next.
 
-**Process is to a team what metacognition is to thinking.** Thinking about how we think. Working on how we work.
+Doing that means stepping onto the sidelines from time to time and asking: *what needs to improve, so things can move forward?*
 
-👉 In an organization, that means stepping onto the sidelines from time to time and asking: *what needs to improve, so things can move forward?*
+### Trust
 
-### 📌 Trust
+**Key insight:** Lack of trust is a hidden culprit. It rarely shows up under its own name.
 
-Without trust, it's hard for people to commit to what was agreed.
-
-Lack of trust is a hidden culprit. It rarely shows up under its own name.
-
+Without trust, it's hard to commit to what was agreed.
 Without trust, you delay going to the person who could unblock you.
 Without trust, silos form, and innovation and anticipation suffer.
 Without trust, decisions are hard to make.
@@ -112,17 +111,17 @@ Without trust, everyone pulls in a different direction.
 
 And teams usually can't work on trust on their own. Different people, with different views, don't know how to align.
 
-👉 Not because they don't want to. Because aligning different views is hardest exactly where trust is missing.
+Not because they don't want to. Because aligning different views is hardest exactly where trust is missing.
 
-### 📌 Anticipation
+### Anticipation
+
+**Key insight:** Always putting out fires is rarely a speed problem. It's what happens when anticipation has no place in how a team works.
 
 Once a team is doing well with its results, it can lift its head and think about the future.
 
 Many teams never get there. They get stuck running the same solutions on problems that don't get solved.
 
 They live more with the feeling of being behind than with the feeling of experimenting, playing, and being in rhythm with the market.
-
-When a team can't integrate anticipation into how it works, you get a familiar effect: **always putting out fires.**
 
 Firefighters, by the way, train between fires. That's the [second thread a team needs](https://alexandrumolea.substack.com/p/your-team-needs-two-threads): not only performing, but innovating on how you perform.
 
@@ -135,7 +134,7 @@ And where the path leads isn't a perfect team. It's an emergent one: more than t
 
 At Wise Teams, this is why we do what we do: to move the knowledge of how a team works into the team itself, and to help it get unblocked at every step, with the right professional for that particular challenge.
 
-💬 Where on this path does your team feel strongest right now, and where is it asking for attention?
+Where on this path does your team feel strongest right now, and where is it asking for attention?
 
 If you'd like to look at the four layers together with your team, we'd be happy to talk.
 
@@ -149,22 +148,18 @@ If you'd like to look at the four layers together with your team, we'd be happy 
 - Articolele lui Alex la care trimite textul: [The 3 Hidden Forces that Shape High Performing Teams](https://alexandrumolea.substack.com/p/the-3-hidden-forces-that-shape-high) (2025-06-10), [Your team needs two threads](https://alexandrumolea.substack.com/p/your-team-needs-two-threads) (2025-07-28).
 - Vocea: `team/sofia/documente/substack-voce-2026-11-20.md`.
 
-## Ce am schimbat față de v4.1 (și nimic altceva)
-- Intro: identic până la „So what does that system look like?”. Propoziția despre straturi („The first one is the one everyone sees. The deeper you go…”) a devenit drumul: „we see it as a path. It starts with the Container, moves through…, and leads toward an emergent team”.
-- Imaginea „A · Drumul” e pusă după intro, în locul placeholder-ului. „Let's walk through them, from the top down.” a devenit „Let's walk it, from where it starts.”
-- Fără „Layer N”: secțiunile au doar numele capabilității. Ordinea lor e cea de pe drum, iar Containerul a trecut de la final la început.
-- Containerul: „Below the four layers sits the Container” a devenit „Every team starts from the Container”. Propoziția 👉 („the ground underneath”) a devenit „it's often the starting point that asks for attention”.
-- Delivery: am adăugat 2 propoziții care explică imaginea (Delivery apare de două ori: aliniere, apoi rezultate constante; între ele, felul în care lucrează echipa). „That's why delivery is not where results are made” leagă de restul, care e neschimbat.
-- Flow, Trust, Anticipation: neschimbate, cu trei tăieturi ca lungimea să rămână ca în v4.1: propoziția mea despre adaptare la allostatic load, „here is the part we rarely say out loud” la Trust și propoziția mea 👉 de la Anticipation („the future has no place in the team's week”). Lista de la Trust se încheie cu „innovation and anticipation suffer”, iar asta duce firesc spre Anticipation.
-- Final: „Results are the layer everyone sees. / The layers underneath are the ones you build.” a devenit „Results are what everyone sees. / How a team works is what you build.” Am adăugat destinația de pe imagine („an emergent one: more than the sum of its parts”). Întrebarea 💬 e acum pe drum. Paragraful Wise Teams și „we'd be happy to talk” au rămas.
-- Nicăieri nu scrie „there is an order” sau „each stage unlocks the next”.
+## Ce am schimbat față de v5
+- Un **Key insight** pe capitol, pe primul rând, în același format peste tot. Patru sunt fraze care existau deja în text și au fost mutate sus (Container, Delivery, Flow, Trust); unul e nou, din ideea lui Alex (Anticipation: „din lipsa capacității de a integra anticiparea, obții efectul de stins mereu incendii”).
+- Ca să nu se repete: la Delivery, fraza din mijloc a devenit „Delivery is the effect of that process”; la Flow, metacogniția a ieșit din corp; la Trust, prima frază a intrat în lista „Without trust, …”; la Anticipation, a ieșit propoziția „you get a familiar effect: always putting out fires” (e acum în insight).
+- Fără emoji: subtitlurile au doar numele capitolului; frazele cu 👉 au devenit key insight (Container) sau text simplu (Delivery, Trust); întrebarea de la final a rămas, ca text simplu.
+- Propoziția de la Anticipation e cea scurtată de Tudor: „Once a team is doing well with its results, it can lift its head and think about the future.”
 
 ## De decis de Alex
 - Titlul („layers” vs. drum, vezi nota de mai sus) și subtitlul.
-- Propoziția „Anticipation comes right after Delivery for a reason.” (din v4.1, cerută de tine) e singurul loc din text care numește o succesiune. Dacă vrei ca ordinea să se vadă doar din imagine și din secțiuni, o putem scurta la „Once a team is doing well with its results, it can lift its head and think about the future.”
 - Invitația de la final mai spune „the four layers”. Dacă schimbi titlul, devine „look at this path together with your team”.
 
 ## Ce am verificat
 - Fără nume de clienți și fără referire la raportul din care vine drumul; fără cifre inventate, fără promisiuni de timp, fără ton de vânzare.
 - Calea imaginii, de la acest fișier: `../../../ioana/documente/schita-4-layers-v3/a-drumul.png` (există).
-- Lungime: ~850 de cuvinte în textul pentru Substack (ținta: 750–800; numărate cu aceeași metodă, v4.1 avea ~855, nu ~790 cum scria în antet).
+- Lungime: ~850 de cuvinte în textul pentru Substack (ținta: 800–850).
+- Fără emoji în tot textul pentru Substack (regula canalelor Wise Teams, 2026-11-25).
