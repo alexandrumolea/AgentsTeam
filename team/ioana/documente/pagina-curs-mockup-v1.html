@@ -1,0 +1,283 @@
+<!doctype html>
+<html lang="ro">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Change Agility · pagina de curs</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Sora:wght@200;300;400&family=Inter+Tight:wght@400;500;600&display=swap">
+<style>
+/* Mock-up v1 · șablonul paginii unui curs livrat, în Latest Workshops (Ioana, 2026-11-25, T-052, D-093).
+   O singură compoziție, refolosită la toate cursurile: eticheta · titlul · subtitlul · promisiunea · planul (ce iei acasă)
+   → Pentru cine e + Ce se schimbă → Cum arată ziua (drumul cu opririle) → Format + Cum îl ceri → ușa spre mini-curs.
+   Fără script (site/pagina-html.mjs îl respinge). Tokenii: content/tema.yml (paleta Sora, D-054/D-057).
+   Textul stă mereu pe sticlă 80 % / 93 % sau pe alb plin, niciodată direct pe gradient.
+   Ce are clasa .mock e doar pentru echipă și nu intră pe site. */
+:root{color-scheme:light;
+  --bg:#F6F4FA; --sticla:rgb(255 255 255/.80); --sticla-citit:rgb(255 255 255/.93); --muchie:rgb(255 255 255/.6);
+  --ink:#14161F; --muted:#474A58; --line:rgb(20 22 31/.12);
+  --cer:#4FA3F0; --cer-d:#8FD3F7; --lavanda:#B7A6EA; --piersica:#F7B79A; --portocaliu:#F28C3B; --punct-inel:#C96A1E;
+  --accent:#2B44B8;
+  --f-titlu:"Sora",ui-sans-serif,system-ui,sans-serif; --f-text:"Inter Tight",ui-sans-serif,system-ui,sans-serif;
+  --r:22px;
+}
+*{box-sizing:border-box}
+body{margin:0;color:var(--ink);font:400 16px/1.6 var(--f-text);
+  background:
+    radial-gradient(45% 55% at 0% 0%,rgb(79 163 240/.32),transparent 70%),
+    radial-gradient(40% 50% at 100% 18%,rgb(183 166 234/.34),transparent 70%),
+    radial-gradient(40% 50% at 0% 100%,rgb(183 166 234/.28),transparent 70%),
+    radial-gradient(40% 50% at 100% 100%,rgb(247 183 154/.30),transparent 70%),
+    var(--bg);
+  padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:0 64px}
+.wrap{max-width:1080px;margin:0 auto}
+h1,h2{font-family:var(--f-titlu);font-weight:300;text-wrap:balance;margin:0}
+h1{font-size:clamp(48px,7.4vw,84px);line-height:1;letter-spacing:-.03em;font-weight:200}
+h2{font-size:clamp(28px,3.2vw,36px);line-height:1.15}
+h3{font:600 18px/1.3 var(--f-text);margin:0}
+p{margin:0}
+ul,ol{margin:0;padding:0;list-style:none}
+a{color:var(--accent)}
+:focus-visible{outline:3px solid var(--accent);outline-offset:3px;border-radius:8px}
+.eyebrow{font:600 12px/1.2 var(--f-text);letter-spacing:.14em;text-transform:uppercase;color:var(--muted)}
+.punct{display:inline-block;width:9px;height:9px;border-radius:50%;background:var(--portocaliu);box-shadow:0 0 0 1px var(--punct-inel);vertical-align:middle;margin-right:8px}
+
+/* sticla: finisaj peste culoare; rezerva plină fără blur sau cu „reduce transparency” */
+.sticla{background:var(--sticla);-webkit-backdrop-filter:blur(18px) saturate(1.4);backdrop-filter:blur(18px) saturate(1.4);
+  border:1px solid var(--muchie);border-radius:var(--r);
+  box-shadow:inset 0 1px 0 rgb(255 255 255/.8),0 14px 34px -20px rgb(43 68 184/.40)}
+.citit{background:var(--sticla-citit)}
+@supports not ((backdrop-filter:blur(1px)) or (-webkit-backdrop-filter:blur(1px))){.sticla{background:#fff}}
+@media (prefers-reduced-transparency:reduce){.sticla{background:#fff;-webkit-backdrop-filter:none;backdrop-filter:none}}
+
+/* butoane: unul singur plin pe ecran */
+.btn{display:inline-flex;align-items:center;gap:10px;min-height:48px;padding:0 22px;border-radius:999px;font:500 16px/1 var(--f-text);text-decoration:none;white-space:nowrap}
+.btn.plin{background:var(--ink);color:#fff}
+.btn.plin::after{content:"→";font-size:18px}
+.btn.gol{color:var(--ink);background:rgb(255 255 255/.7);border:1px solid var(--line)}
+.btn.gol::after{content:"↓";font-size:16px;color:var(--muted)}
+
+/* bara de sus: înapoi în Latest Workshops (capsula Contact și meniul vin din site) */
+.sus{display:flex;justify-content:space-between;align-items:center;gap:12px;padding-top:20px}
+.inapoi{display:inline-flex;align-items:center;gap:8px;min-height:44px;padding:0 16px;font-size:16px;font-weight:500;color:var(--ink);text-decoration:none;border-radius:999px}
+.inapoi::before{content:"←";color:var(--accent)}
+
+/* ========== 1 · primul ecran ========== */
+.hero{padding-block:36px 8px;display:grid;grid-template-columns:minmax(0,1.15fr) minmax(0,1fr);gap:28px;align-items:center}
+.hero .text{display:grid;gap:18px;align-content:start;padding:30px 32px}
+.sub{font:300 clamp(26px,2.7vw,32px)/1.2 var(--f-titlu);text-wrap:balance}
+.prom{font-size:18px;color:var(--muted);max-width:52ch}
+.actiuni{display:flex;flex-wrap:wrap;gap:10px;margin-top:4px}
+
+/* planul de reinventare: ce iei acasă (obiectul paginii) */
+.plan{position:relative;padding:26px 26px 22px;display:grid;gap:16px;transform:rotate(1.2deg)}
+.plan::after{content:"";position:absolute;right:20px;top:22px;width:12px;height:12px;border-radius:50%;background:var(--portocaliu);box-shadow:0 0 0 1.5px var(--punct-inel)}
+.plan .cap{display:grid;gap:4px}
+.plan .cap b{font:300 26px/1.15 var(--f-titlu)}
+.plan .cap span{font-size:16px;color:var(--muted)}.plan .cap span.eyebrow{font-size:12px}
+.rand{display:grid;grid-template-columns:34px 1fr;gap:4px 12px;align-items:start}
+.rand .n{grid-row:span 2;width:34px;height:34px;border-radius:50%;display:grid;place-items:center;font:600 14px/1 var(--f-text);color:var(--accent);background:#fff;border:2px solid var(--cer)}
+.rand b{font-weight:600;font-size:16px;line-height:1.3;padding-top:6px}
+.linii{display:grid;gap:9px;padding-top:6px}
+.linii i{display:block;height:0;border-top:1.5px dotted rgb(20 22 31/.28)}
+.linii i.scris{border-top:2px solid var(--accent);transform-origin:left;width:var(--w,100%)}
+@media (prefers-reduced-motion:no-preference){
+  .linii i.scris{animation:scrie 1.1s cubic-bezier(.3,.7,.2,1) both}
+  .r1 i:nth-child(1){animation-delay:.5s}.r1 i:nth-child(2){animation-delay:.9s}
+  .r2 i:nth-child(1){animation-delay:1.5s}.r3 i:nth-child(1){animation-delay:2.1s}
+}
+@keyframes scrie{from{transform:scaleX(0)}to{transform:scaleX(1)}}
+.plan .jos{font-size:16px;color:var(--muted);border-top:1px solid var(--line);padding-top:12px}
+
+/* ========== 2 · pentru cine + ce se schimbă ========== */
+section{padding-block:40px 4px;display:grid;gap:18px}
+.doua{display:grid;grid-template-columns:minmax(0,.9fr) minmax(0,1.1fr);gap:14px;align-items:stretch}
+.box{padding:24px 26px;display:grid;gap:14px;align-content:start}
+.box p{max-width:60ch}
+.box .nu{color:var(--muted);border-left:3px solid var(--lavanda);padding-left:12px}
+.schimbari{display:grid;gap:12px}
+.schimbari li{display:grid;grid-template-columns:22px 1fr;gap:10px;align-items:start}
+.schimbari li::before{content:"";width:10px;height:10px;margin-top:8px;border-radius:50%;background:#fff;border:2px solid var(--cer)}
+.schimbari li.cheie{background:#fff;border-radius:14px;padding:12px 14px;margin-inline:-14px;box-shadow:0 1px 0 var(--line)}
+.schimbari li.cheie::before{background:var(--portocaliu);border-color:var(--punct-inel)}
+
+/* ========== 3 · cum arată ziua: drumul cu patru opriri ========== */
+.zi{position:relative;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px;padding-top:30px}
+.zi::before{content:"";position:absolute;left:24px;right:24px;top:13px;height:2px;border-radius:2px;
+  background:linear-gradient(90deg,var(--cer),var(--lavanda) 50%,var(--piersica) 80%,var(--portocaliu))}
+.oprire{position:relative;padding:20px 20px 18px;display:grid;gap:10px;align-content:start}
+.oprire::before{content:"";position:absolute;left:20px;top:-24px;width:16px;height:16px;border-radius:50%;background:#fff;border:3px solid var(--cer)}
+.oprire:nth-child(2)::before{border-color:#8E8BD8}.oprire:nth-child(3)::before{border-color:var(--lavanda)}
+.oprire:nth-child(4)::before{background:var(--portocaliu);border-color:var(--punct-inel)}
+.oprire .nr{font:200 34px/1 var(--f-titlu);color:var(--accent);letter-spacing:-.02em}
+.oprire p{font-size:16px;line-height:1.5}
+.in-plan{display:inline-flex;align-items:center;gap:8px;width:fit-content;font-size:14px;font-weight:500;color:var(--accent);background:#fff;border-radius:999px;padding:4px 10px 4px 8px;margin-top:2px}
+.in-plan::before{content:"";width:8px;height:8px;border-radius:50%;background:var(--portocaliu);box-shadow:0 0 0 1px var(--punct-inel)}
+
+/* ========== 4 · format + cum îl ceri ========== */
+.final{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:14px;align-items:stretch}
+.format{padding:24px 26px;display:grid;gap:12px;align-content:start}
+.format ul{display:grid;gap:10px}
+.format li{display:grid;grid-template-columns:22px 1fr;gap:10px}
+.format li::before{content:"";width:10px;height:2px;margin-top:12px;background:var(--accent);border-radius:2px}
+.ceri{padding:28px 28px 26px;display:grid;gap:18px;align-content:center;
+  background:linear-gradient(135deg,rgb(143 211 247/.55),rgb(183 166 234/.55)),var(--sticla-citit)}
+.ceri .btn{justify-self:start}.ceri p{font:300 clamp(22px,2.2vw,26px)/1.3 var(--f-titlu);text-wrap:balance}
+
+/* ========== 5 · ușa: mini-cursul, discret ========== */
+.usa{margin-top:36px;padding:18px 22px;display:grid;grid-template-columns:auto minmax(0,1fr) auto;gap:6px 18px;align-items:center;border-radius:18px}
+.usa .semn{width:44px;height:44px;border-radius:50%;background:#fff;border:1.5px solid var(--lavanda);display:grid;place-items:center;grid-row:span 2}
+.usa .semn i{display:block;width:16px;height:16px;border-radius:50%;border:2px solid var(--accent);position:relative;transform:translateX(-4px)}.nw{white-space:nowrap}
+.usa .semn i::after{content:"";position:absolute;left:8px;top:-2px;width:16px;height:16px;border-radius:50%;border:2px solid var(--portocaliu)}
+.usa .eyebrow{color:var(--accent)}
+.usa b{font:300 19px/1.3 var(--f-titlu);color:var(--ink)}
+.usa .desc{font-size:16px;color:var(--muted);grid-column:2}
+.usa a.link{grid-row:1 / span 2;grid-column:3;display:inline-flex;align-items:center;gap:8px;min-height:44px;padding:0 16px;border-radius:999px;border:1px solid var(--line);background:#fff;color:var(--ink);font-weight:500;text-decoration:none;white-space:nowrap}
+.usa a.link::after{content:"→";color:var(--accent)}
+
+/* notele pentru echipă: nu intră pe site */
+.mock{font-size:14px;color:var(--muted);border:1.5px dashed rgb(71 74 88/.5);border-radius:12px;padding:10px 14px;background:rgb(255 255 255/.7)}
+.mock b{color:var(--ink)}
+.mock-cap{margin-top:16px}
+.mock-mic{display:inline-block;font-size:12px;letter-spacing:.04em;color:var(--muted);border:1px dashed rgb(71 74 88/.5);border-radius:999px;padding:1px 8px;vertical-align:middle;margin-left:6px;font-family:var(--f-text);font-weight:500}
+
+@media (max-width:900px){
+  .hero{grid-template-columns:1fr}
+  .plan{transform:none;max-width:520px}
+  .doua,.final{grid-template-columns:1fr}
+  .zi{grid-template-columns:repeat(2,minmax(0,1fr));padding-top:0}
+  .zi::before{display:none}
+  .oprire::before{display:none}
+}
+@media (max-width:560px){
+  .hero{padding-top:16px;gap:16px}
+  .hero .text{padding:22px 20px;gap:14px}
+  .box,.format,.ceri{padding:20px}
+  .plan{padding:20px}
+  .zi{grid-template-columns:1fr;gap:12px;padding-left:30px}
+  .zi::before{display:block;left:8px;right:auto;top:16px;bottom:16px;width:2px;height:auto;background:linear-gradient(var(--cer),var(--lavanda) 50%,var(--piersica) 80%,var(--portocaliu))}
+  .oprire::before{display:block;left:-30px;top:22px}
+  .usa{grid-template-columns:minmax(0,1fr)}.usa .semn{display:none}.usa .desc{grid-column:1}
+  .usa a.link{grid-row:auto;grid-column:1 / -1;justify-self:start}
+  .actiuni .btn{flex:1 1 auto;justify-content:center}
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<p class="mock mock-cap"><b>Mock-up v1 · șablonul paginii de curs (T-052).</b> Textul e al Mariei (pagina-change-agility-v1, subtitlul A). Chenarele punctate sunt note pentru echipă și nu apar pe site. Același șablon pentru toate cursurile livrate: se schimbă doar textul și rândurile planului.</p>
+
+<div class="sus">
+  <a class="inapoi" href="#">Latest Workshops</a>
+</div>
+
+<main>
+<header class="hero">
+  <div class="text sticla citit">
+    <p class="eyebrow"><span class="punct"></span>Workshop · o zi</p>
+    <h1>Change Agility</h1>
+    <p class="sub">Reinventarea e o abilitate. Și o ai deja.</p>
+    <p class="prom">O zi în care fiecare om descoperă ce l-a ajutat deja în schimbări și pleacă acasă cu planul lui de reinventare.</p>
+    <div class="actiuni">
+      <a class="btn plin" href="#ceri">Cum îl ceri</a>
+      <a class="btn gol" href="#ziua">Cum arată ziua</a>
+    </div>
+  </div>
+
+  <aside class="plan sticla citit" aria-label="Ce iei acasă: planul de reinventare">
+    <div class="cap">
+      <span class="eyebrow">Pleci acasă cu</span>
+      <b>Planul de reinventare</b>
+      <span>Scris de tine, pe parcursul zilei.</span>
+    </div>
+    <div class="rand r1"><span class="n">1</span><b>Resursele tale</b><div class="linii"><i class="scris"></i><i class="scris" style="--w:72%"></i></div></div>
+    <div class="rand r2"><span class="n">2</span><b>Skill-ul pe care vrei să-l crești</b><div class="linii"><i class="scris" style="--w:58%"></i><i></i></div></div>
+    <div class="rand r3"><span class="n">3</span><b>Primul pas din săptămâna care urmează</b><div class="linii"><i class="scris" style="--w:40%"></i><i></i></div></div>
+    <p class="jos">Cu un coleg care te ține de el.</p>
+  </aside>
+</header>
+<p class="mock">Planul e obiectul paginii: arată în 3 secunde ce iei acasă. Cele 3 rânduri sunt cuvintele Mariei din „Ce se schimbă”; eticheta „Pleci acasă cu” și „Scris de tine, pe parcursul zilei” sunt formulări de interfață de confirmat de Maria. La alt curs se schimbă doar rândurile.</p>
+
+<section aria-labelledby="t-cine">
+  <div class="doua">
+    <div class="box sticla citit">
+      <h2 id="t-cine">Pentru cine e</h2>
+      <p>Pentru echipele în care se schimbă multe deodată: structura, rolurile, tehnologia sau felul de lucru.</p>
+      <p>Pentru oamenii obosiți de schimbare, dar și pentru cei care vor să profite de ea.</p>
+      <p class="nu">Nu e un curs despre cum conduci o transformare în organizație. E despre omul care trece prin ea.</p>
+    </div>
+    <div class="box sticla citit">
+      <h2>Ce se schimbă după o zi</h2>
+      <ul class="schimbari">
+        <li><span>Oamenii își văd resursele: ce i-a ajutat deja în alte schimbări. Nu mai pornesc de la zero.</span></li>
+        <li><span>Înțeleg de ce rezistența la schimbare e naturală și când presiunea fără pauză devine uzură.</span></li>
+        <li><span>Văd incertitudinea ca pe un semnal, nu ca pe un defect, și au un mod simplu de a se liniști.</span></li>
+        <li class="cheie"><span>Pleacă cu <strong>planul de reinventare</strong>, scris de ei pe parcursul zilei: resursele lor, skill-ul pe care vor să-l crească și primul pas din săptămâna care urmează, cu un coleg care îi ține de el.</span></li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<section id="ziua" aria-labelledby="t-zi">
+  <h2 id="t-zi">Cum arată ziua</h2>
+  <ol class="zi">
+    <li class="oprire sticla citit">
+      <span class="nr">01</span>
+      <h3>Relația noastră cu schimbarea</h3>
+      <p>Pornim de la o schimbare prin care ai trecut deja. Un coleg te ascultă ca un detectiv și îți spune ce resurse a auzit în povestea ta. Apoi, pe scurt: de ce rezistența e firească.</p>
+      <span class="in-plan">Resursele tale</span>
+    </li>
+    <li class="oprire sticla citit">
+      <span class="nr">02</span>
+      <h3>Incertitudinea</h3>
+      <p>Un moment de liniște, un „nu știu” spus unui coleg și cele trei lucruri care ne ajută: ne liniștim, înțelegem, creștem.</p>
+    </li>
+    <li class="oprire sticla citit">
+      <span class="nr">03</span>
+      <h3>Te liniștești, înțelegi</h3>
+      <p>Desenezi harta unei schimbări de acum: ce ține de tine și ce nu. Apoi privești înainte, spre semnalele din jur și din tine, și îți scrii o scrisoare din viitor. De acolo îți alegi skill-ul pe care vrei să-l crești.</p>
+      <span class="in-plan">Skill-ul ales</span>
+    </li>
+    <li class="oprire sticla citit">
+      <span class="nr">04</span>
+      <h3>Crești</h3>
+      <p>Faci un plan de învățare pentru skill-ul ales, cu o buclă de feedback simplă. Urmează coaching în perechi și o încheiere în trei întrebări.</p>
+      <span class="in-plan">Primul pas</span>
+    </li>
+  </ol>
+  <p class="mock">Drumul are aceleași culori ca pe pagina procesului din Innovations (cer → lavandă → piersică → portocaliu). Capsulele cu punct leagă fiecare oprire de rândul ei din plan: arată că planul se scrie pe parcursul zilei. Fără ore pe blocuri, ca în textul Mariei.</p>
+</section>
+
+<section aria-labelledby="t-format">
+  <div class="final">
+    <div class="format sticla citit">
+      <h2 id="t-format">Format și durată</h2>
+      <ul>
+        <li><span>O zi în sală, 9:30–17:30, cu pauze.</span></li>
+        <li><span>Teoria e scurtă și clară. Cea mai mare parte a zilei lucrăm în perechi, cu momente de liniște și fără lucru în echipe mari.</span></li>
+        <li><span>Fiecare alege cât de personal vrea să fie, iar ce se spune în sală rămâne în sală.</span></li>
+      </ul>
+    </div>
+    <div class="ceri sticla" id="ceri">
+      <h2>Cum îl ceri</h2>
+      <p>Dacă ți se pare potrivit pentru echipa ta, <span class="nw">scrie-mi</span> din Contact și vedem împreună cum arată ziua pentru voi.</p>
+      <a class="btn plin" href="#">Scrie-mi</a>
+    </div>
+  </div>
+  <p class="mock">„Scrie-mi” deschide capsula Contact a site-ului (Mike: <code>popovertarget="contact"</code>, fără script). E singurul buton plin din acest ecran.</p>
+</section>
+
+<aside class="usa sticla" aria-label="Mini-cursul gratuit">
+  <span class="semn" aria-hidden="true"><i></i></span>
+  <p class="eyebrow">Gratuit · acasă, în doi <span class="mock-mic">de confirmat</span></p>
+  <p class="desc"><b>Planul tău de reinventare, în doi</b> <span class="mock-mic">nume de lucru</span><br>Patru pași, cu un partener ales de tine, în aproximativ 2 h 40, într-o săptămână.</p>
+  <a class="link" href="#">Vezi mini-cursul</a>
+</aside>
+<p class="mock">Ușa spre mini-curs (Andrei, varianta A): o bandă subțire, sub workshop, fără buton plin, ca să nu concureze cu „Cum îl ceri”. Numele public și fraza le scrie Maria; „gratuit” și publicarea exercițiilor sunt decizii ale lui Alex (întrebările 2 și 3 din documentul lui Andrei). Semnul: două cercuri care se ating, adică doi oameni.</p>
+</main>
+
+</div>
+</body>
+</html>
