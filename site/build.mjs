@@ -680,7 +680,20 @@ function elementPage(c, e){
   return page({ cheie: c.cheie, title: e.titluTab || e.titlu, description: e.descriere || `${e.titlu}: ${e.fraza}`, path: e.url,
     mainClass: e.cadru === false ? 'proces' : 'proces glass-read',
     extraHead: `<link rel="stylesheet" href="${u(`assets/pagini/${e.slug}.css`)}?v=${createHash('sha256').update(e.css).digest('hex').slice(0, 10)}">`,
-    bodyHtml: whatsappLinks(e.html, e.pagina) });
+    bodyHtml: contactButtons(whatsappLinks(e.html, e.pagina), e.pagina) });
+}
+
+// Butonul de contact dintr-o pagină din repo: <button … popovertarget="contact" data-contact="pe_coaching">…</button>.
+// Textul vine din content/site.yml → contact.<cheie> (aceleași texte ca butoanele din site), ca să nu se scrie de două ori.
+// Fără capsula Contact (niciun canal), butonul nu are ce deschide și nu apare, cu un avertisment.
+function contactButtons(html, where){
+  const texte = site.contact || {};
+  return html.replace(/<button\b([^>]*?)\sdata-contact\s*=\s*"([^"]*)"([^>]*)>([\s\S]*?)<\/button>/gi, (_, a, key, b) => {
+    if (typeof texte[key] !== 'string' || !texte[key].trim()) fail(`${where}: data-contact="${key}" nu e un text din content/site.yml → contact.`);
+    if (!/\spopovertarget\s*=\s*"contact"/i.test(a + b)) fail(`${where}: butonul cu data-contact="${key}" trebuie să aibă popovertarget="contact".`);
+    if (!CONTACT){ warn(`${where}: butonul „${texte[key]}” lipsește, pentru că nu există niciun canal de contact.`); return ''; }
+    return `<button${a}${b}>${esc(texte[key].trim())}</button>`;
+  });
 }
 
 // Butonul WhatsApp dintr-o pagină din repo: <a href="#whatsapp" data-whatsapp="mesajul pregătit">…</a>.

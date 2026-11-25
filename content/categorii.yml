@@ -34,6 +34,13 @@ categorii:
         text: "față în față sau online"
       - eticheta: "Prima conversație"
         text: "gratuită"
+    # Paginile din Coaching, fiecare la coaching/<slug>/ (ca la Latest Workshops). `cadru: false`: pagina își aduce singură sticla.
+    elemente:
+      - titlu: "Pregătește-te pentru prima ta sesiune"
+        fraza: "Răspunsuri la întrebările frecvente și câteva întrebări opționale pentru tine."
+        slug: prima-sesiune
+        pagina: content/coaching/prima-sesiune.html
+        cadru: false
 
   - cheie: companie
     vizibil: false
