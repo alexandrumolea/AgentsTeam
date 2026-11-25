@@ -68,14 +68,15 @@ a{color:var(--accent)}
 .inapoi::before{content:"←";color:var(--accent)}
 
 /* ========== 1 · primul ecran: deschiderea + foaia cu întrebări (obiectul paginii) ========== */
-.hero{padding-block:4px 8px;display:grid;grid-template-columns:minmax(0,1.08fr) minmax(0,1fr);gap:28px;align-items:center}
+.hero{padding-block:4px 8px;display:grid;grid-template-columns:minmax(0,1fr);gap:28px}
+.hero .text{max-width:760px}
 .hero .text{display:grid;gap:18px;align-content:start;padding:30px 32px}
 .nobr{white-space:nowrap}
 .prom{font-size:18px;color:var(--muted);max-width:50ch}
 .prom strong{color:var(--text);font-weight:600}
 .actiuni{display:flex;flex-wrap:wrap;gap:10px;margin-top:4px}
 
-.foaie{position:relative;padding:26px 26px 22px;display:grid;gap:14px;transform:rotate(1.2deg)}
+.foaie{position:relative;padding:26px 26px 22px;display:grid;gap:14px;max-width:760px;transform:rotate(.6deg)}
 .foaie::after{content:"";position:absolute;right:20px;top:22px;width:12px;height:12px;border-radius:50%;background:var(--punct);box-shadow:0 0 0 1.5px var(--punct-inel)}
 .foaie .cap{display:grid;gap:4px;padding-right:24px}
 .foaie .cap b{font:300 26px/1.15 var(--font-titluri)}
@@ -109,6 +110,9 @@ section{padding-block:40px 4px;display:grid;gap:18px}
 .lista summary:hover{background:rgb(255 255 255/.8)}
 .raspuns{display:grid;gap:10px;padding:0 14px 20px 60px;max-width:68ch}
 .raspuns a{font-weight:500}
+.check{display:grid;gap:8px}
+.check li{display:grid;grid-template-columns:24px 1fr;gap:10px;align-items:start}
+.check li::before{content:"✓";width:22px;height:22px;margin-top:1px;border-radius:50%;display:grid;place-items:center;font:600 13px/1 var(--font-text);color:var(--accent);background:#fff;border:1.5px solid var(--cer)}
 @media (prefers-reduced-motion:reduce){.lista summary::after{transition:none}}
 
 /* ========== 3 · hai să vorbim ========== */
@@ -146,49 +150,34 @@ section{padding-block:40px 4px;display:grid;gap:18px}
   <div class="text sticla citit">
     <p class="eyebrow"><span class="punct"></span>Coaching</p>
     <h1><span class="nobr">Pregătește-te</span> pentru prima sesiune</h1>
-    <p class="prom"><strong>Nu ai nimic de pregătit pentru prima sesiune.</strong> Am strâns aici întrebările pe care oamenii mi le pun des înainte să începem, ca drumul tău în coaching să-ți folosească cât mai mult.</p>
+    <p class="prom"><strong>Nu ai nimic de pregătit pentru prima sesiune.</strong> Am strâns aici întrebările pe care oamenii mi le pun des înainte să începem, astfel încât prima ta interacțiune cu coachingul să-ți folosească cât mai mult.</p>
     <div class="actiuni">
       <a class="btn plin" href="#vorbim">Hai să vorbim</a>
       <a class="btn gol" href="#intrebari-frecvente">Întrebările frecvente</a>
     </div>
   </div>
 
-  <aside class="foaie sticla citit" id="pentru-tine" aria-labelledby="t-foaie">
-    <div class="cap">
-      <span class="eyebrow">Doar dacă vrei</span>
-      <b id="t-foaie">Câteva întrebări pentru tine</b>
-      <span>Te poți gândi la obiectivele tale, la ce te preocupă acum sau la o transformare pe care ți-ai dori-o.</span>
-    </div>
-    <ol>
-      <li><span>Există un obiectiv de dezvoltare, personal sau profesional, pe care te concentrezi acum?</span><i></i></li>
-      <li><span>Care sunt cele mai mari provocări din rolul tău în momentul ăsta?</span><i></i></li>
-      <li><span>Ce schimbare ți-ar plăcea să vezi la tine în următoarele 6 luni?</span><i></i></li>
-      <li><span>Dacă ai avea un spațiu doar al tău, în care să reflectezi și să găsești soluții, la ce ai lucra mai întâi?</span><i></i></li>
-      <li><span>Unde ți-ar prinde cel mai bine sprijinul: la performanță, în relații sau în leadership?</span><i></i></li>
-    </ol>
-    <p class="jos">Vino așa cum ești.</p>
-  </aside>
 </header>
 
 <section id="intrebari-frecvente" aria-labelledby="t-faq">
   <div class="faq">
     <div class="faq-cap sticla citit">
       <h2 id="t-faq">Întrebări frecvente</h2>
-      <p>Ce mă întreabă oamenii înainte să începem. Deschide doar ce te interesează.</p>
+      <p>Ce mă întreabă oamenii înainte să începem.</p>
     </div>
     <div class="lista sticla citit">
       <details open>
         <summary>La ce folosește coachingul?</summary>
         <div class="raspuns">
-          <p>Coachingul te ajută să înaintezi spre lucrurile care contează pentru tine.</p>
-          <p>Toți creștem prin viață și pe cont propriu. Coachingul face drumul acesta mai lin și mai ales cu intenție.</p>
+          <p>Coachingul te ajută să înaintezi mai eficient spre lucrurile care contează pentru tine.</p>
+          <p>Toți evoluăm în viață pe cont propriu. Coachingul face drumul acesta mai lin, mai rapid, mai concentrat.</p>
           <p>Când ai un partener care îți privește situația din afară, apar perspective noi și gândești mai în profunzime. Și apare un avânt pe care singur îl găsești mai greu.</p>
         </div>
       </details>
       <details>
         <summary>Am nevoie de un obiectiv pentru prima întâlnire?</summary>
         <div class="raspuns">
-          <p>Deloc. Mulți oameni vin la coaching tocmai ca să capete mai multă claritate. De multe ori, primul lucru pe care îl facem împreună e să vedem ce îți dorești de fapt.</p>
+          <p>Deloc. Mulți oameni vin la coaching tocmai pentru a căpăta mai multă claritate. De multe ori, primul lucru pe care îl facem împreună e să vedem ce îți dorești de fapt.</p>
           <p>O intenție e binevenită, dar nu e obligatorie. Descoperim pe drum ce are cel mai mult sens pentru tine.</p>
         </div>
       </details>
@@ -196,21 +185,31 @@ section{padding-block:40px 4px;display:grid;gap:18px}
         <summary>Cum mă pregătesc pentru o sesiune?</summary>
         <div class="raspuns">
           <p>Nu e nevoie să pregătești ceva anume. Vino așa cum ești.</p>
-          <p>Dacă ai ceva pe minte, o provocare, o decizie, ceva ce simți, e deja un punct de plecare foarte bun. Te ajut să găsești temele cele mai vii și mai importante pentru tine acum.</p>
+          <p>Dacă ai ceva în minte, o provocare, o decizie, ceva ce simți, e deja un punct de plecare foarte bun. Te ajut să găsești temele cele mai vii și mai importante pentru tine acum.</p>
         </div>
       </details>
       <details>
         <summary>Și dacă vreau totuși să mă pregătesc?</summary>
         <div class="raspuns">
           <p>Te poți gândi la obiectivele tale, la ce te preocupă acum sau la o transformare pe care ți-ai dori-o.</p>
-          <p><a href="#pentru-tine">Câteva întrebări care te pot ajuta sunt pe foaia de sus.</a></p>
+          <p><a href="#pentru-tine">Câteva întrebări care te pot ajuta sunt mai jos, după întrebările frecvente.</a></p>
         </div>
       </details>
       <details>
         <summary>Cu ce vin oamenii de obicei?</summary>
         <div class="raspuns">
-          <p>Temele sunt la fel de diferite ca oamenii: să capete claritate, să conducă cu mai multă încredere, să-și pună limite mai sănătoase, să-și construiască obiceiuri mai bune, să treacă printr-o schimbare sau printr-o decizie grea.</p>
-          <p>Orice ai pe minte e un început bun. Împreună găsim firul de care merită cel mai mult să tragem.</p>
+          <p>Temele sunt la fel de diferite ca oamenii. Unii vin:</p>
+          <ul class="check">
+            <li>pentru a căpăta claritate</li>
+            <li>pentru a conduce cu mai multă încredere</li>
+            <li>pentru a-și pune limite mai sănătoase</li>
+            <li>pentru a-și construi obiceiuri mai bune</li>
+            <li>pentru a trece printr-o schimbare sau printr-o decizie grea</li>
+            <li>pentru a deveni mai buni la a interacționa cu ceilalți</li>
+            <li>pentru a avea timp de gândire pus deoparte pentru ei</li>
+            <li>pentru a avea un spațiu de accountability și creștere continuă</li>
+          </ul>
+          <p>Orice ai în minte e un început bun. Împreună găsim pedala pe care merită pentru tine să accelerăm.</p>
         </div>
       </details>
       <details>
@@ -246,11 +245,28 @@ section{padding-block:40px 4px;display:grid;gap:18px}
   </div>
 </section>
 
+<section aria-labelledby="t-foaie">
+  <aside class="foaie sticla citit" id="pentru-tine" aria-labelledby="t-foaie">
+    <div class="cap">
+      <span class="eyebrow">Opțional</span>
+      <b id="t-foaie">Câteva întrebări pentru tine</b>
+      <span>Dacă vrei să scoți mai mult din prima ta sesiune, te poți pregăti cu întrebările de mai jos.</span>
+    </div>
+    <ol>
+      <li><span>Există un obiectiv de dezvoltare, personal sau profesional, pe care te concentrezi acum?</span><i></i></li>
+      <li><span>Care sunt cele mai mari provocări din rolul tău în momentul ăsta?</span><i></i></li>
+      <li><span>Ce schimbare ți-ar plăcea să vezi la tine în următoarele 6 luni?</span><i></i></li>
+      <li><span>Dacă ai avea un spațiu doar al tău, în care să reflectezi și să găsești soluții, la ce ai lucra mai întâi?</span><i></i></li>
+      <li><span>Unde ți-ar prinde cel mai bine sprijinul: la performanță, în relații sau în leadership?</span><i></i></li>
+    </ol>
+    <p class="jos">Vino așa cum ești.</p>
+  </aside>
+</section>
+
 <section aria-labelledby="t-vorbim">
   <div class="ceri sticla" id="vorbim">
     <div class="t">
-      <h2 id="t-vorbim">Hai să vorbim</h2>
-      <p>Prima conversație e gratuită. Dacă vrei să începem, sau ai o întrebare care nu e aici, scrie-mi.</p>
+      <h2 id="t-vorbim">Mai ai întrebări? Scrie-mi.</h2>
     </div>
     <button class="btn plin" type="button" popovertarget="contact">Scrie-mi pentru prima conversație</button>
   </div>

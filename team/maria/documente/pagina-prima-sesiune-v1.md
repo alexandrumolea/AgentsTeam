@@ -112,3 +112,7 @@ Prima sesiune de coaching cu Alex: nu ai nevoie de un obiectiv și nici de preg�
 2. „Prima sesiune” e același lucru cu prima conversație gratuită, sau e prima sesiune plătită, după ea? De asta depinde rândul de final: acum invită la prima conversație gratuită.
 3. Păstrăm „mai rapid” în prima întrebare sau rămâne fără (nota 3)?
 4. Durata: „trei până la șase sesiuni” rămâne așa?
+
+
+## 2026-11-25: feedbackul lui Alex (aplicat de Tudor în mock-up)
+Textul final e în `team/ioana/documente/pagina-prima-sesiune-mockup-v1.html`. Alex: întrebările de pregătire merg după întrebările frecvente, cu „Opțional. Dacă vrei să scoți mai mult din prima ta sesiune, te poți pregăti cu întrebările de mai jos.”; fără „Deschide doar ce te interesează”; „astfel încât prima ta interacțiune cu coachingul să-ți folosească cât mai mult”; finalul „Mai ai întrebări? Scrie-mi.”; prima întrebare: „mai eficient”, „Toți evoluăm în viață pe cont propriu. Coachingul face drumul acesta mai lin, mai rapid, mai concentrat.”; „pentru a căpăta”, „în minte”; „Cu ce vin oamenii” ca checklist, cu trei teme noi (interacțiunea cu ceilalți, timp de gândire pus deoparte, spațiu de accountability și creștere continuă) și „Împreună găsim pedala pe care merită pentru tine să accelerăm.”
