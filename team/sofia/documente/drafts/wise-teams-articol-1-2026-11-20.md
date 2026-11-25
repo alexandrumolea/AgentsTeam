@@ -83,7 +83,7 @@ The feedback comes late. But it comes.
 
 ### Flow
 
-**Key insight:** Process is to a team what metacognition is to thinking: the way a team works on how it works.
+**Key insight:** A process nobody talks about anymore stops serving the team and starts blocking it.
 
 Here, the risk is to build processes and procedures that don't serve us.
 
@@ -95,7 +95,9 @@ So instead of unblocking coordination, they block it.
 
 Most teams don't design their coordination. They don't look at how well the ball is passed from one person to the next.
 
-Doing that means stepping onto the sidelines from time to time and asking: *what needs to improve, so things can move forward?*
+Process is to a team what metacognition is to thinking: the way a team works on how it works.
+
+In an organization, that means stepping onto the sidelines from time to time and asking: *what needs to improve, so things can move forward?*
 
 ### Trust
 
