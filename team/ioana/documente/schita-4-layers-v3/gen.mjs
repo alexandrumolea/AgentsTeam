@@ -138,7 +138,7 @@ function destLabel(x, y, { anchor = 'start', max = 760 } = {}) {
 function A() {
   const S = [[420, 1800], [300, 1520], [420, 1240], [300, 960]], D = [400, 680], LX = 580;
   const cTop = 2000;
-  let b = header('There is an order. Each stage makes the next possible.');
+  let b = header('');
   b += road(smooth([[420, cTop + 10], ...S, D]));
   b += destination(D[0], D[1]);
   b += destLabel(LX, D[1], { max: W - PAD - LX });
@@ -148,13 +148,13 @@ function A() {
   });
   const cb = containerBlock(PAD - 32, cTop, W - 2 * PAD + 64);
   b += cb.svg;
-  return svg(cTop + cb.h + 96, b, 'Wise Teams. The order of how a team works, as a path: from the Container, 1 Aligned (Delivery), 2 Moving efficiently (Flow and Trust), 3 Delivering consistently (Delivery), 4 Building the future (Anticipation), to an emergent team.');
+  return svg(cTop + cb.h + 96, b, 'Wise Teams. How a team works, as a path: from the Container, 1 Aligned (Delivery), 2 Moving efficiently (Flow and Trust), 3 Delivering consistently (Delivery), 4 Building the future (Anticipation), to an emergent team.');
 }
 
 // ── B · Treptele: fiecare treaptă se sprijină pe cea de dinainte ────────────
 function B() {
   const stepH = 220, off = 200, ground = 1740, R = W - PAD;
-  let b = header('Each step rests on the one before.');
+  let b = header('');
   const tops = [];
   T.stages.forEach((st, i) => {
     const x = PAD + i * off, top = ground - (i + 1) * stepH, w = R - x;
@@ -183,7 +183,7 @@ function B() {
   b += destLabel(D[0] - 200, D[1] - 50, { anchor: 'end', max: 900 });
   const cb = containerBlock(PAD - 32, ground + 24, W - 2 * PAD + 64);
   b += cb.svg;
-  return svg(ground + 24 + cb.h + 96, b, 'Wise Teams. The order as stairs, each step resting on the one before: on the Container, step 1 Aligned (Delivery), step 2 Moving efficiently (Flow and Trust), step 3 Delivering consistently (Delivery), step 4 Building the future (Anticipation), up to an emergent team.');
+  return svg(ground + 24 + cb.h + 96, b, 'Wise Teams. How a team works, as stairs: on the Container, step 1 Aligned (Delivery), step 2 Moving efficiently (Flow and Trust), step 3 Delivering consistently (Delivery), step 4 Building the future (Anticipation), up to an emergent team.');
 }
 
 // ── C · Harta: axele metodologiei (Prezent → Viitor, Sarcină ↔ Relație) ─────
