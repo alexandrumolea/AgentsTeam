@@ -1,6 +1,7 @@
-# Postare LinkedIn: workshop Wise Teams pentru manageri de manageri (v2)
+# Postare LinkedIn: workshop Wise Teams pentru manageri de manageri (v3)
 
 > Draft Sofia, 2026-11-25. **Nepublicat. Așteaptă aprobarea lui Alex.**
+> v3 (Tudor, 2026-11-25), cererea lui Alex: „Aș vrea să sune mai exclusivist. Am dezvoltat o metodologie și suntem gata să o împărtășim cu 10 lideri. Noi îți oferim insight-urile noastre din ultimii zece ani de lucru cu echipe, tu ne ajuți să ne conectăm cu realitatea voastră. și tonul e mai cald, mai personal.” Am scos „gratuit” și întrebarea de final („dacă nu ajungi…”), care nu se potriveau cu tonul exclusivist. v2: `arhiva/linkedin-workshop-wise-2026-11-25-v2.md`.
 > v2: Alex a precizat azi publicul și scopul: „un workshop pentru un număr de 10 persoane care chiar își doresc să se asigure că dezvoltă echipe autonome și sunt manageri de manageri. Unde noi le împărtășim insight-urile noastre și ei ne spun despre echipele lor pentru a ne ajuta să mapăm nevoile reale pe care le au echipele în acest moment.” Postarea li se adresează direct lor și pornește dintr-o problemă pe care o trăiesc. Nu intră în model și nu are link spre articol (întâi articolul, apoi LinkedIn). O singură variantă de corp, RO principală, EN traducere.
 > v1 (2 variante, pentru „manageri” în general, legate de cele 4 niveluri): `arhiva/linkedin-workshop-wise-2026-11-25-v1.md`.
 
@@ -32,26 +33,27 @@ Alex a ales hook-ul 3, limba română și tag-ul Andreei (2026-11-25; [TAG ANDRE
 
 ---
 
-## Postarea (RO, ~150 de cuvinte)
+## Postarea (RO, ~130 de cuvinte)
 
 Ai construit o echipă de lideri.
 Și totuși, deciziile tot la tine ajung.
 
-La Wise Teams, cu Andreea [TAG ANDREEA], ne uităm la ce le ajută pe echipe să devină autonome. Avem câteva insight-uri. Și ne lipsește ceva ce nu putem afla singuri: cum arată echipele acum, din interior.
+Am întâlnit momentul ăsta în multe echipe cu care am lucrat. Și știu cât de singur te poate face să te simți.
 
-Așa că facem un workshop gratuit, pentru 10 manageri de manageri: directori, lideri de echipe noi, antreprenori. E pentru cei care chiar își doresc echipe autonome.
+Împreună cu Andreea [TAG ANDREEA], am dezvoltat la Wise Teams o metodologie despre felul în care o echipă ajunge să meargă singură.
 
-Noi împărtășim ce am înțeles până acum.
-Tu ne spui despre echipa ta.
-Împreună, mapăm nevoile reale pe care le au echipele în acest moment.
+Acum suntem gata să o împărtășim. Cu 10 lideri.
+
+Noi îți oferim insight-urile noastre din ultimii zece ani de lucru cu echipe.
+Tu ne ajuți să ne conectăm cu realitatea echipei tale.
+
+E pentru manageri de manageri care chiar își doresc echipe autonome.
 
 Când: [DATA], [ORA]
 Unde: [ONLINE/LOCUL]
 Înscriere: [CUM TE ÎNSCRII]
 
-Dacă te regăsești aici, ne-ar bucura să fii unul dintre cei 10.
-
-Și dacă nu ajungi: ce trece astăzi prin tine și ți-ai dori să nu mai treacă?
+Dacă te regăsești aici, mi-ar plăcea să fii unul dintre cei 10.
 
 ---
 
