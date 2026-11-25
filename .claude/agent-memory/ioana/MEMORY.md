@@ -88,3 +88,4 @@ Păstrează sub 150 de rânduri. Comprimă când crește. Fapte, nu povești.
 - 2026-11-25: Materialele clienților (rapoarte Wise Teams etc.) le citesc doar ca imagine, din scratchpad, apoi șterg randările; nici numele clientului, nici datele nu intră în repo sau memorie. Verificarea suprapunerilor: cutia textului din font-size (y−0,74·fs … +0,22·fs), nu getBBox (Avenir dă cutii prea înalte).
 - 2026-11-25: Capcană CSS: `.fraza .f` (0,2,0) bate `button.f{all:unset;padding}` (0,1,1); la `all:unset` verifică specificitatea regulilor vechi.
 - 2026-11-25: ALEX pe schița 4 Layers v3: fără mesajul „there is an order” și fără „each stage unlocks/makes the next possible” (nici „each step rests on the one before”). Ordinea se vede din imagine, nu se spune în text.
+- 2026-11-25: Alex a ales A · Drumul (schita-4-layers-v3/a-drumul.png) pentru articolul „The 4 Layers”. B și C sunt în arhivă.
