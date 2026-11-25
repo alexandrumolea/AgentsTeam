@@ -46,6 +46,7 @@ description: Profilul, personalitatea și vocea publică a lui Alex. Folosește-
 - Limba: română implicit. 2026-11-20: **Substack-ul și profilul LinkedIn sunt în engleză** (vezi „Vocea de pe Substack” mai jos). Limba postărilor LinkedIn: de confirmat.
 - Ton: direct, cald, practic (ipoteză, de confirmat).
 - 2026-11-18: **Limbaj permisiv și suportiv, mereu** (Alex: „Aș vrea ca mereu limbajul nostru să fie mai degrabă permisiv și suportiv.”). Nu asertiv, nu insistent, fără imperative de vânzare și fără presiune pe termene. Invităm („Dacă vi se potrivește…”, „Mă bucur să ajustăm…”, „Spuneți-mi ce ar fi de schimbat”), nu cerem. Se aplică la emailuri, oferte, postări și texte de pe site.
+- 2026-11-25: **Fără promisiuni de timp despre schimbarea oamenilor.** Nu scriem niciodată „primul pas din săptămâna următoare”, „din ziua următoare”, „ce aplici luni” sau „de mâine faci X” (Alex: „exagerezi… Nu aș vrea să ne exprimăm niciodată așa. Pentru că sună cocky și overpromising.”). Spunem ce primește omul („primii tăi pași”, „ce vrei să încerci”), nu când se schimbă. Se aplică la pagini de curs, oferte, postări, fișe și slide-uri.
 - Persoana: „eu” și „tu”, nu „noi, compania”.
 - Lungime: propoziții scurte. O idee pe paragraf.
 - Cuvinte pe care le folosește des: 2026-11-20, din Substack (engleză): *system*, *living system*, *patterns*, *invisible / hidden*, *red thread*, *ownership*, *trust*, *flow*, *pass the ball*, *alignment*, *clarity*, *mirror*, *journey*, *by design or by default*. În română: de colectat.

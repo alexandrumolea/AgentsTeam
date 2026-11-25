@@ -29,7 +29,7 @@ Nu e un curs despre cum conduci o transformare în organizație. E despre omul c
 - Oamenii își văd resursele: ce i-a ajutat deja în alte schimbări. Nu mai pornesc de la zero.
 - Înțeleg de ce rezistența la schimbare e naturală și când presiunea fără pauză devine uzură.
 - Văd incertitudinea ca pe un semnal, nu ca pe un defect, și au un mod simplu de a se liniști.
-- Pleacă cu **planul de reinventare**, scris de ei pe parcursul zilei: resursele lor, skill-ul pe care vor să-l crească și primul pas din săptămâna care urmează, cu un coleg care îi ține de el.
+- Pleacă cu **planul de reinventare**, scris de ei pe parcursul zilei: resursele lor, skill-ul pe care vor să-l crească și primii pași pe care vor să-i facă, alături de un coleg.
 
 ### Cum arată ziua
 1. **Relația noastră cu schimbarea.** Pornim de la o schimbare prin care ai trecut deja. Un coleg te ascultă ca un detectiv și îți spune ce resurse a auzit în povestea ta. Apoi, pe scurt: de ce rezistența e firească.
