@@ -10,7 +10,7 @@
 - **Pentru cine:** lideri de echipă și manageri care vor să-și vadă echipa ca sistem, nu ca sumă de oameni.
 - **Presupunerea pe care o contrazicem:** „când rezultatele nu vin, e o problemă de oameni, iar soluția e mai multă presiune”.
 - **Cum continuă seria lui:** *The 3 Hidden Forces* (în introducere), *Your team needs two threads* (la Anticipation, o singură propoziție).
-- **Ordinea nivelurilor:** Delivery → Anticipation → Flow → Trust, cum a dat-o Alex, de la ce se vede la ce ține totul.
+- **Ordinea nivelurilor:** Delivery → Anticipation → Flow → Trust, cum a dat-o Alex, de la ce se vede la ce ține totul. De ce Anticipation e chiar sub Delivery (Alex, 2026-11-25): „după delivery vine asta, după ce stai bine cu rezultatele, te poți gândi și la viitor.” Textul o spune la începutul nivelului 2.
 
 ## Variante de titlu
 1. **The 4 Layers of How a Team Works**
@@ -70,7 +70,9 @@ The pressure doesn't disappear either. It turns into what's called **allostatic 
 
 ### 📌 Layer 2: Anticipation
 
-Many teams get stuck running the same solutions on problems that don't get solved.
+Anticipation sits right below Delivery for a reason. Once a team is doing well with its results, it can lift its head and think about the future.
+
+Many teams never get there. They get stuck running the same solutions on problems that don't get solved.
 
 They live more with the feeling of being behind than with the feeling of experimenting, playing, and being in rhythm with the market.
 
