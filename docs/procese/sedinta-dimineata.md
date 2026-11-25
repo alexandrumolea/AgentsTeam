@@ -8,7 +8,7 @@
 | **Când** | luni–vineri, 7:30 ora României. Echipa se pregătește singură; Alex intră când ajunge la calculator (10–15 min) |
 | **Unde** | un task programat în aplicația Claude, care deschide o sesiune nouă „Ședința de dimineață · data”. Merge doar cu aplicația deschisă și Mac-ul treaz |
 | **Owner** | Tudor (backup Elena) |
-| **Ce citește** | Gmail (ultimele 24 h, plus firele care așteaptă răspuns), Google Calendar (azi și mâine), Trello „Planning”, `docs/taskuri.md`, `docs/decizii.md`, `docs/intrebari-pentru-alex.md`, follow-up-urile Anei (evidența privată), ritmurile din `docs/ritmuri.md` |
+| **Ce citește** | Gmail (ultimele 24 h, plus firele care așteaptă răspuns), Google Calendar (azi și mâine), Trello „Planning”, board-urile Wise („WISE”, „Wise Pipeline”, „WISE TEAM”) și „Health” (doar citire; sănătatea rămâne doar în agenda din sesiune, Alex, 2026-11-25), `docs/taskuri.md`, `docs/decizii.md`, `docs/intrebari-pentru-alex.md`, follow-up-urile Anei (evidența privată), ritmurile din `docs/ritmuri.md` |
 | **Ce poate face singur** | citește, pregătește drafturi (ciorne în Gmail, texte, fișiere), mută carduri în Trello, notează în repo |
 | **Ce nu face niciodată** | nu trimite emailuri sau mesaje, nu publică, nu acceptă invitații, nu răspunde în numele lui Alex. Tot ce pleacă în lume pleacă după „da” în chat |
 
