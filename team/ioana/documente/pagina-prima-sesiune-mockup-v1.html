@@ -1,0 +1,261 @@
+<!doctype html>
+<html lang="ro">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Prima sesiune · Alex</title>
+<meta name="description" content="Prima sesiune de coaching cu Alex: nu ai nevoie de un obiectiv și nici de pregătire. Răspunsuri la întrebările frecvente și câteva întrebări pentru tine.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Sora:wght@200;300;400&family=Inter+Tight:wght@400;500;600&display=swap">
+<style>
+/* Mock-up v1 · „Pregătește-te pentru prima sesiune” (Coaching), Ioana, 2026-11-25.
+   Familia paginii Change Agility (content/workshops/change-agility.html): aceleași clase (sticla, citit, btn, hero, ceri),
+   același obiect al paginii în primul ecran (acolo planul de reinventare, aici foaia cu întrebările de pregătire).
+   Textul: Maria, team/maria/documente/pagina-prima-sesiune-v1.md (titlul A, variantele recomandate).
+   Fără script: răspunsurile se deschid cu <details>. Butonul final = butonul de contact al site-ului (popovertarget="contact"),
+   cu textul din content/site.yml → contact.pe_coaching. Pe site: /coaching/prima-sesiune/ (structura e a lui Radu).
+   Textul stă mereu pe sticlă 80 % / 93 % sau pe alb plin, niciodată direct pe gradient. */
+
+/* --- DOAR MOCK-UP: pe site, tokenii vin din tema (content/tema.yml); blocul ăsta și body-ul cu gradient nu intră --- */
+:root{color-scheme:light;
+  --text:#14161F; --muted:#474A58; --accent:#2B44B8; --line:rgb(20 22 31/.12); --text-rgb:20 22 31; --umbra-rgb:43 68 184;
+  --glass:rgb(255 255 255/.80); --glass-read:rgb(255 255 255/.93); --glass-edge:rgb(255 255 255/.6); --surface:#fff;
+  --buton:#14161F; --pe-buton:#fff; --punct:#F28C3B; --punct-inel:#C96A1E;
+  --cer:#4FA3F0; --cer-deschis:#8FD3F7; --lavanda:#B7A6EA; --piersica:#F7B79A; --portocaliu:#F28C3B;
+  --font-titluri:"Sora",ui-sans-serif,system-ui,sans-serif; --font-text:"Inter Tight",ui-sans-serif,system-ui,sans-serif;
+}
+html{background:#F6F4FA}
+html body{margin:0;min-height:100vh;
+  background:
+    radial-gradient(45% 55% at 0% 0%,rgb(79 163 240/.32),transparent 70%),
+    radial-gradient(40% 50% at 100% 18%,rgb(183 166 234/.34),transparent 70%),
+    radial-gradient(40% 50% at 0% 100%,rgb(247 183 154/.30),transparent 70%),
+    radial-gradient(40% 50% at 100% 100%,rgb(242 140 59/.20),transparent 70%),#F6F4FA;
+  background-attachment:fixed;padding:0 max(16px,env(safe-area-inset-left,0px)) 64px}
+.mock-pagina{max-width:1080px;margin:0 auto}
+.mock-nav{display:flex;justify-content:space-between;align-items:center;padding:18px 0 22px;font:500 15px/1 var(--font-text);color:var(--muted)}
+.mock-nav b{font:300 22px/1 var(--font-titluri);color:var(--text)}
+.mock-nav span{border:1.5px dashed var(--muted);border-radius:999px;padding:8px 12px}
+/* --- sfârșitul blocului DOAR MOCK-UP --- */
+
+:root{--r:22px;--umbra-sticla:0 14px 34px -20px rgb(var(--umbra-rgb)/.40)}
+body{color:var(--text);font:400 16px/1.6 var(--font-text)}
+*{box-sizing:border-box}
+[id]{scroll-margin-top:96px}
+h1,h2{font-family:var(--font-titluri);font-weight:300;text-wrap:balance;margin:0}
+h1{font-size:clamp(38px,4.6vw,66px);line-height:1.02;letter-spacing:-.03em;font-weight:200}
+h2{font-size:clamp(28px,3.2vw,36px);line-height:1.15}
+p{margin:0}
+ul,ol{margin:0;padding:0;list-style:none}
+a{color:var(--accent)}
+:focus-visible{outline:3px solid var(--accent);outline-offset:3px;border-radius:8px}
+.eyebrow{font:600 12px/1.2 var(--font-text);letter-spacing:.14em;text-transform:uppercase;color:var(--muted)}
+.punct{display:inline-block;width:9px;height:9px;border-radius:50%;background:var(--punct);box-shadow:0 0 0 1px var(--punct-inel);vertical-align:middle;margin-right:8px}
+
+.sticla{background:var(--glass);-webkit-backdrop-filter:blur(18px) saturate(1.4);backdrop-filter:blur(18px) saturate(1.4);
+  border:1px solid var(--glass-edge);border-radius:var(--r);box-shadow:inset 0 1px 0 rgb(255 255 255/.8),var(--umbra-sticla)}
+.citit{background:var(--glass-read)}
+@supports not ((backdrop-filter:blur(1px)) or (-webkit-backdrop-filter:blur(1px))){.sticla{background:var(--surface)}}
+@media (prefers-reduced-transparency:reduce){.sticla{background:var(--surface);-webkit-backdrop-filter:none;backdrop-filter:none}}
+
+.btn{display:inline-flex;align-items:center;gap:10px;min-height:48px;padding:0 22px;border-radius:999px;font:500 16px/1 var(--font-text);text-decoration:none;white-space:nowrap;border:0;cursor:pointer}
+.btn.plin{background:var(--buton);color:var(--pe-buton)}
+.btn.plin::after{content:"→";font-size:18px}
+.btn.gol{color:var(--text);background:rgb(255 255 255/.7);border:1px solid var(--line)}
+.btn.gol::after{content:"↓";font-size:16px;color:var(--muted)}
+.inapoi{display:inline-flex;align-items:center;gap:8px;min-height:44px;font:500 16px/1 var(--font-text);color:var(--muted);text-decoration:none;width:fit-content}
+.inapoi::before{content:"←";color:var(--accent)}
+
+/* ========== 1 · primul ecran: deschiderea + foaia cu întrebări (obiectul paginii) ========== */
+.hero{padding-block:4px 8px;display:grid;grid-template-columns:minmax(0,1.08fr) minmax(0,1fr);gap:28px;align-items:center}
+.hero .text{display:grid;gap:18px;align-content:start;padding:30px 32px}
+.nobr{white-space:nowrap}
+.prom{font-size:18px;color:var(--muted);max-width:50ch}
+.prom strong{color:var(--text);font-weight:600}
+.actiuni{display:flex;flex-wrap:wrap;gap:10px;margin-top:4px}
+
+.foaie{position:relative;padding:26px 26px 22px;display:grid;gap:14px;transform:rotate(1.2deg)}
+.foaie::after{content:"";position:absolute;right:20px;top:22px;width:12px;height:12px;border-radius:50%;background:var(--punct);box-shadow:0 0 0 1.5px var(--punct-inel)}
+.foaie .cap{display:grid;gap:4px;padding-right:24px}
+.foaie .cap b{font:300 26px/1.15 var(--font-titluri)}
+.foaie .cap span{font-size:16px;color:var(--muted)}
+.foaie .cap span.eyebrow{font-size:12px}
+.foaie ol{display:grid;gap:12px;counter-reset:q}
+.foaie li{display:grid;grid-template-columns:30px 1fr;gap:6px 12px;align-items:start}
+.foaie li::before{counter-increment:q;content:counter(q);grid-row:span 2;width:30px;height:30px;border-radius:50%;display:grid;place-items:center;
+  font:600 14px/1 var(--font-text);color:var(--accent);background:#fff;border:2px solid var(--cer)}
+.foaie li span{font-size:16px;line-height:1.4;padding-top:4px}
+.foaie li i{display:block;height:0;border-top:1.5px dotted rgb(var(--text-rgb)/.28);margin-top:2px}
+.foaie .jos{font-size:16px;color:var(--muted);border-top:1px solid var(--line);padding-top:12px}
+
+/* ========== 2 · întrebările frecvente, deschise la cerere ========== */
+section{padding-block:40px 4px;display:grid;gap:18px}
+.faq{display:grid;grid-template-columns:minmax(0,.62fr) minmax(0,1.38fr);gap:14px;align-items:start}
+.faq-cap{padding:24px 26px;display:grid;gap:12px;position:sticky;top:24px}
+.faq-cap p{color:var(--muted)}
+.lista{padding:8px 10px;display:grid;counter-reset:f}
+.lista details{border-bottom:1px solid var(--line)}
+.lista details:last-child{border-bottom:0}
+.lista summary{list-style:none;cursor:pointer;display:grid;grid-template-columns:34px 1fr 32px;gap:12px;align-items:center;min-height:60px;padding:12px 14px;border-radius:14px;
+  font:600 18px/1.3 var(--font-text)}
+.lista summary::-webkit-details-marker{display:none}
+.lista summary::before{counter-increment:f;content:"0" counter(f);font:500 14px/1 var(--font-text);color:var(--muted);letter-spacing:.04em}
+.lista summary::after{content:"";width:32px;height:32px;border-radius:50%;background:#fff;box-shadow:0 0 0 1px var(--line) inset;
+  background-image:linear-gradient(var(--accent),var(--accent)),linear-gradient(var(--accent),var(--accent));
+  background-size:12px 2px,2px 12px;background-position:center;background-repeat:no-repeat;transition:transform .2s ease}
+.lista details[open] summary::after{transform:rotate(45deg);background-color:var(--accent);
+  background-image:linear-gradient(#fff,#fff),linear-gradient(#fff,#fff)}
+.lista summary:hover{background:rgb(255 255 255/.8)}
+.raspuns{display:grid;gap:10px;padding:0 14px 20px 60px;max-width:68ch}
+.raspuns a{font-weight:500}
+@media (prefers-reduced-motion:reduce){.lista summary::after{transition:none}}
+
+/* ========== 3 · hai să vorbim ========== */
+.ceri{padding:30px 32px 28px;display:grid;grid-template-columns:minmax(0,1fr) auto;gap:18px 28px;align-items:center;
+  background:linear-gradient(135deg,rgb(143 211 247/.55),rgb(183 166 234/.55)),var(--glass-read)}
+.ceri .t{display:grid;gap:10px}
+.ceri p{font:300 26px/1.3 var(--font-titluri);text-wrap:balance;max-width:40ch}
+
+@media (max-width:900px){
+  .hero{grid-template-columns:1fr}
+  .foaie{transform:none;max-width:560px}
+  .faq{grid-template-columns:1fr}
+  .faq-cap{position:static}
+}
+@media (max-width:560px){
+  .hero{gap:16px}
+  .hero .text{padding:22px 20px;gap:14px}
+  .foaie,.faq-cap{padding:20px}
+  .lista{padding:4px}
+  .lista summary{grid-template-columns:26px 1fr 32px;gap:10px;padding:12px 10px;font-size:17px}
+  .raspuns{padding:0 10px 18px 46px}
+  .ceri{grid-template-columns:1fr;padding:22px 20px}
+  .ceri .btn,.actiuni .btn{justify-content:center;white-space:normal;text-align:center}
+  .actiuni .btn{flex:1 1 auto}
+}
+</style>
+</head>
+<body>
+<div class="mock-pagina">
+<div class="mock-nav" aria-hidden="true"><b>Alex</b><span>meniul și capsula Contact vin de la site</span></div>
+
+<a class="inapoi" href="#coaching">Coaching</a>
+
+<header class="hero">
+  <div class="text sticla citit">
+    <p class="eyebrow"><span class="punct"></span>Coaching</p>
+    <h1><span class="nobr">Pregătește-te</span> pentru prima sesiune</h1>
+    <p class="prom"><strong>Nu ai nimic de pregătit pentru prima sesiune.</strong> Am strâns aici întrebările pe care oamenii mi le pun des înainte să începem, ca drumul tău în coaching să-ți folosească cât mai mult.</p>
+    <div class="actiuni">
+      <a class="btn plin" href="#vorbim">Hai să vorbim</a>
+      <a class="btn gol" href="#intrebari-frecvente">Întrebările frecvente</a>
+    </div>
+  </div>
+
+  <aside class="foaie sticla citit" id="pentru-tine" aria-labelledby="t-foaie">
+    <div class="cap">
+      <span class="eyebrow">Doar dacă vrei</span>
+      <b id="t-foaie">Câteva întrebări pentru tine</b>
+      <span>Te poți gândi la obiectivele tale, la ce te preocupă acum sau la o transformare pe care ți-ai dori-o.</span>
+    </div>
+    <ol>
+      <li><span>Există un obiectiv de dezvoltare, personal sau profesional, pe care te concentrezi acum?</span><i></i></li>
+      <li><span>Care sunt cele mai mari provocări din rolul tău în momentul ăsta?</span><i></i></li>
+      <li><span>Ce schimbare ți-ar plăcea să vezi la tine în următoarele 6 luni?</span><i></i></li>
+      <li><span>Dacă ai avea un spațiu doar al tău, în care să reflectezi și să găsești soluții, la ce ai lucra mai întâi?</span><i></i></li>
+      <li><span>Unde ți-ar prinde cel mai bine sprijinul: la performanță, în relații sau în leadership?</span><i></i></li>
+    </ol>
+    <p class="jos">Vino așa cum ești.</p>
+  </aside>
+</header>
+
+<section id="intrebari-frecvente" aria-labelledby="t-faq">
+  <div class="faq">
+    <div class="faq-cap sticla citit">
+      <h2 id="t-faq">Întrebări frecvente</h2>
+      <p>Ce mă întreabă oamenii înainte să începem. Deschide doar ce te interesează.</p>
+    </div>
+    <div class="lista sticla citit">
+      <details open>
+        <summary>La ce folosește coachingul?</summary>
+        <div class="raspuns">
+          <p>Coachingul te ajută să înaintezi spre lucrurile care contează pentru tine.</p>
+          <p>Toți creștem prin viață și pe cont propriu. Coachingul face drumul acesta mai lin și mai ales cu intenție.</p>
+          <p>Când ai un partener care îți privește situația din afară, apar perspective noi și gândești mai în profunzime. Și apare un avânt pe care singur îl găsești mai greu.</p>
+        </div>
+      </details>
+      <details>
+        <summary>Am nevoie de un obiectiv pentru prima întâlnire?</summary>
+        <div class="raspuns">
+          <p>Deloc. Mulți oameni vin la coaching tocmai ca să capete mai multă claritate. De multe ori, primul lucru pe care îl facem împreună e să vedem ce îți dorești de fapt.</p>
+          <p>O intenție e binevenită, dar nu e obligatorie. Descoperim pe drum ce are cel mai mult sens pentru tine.</p>
+        </div>
+      </details>
+      <details>
+        <summary>Cum mă pregătesc pentru o sesiune?</summary>
+        <div class="raspuns">
+          <p>Nu e nevoie să pregătești ceva anume. Vino așa cum ești.</p>
+          <p>Dacă ai ceva pe minte, o provocare, o decizie, ceva ce simți, e deja un punct de plecare foarte bun. Te ajut să găsești temele cele mai vii și mai importante pentru tine acum.</p>
+        </div>
+      </details>
+      <details>
+        <summary>Și dacă vreau totuși să mă pregătesc?</summary>
+        <div class="raspuns">
+          <p>Te poți gândi la obiectivele tale, la ce te preocupă acum sau la o transformare pe care ți-ai dori-o.</p>
+          <p><a href="#pentru-tine">Câteva întrebări care te pot ajuta sunt pe foaia de sus.</a></p>
+        </div>
+      </details>
+      <details>
+        <summary>Cu ce vin oamenii de obicei?</summary>
+        <div class="raspuns">
+          <p>Temele sunt la fel de diferite ca oamenii: să capete claritate, să conducă cu mai multă încredere, să-și pună limite mai sănătoase, să-și construiască obiceiuri mai bune, să treacă printr-o schimbare sau printr-o decizie grea.</p>
+          <p>Orice ai pe minte e un început bun. Împreună găsim firul de care merită cel mai mult să tragem.</p>
+        </div>
+      </details>
+      <details>
+        <summary>E coachingul doar despre muncă?</summary>
+        <div class="raspuns">
+          <p>Nu neapărat. În practică, e greu să tragi o linie clară între profesional și personal. Și e în regulă așa: cele două sunt aproape mereu legate.</p>
+          <p>Poți aduce ce simți că e cel mai important, din orice parte a vieții tale.</p>
+        </div>
+      </details>
+      <details>
+        <summary>Rămâne între noi ce îți spun?</summary>
+        <div class="raspuns">
+          <p>Mereu. Tot ce discutăm rămâne strict între noi.</p>
+          <p>Singura excepție e când stabilim împreună, explicit, că te-ar ajuta să împărtășim ceva cu altcineva, de exemplu cu cineva din companie care îți susține coachingul. Decizia e mereu a ta.</p>
+        </div>
+      </details>
+      <details>
+        <summary>Cât durează un proces de coaching?</summary>
+        <div class="raspuns">
+          <p>Depinde de ce vrei să obții.</p>
+          <p>Pentru unii oameni, trei până la șase sesiuni sunt de ajuns ca să deschidă o direcție nouă sau să schimbe un tipar vechi. Alții aleg să lucrăm împreună luni sau chiar ani, cam ca atunci când ai un antrenor personal care te ajută să-ți păstrezi atenția pe ce contează și să crești constant.</p>
+          <p>Nu există o formulă fixă. Lucrăm împreună cât timp îți aduce valoare.</p>
+        </div>
+      </details>
+      <details>
+        <summary>Și dacă nu ne potrivim?</summary>
+        <div class="raspuns">
+          <p>E în regulă. Se întâmplă, și nu e nimic stânjenitor în a o spune. Cel mai important e ca relația să funcționeze pentru tine.</p>
+          <p>În primele două-trei sesiuni te întreb deschis cum simți felul în care lucrăm. Ajustăm împreună până se leagă. Iar dacă nu se leagă, te ajut să găsești ce ți se potrivește.</p>
+        </div>
+      </details>
+    </div>
+  </div>
+</section>
+
+<section aria-labelledby="t-vorbim">
+  <div class="ceri sticla" id="vorbim">
+    <div class="t">
+      <h2 id="t-vorbim">Hai să vorbim</h2>
+      <p>Prima conversație e gratuită. Dacă vrei să începem, sau ai o întrebare care nu e aici, scrie-mi.</p>
+    </div>
+    <button class="btn plin" type="button" popovertarget="contact">Scrie-mi pentru prima conversație</button>
+  </div>
+</section>
+
+</div>
+</body>
+</html>
