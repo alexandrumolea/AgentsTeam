@@ -24,6 +24,8 @@ Păstrează sub 150 de rânduri. Comprimă când crește. Fapte, nu povești.
 
 - 2026-11-25: pagini de workshop (D-093, T-051): structura e etichetă · titlu · subtitlu · promisiune · pentru cine (și pentru cine nu) · ce se schimbă · ziua în 4 blocuri, pe limba omului · format · un rând de contact. Descriu ziua îmbunătățită (flow v2), nu cea livrată; fără întrebările lui Alex, minute sau modele. Frază din sală doar reală, cu acord. Draft: team/maria/documente/pagina-change-agility-v1.md.
 
+- 2026-11-25: pagini făcute din materialele lui Alex în engleză (ex. prima sesiune de coaching): adaptez, nu traduc; ordinea pe drumul omului, „your coach” → „eu”, scot viteza și „doar N sesiuni” (regula fără promisiuni de timp) și notez fiecare schimbare, cu varianta fidelă. Draft: team/maria/documente/pagina-prima-sesiune-v1.md.
+
 ## Proiecte
 - [Inspirație și invenții](project_inspiratie.md) — obiectivul 2; constructorul cu unealta, 3 piloni; Atelier = tot site-ul
 - 2026-11-17: [Arhitectura de brand](project_arhitectura_brand.md) — I-022: un brand pe material; Sora = noul BEMORE (D-057); semnătura site-ului
