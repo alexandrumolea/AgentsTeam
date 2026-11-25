@@ -10,7 +10,7 @@ Sursele interne au fost: flow-ul v2 (24.11), viziunea D-082, obiectivul central 
 
 ## Textul paginii
 
-**Eticheta, deasupra titlului:** Workshop · o zi
+**Eticheta, deasupra titlului:** Workshop · 4 sau 6 ore
 
 # Change Agility
 
@@ -18,33 +18,36 @@ Sursele interne au fost: flow-ul v2 (24.11), viziunea D-082, obiectivul central 
 Reinventarea e o abilitate. Și o ai deja.
 
 **Promisiunea:**
-O zi în care fiecare om descoperă ce l-a ajutat deja în schimbări și pleacă acasă cu planul lui de reinventare.
+Un workshop în care fiecare om descoperă ce l-a ajutat deja în schimbări și pleacă acasă cu planul lui de reinventare.
 
 ### Pentru cine e
 Pentru echipele în care se schimbă multe deodată: structura, rolurile, tehnologia sau felul de lucru.
 Pentru oamenii obosiți de schimbare, dar și pentru cei care vor să profite de ea.
 Nu e un curs despre cum conduci o transformare în organizație. E despre omul care trece prin ea.
 
-### Ce se schimbă după o zi
+### Ce se schimbă după workshop
 - Oamenii își văd resursele: ce i-a ajutat deja în alte schimbări. Nu mai pornesc de la zero.
 - Înțeleg de ce rezistența la schimbare e naturală și când presiunea fără pauză devine uzură.
 - Văd incertitudinea ca pe un semnal, nu ca pe un defect, și au un mod simplu de a se liniști.
-- Pleacă cu **planul de reinventare**, scris de ei pe parcursul zilei: resursele lor, skill-ul pe care vor să-l crească și primii pași pe care vor să-i facă, alături de un coleg.
+- Pleacă cu **planul de reinventare**, scris de ei pe parcursul workshopului: resursele lor, skill-ul pe care vor să-l crească și primii pași pe care vor să-i facă, alături de un coleg.
 
-### Cum arată ziua
+### Cum arată drumul
 1. **Relația ta cu schimbarea.** Înțelegi cum te raportezi la schimbare și descoperi resursele de adaptare pe care le ai deja, chiar dacă nu erai conștient de ele.
 2. **Incertitudinea.** Ce se întâmplă cu noi când nu mai putem anticipa ce urmează și cum putem trăi mai ușor cu asta.
-3. **Cele trei skill-uri ale schimbării.** Te liniștești, înțelegi, crești: ce faci cu ce simți, cum privești înainte și altfel, cum înveți și renunți la ce nu te mai ajută. Alegi skill-ul pe care vrei să-l crești.
+3. **Cele trei skill-uri ale schimbării.** **Emotional Regulation**: ce faci cu ce simți. **Sense Making**: cum privești înainte și cum te uiți altfel la lucruri. **Learning Agility**: cum înveți și cum renunți la ce nu te mai ajută. Alegi skill-ul pe care vrei să-l crești.
 
 > 2026-11-25, Alex: „Nu vreau să dăm prea multe detalii despre ce se întâmplă în curs efectiv. Ci care sunt pașii pe care oamenii îi parcurg.” Pașii sunt ai lui Alex; secțiunea veche, cu exercițiile, a ieșit.
 
 ### Format și durată
-O zi în sală, 9:30–17:30, cu pauze.
-Teoria e scurtă și clară. Cea mai mare parte a zilei lucrăm în perechi, cu momente de liniște și fără lucru în echipe mari.
+**4 ore:** înțelegi drumul și îți descoperi resursele.
+**6 ore:** varianta mai aplicată, cu mai mult timp pentru planul tău.
+
+> 2026-11-25, Alex: „La format. 4 ore sau 6 ore. 6 ore pentru varianta mai acționabilă.” La skill-uri: „Emotional Regulation, Learning agility, Sense making. Să le punem și pe ele pe scurt.”
+Teoria e scurtă și clară. Cea mai mare parte a timpului lucrăm în perechi, cu momente de liniște și fără lucru în echipe mari.
 Fiecare alege cât de personal vrea să fie, iar ce se spune în sală rămâne în sală.
 
 ### Cum îl ceri
-Dacă ți se pare potrivit pentru echipa ta, scrie-mi din Contact și vedem împreună cum arată ziua pentru voi.
+Dacă ți se pare potrivit pentru echipa ta, scrie-mi din Contact și vedem împreună ce variantă vi se potrivește.
 
 ---
 
@@ -85,7 +88,7 @@ Varianta mai bună e o frază reală, din formularul de feedback, cu acordul omu
 ### Decizii pentru Alex
 1. **Subtitlul:** A sau B.
 2. **Variantele mai scurte:** le punem pe pagină (un rând) sau nu încă?
-3. **Brandul:** scriem „Un workshop BEMORE” în eticheta de sus sau rămâne doar „Workshop · o zi”? Manualul spune că logo-ul BEMORE nu apare pe site-ul personal în afara secțiunii Compania mea. Recomand să rămână doar „Workshop · o zi”.
+3. **Brandul:** scriem „Un workshop BEMORE” în eticheta de sus sau rămâne doar „Workshop · 4 sau 6 ore”? Manualul spune că logo-ul BEMORE nu apare pe site-ul personal în afara secțiunii Compania mea. Recomand să rămână doar „Workshop · 4 sau 6 ore”.
 4. **Limba și locul:** îl ții doar în română sau și în engleză? Doar în sală sau și online? Mărimea grupului: e de spus pe pagină? Până răspunde Alex, nu scriem nimic despre ele.
 5. **Fraza din sală:** observația lui de mai sus, una reală din feedback sau niciuna.
 
