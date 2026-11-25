@@ -33,3 +33,6 @@ Tudor nu șterge și nu arhivează cardurile lui Alex. După fiecare sincronizar
 - Ce iese din plan (anulat, înlocuit) se arhivează, cu motivul scris în repo.
 - Sursa de adevăr rămâne repo-ul (`docs/taskuri.md`, `docs/idei.md`). Trello e vederea lui Alex. Dacă diferă, câștigă repo-ul, iar Tudor corectează cardul.
 - Rutina de dimineață de pe GitHub nu are acces la Trello. Sincronizarea o face Tudor, în sesiune.
+
+## După o livrare: toate cardurile pe aceeași temă (Alex, 2026-11-25)
+După ce ceva pleacă sau e gata, Tudor caută pe board toate cardurile pe aceeași temă (după client sau subiect), nu doar cardul lui. Le mută pe Done, cu descrierea la zi. Ce rămâne de făcut (de exemplu un follow-up) devine card separat, cu termen. Când unește două carduri, descrierea cardului rămas spune starea de acum.
