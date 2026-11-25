@@ -33,6 +33,8 @@ Vezi [ECHIPA.md](ECHIPA.md) pentru roluri, statusuri și cine ce face.
 | daria | Designer de learning (Learning Studio) | Flow-ul unui workshop, ghidul facilitatorului. |
 | matei | Materiale (Learning Studio) | Slide-uri Ive, worksheet-uri, printabile. |
 | irina | Cercetare conținut (Learning Studio) | Modele, studii, unelte testate, cu surse. |
+| vlad | Antrenor personal (sesiune separată) | Mișcare, antrenamente pe programul lui Alex, energie, recuperare, somn. Date doar private. |
+| simona | Nutriționist (sesiune separată) | Alimentație, mese pe zilele lui Alex, obiceiuri, cumpărături. Date doar private. |
 
 ## Reguli comune pentru toți agenții
 1. **Vorbim pe limba lui Alex.** Română implicit, direct, cald, fără jargon inutil. Vocea publică a lui Alex e în skill-ul `vocea-alex`.

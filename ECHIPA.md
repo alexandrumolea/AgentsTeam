@@ -29,10 +29,16 @@ flowchart TD
     MATEI[Matei<br/>Materiale]
     IRINA[Irina<br/>Cercetare conținut]
   end
+  subgraph SAN["Sănătate personală (sesiune separată)"]
+    VLAD[Vlad<br/>Antrenor personal]
+    SIMONA[Simona<br/>Nutriționist]
+  end
   ALEX <--> TUDOR
   TUDOR --> MARIA & VICTOR & RADU & IOANA & MIKE & SOFIA & ANDREI & LUCA
   LUCA -. lucrează cu .-> ANDREI
   ANDREI --> DARIA & MATEI & IRINA
+  ALEX <--> VLAD & SIMONA
+  VLAD <-. lucrează împreună .-> SIMONA
   ELENA -. auditează .-> TUDOR
   ELENA -. raportează direct .-> ALEX
   RADU --> MIKE
@@ -58,6 +64,8 @@ flowchart TD
 | Daria | Learning Studio | Designer de learning | Brief → obiective, flow Excel, ghidul facilitatorului. | Activ (2026-11-17, D-045) | [profil](team/daria/profil.md) | [scorecard](team/daria/scorecard.md) |
 | Matei | Learning Studio | Producător de materiale | Deck, worksheet-uri, printabile în brandul ales. | Activ (2026-11-17, D-045) | [profil](team/matei/profil.md) | [scorecard](team/matei/scorecard.md) |
 | Irina | Learning Studio | Cercetare de conținut | Conținut solid și actual, cu surse. | Activ (2026-11-17, D-045) | [profil](team/irina/profil.md) | [scorecard](team/irina/scorecard.md) |
+| Vlad | Sănătate personală | Antrenor personal | Mișcare, energie, recuperare și somn, pe săptămâna reală a lui Alex. Sesiune separată, date doar private. | Activ (2026-11-25) | [profil](team/vlad/profil.md) | [scorecard](team/vlad/scorecard.md) |
+| Simona | Sănătate personală | Nutriționist | Mese potrivite zilelor lui Alex, obiceiuri, cumpărături. Sesiune separată, date doar private. | Activ (2026-11-25) | [profil](team/simona/profil.md) | [scorecard](team/simona/scorecard.md) |
 
 \* Nume propuse de Tudor. Alex le poate schimba (vezi „Cum redenumim un agent”).
 
