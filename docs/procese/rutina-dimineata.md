@@ -1,5 +1,7 @@
 # Proces automat: rutina de dimineață a lui Tudor
 
+> **2026-11-25:** propusă spre înlocuire de [Ședința de dimineață](sedinta-dimineata.md) (D-090). Rutina de pe GitHub pornea cu ore de întârziere și nu vede emailul, calendarul și Trello.
+
 **Primul proces automat al echipei** (Alex, 2026-11-15): „Tudor trece în fiecare dimineață prin task-urile din backlog și propune, apoi agenții se ocupă de muncă.”
 
 | Element | Ce scrie |

@@ -5,6 +5,7 @@
 
 | Proces | DRI | Când |
 |---|---|---|
+| [Ședința de dimineață](sedinta-dimineata.md) (D-090, de confirmat) | Tudor | luni–vineri, 7:30, cu Alex 10–15 min |
 | [Rutina de dimineață](rutina-dimineata.md) (primul proces automat) | Tudor | luni–vineri, 7:30 |
 | [Idee nouă](idee-noua.md) | Tudor | Alex are o idee |
 | [Decizii](decizii.md) | Tudor | o propunere cere acordul lui Alex |

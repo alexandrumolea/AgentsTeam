@@ -101,7 +101,7 @@ Dacă Pages e activat în AgentsTeam înainte de domeniu, site-ul apare la `http
 - Build-ul trece pe o copie curată, cu `npm ci`, la fel ca în CI. Am testat baza `/`, baza `/AgentsTeam/` și un domeniu de test (fișierul `CNAME` apare doar când `domeniu` e completat). 232 de legături interne verificate, zero rupte, zero căi fără bază.
 - În browserul integrat: desktop (1440 × 900, 1280 × 860) și telefon (375 × 812), cu 3D și cu `?nogl`. Desfă invenția, Live (rețeaua, impulsurile, jurnalul), Ce m-a crescut (hârtia), panourile, paginile interioare. Zero erori în consolă, fără scroll orizontal.
 - `api/live.json`: cheile sunt doar `id, tip, linie, ref, cand, ora_reala, titlu, link, stadiu, stadiu_cheie, de_la, pentru, detaliu, rezultat`. Fără „De ce”, „Nivel”, emailuri, „curious mind” sau povești. 7 rânduri oprite de filtru.
-- `sh scripts/verifica-public.sh HEAD`: OK. Același tipar, rulat pe fișierele noi și pe site-ul generat: nimic. Singura potrivire e o constantă numerică din three.js (`0.0773993808`), care nu intră în git.
+- `sh scripts/verifica-public.sh HEAD`: OK. Același tipar, rulat pe fișierele noi și pe site-ul generat: nimic. Singura potrivire e o constantă numerică din three.js, care nu intră în git.
 
 **Neverificat:** cadrele pe un telefon real și „mișcare redusă” setată din sistem (browserul integrat nu are GPU și nu emulează setarea; e T-014). Primul deploy real (după ce Tudor activează Pages).
 
