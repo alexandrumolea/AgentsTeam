@@ -1,0 +1,77 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 1024" width="1024" height="1024">
+  <title>Financial Growth · J3 · Portofelul de sticlă, pronunțat · aspectul întunecat iOS</title>
+  <defs>
+    <radialGradient id="p1" cx="0.12" cy="0.08" r="0.75"><stop offset="0" stop-color="#2B44B8" stop-opacity=".55"/><stop offset="1" stop-color="#2B44B8" stop-opacity="0"/></radialGradient>
+    <radialGradient id="p2" cx="0.92" cy="0.9" r="0.7"><stop offset="0" stop-color="#B7A6EA" stop-opacity=".28"/><stop offset="1" stop-color="#B7A6EA" stop-opacity="0"/></radialGradient>
+    <g id="fond"><rect width="1024" height="1024" fill="#14161F"/><rect width="1024" height="1024" fill="url(#p1)"/><rect width="1024" height="1024" fill="url(#p2)"/></g>
+    <clipPath id="jCorp"><path d="M262 452C262 432 278 418 298 418H718C752 418 772 440 772 474V760C772 794 750 816 716 816H318C286 816 262 792 262 760Z"/></clipPath>
+    <clipPath id="jInch"><path d="M700 546H808C834 546 852 564 852 590V634C852 660 834 678 808 678H700C674 678 656 660 656 634V590C656 564 674 546 700 546Z"/></clipPath>
+    <linearGradient id="jBill" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#F9C9B2"/><stop offset="1" stop-color="#F7B79A"/></linearGradient>
+    <linearGradient id="jTint" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#5569C6"/><stop offset="1" stop-color="#2B44B8"/></linearGradient>
+    <linearGradient id="jLine" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#2B44B8"/><stop offset="1" stop-color="#253892"/></linearGradient><linearGradient id="jLineD" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#8FD3F7"/><stop offset="1" stop-color="#5569C6"/></linearGradient>
+    <linearGradient id="jLuciu" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#FFFFFF" stop-opacity="0.3"/><stop offset=".46" stop-color="#FFFFFF" stop-opacity="0.045"/><stop offset=".47" stop-color="#FFFFFF" stop-opacity="0"/></linearGradient>
+    
+    <filter id="jMuchii" x="-5%" y="-5%" width="110%" height="110%">
+      <feOffset in="SourceAlpha" dy="12" result="a"/><feComposite in="SourceAlpha" in2="a" operator="out" result="sus"/>
+      <feGaussianBlur in="sus" stdDeviation="4" result="susB"/><feFlood flood-color="#FFFFFF" flood-opacity="0.55"/><feComposite in2="susB" operator="in" result="lumina"/>
+      <feOffset in="SourceAlpha" dy="-12" result="b"/><feComposite in="SourceAlpha" in2="b" operator="out" result="jos"/>
+      <feGaussianBlur in="jos" stdDeviation="4.8" result="josB"/><feFlood flood-color="#000000" flood-opacity="0.45"/><feComposite in2="josB" operator="in" result="umbra"/>
+      <feMerge><feMergeNode in="SourceGraphic"/><feMergeNode in="umbra"/><feMergeNode in="lumina"/></feMerge>
+    </filter>
+    <filter id="jPrin" x="-30%" y="-30%" width="160%" height="160%"><feGaussianBlur stdDeviation="16"/></filter><filter id="jU" x="-30%" y="-30%" width="160%" height="160%"><feGaussianBlur stdDeviation="26"/></filter>
+  </defs>
+  <use href="#fond"/>
+  <g id="umbra" opacity="0.6" transform="translate(0 30)" filter="url(#jU)" fill="#000000"><path d="M262 452C262 432 278 418 298 418H718C752 418 772 440 772 474V760C772 794 750 816 716 816H318C286 816 262 792 262 760Z"/><path d="M700 546H808C834 546 852 564 852 590V634C852 660 834 678 808 678H700C674 678 656 660 656 634V590C656 564 674 546 700 546Z"/></g>
+  <g id="bancnote"><g transform="rotate(-11 421 382)" opacity="1">
+      <rect x="286" y="172" width="270" height="420" rx="36" fill="url(#jBill)" stroke="#C96A1E" stroke-width="37.8" stroke-linejoin="round"/>
+      <rect x="320" y="202" width="113.39999999999999" height="14" rx="7" fill="#FFFFFF" opacity=".55"/>
+      
+    </g><g transform="rotate(8 600 363)" opacity="1">
+      <rect x="440" y="128" width="320" height="470" rx="36" fill="url(#jBill)" stroke="#C96A1E" stroke-width="37.8" stroke-linejoin="round"/>
+      <rect x="474" y="158" width="134.4" height="14" rx="7" fill="#FFFFFF" opacity=".55"/>
+      <path d="M687.3 209.6A92 92 0 1 0 687.3 346.4M513.5 256.8H649.7M513.5 299.2H649.7" fill="none" stroke="#253892" stroke-width="38" stroke-linecap="round" stroke-linejoin="round"/>
+    </g></g>
+  <g id="portofel"><g filter="url(#jMuchii)">
+      <g clip-path="url(#jCorp)">
+        <use href="#fond"/>
+        <g filter="url(#jPrin)"><g transform="rotate(-11 421 382)" opacity="1">
+      <rect x="286" y="172" width="270" height="420" rx="36" fill="url(#jBill)" stroke="#C96A1E" stroke-width="37.8" stroke-linejoin="round"/>
+      <rect x="320" y="202" width="113.39999999999999" height="14" rx="7" fill="#FFFFFF" opacity=".55"/>
+      
+    </g><g transform="rotate(8 600 363)" opacity="1">
+      <rect x="440" y="128" width="320" height="470" rx="36" fill="url(#jBill)" stroke="#C96A1E" stroke-width="37.8" stroke-linejoin="round"/>
+      <rect x="474" y="158" width="134.4" height="14" rx="7" fill="#FFFFFF" opacity=".55"/>
+      <path d="M687.3 209.6A92 92 0 1 0 687.3 346.4M513.5 256.8H649.7M513.5 299.2H649.7" fill="none" stroke="#253892" stroke-width="38" stroke-linecap="round" stroke-linejoin="round"/>
+    </g></g>
+        <rect width="1024" height="1024" fill="url(#jTint)" opacity="0.78"/>
+        <rect width="1024" height="1024" fill="url(#jLuciu)"/>
+      </g>
+    </g>
+    <path d="M262 452C262 432 278 418 298 418H718C752 418 772 440 772 474V760C772 794 750 816 716 816H318C286 816 262 792 262 760Z" fill="none" stroke="url(#jLineD)" stroke-width="54" stroke-linejoin="round"/></g>
+  <g id="reflexe" fill="none" stroke="#FFFFFF" stroke-linecap="round" stroke-opacity="0.5">
+    <path d="M318 412H560" stroke-width="9"/>
+    <path d="M256 490V640" stroke-width="7" stroke-opacity=".45"/>
+  </g>
+  <g id="inchizatoare"><g filter="url(#jMuchii)">
+      <g clip-path="url(#jInch)">
+        <use href="#fond"/>
+        <g filter="url(#jPrin)"><g transform="rotate(-11 421 382)" opacity="1">
+      <rect x="286" y="172" width="270" height="420" rx="36" fill="url(#jBill)" stroke="#C96A1E" stroke-width="37.8" stroke-linejoin="round"/>
+      <rect x="320" y="202" width="113.39999999999999" height="14" rx="7" fill="#FFFFFF" opacity=".55"/>
+      
+    </g><g transform="rotate(8 600 363)" opacity="1">
+      <rect x="440" y="128" width="320" height="470" rx="36" fill="url(#jBill)" stroke="#C96A1E" stroke-width="37.8" stroke-linejoin="round"/>
+      <rect x="474" y="158" width="134.4" height="14" rx="7" fill="#FFFFFF" opacity=".55"/>
+      <path d="M687.3 209.6A92 92 0 1 0 687.3 346.4M513.5 256.8H649.7M513.5 299.2H649.7" fill="none" stroke="#253892" stroke-width="38" stroke-linecap="round" stroke-linejoin="round"/>
+    </g></g>
+        <rect width="1024" height="1024" fill="url(#jTint)" opacity="0.78"/>
+        <rect width="1024" height="1024" fill="url(#jLuciu)"/>
+      </g>
+    </g>
+    <path d="M700 546H808C834 546 852 564 852 590V634C852 660 834 678 808 678H700C674 678 656 660 656 634V590C656 564 674 546 700 546Z" fill="none" stroke="url(#jLineD)" stroke-width="54" stroke-linejoin="round"/></g>
+  <path d="M704 540H790" fill="none" stroke="#FFFFFF" stroke-linecap="round" stroke-width="7" stroke-opacity="0.4"/>
+  <g id="punct">
+    <circle cx="754" cy="612" r="30" fill="#F28C3B"/>
+    <ellipse cx="745.6" cy="600.6" rx="12.6" ry="7.2" transform="rotate(-25 745.6 600.6)" fill="#FFFFFF" opacity=".55"/>
+  </g>
+</svg>
