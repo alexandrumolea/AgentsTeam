@@ -71,7 +71,7 @@ categorii:
   - cheie: inventii
     vizibil: true
     eticheta: "Innovations"
-    fraza: "Tool-uri, aplicații și cursuri de încercat."
+    fraza: "Aici găsești perspectivele pe care le explorez în acest moment. Metode, stil de lucru, cursuri experimentale, care n-au devenit încă servicii sau produse stabile."
     url: innovations
     familie: atelier
     dimensiune: inovatie
