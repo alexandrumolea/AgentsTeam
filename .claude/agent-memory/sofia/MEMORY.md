@@ -23,6 +23,7 @@ Păstrează sub 150 de rânduri. Comprimă când crește. Fapte, nu povești.
 - 2026-11-20: Substack (alexandrumolea.substack.com): 12 articole, feb–iul 2025, toate în engleză, ~530–1.540 cuvinte (mediana ~870). Tipar: titlu Title Case + subtitlu, model numit și numerotat, rânduri scurte, bold, liste, emoji-marcaje (📌 👉 💬), „Let's imagine this”, final „Your action plan” / „Final thought” + întrebare + invitație caldă. Aproape fără surse. Analiza: `team/sofia/documente/substack-voce-2026-11-20.md`; rezumatul în `vocea-alex`.
 - 2026-11-20: Textul integral al articolelor se ia cel mai bine din API-ul public Substack (`/api/v1/posts?limit=12`, câmpul body_html); WebFetch dă doar rezumate. Profilul LinkedIn public e în engleză; postările nu se văd fără cont.
 - 2026-11-20: Articolele Wise Teams v2 (EN pe Substack, LinkedIn RO + EN) continuă seria lui: 3 Hidden Forces, 9 Conditions (condiția 6: „who does what, by when”), Smart Teams, two threads (se încheie cu „Let's hold that mirror together” → Oglinda comună). Numele EN ale modelului sunt traducerile mele (T-049, Maria).
+- 2026-11-25: Alex a ales pentru articolul 1 „The 4 Layers of How a Team Works” (Delivery, Anticipation, Flow, Trust + Container), cu key insights pe nivel. Îi place structura pe modelul lui numerotat; v3 în drafts/, v2 în drafts/arhiva/.
 
 ## Deschis
 - Vezi `docs/intrebari-pentru-alex.md`.

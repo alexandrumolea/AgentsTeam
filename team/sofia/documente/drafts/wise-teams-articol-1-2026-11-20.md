@@ -1,207 +1,208 @@
-# Wise Teams, articolul 1: procesul, nu oamenii (v2, pe vocea de pe Substack)
+# Wise Teams, articolul 1: The 4 Layers of How a Team Works (v3)
 
-> Draft Sofia, 2026-11-20 (T-045). **Nepublicat. Așteaptă aprobarea lui Alex.**
-> v2: rescris după ce am citit cele 12 articole de pe Substack-ul lui Alex (`team/sofia/documente/substack-voce-2026-11-20.md`). Textul pentru Substack e în engleză, ca tot ce a publicat acolo. v1, în română: `arhiva/wise-teams-articol-1-2026-11-20-v1-ro.md`.
+> Draft Sofia, 2026-11-25 (T-045). **Nepublicat. Așteaptă aprobarea lui Alex.**
+> v3: direcția aleasă de Alex pe 2026-11-25: „The 4 Layers of How a Team Works — îmi place ideea asta cu key insights de la fiecare nivel.” Structura e pe cele patru niveluri, cu 3 key insights pe fiecare, din cele 16 comportamente ale Strategic Focus Tool. Firul din v2 rămâne: rezultatele vin dintr-un sistem, iar cele 4 niveluri sunt sistemul.
+> v2 (titlul „It's Not a People Problem”): `arhiva/wise-teams-articol-1-2026-11-20-v2.md`. v1, în română: `arhiva/wise-teams-articol-1-2026-11-20-v1-ro.md`.
 
-- **Ideea într-o frază:** rezultatele unei echipe vin din felul în care lucrează împreună, deci pârghia e procesul, iar capacitățile oamenilor sunt nutrientul, nu pârghia.
-- **Pentru cine:** lideri de echipă, manageri, oameni de HR care au trimis echipa la training și n-au văzut schimbarea sperată.
-- **Presupunerea pe care o contrazicem:** „când o echipă nu merge, e o problemă de oameni, deci facem un training”.
-- **Cum continuă seria lui:** pornește de la *The 3 Hidden Forces* („every team results in a repeatable system”) și leagă exemplul de condiția 6 din *9 Conditions* („Who does what, by when”).
+- **Ideea într-o frază:** rezultatele unei echipe stau pe patru niveluri ale felului în care lucrează (Delivery, Anticipation, Flow, Trust) și pe containerul de dedesubt; ce vezi sus are, de multe ori, rădăcina mai jos.
+- **Pentru cine:** lideri de echipă și manageri care vor să-și vadă echipa ca sistem, nu ca sumă de oameni.
+- **Presupunerea pe care o contrazicem:** „când rezultatele nu vin, e o problemă de oameni”.
+- **Cum continuă seria lui:** *The 3 Hidden Forces* („every team results in a repeatable system”), *9 Conditions* (condiția 6, „who does what, by when”, la Flow), *Your team needs two threads* (la Anticipation), *Why Smart Teams Get Stuck* („Trust is not admiration.”, la Trust).
+- **Ordinea nivelurilor în text:** Delivery → Anticipation → Flow → Trust, cum a dat-o Alex, citită de la ce se vede cel mai ușor la ce ține totul. Nu e ordinea în care credem că se construiesc (ipoteza din model e alta); textul nu spune nimic despre ordinea de construcție.
 
-## Variante de titlu (cu subtitlu)
-1. **It's Not a People Problem**
-   *Why teams come back from training and nothing changes*
-   (recomandarea mea: formula „tensiunii” din *Why Smart Teams Get Stuck*; se poate repeta ușor unui coleg)
-2. **People Are the Nutrient. Process Is the Lever.**
-   *What actually changes a team's results*
-3. **The 4 Layers of How a Team Works**
-   *Flow, Trust, Delivery, Anticipation, and the container underneath*
-   (formula „numărul modelului”, ca în *3 Hidden Forces* și *9 Conditions*)
+## Variante de titlu
+1. **The 4 Layers of How a Team Works**
+   *Key insights from each layer, and the questions a team can ask itself*
+   (alegerea lui Alex; subtitlul e propunerea mea)
+2. Subtitlu alternativ: *What you see in results, and what holds them up*
+3. Subtitlu alternativ: *Why results are only the top layer*
 
-Subiect de email (scurt): „It's not a people problem”
-Text de previzualizare: „Why teams come back from training and nothing changes.”
+Subiect de email: „The 4 Layers of How a Team Works”
+Text de previzualizare: „Results are the layer everyone sees. Here is what holds them up.”
+
+> **De confirmat (T-049):** numele în engleză Delivery, Anticipation, Flow, Trust, „the Container” și „Strategic Focus Tool” sunt traducerile mele, încă neaprobate.
 
 ---
 
-## Textul pentru Substack (EN, ~950 de cuvinte)
+## Textul pentru Substack (EN, ~1.000 de cuvinte)
 
-# It's Not a People Problem
-*Why teams come back from training and nothing changes*
+# The 4 Layers of How a Team Works
+*Key insights from each layer, and the questions a team can ask itself*
 
-When a team isn't working, where do we look first?
+When a team isn't getting the results it wants, where do we look first?
 
 At people.
-Who doesn't communicate. Who doesn't take ownership. Who doesn't listen.
+Who isn't committed. Who doesn't communicate. Who doesn't take ownership.
 
-And the answer comes almost as fast: a training. On communication, on feedback, on leadership.
+I understand the reflex. People are what we see.
 
-I like trainings. I design and deliver them. People leave more open, with new ideas, sometimes even excited.
+But in [the 3 hidden forces that shape high performing teams](https://alexandrumolea.substack.com/p/the-3-hidden-forces-that-shape-high) I wrote that every team results in a repeatable system. By design or by default.
 
-Then, on Monday, they walk back into the same team.
-Same meetings. Same unwritten rules.
-A few weeks later, everything looks like before.
+**Results don't come only from people. They come from how people work together.**
 
-It's not the people's fault. It's not the training's fault either.
+So what does that system look like?
 
-**It's a matter of order.** We try to change results by changing people, when results actually come from how people work together.
+At Wise Teams, we see it in four layers. The first one is the one everyone sees. The deeper you go, the less visible a layer becomes, and the more it holds.
 
-### 📌 Results come from a system
+Let's walk through them, from the top down.
 
-A while ago I wrote about [the 3 hidden forces that shape high performing teams](https://alexandrumolea.substack.com/p/the-3-hidden-forces-that-shape-high). The core idea was simple: every team results in a repeatable system. By design or by default.
+### 📌 Layer 1: Delivery
 
-Here is the simplest way I know to look at that system:
+*The team knows what matters, and what it commits to actually happens.*
 
-- **Input**: people, time, information, goals
-- **Process**: how the team works, every day
-- **Output**: results
+**Key insights**
 
-If the results aren't what you want, you can change the input. Bring in other people. Send the current ones to courses.
+- **Alignment is easy to test.** Ask five people for the team's three priorities. When it works, you hear the same three. When it doesn't, you hear five honest, different lists.
+- **A commitment is a small promise kept.** When it works, "I'll do it" means a date and a clear "done". When it doesn't, things are "almost ready" for weeks, and nobody is surprised anymore.
+- **Busy is not the same as delivering.** When it works, progress is visible without anyone chasing it, and the team can name what changed for the people it serves. When it doesn't, status meetings report activity, not results.
 
-Or you can change what happens in the middle.
+💬 *Would each of us name the same three priorities right now?*
 
-I believe the lever is in the middle.
+### 📌 Layer 2: Anticipation
 
-👉 **People's capabilities matter. But they are the nutrient, not the lever.** They feed the process. They don't drive it.
+*The team sees change coming and gets ready for it while it delivers today.*
 
-I'm not the only one seeing this. Michael Beer and his colleagues at Harvard Business School looked at why so much training fails to deliver. Their conclusion: the problem is less the content and more the context. When the organization isn't ready, people learn something new and go back into a system that pulls them back.
+**Key insights**
 
-And when Google studied 180 of its own teams in [Project Aristotle](https://rework.withgoogle.com/intl/en/guides/understand-team-effectiveness), it found that who is on a team matters less than how the team works together.
+- **Signals arrive early, or they arrive from a client.** When it works, someone says "I noticed this, it might affect us", and the team makes room for it. When it doesn't, change is discovered when a client mentions it, or a competitor does it.
+- **Preparing is a second thread, not an extra.** I wrote about [the two threads a team needs](https://alexandrumolea.substack.com/p/your-team-needs-two-threads): performing, and innovating on how you perform. Like firefighters, who train between fires.
+- **People take risks where a failed test counts as information.** When it works, small experiments are normal and the team knows how to try new things safely. When it doesn't, ideas stop at "we tried that before", and people only propose what can't fail.
 
-### 📌 What "process" means, concretely
+💬 *What change are we already seeing that we haven't talked about yet?*
 
-"Process" sounds abstract. At Wise Teams, we break it into four categories of team behaviour, in the order we believe they are best built:
+### 📌 Layer 3: Flow
 
-- **Flow** → information, tasks, meetings and decisions move without getting stuck, and without everything passing through the leader.
-- **Trust** → the truth can be said. Real difficulties reach the table, mistakes surface early, tensions are named face to face, accountability goes both ways.
-- **Delivery** → the team knows what matters, everyone knows where they contribute, and what we commit to actually happens.
-- **Anticipation** → the team sees change coming, tries new things safely and learns from them.
+*Information, tasks and decisions move between people without getting stuck.*
 
-Underneath them sits what we call **the Container**: why the team exists, what it delivers and to whom, who plays which role, and the rules it works by. Without it, nothing above stands.
+**Key insights**
 
-Our Strategic Focus Tool looks at 16 behaviours, four in each category. It doesn't measure how good people are. **It measures how the team works.**
+- **Information is found, not requested.** When it works, people find what they need on their own. When it doesn't, the leader becomes the router, and everything waits for them.
+- **The ball is passed, not dropped.** When it works, a handover sounds like "It's yours now, here's what you need." When it doesn't, tasks fall between chairs, and everyone thinks someone else has them.
+- **Meetings end with who does what, by when.** That's the sixth of the [9 Conditions of High Performing Teams](https://alexandrumolea.substack.com/p/8-conditions-of-high-performing-teams). And when it works, asking "where are we with this?" is a normal question, not an accusation. Nobody takes it personally, so people actually ask.
+
+💬 *Where does work wait the longest in our team?*
+
+### 📌 Layer 4: Trust
+
+*The truth can be said, and the team decides on what is real.*
+
+**Key insights**
+
+- **Real difficulties reach the table.** When it works, "I'm stuck" is said in the meeting. When it doesn't, it's said in the hallway, in the meeting after the meeting.
+- **Tensions are named while they are small.** When it works, a small friction gets a short conversation. When it doesn't, it grows into resentment, and one day it looks like a "people problem".
+- **Mistakes teach, and data decides.** When it works, a mistake leads to "What did we learn?", not "Who did it?", and decisions rest on data, not on the loudest opinion or the strongest interest. As I wrote once, trust is not admiration. It's what lets a team look at reality together.
+
+💬 *What is something we all know, but don't say in our meetings?*
+
+### 📌 And underneath: the Container
+
+Below the four layers sits what we call **the Container**: why the team exists, what it delivers and to whom, who plays which role, and the rules it works by.
+
+👉 When the layers above keep shaking, it's often the ground underneath that asks for attention.
 
 ### 📌 Let's imagine this
 
-A team whose meetings end with "OK, let's keep in touch."
+A team misses an important deadline.
 
-Everyone spoke. Everyone agreed.
-Nobody left with a name and a date next to an action.
-A week later, everyone thinks someone else took care of it.
+At the top, it's a Delivery problem. The easy conclusion: people weren't committed enough.
 
-Through the people lens, it looks like an ownership problem. The obvious fix: a course on accountability.
+Go one layer down. The work waited three days between two people, because nobody said "it's yours now". That's Flow.
 
-Through the process lens, it's something else. It's a Flow behaviour: **our meetings don't produce decisions.** And the fix is smaller and more concrete:
+Go one more. Two weeks earlier, someone thought the timeline wasn't realistic. They didn't say it. That's Trust.
 
-- a shared list where no action leaves the room without an owner, a deadline and a clear "done";
-- or an agenda that starts with the outcome we want, before the discussion opens.
+Same people. Same capabilities.
+The result was decided two layers below where it showed up.
 
-Same people. Same capabilities. A different rule of work.
+👉 **This is why the layers matter.** What you see in results often has its roots in a layer you don't see. And a change in the right layer moves the ones above it.
 
-If this sounds familiar, it's the sixth of the [9 Conditions of High Performing Teams](https://alexandrumolea.substack.com/p/8-conditions-of-high-performing-teams): "What's next?" is always answered. Who does what, by when.
-
-This doesn't mean developing people doesn't matter. It means we do it in a different order. First, we choose what changes in how we work. Then we see what capabilities that change asks for.
-
-That's when a training has somewhere to take root.
-
-### 📌 Why this matters to me
-
-Because people get tired of being "fixed".
-
-When the only answer to a struggling team is a course, the unspoken message is: *you are the problem.* People feel it. And a team that feels judged closes up exactly where it would need to open.
-
-When you look at the process, the conversation changes.
-
-Not "Who is wrong?"
-But "What makes this happen again and again?"
-
-👉 It's a question a team can discuss without defending itself. And one it can answer on its own.
-
-There's one more reason. A change made in the right place doesn't stay there. When meetings start producing clear decisions, tasks move more easily and ownership becomes more natural. The process is a system, and a well-chosen point moves several things at once.
+At Wise Teams, our Strategic Focus Tool looks at 16 behaviours, four in each layer. It doesn't measure how good people are. **It measures how the team works.**
 
 ### Your action plan
 
-In your next team meeting, keep the last five minutes for one question:
+You don't need a tool to start.
 
-*"Who does what, and by when?"*
+1. Pick the layer that feels most fragile in your team.
+2. Bring its question to a team meeting.
+3. Listen, and write down what you hear where everyone can see it.
+4. Choose one small change in how you work. Just one.
 
-Write the answers where everyone can see them.
-
-It's not a training. It's a small change in process. And in a few weeks, it will show you how much of what looked like a "people problem" was really about how you work.
+Then notice what it moves, in that layer and in the others.
 
 ### Final thought
 
-Teams don't need fixing.
-They need to see the system they are already building, and choose it.
+Results are the layer everyone sees.
+The layers underneath are the ones you build.
 
-💬 What do you change in how your team works after a training, so that what you learned doesn't fade away?
+💬 Which layer feels strongest in your team right now, and which one is asking for attention?
 
-And if you'd like to see how the four categories look for your team, I'd be happy to talk.
+And if you'd like to look at the four layers together with your team, I'd be happy to talk.
 
 ---
 
-## Adaptare: postare LinkedIn (RO, ~190 de cuvinte)
+## Adaptare: postare LinkedIn (RO, ~180 de cuvinte)
 
-> Profilul LinkedIn al lui Alex e în engleză; limba postărilor nu am putut-o vedea. Am pus ambele variante; Alex alege. Linkul: în text sau în primul comentariu, cum preferă el.
+> Profilul LinkedIn al lui Alex e în engleză; limba postărilor nu am putut-o vedea. Am pus ambele variante; Alex alege. Linkul: în text sau în primul comentariu, cum preferă el. Numele în română ale nivelurilor (Livrare, Anticipare, Flux, Încredere) sunt cele din modelul Wise Teams.
 
-Când o echipă nu merge, primul reflex e un training.
+Când o echipă nu are rezultatele dorite, ne uităm întâi la oameni.
 
-Oamenii pleacă entuziasmați.
-Luni se întorc la aceleași ședințe, cu aceleași reguli nescrise.
-În câteva săptămâni, totul arată ca înainte.
+Dar rezultatele vin din felul în care oamenii lucrează împreună.
+La Wise Teams vedem acest fel de lucru în 4 niveluri:
 
-Nu e vina oamenilor. Nici a training-ului.
-E o problemă de ordine.
+📌 **Livrare.** Cere-le la cinci oameni cele trei priorități ale echipei. Dacă auzi cinci liste diferite, ai găsit primul lucru de lucrat.
 
-Rezultatele unei echipe vin din felul în care lucrează împreună. Asta e procesul.
-👉 Capacitățile oamenilor sunt nutrientul, nu pârghia.
+📌 **Anticipare.** Schimbarea ajunge în echipă fie devreme, printr-un om atent, fie târziu, printr-un client.
 
-Un exemplu: ședințe care se termină cu „ne mai auzim”.
-Pare o problemă de asumare.
-De fapt, lipsește o regulă de lucru: nicio acțiune nu pleacă din întâlnire fără un nume și un termen.
+📌 **Flux.** Unde informația trece doar prin lider, totul așteaptă după el.
 
-Aceiași oameni. Altă regulă de lucru.
+📌 **Încredere.** Dacă „m-am blocat” se spune pe hol, după ședință, adevărul nu ajunge la masă.
 
-Am scris mai pe larg despre asta și despre cum privim echipele la Wise Teams: [link]
+Un termen ratat pare o problemă de Livrare.
+Un nivel mai jos: munca a stat trei zile între doi oameni.
+Încă unul: cineva știa că termenul nu e realist și n-a spus.
 
-💬 Voi ce schimbați în felul de lucru după un training, ca să nu se piardă ce ați învățat?
+👉 Rezultatul s-a decis cu două niveluri mai jos de unde s-a văzut.
 
-## Adaptare: postare LinkedIn (EN, ~180 de cuvinte)
+Am scris despre fiecare nivel, cu câte o întrebare pe care și-o poate pune echipa: [link]
 
-When a team isn't working, the first reflex is a training.
+💬 Care nivel e cel mai puternic în echipa voastră acum? Și care cere atenție?
 
-People leave excited.
-On Monday, they walk back into the same meetings, with the same unwritten rules.
-A few weeks later, everything looks like before.
+## Adaptare: postare LinkedIn (EN, ~175 de cuvinte)
 
-It's not the people's fault. Not the training's either.
-It's a matter of order.
+When a team isn't getting results, we look at people first.
 
-A team's results come from how it works together. That's the process.
-👉 People's capabilities are the nutrient, not the lever.
+But results come from how people work together.
+At Wise Teams, we see that in 4 layers:
 
-An example: meetings that end with "let's keep in touch".
-It looks like an ownership problem.
-It's actually a missing rule of work: no action leaves the room without a name and a date.
+📌 **Delivery.** Ask five people for the team's three priorities. If you hear five different lists, you've found your first thing to work on.
 
-Same people. A different rule of work.
+📌 **Anticipation.** Change reaches a team either early, through someone paying attention, or late, through a client.
 
-I wrote more about this, and about how we look at teams at Wise Teams: [link]
+📌 **Flow.** Where information only passes through the leader, everything waits for the leader.
 
-💬 What do you change in how your team works after a training, so that what you learned doesn't fade away?
+📌 **Trust.** If "I'm stuck" is said in the hallway after the meeting, the truth never reaches the table.
+
+A missed deadline looks like a Delivery problem.
+One layer down: the work waited three days between two people.
+One more: someone knew the timeline wasn't realistic, and didn't say it.
+
+👉 The result was decided two layers below where it showed up.
+
+I wrote about each layer, with one question a team can ask itself: [link]
+
+💬 Which layer is strongest in your team right now? And which one is asking for attention?
 
 ---
 
 ## Surse
-- Beer, M., Finnström, M., Schrader, D. (2016). *The Great Training Robbery*, HBS Working Paper. Rezumat: [HBS Working Knowledge, 25.07.2016](https://www.library.hbs.edu/working-knowledge/whose-to-blame-for-the-great-training-robbery). Articolul: „Why Leadership Training Fails, and What to Do About It”, *Harvard Business Review*, octombrie 2016.
-- Google re:Work, [Understand team effectiveness](https://rework.withgoogle.com/intl/en/guides/understand-team-effectiveness) (Project Aristotle, 180 de echipe).
-- Articolele lui Alex la care trimite textul: [The 3 Hidden Forces that Shape High Performing Teams](https://alexandrumolea.substack.com/p/the-3-hidden-forces-that-shape-high) (2025-06-10), [9 Conditions of High Performing Teams](https://alexandrumolea.substack.com/p/8-conditions-of-high-performing-teams) (2025-05-20).
-- Modelul Wise Teams (patru categorii, Containerul, input-proces-output): skill-ul `wise-critical-path` al lui Alex.
-- Note despre surse: `team/sofia/documente/copywriting-research-2026-11-20.md`. Vocea: `team/sofia/documente/substack-voce-2026-11-20.md`.
+- Articolele lui Alex la care trimite textul: [The 3 Hidden Forces that Shape High Performing Teams](https://alexandrumolea.substack.com/p/the-3-hidden-forces-that-shape-high) (2025-06-10), [9 Conditions of High Performing Teams](https://alexandrumolea.substack.com/p/8-conditions-of-high-performing-teams) (2025-05-20), [Your team needs two threads](https://alexandrumolea.substack.com/p/your-team-needs-two-threads) (2025-07-28), [Why Smart Teams Get Stuck—And How to Fix It](https://alexandrumolea.substack.com/p/why-smart-teams-get-stuckand-how) (2025-03-24, „Trust is not admiration.”).
+- Modelul Wise Teams (patru categorii, 16 comportamente, Containerul): skill-ul `wise-critical-path` al lui Alex și cele 16 dimensiuni ale Strategic Focus Tool, din brief-ul lui Tudor (2026-11-25).
+- Cercetarea din v2 (Beer et al. 2016, Google Project Aristotle) nu mai e în text: modelul lui Alex duce articolul, cum face el pe Substack. Rămâne în `arhiva/wise-teams-articol-1-2026-11-20-v2.md` și în `team/sofia/documente/copywriting-research-2026-11-20.md`, dacă Alex o vrea înapoi.
+- Vocea: `team/sofia/documente/substack-voce-2026-11-20.md`.
 
 ## Ce am verificat
-- Fără nume de clienți, fără date din rapoarte, fără cifre inventate. Cifre: 16 comportamente (modelul), 180 de echipe (Google).
-- Exemplul e generic, scris ca „Let's imagine this”, formula lui Alex din *Disagree and Commit*.
-- Ordinea categoriilor e spusă ca ipoteză („in the order we believe they are best built”).
-- Cercetarea e scurtă, în text, ca susținere: așa folosește Alex sursele.
-- „I design and deliver them” (training-urile): e adevărat după rolurile lui (BEMORE LS, Innersis). De confirmat că vrea să spună asta.
-- De confirmat: numele în engleză ale categoriilor și „the Container” (traducerile mele); emoji ca marcaje, ca în *Your team needs two threads*.
+- Fiecare key insight vine dintr-una din cele 16 dimensiuni: Delivery (aliniere, angajament, urmărirea progresului, rezultate), Anticipation (semnale din piață, pregătirea pentru viitor, context pentru risc, competențe de inovație), Flow (acces la informații, pasarea mingii, cine-ce-când, răspundere fără să fie luată personal), Trust (dificultăți reale, tensiuni clarificate devreme, greșeli constructive, decizii pe date). Câte 3 insights pe nivel; unde un insight acoperă două dimensiuni, le-am legat (ex.: Flow 3 = cine-ce-când + răspunderea).
+- Fără nume de clienți, fără date din chestionare sau rapoarte, fără cifre inventate. Singura cifră: 16 comportamente (modelul). Exemplul cu termenul ratat e generic, scris ca „Let's imagine this”.
+- Fără promisiuni de timp (regula din 2026-11-25): planul de acțiune spune ce face echipa, nu când se schimbă ceva („Then notice what it moves”). Am scos din v2 „in a few weeks, it will show you…” și „In your next team meeting”.
+- Fără ton de vânzare: Strategic Focus Tool e menționat o dată, descriptiv; planul de acțiune începe cu „You don't need a tool to start.” Invitația e cea din v2, permisivă („I'd be happy to talk”).
+- Lungime: ~1.000 de cuvinte în textul de Substack (ținta din brief: 900–1.100).
+- De confirmat: numele EN (T-049); subtitlul; dacă Alex vrea să citeze din propriul articol („Trust is not admiration”) sau preferă fără auto-citare; o diagramă cu cele 4 niveluri + Containerul (Ioana), cum are *3 Hidden Forces* și *Smart Teams*.
