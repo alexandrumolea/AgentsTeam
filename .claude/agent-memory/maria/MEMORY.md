@@ -22,6 +22,8 @@ Păstrează sub 150 de rânduri. Comprimă când crește. Fapte, nu povești.
 
 - 2026-11-25: titluri de ofertă pentru clienți din afara training-ului: formula „Teamship” = Concept – beneficiu (Title Case, EN) + subtitlu-aforism „X aduce Y”. Pentru zile vândute împreună propun nume-pereche (Thinking Clearly / Thinking Together), „Lab” ca etichetă, nu în titlu. Propuneri: team/maria/documente/titluri-laboratoare-2026-11-25.md.
 
+- 2026-11-25: pagini de workshop (D-093, T-051): structura e etichetă · titlu · subtitlu · promisiune · pentru cine (și pentru cine nu) · ce se schimbă · ziua în 4 blocuri, pe limba omului · format · un rând de contact. Descriu ziua îmbunătățită (flow v2), nu cea livrată; fără întrebările lui Alex, minute sau modele. Frază din sală doar reală, cu acord. Draft: team/maria/documente/pagina-change-agility-v1.md.
+
 ## Proiecte
 - [Inspirație și invenții](project_inspiratie.md) — obiectivul 2; constructorul cu unealta, 3 piloni; Atelier = tot site-ul
 - 2026-11-17: [Arhitectura de brand](project_arhitectura_brand.md) — I-022: un brand pe material; Sora = noul BEMORE (D-057); semnătura site-ului

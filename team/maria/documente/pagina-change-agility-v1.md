@@ -1,0 +1,95 @@
+# Pagina Change Agility (Latest Workshops) · v1
+
+Adăugat: 2026-11-25. Autor: Maria (T-051, D-093). Status: **draft pentru Alex, nepublicat.**
+Pentru cine e textul: un om de HR sau un manager care vrea să afle în 1 minut dacă workshopul e pentru echipa lui și cum îl cere.
+Textul de pe pagină are ~390 de cuvinte: un minut pentru titlu, „Pentru cine e” și „Ce se schimbă”, restul pentru cine vrea detalii. Ce e sub linia „Note pentru echipă” nu apare pe site.
+
+Sursele interne au fost: flow-ul v2 (24.11), viziunea D-082, obiectivul central D-089, definiția BEMORE a Change Agility (input-ul lui Alex din 19.11), lecțiile de după 23.11 și pasul 7c din `docs/procese/curs-nou.md`. Pe pagină nu apare niciun nume de client, de participant sau de companie și niciun preț.
+
+---
+
+## Textul paginii
+
+**Eticheta, deasupra titlului:** Workshop · o zi
+
+# Change Agility
+
+**Subtitlul** (Alex alege una din cele 2 variante de mai jos; cea recomandată e A):
+Reinventarea e o abilitate. Și o ai deja.
+
+**Promisiunea:**
+O zi în care fiecare om descoperă ce l-a ajutat deja în schimbări și pleacă acasă cu planul lui de reinventare.
+
+### Pentru cine e
+Pentru echipele în care se schimbă multe deodată: structura, rolurile, tehnologia sau felul de lucru.
+Pentru oamenii obosiți de schimbare, dar și pentru cei care vor să profite de ea.
+Nu e un curs despre cum conduci o transformare în organizație. E despre omul care trece prin ea.
+
+### Ce se schimbă după o zi
+- Oamenii își văd resursele: ce i-a ajutat deja în alte schimbări. Nu mai pornesc de la zero.
+- Înțeleg de ce rezistența la schimbare e naturală și când presiunea fără pauză devine uzură.
+- Văd incertitudinea ca pe un semnal, nu ca pe un defect, și au un mod simplu de a se liniști.
+- Pleacă cu **planul de reinventare**, scris de ei pe parcursul zilei: resursele lor, skill-ul pe care vor să-l crească și primul pas din săptămâna care urmează, cu un coleg care îi ține de el.
+
+### Cum arată ziua
+1. **Relația noastră cu schimbarea.** Pornim de la o schimbare prin care ai trecut deja. Un coleg te ascultă ca un detectiv și îți spune ce resurse a auzit în povestea ta. Apoi, pe scurt: de ce rezistența e firească.
+2. **Incertitudinea.** Un moment de liniște, un „nu știu” spus unui coleg și cele trei lucruri care ne ajută: ne liniștim, înțelegem, creștem.
+3. **Te liniștești, înțelegi.** Desenezi harta unei schimbări de acum: ce ține de tine și ce nu. Apoi privești înainte, spre semnalele din jur și din tine, și îți scrii o scrisoare din viitor. De acolo îți alegi skill-ul pe care vrei să-l crești.
+4. **Crești.** Faci un plan de învățare pentru skill-ul ales, cu o buclă de feedback simplă. Urmează coaching în perechi și o încheiere în trei întrebări.
+
+### Format și durată
+O zi în sală, 9:30–17:30, cu pauze.
+Teoria e scurtă și clară. Cea mai mare parte a zilei lucrăm în perechi, cu momente de liniște și fără lucru în echipe mari.
+Fiecare alege cât de personal vrea să fie, iar ce se spune în sală rămâne în sală.
+
+### Cum îl ceri
+Dacă ți se pare potrivit pentru echipa ta, scrie-mi din Contact și vedem împreună cum arată ziua pentru voi.
+
+---
+
+## Note pentru echipă (nu apar pe site)
+
+### Subtitlul: 2 variante (Maria deține numele, Alex alege)
+| | Română (pe pagină) | Engleză (pentru oferte, dacă e nevoie) | De ce |
+|---|---|---|---|
+| **A (recomandat)** | Reinventarea e o abilitate. Și o ai deja. | Reinvention is a skill. You already have it. | E chiar viziunea cursului („capacitatea lor naturală de a se reinventa”) și definiția BEMORE (abilitate, nu trăsătură). Contrazice o idee comună (Made to Stick) și e suportiv, fără nicio presiune. |
+| B | Schimbarea devine mai ușoară când îți vezi resursele. | Change gets lighter when you see your resources. | Are forma „X aduce Y” a subtitlurilor de ofertă („Building connections brings stability”) și duce la exercițiul care a prins cel mai bine (detectivul de resurse). Reia și misiunea lui Alex: ce era invizibil devine vizibil. |
+
+Titlul rămâne **Change Agility**, fără liniuță și beneficiu după el. Beneficiul îl spun subtitlul și promisiunea, iar așa titlul rămâne scurt pe card.
+
+### Variante mai scurte: propunere, nu fapt
+Pe pagină nu le punem până nu le confirmă Alex și Andrei (Andrei e DRI pe portofoliu și le poate lega de mini-curs, T-053).
+- **Jumătate de zi (3–4 ore):** blocul 1 și blocul 4, adică resursele, bucla de feedback și planul de reinventare, fără foresight. Alex a ales deja formatul de 3 ore pentru laboratoarele din oferta de azi, așa că formatul e cunoscut.
+- **Două întâlniri de câte o jumătate de zi, la o săptămână sau două distanță:** în a doua, oamenii se întorc cu primul pas făcut și cu bucla de feedback pornită. Bucla e partea care a prins pe 23.11, așa că a doua întâlnire ar fi chiar check-in-ul ei.
+- Dacă Alex le confirmă, pe pagină intră un singur rând în „Format și durată”: „Se poate și în variante mai scurte, de o jumătate de zi. Le potrivim împreună.”
+
+### Fraza din sală
+**Nu am găsit o frază reală a unui participant** în materiale. Ce avem e observația lui Alex despre exercițiul cel mai apreciat (feedbackul lui din 24.11, privat). Dacă vrea, o poate spune pe pagină la persoana întâi, ca observație a lui, nu ca citat de participant:
+> „La prima ediție, cel mai mult a contat momentul în care oamenii și-au dat seama cât de bine s-au descurcat deja în schimbări.”
+
+Varianta mai bună e o frază reală, din formularul de feedback, cu acordul omului și fără nume. Formularul nu există încă (DRI: Daria, `curs-nou.md`, „Ce mai trebuie”).
+
+### Pentru Radu și Mike (SEO și locul paginii)
+- **Adresa propusă:** `/workshops/change-agility/`, ca element în Latest Workshops (`content/categorii.yml`, cheia `speaking`), cu fraza de pe card: „O zi în care fiecare pleacă cu planul lui de reinventare.”
+- **Titlul paginii (tag):** Change Agility · workshop despre schimbare și reinventare
+- **Descrierea (meta, ~150 de caractere):** O zi de workshop pentru echipele în care se schimbă multe deodată. Fiecare om își vede resursele și pleacă cu planul lui de reinventare.
+- **Cuvinte-cheie folosite firesc în text:** Change Agility, schimbare, reinventare, incertitudine, workshop pentru echipe. Nu am adăugat „reziliență” sau „adaptabilitate”: nu sunt cuvintele cursului, iar cititorul ar aștepta alt curs.
+- Compoziția și șablonul (ce stă pe sticlă, cele 4 blocuri ca listă sau ca drum) sunt ale Ioanei, în T-052. Textul de mai sus are deja ordinea șablonului, ca să fie refolosit la cursurile următoare.
+
+### Ce am lăsat intenționat afară
+- Întrebările exacte ale lui Alex (detectivul de resurse, coaching-ul, bucla de feedback), anul scrisorii, minutele fiecărei piese și modelele din teorie (homeostază, alostază, BANI). Sunt munca lui și nu ajută cititorul să decidă.
+- Brandul: pe pagină nu am scris „BEMORE” (vezi întrebarea 3 de mai jos).
+- Cifrele (mărimea grupului, numărul de ediții, rezultate) și orice promisiune de rezultat garantat.
+
+### Decizii pentru Alex
+1. **Subtitlul:** A sau B.
+2. **Variantele mai scurte:** le punem pe pagină (un rând) sau nu încă?
+3. **Brandul:** scriem „Un workshop BEMORE” în eticheta de sus sau rămâne doar „Workshop · o zi”? Manualul spune că logo-ul BEMORE nu apare pe site-ul personal în afara secțiunii Compania mea. Recomand să rămână doar „Workshop · o zi”.
+4. **Limba și locul:** îl ții doar în română sau și în engleză? Doar în sală sau și online? Mărimea grupului: e de spus pe pagină? Până răspunde Alex, nu scriem nimic despre ele.
+5. **Fraza din sală:** observația lui de mai sus, una reală din feedback sau niciuna.
+
+### Verificare
+- Nu apare niciun client, participant, companie sau preț.
+- Tonul e permisiv: „dacă ți se pare potrivit”, „vedem împreună”, „fiecare alege cât de personal vrea să fie”. Nu e niciun imperativ de vânzare.
+- Ziua descrisă e cea din flow-ul v2, adică ziua îmbunătățită după 23.11 (mai personală, în perechi, cu coaching), nu cea livrată pe 23.11.
+- Nu am folosit cuvintele de designer de training: „knowledge bite”, „debriefing”, „micro-comportament”, „sense making”, „foresight” și „alostază” nu apar pe pagină.
