@@ -70,7 +70,7 @@ The pressure doesn't disappear either. It turns into what's called **allostatic 
 
 ### 📌 Layer 2: Anticipation
 
-Anticipation sits right below Delivery for a reason. Once a team is doing well with its results, it can lift its head and think about the future.
+Anticipation comes right after Delivery for a reason. Once a team is doing well with its results, it can lift its head and think about the future.
 
 Many teams never get there. They get stuck running the same solutions on problems that don't get solved.
 
