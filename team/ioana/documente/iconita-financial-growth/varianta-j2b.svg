@@ -49,7 +49,7 @@
         <rect width="1024" height="1024" fill="url(#jLuciu)"/>
       </g>
     </g>
-    <path d="M262 452C262 432 278 418 298 418H718C752 418 772 440 772 474V760C772 794 750 816 716 816H318C286 816 262 792 262 760Z" fill="none" stroke="#5569C6" stroke-opacity="0.8" stroke-width="30" stroke-linejoin="round"/></g>
+    <path d="M262 452C262 432 278 418 298 418H718C752 418 772 440 772 474V760C772 794 750 816 716 816H318C286 816 262 792 262 760Z" fill="none" stroke="#7282CF" stroke-opacity="1" stroke-width="30" stroke-linejoin="round"/></g>
   <g id="reflexe" fill="none" stroke="#FFFFFF" stroke-linecap="round" stroke-opacity="0.7">
     <path d="M318 412H560" stroke-width="7"/>
     
@@ -70,7 +70,7 @@
         <rect width="1024" height="1024" fill="url(#jLuciu)"/>
       </g>
     </g>
-    <path d="M700 546H808C834 546 852 564 852 590V634C852 660 834 678 808 678H700C674 678 656 660 656 634V590C656 564 674 546 700 546Z" fill="none" stroke="#5569C6" stroke-opacity="0.8" stroke-width="30" stroke-linejoin="round"/></g>
+    <path d="M700 546H808C834 546 852 564 852 590V634C852 660 834 678 808 678H700C674 678 656 660 656 634V590C656 564 674 546 700 546Z" fill="none" stroke="#7282CF" stroke-opacity="1" stroke-width="30" stroke-linejoin="round"/></g>
   <path d="M704 540H790" fill="none" stroke="#FFFFFF" stroke-linecap="round" stroke-width="6" stroke-opacity="0.7"/>
   <g id="punct">
     <circle cx="754" cy="612" r="30" fill="#F28C3B"/>
