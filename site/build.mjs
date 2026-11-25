@@ -468,10 +468,8 @@ function topNav(current){
 // semnătura din colț: forma lungă, iar pe telefon forma scurtă (content/site.yml → intro.marca, intro.marca_scurta)
 const brandText = () => { const lung = site.intro?.marca || site.titlu, scurt = site.intro?.marca_scurta || '';
   return scurt && scurt !== lung ? `<span class="m-long">${esc(lung)}</span><span class="m-short">${esc(scurt)}</span>` : esc(lung); };
-const footer = () => `<footer class="foot glass">
-  <p>Site construit de Alex cu o echipă de agenți AI, la vedere. Codul și tot ce lucrăm: <a href="${esc(GH)}" rel="noopener">repo-ul public pe GitHub</a>.</p>
-  <p>Actualizat ${esc(fLongDay(NOW))}, ${esc(fTime(NOW))}. Datele: <a href="${u('api/continut.json')}">continut.json</a>${C.live ? ` · <a href="${u('api/live.json')}">live.json</a>` : ''}</p>
-</footer>`;
+// subsolul a fost scos la cererea lui Alex (2026-11-25): fără textul despre repo, data actualizării și continut.json
+const footer = () => '';
 
 function page({ cheie, title, description, path, bodyHtml, mainClass = 'wrap glass-read', bodyClass = '', scripts = '', extraHead = '' }){
   return `${head({ title, description, path, extra: extraHead })}
