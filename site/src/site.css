@@ -209,7 +209,7 @@ body.sheet .panel{display:block;animation:pin .45s var(--ease)}
 .panel h2{margin:0 0 12px;font:200 clamp(30px,2.6vw,40px)/1.08 var(--display);letter-spacing:-.025em}
 .panel h3{margin:18px 0 6px;font:500 13px/1.35 var(--sans);letter-spacing:.16em;text-transform:uppercase;color:var(--muted)}
 .panel .lead,.panel > div > p{color:var(--muted)}
-.panel .lead{margin:0 0 18px;font-size:18px}
+.panel .lead{margin:0 0 18px;font-size:18px;position:static;height:auto;background:none;opacity:1;transform:none;will-change:auto}
 .panel .actions{margin-top:6px}
 
 /* „Desfă inovația”: sub obiectul din centru; straturile, pe pastile */
