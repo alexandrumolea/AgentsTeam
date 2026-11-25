@@ -28,7 +28,7 @@
 3. „Ai construit o echipă de lideri. Și totuși, deciziile tot la tine ajung.”
    *"You've built a team of leaders. And still, the decisions keep coming back to you."*
 
-Alex a ales hook-ul 3 și limba română (2026-11-25); varianta în engleză a ieșit din draft (e în istoricul git). Corpul de mai jos folosește hook-ul 3. Inițial era scris pe hook-ul 1; cu 2 sau 3, se schimbă doar primele două rânduri.
+Alex a ales hook-ul 3, limba română și tag-ul Andreei (2026-11-25; [TAG ANDREEA] se înlocuiește cu tag-ul ei în LinkedIn, la publicare); varianta în engleză a ieșit din draft (e în istoricul git). Corpul de mai jos folosește hook-ul 3. Inițial era scris pe hook-ul 1; cu 2 sau 3, se schimbă doar primele două rânduri.
 
 ---
 
