@@ -43,7 +43,6 @@ Nu e un curs despre cum conduci o transformare în organizație. E despre omul c
 **6 ore:** varianta mai aplicată, cu mai mult timp pentru planul tău.
 
 > 2026-11-25, Alex: „La format. 4 ore sau 6 ore. 6 ore pentru varianta mai acționabilă.” La skill-uri: „Emotional Regulation, Learning agility, Sense making. Să le punem și pe ele pe scurt.”
-Teoria e scurtă și clară. Cea mai mare parte a timpului lucrăm în perechi, cu momente de liniște și fără lucru în echipe mari.
 Fiecare alege cât de personal vrea să fie, iar ce se spune în sală rămâne în sală.
 
 ### Hai să vorbim
