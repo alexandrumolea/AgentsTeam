@@ -28,7 +28,7 @@
 3. „Ai construit o echipă de lideri. Și totuși, deciziile tot la tine ajung.”
    *"You've built a team of leaders. And still, the decisions keep coming back to you."*
 
-Alex a ales hook-ul 3 (2026-11-25); corpul de mai jos îl folosește. Inițial era scris pe hook-ul 1; cu 2 sau 3, se schimbă doar primele două rânduri.
+Alex a ales hook-ul 3 și limba română (2026-11-25); varianta în engleză a ieșit din draft (e în istoricul git). Corpul de mai jos folosește hook-ul 3. Inițial era scris pe hook-ul 1; cu 2 sau 3, se schimbă doar primele două rânduri.
 
 ---
 
@@ -52,27 +52,6 @@ Unde: [ONLINE/LOCUL]
 Dacă te regăsești aici, ne-ar bucura să fii unul dintre cei 10.
 
 Și dacă nu ajungi: ce trece astăzi prin tine și ți-ai dori să nu mai treacă?
-
-## Postarea (EN, ~155 de cuvinte)
-
-You've built a team of leaders.
-And still, the decisions keep coming back to you.
-
-At Wise Teams, Andreea [TAG ANDREEA] and I look at what helps teams become autonomous. We have some insights. And we're missing something we can't find out on our own: what teams look like right now, from the inside.
-
-So we're hosting a free workshop for 10 managers of managers: directors, leaders of new teams, founders. It's for those who truly want autonomous teams.
-
-We share what we've understood so far.
-You tell us about your team.
-Together, we map the real needs teams have right now.
-
-When: [DATA], [ORA]
-Where: [ONLINE/LOCUL]
-Sign up: [CUM TE ÎNSCRII]
-
-If this sounds like you, we'd be glad to have you as one of the 10.
-
-And if you can't make it: what still goes through you today that you'd like to stop going through you?
 
 ---
 
