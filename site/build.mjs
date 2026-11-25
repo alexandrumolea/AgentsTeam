@@ -438,6 +438,7 @@ ${SITE_URL ? `<meta property="og:url" content="${esc(abs(path))}">` : ''}
 <meta name="theme-color" content="${TEMA.get('bg')}">
 <meta name="color-scheme" content="light">
 <link rel="icon" href="${u('favicon.svg')}" type="image/svg+xml">
+<link rel="icon" href="${u('favicon-32.png')}" type="image/png" sizes="32x32">
 <link rel="apple-touch-icon" href="${u('apple-touch-icon.png')}">
 ${Object.values(TEMA.fonturi).map(f => `<link rel="preload" href="${u(`assets/fonts/${f.pachet}-latin-wght-normal.woff2`)}" as="font" type="font/woff2" crossorigin>`).join('\n')}
 <link rel="stylesheet" href="${u(CSS_HASHLESS)}?v=${cssV}">

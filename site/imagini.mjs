@@ -1,8 +1,9 @@
 // Refă imaginile PNG din culorile temei (content/tema.yml): static/og.png (previzualizarea
-// de pe rețele, 1200×630) și static/apple-touch-icon.png (180×180).
+// de pe rețele, 1200×630), static/apple-touch-icon.png (180×180) și static/favicon-32.png
+// (rezerva PNG a favicon-ului SVG, pentru browserele care nu citesc SVG).
 // Rulează după o schimbare de paletă: npm run imagini (în folderul site/). Doar pe macOS:
 // folosește qlmanage și sips, care vin cu sistemul (fără dependențe noi).
-// Cu paleta de acum, rezultatul e identic, octet cu octet, cu imaginile din repo.
+// Rezultatul depinde și de versiunea macOS: la aceeași paletă, octeții pot diferi puțin (antialiasing).
 import { readFileSync, writeFileSync, mkdtempSync, copyFileSync, rmSync } from 'node:fs';
 import { join, dirname, resolve } from 'node:path';
 import { tmpdir, platform } from 'node:os';
@@ -30,5 +31,9 @@ try {
   writeFileSync(join(tmp, 'icon.svg'), tema.fill(readFileSync(join(HERE, 'src/favicon.svg'), 'utf8'), 'site/src/favicon.svg').replace(' rx="14"', ''));
   run('qlmanage', '-t', '-s', '180', '-o', tmp, join(tmp, 'icon.svg'));
   copyFileSync(join(tmp, 'icon.svg.png'), join(HERE, 'static/apple-touch-icon.png'));
-  console.log('Gata: site/static/og.png și site/static/apple-touch-icon.png, din content/tema.yml.');
+  // favicon-32.png: același favicon, cu colțurile rotunjite. sips, nu qlmanage: qlmanage pune alb
+  // în colțuri, iar sips păstrează transparența (pe un tab închis la culoare nu se vede un pătrat alb).
+  writeFileSync(join(tmp, 'favicon.svg'), tema.fill(readFileSync(join(HERE, 'src/favicon.svg'), 'utf8'), 'site/src/favicon.svg'));
+  run('sips', '-s', 'format', 'png', '-z', '32', '32', join(tmp, 'favicon.svg'), '--out', join(HERE, 'static/favicon-32.png'));
+  console.log('Gata: site/static/og.png, apple-touch-icon.png și favicon-32.png, din content/tema.yml.');
 } finally { rmSync(tmp, { recursive: true, force: true }); }

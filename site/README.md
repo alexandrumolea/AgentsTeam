@@ -49,7 +49,7 @@ Build-ul se oprește dacă pagina are `<script>`, `@import` sau resurse de pe al
 1. Deschide `content/tema.yml` și schimbă codurile hex (de exemplu `accent: "#2B44B8"`).
 2. `npm run build`. Build-ul verifică și contrastul (secțiunea `contrast`): dacă un text nu mai trece AA în cel mai rău punct al gradientului, se oprește și îți spune care.
 3. Verifică local (`npm run serve`).
-4. Dacă ai schimbat paleta, refă imaginile PNG: `npm run imagini` (doar pe macOS). Altfel, previzualizarea pe rețele și iconița de pe ecranul iPhone-ului rămân în culorile vechi.
+4. Dacă ai schimbat paleta, refă imaginile PNG: `npm run imagini` (doar pe macOS). Altfel, previzualizarea pe rețele, iconița de pe ecranul iPhone-ului și rezerva PNG a iconiței din tab (`favicon-32.png`) rămân în culorile vechi. La fel după o schimbare în `src/favicon.svg`.
 
 ### Secțiunile din `tema.yml`
 

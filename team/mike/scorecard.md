@@ -42,6 +42,7 @@ Utilitate: 1 = inutil, 3 = ok, 5 = exact ce trebuia. Feedback Alex: completat de
 | 2026-11-20 | Numerele obiectivelor după ordinea totală din Flow; migrarea numerelor [1] la id-uri | gata (160 teste + Chrome verzi), nefăcut commit | mare: numerele erau deja greșite în Change Agility | aș fi migrat numerele la id-uri chiar când am adăugat id-urile |
 | 2026-11-20 | Filtre în Harvest, ca la Bibliotecă | gata (160 teste + Chrome verzi, 17 verificări noi), nefăcut commit | mare: Alex le-a cerut explicit; aceleași clase și reguli ca Biblioteca | Am prins devreme că filtrul Bibliotecii citea toate `.chip`-urile din pagină; data viitoare caut selectorii globali înainte să refolosesc o clasă |
 | 2026-11-24 | Șablonul fișei de piesă în editorul de curs: D-078 → D-086 | gata (160 teste + chrome-fisa verzi), commit + push | mediu: Alex și Learning Studio pornesc fișele noi direct în formatul nou | aș fi pus secțiunile șablonului într-o singură listă, folosită și de test, ca o schimbare de format să fie un singur loc |
+| 2026-11-25 | Favicon nou „C · Orbita” (Ioana, ales de Alex) + rezervă PNG 32 px | gata (build verde, Chrome alege SVG-ul, PNG-urile verificate în pixeli), fără commit | mic-mediu: iconița se vede în fiecare tab | aș fi verificat transparența rezervei înainte de prima randare (qlmanage pune alb în colțuri) |
 
 ## Review-uri lunare
 | Lună | Verdict (păstrăm / ajustăm / renunțăm) | Note |

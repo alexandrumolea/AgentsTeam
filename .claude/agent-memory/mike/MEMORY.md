@@ -53,6 +53,8 @@ Păstrează sub 150 de rânduri. Comprimă când crește. Fapte, nu povești.
 - 2026-11-20: un element nou deasupra unei liste împinge ținte de tragere din fereastra testelor Chrome (chrome-fisa, 1200 px). Rulez toate suitele Chrome, nu doar pe a mea. Tabul de terminal al lui Alex (c1) nu îl pot opri; repornirea editorului o cer lui Tudor.
 - 2026-11-20: o țintă de tragere care apare abia la începutul tragerii mută layout-ul sub cursor (și coordonatele testelor). Țintă fără mutare: contur/outline pe zona existentă. Testele de tragere au nevoie de ambele capete în fereastră: mărește înălțimea emulată.
 
+- 2026-11-25: favicon: qlmanage -t pune fundal alb (fără transparență); `sips -s format png -z 32 32 x.svg` randează SVG-ul cu colțuri transparente. Pe macOS nou, qlmanage refă og.png cu alți octeți (doar textul): dacă intrările nu s-au schimbat, restaurez og.png din git.
+
 ## Fișiere de memorie
 - [Stack și găzduire](project_stack-hosting.md) — GitHub Pages (D-036–D-038), CNAME ignorat la Actions; fapte Netlify/Cloudflare/Vercel
 - [Generatorul paginii echipei](generator-echipa.md) — Mike îl deține; puncte fragile tăcute; 2026-11-17: panoul de control, maparea statusurilor
