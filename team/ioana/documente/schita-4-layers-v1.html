@@ -1,0 +1,78 @@
+<!doctype html>
+<html lang="ro">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Schița 4 Layers</title>
+<style>
+  :root {
+    --bg: #F7F5F0; --surface: #FFFFFF; --ink: #1B2240; --muted: #5A6178; --line: #E3DED4; --accent: #F0A53C;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) { --bg: #12162A; --surface: #1C2138; --ink: #F2F3F7; --muted: #B4B9CB; --line: #2E3452; }
+  }
+  :root[data-theme="dark"] { --bg: #12162A; --surface: #1C2138; --ink: #F2F3F7; --muted: #B4B9CB; --line: #2E3452; }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: var(--bg); color: var(--ink); font: 17px/1.5 "Inter Tight", system-ui, -apple-system, "Helvetica Neue", Arial, sans-serif; }
+  .wrap { max-width: 1320px; margin: 0 auto; padding: 40px 16px 64px; }
+  h1 { font-size: 32px; line-height: 1.15; margin: 0 0 8px; font-weight: 700; letter-spacing: -0.01em; }
+  .lead { color: var(--muted); margin: 0 0 32px; max-width: 760px; }
+  .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 24px; align-items: start; }
+  .card { background: var(--surface); border: 1px solid var(--line); border-radius: 20px; padding: 20px; }
+  .card h2 { font-size: 20px; margin: 0 0 4px; font-weight: 700; }
+  .card .why { margin: 0 0 16px; color: var(--muted); font-size: 16px; }
+  .card img { width: 100%; height: auto; display: block; border-radius: 12px; border: 1px solid var(--line); }
+  .tag { display: inline-block; font-size: 13px; font-weight: 600; padding: 2px 10px; border-radius: 999px; background: var(--accent); color: #1B2240; margin-left: 6px; vertical-align: 2px; }
+  .files { margin: 12px 0 0; font-size: 14px; color: var(--muted); }
+  .files a { color: inherit; }
+  h3 { font-size: 22px; margin: 48px 0 6px; }
+  .phone-row { display: flex; gap: 24px; overflow-x: auto; padding-bottom: 8px; }
+  .phone { flex: 0 0 auto; width: 358px; max-width: calc(100vw - 32px); }
+  .phone p { margin: 8px 0 0; font-size: 14px; color: var(--muted); }
+  .phone img { width: 100%; display: block; border-radius: 8px; border: 1px solid var(--line); }
+  ul.notes { padding-left: 20px; color: var(--muted); max-width: 820px; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1>The 4 Layers of How a Team Works · schița, v1</h1>
+  <p class="lead">Trei variante pentru articolul de pe Substack. Aceeași familie ca diagramele din „The 3 Hidden Forces” și „Why Smart Teams Get Stuck”: fundal deschis, forme pline, text mare. Cu cât cobori, cu atât culoarea e mai adâncă: mai puțin vizibil, ține mai mult. Chihlimbarul marchează Trust, vinovatul ascuns.</p>
+
+  <div class="grid">
+    <section class="card">
+      <h2>A · Stiva <span class="tag">recomandat</span></h2>
+      <p class="why">Cele patru niveluri și Containerul, cu câte o frază. Linia de chihlimbar arată că Trust atinge fiecare nivel de deasupra. Cea mai clară ca hartă a modelului, potrivită sus în articol.</p>
+      <img src="schita-4-layers-v1/a-stiva.png" alt="Varianta A: patru carduri suprapuse, Delivery, Anticipation, Flow, Trust, de la deschis la închis, peste Container. O linie de chihlimbar urcă din Trust spre fiecare nivel.">
+      <p class="files"><a href="schita-4-layers-v1/a-stiva.png">PNG 1456 px</a> · <a href="schita-4-layers-v1/a-stiva.svg">SVG</a></p>
+    </section>
+    <section class="card">
+      <h2>B · Linia apei</h2>
+      <p class="why">Piramida: doar Delivery e deasupra liniei, restul „unseen” și tot mai lat. Presiunea apasă pe vârf și devine allostatic load. Bună dacă vrei ca o singură imagine să spună și modelul, și ideea centrală.</p>
+      <img src="schita-4-layers-v1/b-linia-apei.png" alt="Varianta B: piramidă cu Delivery în vârf, deasupra unei linii punctate; dedesubt Anticipation, Flow, Trust, tot mai late și mai închise, peste Container. Trei săgeți de presiune apasă pe vârf.">
+      <p class="files"><a href="schita-4-layers-v1/b-linia-apei.png">PNG 1456 px</a> · <a href="schita-4-layers-v1/b-linia-apei.svg">SVG</a></p>
+    </section>
+    <section class="card">
+      <h2>C · Două drumuri</h2>
+      <p class="why">Mecanismul, fără frazele de nivel: dacă apeși pe Delivery (merge pe moment, allostatic load, voința se erodează) sau dacă construiești nivelurile de dedesubt (Delivery urmează). Bună lângă „Let's imagine this”, ca a doua imagine.</p>
+      <img src="schita-4-layers-v1/c-doua-drumuri.png" alt="Varianta C: două coloane. Stânga: săgeți de presiune pe Delivery, apoi Works for a moment, Becomes allostatic load, Willpower erodes. Dreapta: stiva Delivery, Anticipation, Flow, Trust, Container, cu o săgeată în sus: Delivery follows what holds it.">
+      <p class="files"><a href="schita-4-layers-v1/c-doua-drumuri.png">PNG 1456 px</a> · <a href="schita-4-layers-v1/c-doua-drumuri.svg">SVG</a></p>
+    </section>
+  </div>
+
+  <h3>Pe telefon (358 px, lățimea coloanei din aplicația Substack)</h3>
+  <div class="phone-row">
+    <div class="phone"><img src="schita-4-layers-v1/a-stiva.png" alt="Varianta A la lățime de telefon"><p>A · cel mai mic text ≈ 11 px (etichetele), frazele ≈ 12 px</p></div>
+    <div class="phone"><img src="schita-4-layers-v1/b-linia-apei.png" alt="Varianta B la lățime de telefon"><p>B · la fel; „seen / unseen” sunt etichete</p></div>
+    <div class="phone"><img src="schita-4-layers-v1/c-doua-drumuri.png" alt="Varianta C la lățime de telefon"><p>C · textul cel mai mare dintre cele trei (≈ 13 px)</p></div>
+  </div>
+
+  <h3>Note</h3>
+  <ul class="notes">
+    <li>Numele nivelurilor sunt exact ca în draftul Sofiei. Frazele scurte de pe niveluri vin din exemplele lui Alex și din key insights.</li>
+    <li>Semnătura „A Wise Teams model · Alexandru Molea” e o propunere: pe Substack, diagrama din „Why Smart Teams Get Stuck” are doar „Alexandru Molea”.</li>
+    <li>Culorile sunt neutre (albastru de adâncime, chihlimbar, nisip), nu brandul BEMORE: Wise Teams nu are încă un ghid vizual la noi.</li>
+    <li>Sursa: <code>schita-4-layers-v1/gen.mjs</code> (textele și culorile într-un singur loc). <code>node gen.mjs</code> refaci SVG-urile.</li>
+  </ul>
+</div>
+</body>
+</html>
