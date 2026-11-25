@@ -24,7 +24,7 @@ categorii:
     dimensiune: munca
     ordine: 1
     pe_orbita: true
-    stare: in-pregatire
+    stare: deschis
     pod: ""
     # Faptele confirmate de Alex (2026-11-16). Fiecare rând apare ca o linie: eticheta în stânga, textul în dreapta.
     detalii:
