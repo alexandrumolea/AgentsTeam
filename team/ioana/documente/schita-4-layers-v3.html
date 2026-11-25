@@ -1,0 +1,79 @@
+<!doctype html>
+<html lang="ro">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Schița 4 Layers v3</title>
+<style>
+  :root {
+    --bg: #F6F3EE; --surface: #FFFFFF; --ink: #1C1C1E; --muted: #5E5A55; --line: #E4DDD2; --accent: #FFD38A;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) { --bg: #12162A; --surface: #1C2138; --ink: #F2F3F7; --muted: #B4B9CB; --line: #2E3452; }
+  }
+  :root[data-theme="dark"] { --bg: #12162A; --surface: #1C2138; --ink: #F2F3F7; --muted: #B4B9CB; --line: #2E3452; }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: var(--bg); color: var(--ink); font: 17px/1.5 "Avenir Next", "Poppins", system-ui, -apple-system, "Helvetica Neue", Arial, sans-serif; }
+  .wrap { max-width: 1320px; margin: 0 auto; padding: 40px 16px 64px; }
+  h1 { font-size: 32px; line-height: 1.15; margin: 0 0 8px; font-weight: 700; letter-spacing: -0.01em; }
+  .lead { color: var(--muted); margin: 0 0 32px; max-width: 760px; }
+  .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 24px; align-items: start; }
+  .card { background: var(--surface); border: 1px solid var(--line); border-radius: 20px; padding: 20px; }
+  .card h2 { font-size: 20px; margin: 0 0 4px; font-weight: 700; }
+  .card .why { margin: 0 0 16px; color: var(--muted); font-size: 16px; }
+  .card img { width: 100%; height: auto; display: block; border-radius: 12px; border: 1px solid var(--line); }
+  .tag { display: inline-block; font-size: 13px; font-weight: 600; padding: 2px 10px; border-radius: 999px; background: var(--accent); color: #1B2240; margin-left: 6px; vertical-align: 2px; }
+  .files { margin: 12px 0 0; font-size: 14px; color: var(--muted); }
+  .files a { color: inherit; }
+  h3 { font-size: 22px; margin: 48px 0 6px; }
+  .phone-row { display: flex; gap: 24px; overflow-x: auto; padding-bottom: 8px; }
+  .phone { flex: 0 0 auto; width: 358px; max-width: calc(100vw - 32px); }
+  .phone p { margin: 8px 0 0; font-size: 14px; color: var(--muted); }
+  .phone img { width: 100%; display: block; border-radius: 8px; border: 1px solid var(--line); }
+  ul.notes { padding-left: 20px; color: var(--muted); max-width: 820px; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1>The 4 Layers of How a Team Works · schița, v3</h1>
+  <p class="lead">Trei concepte noi, fiecare cu altă structură, care arată <strong>ordinea</strong> din metodologia Wise Teams, nu o stivă: the Container → 1 Aligned (Delivery) → 2 Moving efficiently (Flow + Trust) → 3 Delivering consistently (Delivery) → 4 Building the future (Anticipation) → an emergent team. Limbajul vizual e cel din v2. Numele etapelor în engleză sunt propunerea noastră. În fiecare stație, rețeaua de cinci noduri are tot mai multe legături: echipa devine tot mai conectată, până la destinație.</p>
+
+  <div class="grid">
+    <section class="card">
+      <h2>A · Drumul <span class="tag">recomandat</span></h2>
+      <p class="why"><b>Ce ordine arată:</b> un drum de la Container, prin cele patru etape numerotate, până la echipa emergentă. Fiecare etapă are o frază, iar Trust e marcat „the hidden culprit”. E cel mai aproape de felul în care Wise Teams arată deja drumul echipei. <b>În articol:</b> în locul schiței, înainte de „Let's walk through them”.</p>
+      <img src="schita-4-layers-v3/a-drumul.png" alt="Concept A: un drum șerpuit care pornește din Container și urcă prin stațiile 1 Aligned, 2 Moving efficiently, 3 Delivering consistently și 4 Building the future, până la An emergent team. Fiecare stație are eticheta capabilității și o frază.">
+      <p class="files"><a href="schita-4-layers-v3/a-drumul.png">PNG 1456 px</a> · <a href="schita-4-layers-v3/a-drumul.svg">SVG</a></p>
+    </section>
+    <section class="card">
+      <h2>B · Treptele</h2>
+      <p class="why"><b>Ce ordine arată:</b> fiecare treaptă se sprijină pe cea de dinainte, pornind de pe Container, iar o linie punctată urcă până la echipa emergentă. Pe treapta 2, Trust are capătul lui indigo. Spune cel mai direct „nu poți sări o treaptă”. <b>În articol:</b> tot în locul schiței sau la „Final thought”.</p>
+      <img src="schita-4-layers-v3/b-treptele.png" alt="Concept B: patru trepte colorate care urcă spre dreapta, pe Container: Step 1 Aligned, Step 2 Moving efficiently cu un capăt Trust, Step 3 Delivering consistently, Step 4 Building the future. Deasupra, An emergent team.">
+      <p class="files"><a href="schita-4-layers-v3/b-treptele.png">PNG 1456 px</a> · <a href="schita-4-layers-v3/b-treptele.svg">SVG</a></p>
+    </section>
+    <section class="card">
+      <h2>C · Harta</h2>
+      <p class="why"><b>Ce ordine arată:</b> aceeași ordine, pe axele metodologiei: Present → Future pe verticală, Task (Flow) ↔ Relationship (Trust) pe orizontală. Din Aligned, drumul se desparte spre Flow și Trust, iar cele două se reunesc în Delivering consistently: Delivery e efectul lor. Apoi urcă spre viitor. Cea mai bogată în idei, dar cere un minut de citit. <b>În articol:</b> la Layer 1, unde textul spune că Delivery e efectul unui proces, sau într-un articol următor despre metodologie.</p>
+      <img src="schita-4-layers-v3/c-harta.png" alt="Concept C: harta cu axele Present-Future și Task-Relationship. Din 1 Aligned, drumul se desparte spre Flow și Trust, se reunește în 3 Delivering consistently, apoi urcă la 4 Building the future și la An emergent team. Dedesubt, Containerul.">
+      <p class="files"><a href="schita-4-layers-v3/c-harta.png">PNG 1456 px</a> · <a href="schita-4-layers-v3/c-harta.svg">SVG</a></p>
+    </section>
+  </div>
+
+  <h3>Pe telefon (358 px, lățimea coloanei din aplicația Substack)</h3>
+  <div class="phone-row">
+    <div class="phone"><img src="schita-4-layers-v3/a-drumul.png" alt="Conceptul A la lățime de telefon"><p>A · numele ≈ 14 px, frazele ≈ 11 px</p></div>
+    <div class="phone"><img src="schita-4-layers-v3/b-treptele.png" alt="Conceptul B la lățime de telefon"><p>B · numele ≈ 13 px, frazele ≈ 10 px</p></div>
+    <div class="phone"><img src="schita-4-layers-v3/c-harta.png" alt="Conceptul C la lățime de telefon"><p>C · numele ≈ 13 px; etichetele axelor ≈ 10 px</p></div>
+  </div>
+
+  <h3>Note</h3>
+  <ul class="notes">
+    <li>Fontul Wise Teams e Poppins. Nu e pe acest calculator, așa că PNG-urile sunt în Avenir Next, cel mai apropiat font geometric de sistem. Cu Poppins (licență OFL, gratuit) le refac într-un minut.</li>
+    <li>Semnătura e doar textul „Wise Teams”. Wordmark-ul „wise” cu graful de noduri nu l-am redesenat: fără fișierul original n-ar fi fidel.</li>
+    <li>Culorile sunt luate aproximativ din materialele Wise Teams. Unde stă text alb pe culoare (Delivery, Flow), nuanța e puțin mai închisă, pentru contrast AA.</li>
+    <li>Numele etapelor (Aligned, Moving efficiently, Delivering consistently, Building the future, An emergent team) și frazele scurte sunt propunerea noastră, după metodologie. Fără date de client.</li>
+    <li>Sursa: <code>schita-4-layers-v3/gen.mjs</code> (textele și culorile într-un singur loc). Cu <code>node gen.mjs</code> refaci SVG-urile.</li>
+  </ul>
+</div>
+</body>
+</html>
