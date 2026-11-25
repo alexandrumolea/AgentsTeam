@@ -1,7 +1,7 @@
 # Ședința de dimineață
 
 > Cerut de Alex (2026-11-25): „în fiecare dimineață, voi să faceți o ședință și să vă uitați peste ce este important, să fiți proactivi, să-mi pregătiți niște drafturi și să luăm deciziile împreună.”
-> Status: propunere (D-090, de confirmat de Alex). Înlocuiește rutina de pe GitHub (`rutina-dimineata.md`), care nu vede emailul, calendarul și Trello.
+> Status: aprobată de Alex (D-090, 2026-11-25). Rulează ca task programat `sedinta-de-dimineata` (luni–vineri, ~7:30; aplicația pornește taskurile cu câteva minute de decalaj). Înlocuiește rutina de pe GitHub (`rutina-dimineata.md`), care nu vede emailul, calendarul și Trello.
 
 | Element | Ce scrie |
 |---|---|
