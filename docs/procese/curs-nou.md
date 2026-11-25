@@ -143,6 +143,7 @@ Blocurile 1–3 au câte 90 de minute, blocul 4 are 120 (Alex, 2026-11-18). Pauz
 | – | **Producția** (D) | `piese/<id>.md` cu ecrane (`:::sala`), scheme, note de trainer; „Trimite în agendă” face `agenda` din `editii/<data>.yml` | Matei (Daria, Irina) | Biblioteca de piese, vederile Ziua și Schița |
 | 6 | **Livrare flexibilă** | ziua în sală; alternativele și Biblioteca permit schimbări | Alex. Mike pentru generator | – |
 | 7 | **Feedbackul trainerului** | `editii/<data>-trainer.md`, în 10 minute, în aceeași zi | Alex sau co-trainerul. Andrei preia | îl scrie |
+| 7b | **Lessons learned și flow-ul următor** (după prima livrare și după fiecare livrare până la stabilizare) | `lessons-learnt.md` în folderul cursului: cât mai mult în cuvintele lui Alex, doar puțin structurate (din feedbackul trainerului, din deck-ul final și din ce spune Alex). Apoi Daria reface flow-ul (`flow/flow-vN.md`), Alex îl vede în aplicație, la Harvest, iar slide-urile noi se fac direct mock-up → slide (Irina verifică) | Elena (lessons learned). Daria (flow). Andrei verifică | dă lecțiile, aprobă flow-ul nou |
 | 8 | **Curs online** | exportul `<slug>-participanti.json`, fără note de trainer și fără nume; pe site prin PR | Matei. Mike pentru PR | aprobă PR-ul |
 | 9 | **Feedback către participanți** | draft: mulțumire, linkul cursului online, formular de 3 întrebări (ce iei cu tine, ce aplici luni, ce ai schimba). Răspunsurile în `feedback/<data>.md` | Daria | **trimite**, în 1–3 zile |
 | 10 | **Verificare centralizată**, lunar | concluziile în `privat/concluzii-feedback.md`; ce e general merge în `team/elena/documente/lectii.md`; harta cursurilor se actualizează | Andrei, cu Elena | în raportul lunar |
@@ -170,6 +171,11 @@ Pe masă intră ca orice piesă, cu `sursa: comun`.
 
 ## Ce e deja făcut în Change Agility
 Modulul „Toleranță și capacitate”, contractul și closing-urile au fost produse înainte de regula din 2026-11-18. Rămân. La primul harvest intră și ele în `harvest.yml`, ca piese deja produse, și trec prin verdict și ordonare ca toate celelalte.
+
+## Lessons learned după livrare (Alex, 2026-11-25)
+> „În procesul nostru de training, inclusiv pe site, aș vrea să avem, că facem un document cu lessons learned după prima livrare, și ne întoarcem și îmbunătățim flow-ul.”
+
+Modelul e Change Agility: livrat pe 23.11; lecțiile lui Alex pe 24.11 (`lessons-learnt.md`, de Elena); flow v2 pe 24.11; slide-urile v2 pe 25.11. Lecțiile generale (cele care țin de orice curs) trec în secțiunile de mai jos și în memoria Dariei și a lui Andrei.
 
 ## Feedbackul trainerului (`editii/<data>-trainer.md`)
 1. Ce a mers? 2. Ce a lipsit sau a mers greu? 3. Ce piese schimb, scot sau adaug? 4. Ce obiective s-au atins? 5. Ce am aflat despre grup și n-am știut din diagnostic?
