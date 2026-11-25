@@ -1,0 +1,27 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 1024" width="1024" height="1024">
+  <title>Financial Growth · J · Portofelul</title>
+  <defs>
+    <radialGradient id="p1" cx="0.1" cy="0.06" r="0.8"><stop offset="0" stop-color="#8FD3F7" stop-opacity=".75"/><stop offset="1" stop-color="#8FD3F7" stop-opacity="0"/></radialGradient>
+    <radialGradient id="p2" cx="0.95" cy="0.18" r="0.6"><stop offset="0" stop-color="#4FA3F0" stop-opacity=".38"/><stop offset="1" stop-color="#4FA3F0" stop-opacity="0"/></radialGradient>
+    <radialGradient id="p3" cx="0.9" cy="0.95" r="0.75"><stop offset="0" stop-color="#B7A6EA" stop-opacity=".7"/><stop offset="1" stop-color="#B7A6EA" stop-opacity="0"/></radialGradient>
+    <radialGradient id="p4" cx="0.05" cy="1" r="0.65"><stop offset="0" stop-color="#F7B79A" stop-opacity=".6"/><stop offset="1" stop-color="#F7B79A" stop-opacity="0"/></radialGradient>
+    <g id="fond"><rect width="1024" height="1024" fill="#F6F4FA"/><rect width="1024" height="1024" fill="url(#p1)"/><rect width="1024" height="1024" fill="url(#p2)"/><rect width="1024" height="1024" fill="url(#p3)"/><rect width="1024" height="1024" fill="url(#p4)"/></g><filter id="u" x="-30%" y="-30%" width="160%" height="160%"><feGaussianBlur stdDeviation="20"/></filter>
+  </defs>
+  <use href="#fond"/>
+  <g opacity="0.16" transform="translate(0 22)" filter="url(#u)" fill="#2B44B8" stroke="#2B44B8"><path d="M262 452C262 432 278 418 298 418H718C752 418 772 440 772 474V760C772 794 750 816 716 816H318C286 816 262 792 262 760Z"/><path d="M700 546H808C834 546 852 564 852 590V634C852 660 834 678 808 678H700C674 678 656 660 656 634V590C656 564 674 546 700 546Z"/></g>
+  <g id="bancnote">
+    <g transform="rotate(-10 429 370)">
+      <rect x="284" y="150" width="290" height="440" rx="34" fill="#F7B79A" stroke="#C96A1E" stroke-width="40.32" stroke-linejoin="round"/>
+      
+    </g>
+    <g transform="rotate(9 596 393)">
+      <rect x="446" y="168" width="300" height="450" rx="34" fill="#F7B79A" stroke="#C96A1E" stroke-width="40.32" stroke-linejoin="round"/>
+      <path d="M671.9 225.5A80 80 0 1 0 671.9 344.5M520.8 266.6H639.2M520.8 303.4H639.2" fill="none" stroke="#C96A1E" stroke-width="34" stroke-linecap="round" stroke-linejoin="round"/>
+    </g>
+  </g>
+  <g id="portofel" stroke="#2B44B8" stroke-width="56" stroke-linejoin="round" stroke-linecap="round">
+    <path d="M262 452C262 432 278 418 298 418H718C752 418 772 440 772 474V760C772 794 750 816 716 816H318C286 816 262 792 262 760Z" fill="#FFFFFF"/>
+    <path d="M700 546H808C834 546 852 564 852 590V634C852 660 834 678 808 678H700C674 678 656 660 656 634V590C656 564 674 546 700 546Z" fill="#FFFFFF"/>
+  </g>
+  <circle id="punct" cx="754" cy="612" r="30" fill="#F28C3B"/>
+</svg>

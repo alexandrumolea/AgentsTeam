@@ -1,0 +1,29 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 1024" width="1024" height="1024">
+  <title>Financial Growth · G · Moneda care încolțește</title>
+  <defs>
+    <radialGradient id="p1" cx="0.1" cy="0.06" r="0.8"><stop offset="0" stop-color="#8FD3F7" stop-opacity=".75"/><stop offset="1" stop-color="#8FD3F7" stop-opacity="0"/></radialGradient>
+    <radialGradient id="p2" cx="0.95" cy="0.18" r="0.6"><stop offset="0" stop-color="#4FA3F0" stop-opacity=".38"/><stop offset="1" stop-color="#4FA3F0" stop-opacity="0"/></radialGradient>
+    <radialGradient id="p3" cx="0.9" cy="0.95" r="0.75"><stop offset="0" stop-color="#B7A6EA" stop-opacity=".7"/><stop offset="1" stop-color="#B7A6EA" stop-opacity="0"/></radialGradient>
+    <radialGradient id="p4" cx="0.05" cy="1" r="0.65"><stop offset="0" stop-color="#F7B79A" stop-opacity=".6"/><stop offset="1" stop-color="#F7B79A" stop-opacity="0"/></radialGradient>
+    <g id="fond"><rect width="1024" height="1024" fill="#F6F4FA"/><rect width="1024" height="1024" fill="url(#p1)"/><rect width="1024" height="1024" fill="url(#p2)"/><rect width="1024" height="1024" fill="url(#p3)"/><rect width="1024" height="1024" fill="url(#p4)"/></g>
+    <radialGradient id="gM" cx=".36" cy=".3" r=".8"><stop offset="0" stop-color="#F7A866"/><stop offset=".6" stop-color="#F28C3B"/><stop offset="1" stop-color="#E07B2C"/></radialGradient><linearGradient id="gF" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#5569C6"/><stop offset="1" stop-color="#2B44B8"/></linearGradient><filter id="u" x="-30%" y="-30%" width="160%" height="160%"><feGaussianBlur stdDeviation="20"/></filter>
+    <filter id="fin" x="-5%" y="-5%" width="110%" height="110%">
+      <feOffset in="SourceAlpha" dy="7" result="a"/><feComposite in="SourceAlpha" in2="a" operator="out" result="sus"/>
+      <feGaussianBlur in="sus" stdDeviation="2.3333333333333335" result="susB"/><feFlood flood-color="#FFFFFF" flood-opacity="0.55"/><feComposite in2="susB" operator="in" result="lumina"/>
+      <feOffset in="SourceAlpha" dy="-7" result="b"/><feComposite in="SourceAlpha" in2="b" operator="out" result="jos"/>
+      <feGaussianBlur in="jos" stdDeviation="2.8" result="josB"/><feFlood flood-color="#253892" flood-opacity="0.3"/><feComposite in2="josB" operator="in" result="umbra"/>
+      <feMerge><feMergeNode in="SourceGraphic"/><feMergeNode in="umbra"/><feMergeNode in="lumina"/></feMerge>
+    </filter>
+  </defs>
+  <use href="#fond"/>
+  <g opacity="0.2" transform="translate(0 22)" filter="url(#u)" fill="#2B44B8" stroke="#2B44B8"><circle cx="512" cy="618" r="232"/></g>
+  <g id="mugur" filter="url(#fin)">
+    <path d="M512 392C512 326 510 276 512 236" fill="none" stroke="#2B44B8" stroke-width="30" stroke-linecap="round"/>
+    <g fill="url(#gF)"><path d="M0 0C50 -70 150 -70 200 0C150 70 50 70 0 0Z" transform="translate(512 266) rotate(-28)"/><path d="M0 0C42.5 -60 127.5 -60 170 0C127.5 60 42.5 60 0 0Z" transform="translate(512 306) rotate(200)"/></g>
+  </g>
+  <g id="moneda" filter="url(#fin)">
+    <circle cx="512" cy="618" r="232" fill="url(#gM)"/>
+    <circle cx="512" cy="618" r="194.9" fill="none" stroke="#C96A1E" stroke-width="10.4" opacity=".55"/>
+    <path d="M622.1 531.8A116 116 0 1 0 622.1 704.2M403 591.3H574.6M403 644.7H574.6" fill="none" stroke="#FFFFFF" stroke-width="30.2" stroke-linecap="round" stroke-linejoin="round"/>
+  </g>
+</svg>
