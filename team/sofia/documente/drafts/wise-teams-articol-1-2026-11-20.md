@@ -2,6 +2,7 @@
 
 > Draft Sofia, 2026-11-25 (T-045). **Nepublicat. Așteaptă aprobarea lui Alex.**
 > v4: rescris pe feedbackul lui Alex din 2026-11-25: „insight-urile nu prea sunt insight-uri… Am schițat ideile principale. Aș vrea ca articolul să fie mai scurt. Introducerea e foarte bună.” Fiecare nivel e construit acum pe ideile lui Alex (mecanismul din spate), nu pe cele 16 comportamente. Introducerea a rămas neschimbată. Am scos formatul „When it works / When it doesn't”, întrebările de la fiecare nivel, scena cu termenul ratat, planul de acțiune și mențiunea Strategic Focus Tool. ~730 de cuvinte (v3 avea ~1.000).
+> v4.1 (Alex, 2026-11-25): Containerul rescris pe insight-ul lui (echipele uită de ce și pentru cine există și ce vor să inspire unii în ceilalți; munca alunecă spre eficiență personală, „minimul necesar, cât mai repede”); „we'd be happy to talk” (la Wise Teams sunt doi); un paragraf scurt despre motivația Wise Teams.
 > LinkedIn: scos din acest draft (Alex, 2026-11-25: „poate că ar fi mai logic să facem întâi articolul și apoi să pornească un flow pentru linkedin”). Postarea se face din articolul aprobat, ca pas separat. Variantele LinkedIn de până acum sunt în `arhiva/wise-teams-articol-1-2026-11-20-v3.md`.
 > v3 (key insights din cele 16 comportamente): `arhiva/wise-teams-articol-1-2026-11-20-v3.md`. v2: `arhiva/wise-teams-articol-1-2026-11-20-v2.md`. v1, în română: `arhiva/wise-teams-articol-1-2026-11-20-v1-ro.md`.
 
@@ -25,7 +26,7 @@ Text de previzualizare: „Results are the layer everyone sees. Here is what hol
 
 ---
 
-## Textul pentru Substack (EN, ~730 de cuvinte)
+## Textul pentru Substack (EN, ~790 de cuvinte)
 
 # The 4 Layers of How a Team Works
 *What sits underneath the results you see*
@@ -114,16 +115,24 @@ And here is the part we rarely say out loud: teams usually can't work on trust o
 
 ### 📌 And underneath: the Container
 
-Below the four layers sits the Container: why the team exists, what it delivers and to whom, who plays which role, and the rules it works by. When the layers above keep shaking, it's often the ground underneath that asks for attention.
+Below the four layers sits the Container: why the team exists, who it exists for, what its people want to inspire in each other, and the roles and rules it works by.
+
+Teams often forget it. They lose the why, and with it the big picture.
+
+And when that happens, work slides easily toward personal efficiency and personal goals. Doing the necessary minimum, as fast as possible.
+
+👉 When the layers above keep shaking, it's often the ground underneath that asks for attention.
 
 ### Final thought
 
 Results are the layer everyone sees.
 The layers underneath are the ones you build.
 
+At Wise Teams, this is why we do what we do: to move the knowledge of how a team works into the team itself, and to help it get unblocked at every step, with the right professional for that particular challenge.
+
 💬 Which layer feels strongest in your team right now, and which one is asking for attention?
 
-And if you'd like to look at the four layers together with your team, I'd be happy to talk.
+If you'd like to look at the four layers together with your team, we'd be happy to talk.
 
 ---
 
