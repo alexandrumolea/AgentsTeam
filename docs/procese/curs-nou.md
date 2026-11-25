@@ -186,6 +186,14 @@ Modulul „Toleranță și capacitate”, contractul și closing-urile au fost p
 - **Formatul piesei (D-086):** input-ul lui Alex · exercițiu sau prezentare · ideea principală + research (prezentare) sau mecanica pe scurt (exercițiu) · întrebări de critical thinking sau de debriefing. Fără idei de design în fișă.
 - **Cum face Alex slide-urile** (deck-ul final, `materiale/livrat-2026-11-23/`): etichete scurte de tip (REFLECȚIE, EXERCIȚIU, GOOD TO KNOW, IDEE, INSIGHT); întrebările de reflecție singure pe ecran; doar două blocuri mari în zi; a tăiat mult din ce i-am propus.
 
+## Amintirea lui Alex înainte de fiecare training (Alex, 2026-11-25)
+> „Să-mi amintiți vă rog la următoarele training să nu mă mai concentrez atât de mult pe informație și mai mult pe coaching și conversații autentice.”
+
+Cine și când:
+- **Daria**, când face flow-ul: verifică că ziua are mai mult timp pentru coaching, perechi și debriefing decât pentru prezentare. Dacă nu are, scurtează informația, nu conversațiile.
+- **Andrei**, la poarta flow-ului: pune întrebarea „Unde e aici coaching-ul lui Alex?” înainte să treacă flow-ul mai departe.
+- **Tudor**, cu o zi înainte de fiecare livrare: îi trimite lui Alex citatul de mai sus, plus momentele de coaching și de conversație din ziua respectivă.
+
 ## Reguli
 - Nimic nu pleacă la participanți sau la client fără Alex. Echipa face doar draft-uri.
 - Fără date personale și fără numele clientului în repo-ul public.
