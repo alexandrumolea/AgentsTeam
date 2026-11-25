@@ -106,9 +106,14 @@ for (const c of CATS){
       if (slugs.has(e.slug)) fail(`${w}: slug-ul „${e.slug}” apare de două ori.`);
       slugs.add(e.slug);
       if (!/\.html$/.test(e.pagina) || !existsSync(join(ROOT, e.pagina))) fail(`${w}: nu găsesc pagina ${e.pagina}.`);
-      try { e = { ...e, ...citestePagina(read(e.pagina), { scope: '.proces', where: e.pagina }) }; } catch (er) { fail(er.message); }
-      // locul paginii între antet și subsol, ca la celelalte pagini (lățimea ei de lucru e 980 px, plus marginile)
-      e.css = `main.proces{width:min(1060px,calc(100% - 2 * var(--gut)));margin:28px auto 0;overflow:hidden}\n${e.css}`;
+      if (e.cadru !== undefined && typeof e.cadru !== 'boolean') fail(`${w}: „cadru” e true sau false.`);
+      // <title> din fișier = titlul din tab; titlul din categorii.yml rămâne cel din listă
+      try { const { titlu: titluTab, ...p } = citestePagina(read(e.pagina), { scope: '.proces', where: e.pagina }); e = { ...e, ...p, titluTab }; } catch (er) { fail(er.message); }
+      // locul paginii între antet și subsol. Cu cadru (implicit): pagina stă pe un card de sticlă, ca celelalte pagini
+      // (lățimea ei de lucru e 980 px, plus marginile). Cu `cadru: false`: pagina își aduce singură sticla (șablonul paginii de curs).
+      e.css = (e.cadru === false
+        ? `main.proces{width:min(1080px,calc(100% - 2 * var(--gut)));margin:20px auto 0}\n`
+        : `main.proces{width:min(1060px,calc(100% - 2 * var(--gut)));margin:28px auto 0;overflow:hidden}\n`) + e.css;
       e.url = `${c.url}/${e.slug}/`;
     }
     return e;
@@ -674,9 +679,23 @@ function desprePage(c){
 // Pagina unui element cu `pagina`: antetul și subsolul site-ului, iar între ele pagina din repo, cu designul ei.
 // Stilul ei e în assets/pagini/<slug>.css, închis sub .proces (vezi site/pagina-html.mjs).
 function elementPage(c, e){
-  return page({ cheie: c.cheie, title: e.titlu, description: `${e.titlu}: ${e.fraza}`, path: e.url, mainClass: 'proces glass-read',
+  return page({ cheie: c.cheie, title: e.titluTab || e.titlu, description: e.descriere || `${e.titlu}: ${e.fraza}`, path: e.url,
+    mainClass: e.cadru === false ? 'proces' : 'proces glass-read',
     extraHead: `<link rel="stylesheet" href="${u(`assets/pagini/${e.slug}.css`)}?v=${createHash('sha256').update(e.css).digest('hex').slice(0, 10)}">`,
-    bodyHtml: e.html });
+    bodyHtml: whatsappLinks(e.html, e.pagina) });
+}
+
+// Butonul WhatsApp dintr-o pagină din repo: <a href="#whatsapp" data-whatsapp="mesajul pregătit">…</a>.
+// Numărul vine doar din secretul CONTACT_WHATSAPP (același ca în capsula Contact) și nu se scrie în niciun fișier din repo.
+// Fără secret (de exemplu un build local), butonul nu apare, cu un avertisment.
+function whatsappLinks(html, where){
+  const nr = String(process.env[CANALE.whatsapp.mediu] || '').trim();
+  const dec = s => s.replace(/&quot;/g, '"').replace(/&#39;/g, "'").replace(/&lt;/g, '<').replace(/&gt;/g, '>').replace(/&amp;/g, '&');
+  return html.replace(/<a\b([^>]*?)\sdata-whatsapp\s*=\s*"([^"]*)"([^>]*)>([\s\S]*?)<\/a>/gi, (_, a, msg, b, inner) => {
+    if (!nr){ warn(`${where}: butonul WhatsApp („${inner.replace(/<[^>]+>/g, '').trim()}”) lipsește, pentru că secretul ${CANALE.whatsapp.mediu} nu e setat.`); return ''; }
+    const attrs = `${a}${b}`.replace(/\shref\s*=\s*"[^"]*"/i, '');
+    return `<a${attrs} href="${esc(`${CANALE.whatsapp.link(nr)}?text=${encodeURIComponent(dec(msg).trim())}`)}">${inner}</a>`;
+  });
 }
 
 function teamPage(){

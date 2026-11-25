@@ -22,7 +22,13 @@ Scena se adaptează singură: cu cel mult 3 obiecte, orbita se strânge și obie
 În `content/categorii.yml`, la secțiune, lista `elemente`: `titlu`, `fraza` și fie `link: https://…`, fie `pagina` + `slug`.
 Cu `pagina` (un fișier `.html` din repo, ca `docs/procese/curs-nou-vizual.html`), build-ul publică pagina la `<secțiune>/<slug>/`, cu antetul și subsolul site-ului. **Sursa e una singură:** editezi fișierul din repo, iar site-ul îl preia la următorul build.
 Ce face build-ul cu pagina (`site/pagina-html.mjs`): scoate `<title>`, `<meta>` și `<link>` (fonturile de pe Google Fonts; site-ul are Sora și Inter Tight locale), prefixează clasele cu `pr-`, închide stilul sub `main.proces` și transformă `style="…"` în clase (CSP-ul are `style-src 'self'`). Stilul ajunge în `assets/pagini/<slug>.css`.
-Build-ul se oprește dacă pagina are `<script>`, `@import` sau resurse de pe alt site.
+Build-ul se oprește dacă pagina are `<script>` (chiar și scris într-un comentariu), `@import` sau resurse de pe alt site. `@keyframes` sunt permise și primesc și ele prefixul `pr-`.
+`<title>` din fișier devine titlul din tab-ul browserului, iar `<meta name="description">` descrierea paginii; `titlu` din `categorii.yml` rămâne textul din listă. `cadru: false` (în `categorii.yml`) scoate cardul de sticlă al site-ului din jurul paginii, pentru paginile care își aduc singure sticla.
+Butonul WhatsApp: `<a href="#whatsapp" data-whatsapp="mesajul pregătit">…</a>`. Build-ul pune linkul `https://wa.me/<număr>?text=<mesaj>` din secretul `CONTACT_WHATSAPP`, același ca în capsula Contact; numărul nu se scrie în repo. Fără secret (build local), butonul lipsește, cu un avertisment.
+
+## Cum pui un workshop în Latest Workshops
+
+Șablonul e pagina Change Agility (`content/workshops/change-agility.html`, mock-up-ul Ioanei, T-052). Pentru un workshop nou: copiezi fișierul în `content/workshops/<slug>.html`, schimbi textul, rândurile planului și numele cursului din mesajul WhatsApp, apoi adaugi un rând în `content/categorii.yml` → `speaking` → `elemente` (`titlu`, `fraza`, `slug`, `pagina`, `cadru: false`). Pagina apare la `workshops/<slug>/`.
 
 ## Pagina Despre
 

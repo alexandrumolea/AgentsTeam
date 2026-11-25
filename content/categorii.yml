@@ -56,8 +56,17 @@ categorii:
     dimensiune: munca
     ordine: 3
     pe_orbita: true
-    stare: in-pregatire
+    stare: deschis
     pod: ""
+    # Workshopurile livrate (D-093, pasul 7c din docs/procese/curs-nou.md), fiecare cu pagina lui la workshops/<slug>/.
+    # Pagina e un fișier din content/workshops/ (șablonul paginii de curs al Ioanei). Un workshop nou: copiezi
+    # change-agility.html, îi schimbi textul și adaugi aici un rând. `cadru: false`: pagina își aduce singură sticla.
+    elemente:
+      - titlu: "Change Agility"
+        fraza: "Un workshop în care fiecare pleacă cu planul lui de reinventare."
+        slug: change-agility
+        pagina: content/workshops/change-agility.html
+        cadru: false
 
   - cheie: inventii
     vizibil: true
@@ -73,6 +82,7 @@ categorii:
     # Elementele secțiunii (Alex, 2026-11-18). Fiecare apare ca un rând: titlul (link) și fraza.
     # `pagina`: un fișier .html din repo, publicat la innovations/<slug>/ cu antetul și subsolul site-ului.
     #   Sursa e una singură: ce schimbi în fișier apare pe site la următorul build. (Sau `link: https://…` spre altă adresă.)
+    #   <title> din fișier e titlul din tab-ul browserului, <meta name="description"> descrierea; `titlu` de aici e cel din listă.
     elemente:
       - titlu: "Procesul de training design cu AI"
         fraza: "Cum construim un training cu o echipă de agenți AI și oameni: viziune, Laborator, harvest, firul roșu."
