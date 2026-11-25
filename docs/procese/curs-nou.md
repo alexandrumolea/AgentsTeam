@@ -144,6 +144,7 @@ Blocurile 1–3 au câte 90 de minute, blocul 4 are 120 (Alex, 2026-11-18). Pauz
 | 6 | **Livrare flexibilă** | ziua în sală; alternativele și Biblioteca permit schimbări | Alex. Mike pentru generator | – |
 | 7 | **Feedbackul trainerului** | `editii/<data>-trainer.md`, în 10 minute, în aceeași zi | Alex sau co-trainerul. Andrei preia | îl scrie |
 | 7b | **Lessons learned și flow-ul următor** (după prima livrare și după fiecare livrare până la stabilizare) | `lessons-learnt.md` în folderul cursului: cât mai mult în cuvintele lui Alex, doar puțin structurate (din feedbackul trainerului, din deck-ul final și din ce spune Alex). Apoi Daria reface flow-ul (`flow/flow-vN.md`), Alex îl vede în aplicație, la Harvest, iar slide-urile noi se fac direct mock-up → slide (Irina verifică) | Elena (lessons learned). Daria (flow). Andrei verifică | dă lecțiile, aprobă flow-ul nou |
+| 7c | **Pe site și mini-cursul** (după ce cursul e livrat; D-093) | (a) o pagină de descriere în Latest Workshops, ca să-l poată cumpăra și alți clienți: pentru cine e, ce se schimbă după el, cum arată ziua, format și durată, fără nume de clienți; (b) un mini-curs din el (formatul îl propune Andrei). Ambele pornesc din flow-ul livrat și din lessons learned | Andrei (DRI). Maria (textul), Ioana (compoziția), Mike (site) | aprobă textul și pagina |
 | 8 | **Curs online** | exportul `<slug>-participanti.json`, fără note de trainer și fără nume; pe site prin PR | Matei. Mike pentru PR | aprobă PR-ul |
 | 9 | **Feedback către participanți** | draft: mulțumire, linkul cursului online, formular de 3 întrebări (ce iei cu tine, ce aplici luni, ce ai schimba). Răspunsurile în `feedback/<data>.md` | Daria | **trimite**, în 1–3 zile |
 | 10 | **Verificare centralizată**, lunar | concluziile în `privat/concluzii-feedback.md`; ce e general merge în `team/elena/documente/lectii.md`; harta cursurilor se actualizează | Andrei, cu Elena | în raportul lunar |
@@ -171,6 +172,11 @@ Pe masă intră ca orice piesă, cu `sursa: comun`.
 
 ## Ce e deja făcut în Change Agility
 Modulul „Toleranță și capacitate”, contractul și closing-urile au fost produse înainte de regula din 2026-11-18. Rămân. La primul harvest intră și ele în `harvest.yml`, ca piese deja produse, și trec prin verdict și ordonare ca toate celelalte.
+
+## După livrare: pe site și mini-curs (Alex, 2026-11-25, D-093)
+> „Când am terminat și livrat un curs, îl punem și pe site ca descriere pentru a-l putea cumpăra și alți clienți și creăm și un mini curs din el.”
+
+Pasul 7c din tabel. Pornește imediat după livrare, în paralel cu lessons learned (7b). Pagina de descriere folosește același șablon pentru toate cursurile.
 
 ## Lessons learned după livrare (Alex, 2026-11-25)
 > „În procesul nostru de training, inclusiv pe site, aș vrea să avem, că facem un document cu lessons learned după prima livrare, și ne întoarcem și îmbunătățim flow-ul.”
