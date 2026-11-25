@@ -19,3 +19,4 @@
 | [Review-ul echipei](review-echipa.md) | Tudor | în fiecare lună, după retro |
 | [Automatizare: fiecare flux devine automat](automatizare.md) | Tudor | după ce un flux a mers o dată de mână |
 | [Ce iese public](ce-iese-public.md) | Tudor | înainte de orice push, postare sau publicare |
+| [Review-ul conținutului](review-continut.md) (D-095) | Maria | o dată la 6 luni: mai și noiembrie |
