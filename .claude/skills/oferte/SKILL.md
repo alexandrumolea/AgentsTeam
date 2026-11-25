@@ -37,6 +37,7 @@ Clientul nu caută un program de training, caută o zi utilă pentru oamenii lui
 - Titlurile de pe agendă sunt pe limba clientului, nu termeni de facilitator. Temele lui Alex rămân esența, dar se redenumesc: „Contractarea” devine „Cum pornim bine o colaborare”; „Contractul și așteptările” devine „Ce așteptăm unii de la alții”.
 - Fără promisiuni de adaptare sau discuții prealabile, dacă Alex nu le cere. O zi dintr-o serie se prezintă ca o zi bună și singură; legătura cu restul seriei, cel mult o mențiune.
 - Pe șablon: agenda folosește tabelul existent (Ora / Ce lucrăm cu subtitlul în small / Durata), fără stil nou. Dacă agenda nu încape pe foaia 1, beneficiile trec pe foaia 2, deasupra formatului.
+- 2026-11-25: **Mai multe workshop-uri scurte în aceeași ofertă** (de exemplu două de 3 ore): un singur document, câte o foaie pe workshop (titlu și subtitlu, De ce e relevant, Agenda, Ce iau oamenii cu ei), ca fiecare să stea singur, plus o foaie comună (Formatul pe scurt, Bine de știut cu „se pot alege separat sau împreună”, Investiția, final). Când ora de start nu e stabilită, agenda are doar două coloane (Ce lucrăm / Durata), cu pauza într-o notă sub tabel; duratele adunate cu pauza dau exact durata anunțată. În Investiția: un rând pe workshop, inclusele sub fiecare (cel mult 2 pe rând, ca tabelul să rămână scurt), totalul pentru toate și o notă cu prețul unuia singur.
 
 ## 3. Tonul
 - Vocea lui Alex (skill `vocea-alex`): cald, direct, în română, fără jargon și fără presiune. Vânzare prin claritate și prin rezultat, nu prin adjective.
