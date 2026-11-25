@@ -32,10 +32,11 @@ Nu e un curs despre cum conduci o transformare în organizație. E despre omul c
 - Pleacă cu **planul de reinventare**, scris de ei pe parcursul zilei: resursele lor, skill-ul pe care vor să-l crească și primii pași pe care vor să-i facă, alături de un coleg.
 
 ### Cum arată ziua
-1. **Relația noastră cu schimbarea.** Pornim de la o schimbare prin care ai trecut deja. Un coleg te ascultă ca un detectiv și îți spune ce resurse a auzit în povestea ta. Apoi, pe scurt: de ce rezistența e firească.
-2. **Incertitudinea.** Un moment de liniște, un „nu știu” spus unui coleg și cele trei lucruri care ne ajută: ne liniștim, înțelegem, creștem.
-3. **Te liniștești, înțelegi.** Desenezi harta unei schimbări de acum: ce ține de tine și ce nu. Apoi privești înainte, spre semnalele din jur și din tine, și îți scrii o scrisoare din viitor. De acolo îți alegi skill-ul pe care vrei să-l crești.
-4. **Crești.** Faci un plan de învățare pentru skill-ul ales, cu o buclă de feedback simplă. Urmează coaching în perechi și o încheiere în trei întrebări.
+1. **Relația ta cu schimbarea.** Înțelegi cum te raportezi la schimbare și descoperi resursele de adaptare pe care le ai deja, chiar dacă nu erai conștient de ele.
+2. **Incertitudinea.** Ce se întâmplă cu noi când nu mai putem anticipa ce urmează și cum putem trăi mai ușor cu asta.
+3. **Cele trei skill-uri ale schimbării.** Te liniștești, înțelegi, crești: ce faci cu ce simți, cum privești înainte și altfel, cum înveți și renunți la ce nu te mai ajută. Alegi skill-ul pe care vrei să-l crești.
+
+> 2026-11-25, Alex: „Nu vreau să dăm prea multe detalii despre ce se întâmplă în curs efectiv. Ci care sunt pașii pe care oamenii îi parcurg.” Pașii sunt ai lui Alex; secțiunea veche, cu exercițiile, a ieșit.
 
 ### Format și durată
 O zi în sală, 9:30–17:30, cu pauze.

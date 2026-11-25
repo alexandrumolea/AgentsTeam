@@ -103,13 +103,13 @@ section{padding-block:40px 4px;display:grid;gap:18px}
 .schimbari li.cheie::before{background:var(--portocaliu);border-color:var(--punct-inel)}
 
 /* ========== 3 · cum arată ziua: drumul cu patru opriri ========== */
-.zi{position:relative;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px;padding-top:30px}
+.zi{position:relative;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px;padding-top:30px}
 .zi::before{content:"";position:absolute;left:24px;right:24px;top:13px;height:2px;border-radius:2px;
   background:linear-gradient(90deg,var(--cer),var(--lavanda) 50%,var(--piersica) 80%,var(--portocaliu))}
 .oprire{position:relative;padding:20px 20px 18px;display:grid;gap:10px;align-content:start}
 .oprire::before{content:"";position:absolute;left:20px;top:-24px;width:16px;height:16px;border-radius:50%;background:#fff;border:3px solid var(--cer)}
-.oprire:nth-child(2)::before{border-color:#8E8BD8}.oprire:nth-child(3)::before{border-color:var(--lavanda)}
-.oprire:nth-child(4)::before{background:var(--portocaliu);border-color:var(--punct-inel)}
+.oprire:nth-child(2)::before{border-color:var(--lavanda)}
+.oprire:nth-child(3)::before{background:var(--portocaliu);border-color:var(--punct-inel)}
 .oprire .nr{font:200 34px/1 var(--f-titlu);color:var(--accent);letter-spacing:-.02em}
 .oprire p{font-size:16px;line-height:1.5}
 .in-plan{display:inline-flex;align-items:center;gap:8px;width:fit-content;font-size:14px;font-weight:500;color:var(--accent);background:#fff;border-radius:999px;padding:4px 10px 4px 8px;margin-top:2px}
@@ -146,7 +146,7 @@ section{padding-block:40px 4px;display:grid;gap:18px}
   .hero{grid-template-columns:1fr}
   .plan{transform:none;max-width:520px}
   .doua,.final{grid-template-columns:1fr}
-  .zi{grid-template-columns:repeat(2,minmax(0,1fr));padding-top:0}
+  .zi{grid-template-columns:1fr;padding-top:0}
   .zi::before{display:none}
   .oprire::before{display:none}
 }
@@ -225,29 +225,23 @@ section{padding-block:40px 4px;display:grid;gap:18px}
   <ol class="zi">
     <li class="oprire sticla citit">
       <span class="nr">01</span>
-      <h3>Relația noastră cu schimbarea</h3>
-      <p>Pornim de la o schimbare prin care ai trecut deja. Un coleg te ascultă ca un detectiv și îți spune ce resurse a auzit în povestea ta. Apoi, pe scurt: de ce rezistența e firească.</p>
+      <h3>Relația ta cu schimbarea</h3>
+      <p>Înțelegi cum te raportezi la schimbare și descoperi resursele de adaptare pe care le ai deja, chiar dacă nu erai conștient de ele.</p>
       <span class="in-plan">Resursele tale</span>
     </li>
     <li class="oprire sticla citit">
       <span class="nr">02</span>
       <h3>Incertitudinea</h3>
-      <p>Un moment de liniște, un „nu știu” spus unui coleg și cele trei lucruri care ne ajută: ne liniștim, înțelegem, creștem.</p>
+      <p>Ce se întâmplă cu noi când nu mai putem anticipa ce urmează și cum putem trăi mai ușor cu asta.</p>
     </li>
     <li class="oprire sticla citit">
       <span class="nr">03</span>
-      <h3>Te liniștești, înțelegi</h3>
-      <p>Desenezi harta unei schimbări de acum: ce ține de tine și ce nu. Apoi privești înainte, spre semnalele din jur și din tine, și îți scrii o scrisoare din viitor. De acolo îți alegi skill-ul pe care vrei să-l crești.</p>
-      <span class="in-plan">Skill-ul ales</span>
-    </li>
-    <li class="oprire sticla citit">
-      <span class="nr">04</span>
-      <h3>Crești</h3>
-      <p>Faci un plan de învățare pentru skill-ul ales, cu o buclă de feedback simplă. Urmează coaching în perechi și o încheiere în trei întrebări.</p>
-      <span class="in-plan">Primul pas</span>
+      <h3>Cele trei skill-uri ale schimbării</h3>
+      <p>Te liniștești, înțelegi, crești: ce faci cu ce simți, cum privești înainte și altfel, cum înveți și renunți la ce nu te mai ajută. Alegi skill-ul pe care vrei să-l crești.</p>
+      <span class="in-plan">Skill-ul ales · Primii tăi pași</span>
     </li>
   </ol>
-  <p class="mock">Drumul are aceleași culori ca pe pagina procesului din Innovations (cer → lavandă → piersică → portocaliu). Capsulele cu punct leagă fiecare oprire de rândul ei din plan: arată că planul se scrie pe parcursul zilei. Fără ore pe blocuri, ca în textul Mariei.</p>
+  <p class="mock">Alex (2026-11-25): pe pagină arătăm pașii prin care trec oamenii, nu ce se întâmplă efectiv în curs. Trei opriri, fără exerciții și fără ore. Culorile drumului sunt cele din Innovations (cer → lavandă → portocaliu).</p>
 </section>
 
 <section aria-labelledby="t-format">
