@@ -28,14 +28,14 @@
 3. „Ai construit o echipă de lideri. Și totuși, deciziile tot la tine ajung.”
    *"You've built a team of leaders. And still, the decisions keep coming back to you."*
 
-Corpul de mai jos e scris pe hook-ul 1; cu 2 sau 3, se schimbă doar primele două rânduri.
+Alex a ales hook-ul 3 (2026-11-25); corpul de mai jos îl folosește. Inițial era scris pe hook-ul 1; cu 2 sau 3, se schimbă doar primele două rânduri.
 
 ---
 
 ## Postarea (RO, ~150 de cuvinte)
 
-Uneori, liderul crește mai repede decât echipa lui.
-Și, fără ca cineva să vrea asta, totul ajunge să treacă tot prin el.
+Ai construit o echipă de lideri.
+Și totuși, deciziile tot la tine ajung.
 
 La Wise Teams, cu Andreea [TAG ANDREEA], ne uităm la ce le ajută pe echipe să devină autonome. Avem câteva insight-uri. Și ne lipsește ceva ce nu putem afla singuri: cum arată echipele acum, din interior.
 
@@ -55,8 +55,8 @@ Dacă te regăsești aici, ne-ar bucura să fii unul dintre cei 10.
 
 ## Postarea (EN, ~155 de cuvinte)
 
-Sometimes a leader grows faster than their team.
-And without anyone wanting it, everything ends up going through them.
+You've built a team of leaders.
+And still, the decisions keep coming back to you.
 
 At Wise Teams, Andreea [TAG ANDREEA] and I look at what helps teams become autonomous. We have some insights. And we're missing something we can't find out on our own: what teams look like right now, from the inside.
 
