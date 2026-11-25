@@ -43,3 +43,8 @@ Ce a scris Alex: „Critical Thinking Essentials. Cum să-ți spui părerea argu
 - Fără jargon de facilitator: „cognitive flexibility” și „co-creation” apar doar în varianta 4 a laboratorului 1, iar riscul e notat acolo.
 - Ton permisiv: niciun imperativ de vânzare, nicio promisiune de rezultat garantat.
 - Titlurile sunt în Title Case, iar cele recomandate au cel mult 10 cuvinte (regula din `oferte`, secțiunea 4).
+
+## Alegerea lui Alex (2026-11-25)
+- **Laboratorul 1:** Open Minds – Listening, Rethinking, Building Together. Subtitlu: „Changing your mind is a strength.” / „Să-ți schimbi părerea e o putere.” Lui Alex i-au plăcut și „From Disagreement to Co-Creation” și „Flexible Minds – Working Well with People Who See It Differently”; le folosim ca titluri de blocuri în agendă.
+- **Laboratorul 2:** Well-Argued – Speaking Up with Clarity and Confidence. Subtitlu: „Argumentele clare îți fac vocea auzită.” „Make Your Point” devine titlul unui bloc din agendă.
+- Format: câte un workshop de 3 ore.
