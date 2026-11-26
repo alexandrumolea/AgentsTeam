@@ -58,6 +58,9 @@ Păstrează sub 150 de rânduri. Comprimă când crește. Fapte, nu povești.
 - 2026-11-25: pagina prima sesiune (Coaching): un buton de contact într-o pagină din repo ia textul din site.yml prin `data-contact="<cheie>"` (contactButtons în build.mjs). În cdp.mjs, `key(p,'Enter')` nu trimite text și nu deschide <summary>: trimit keyDown cu text '\r'. Verific portul cu lsof înainte de serve.mjs.
 - 2026-11-25: rândul-drum (elementele secțiunilor): mock-up-ul Ioanei are o singură treaptă (760 px); la 320 px coloana textului rămâne ~110 px, deci testez întâi cel mai îngust ecran. Clasa `.lead` globală (scena) ascunde `<p class="lead">` din panoul de pe prima pagină de la T-024: nu o refolosi. Pe pagini `.wrap a:not(.btn)` colorează orice link: rândurile-link au nevoie de `ul.rows a.rb` (specificitate mai mare).
 
+- 2026-11-26: Lighthouse (T-034): rulează de 3 ori și ia mediana; prima rulare la rece a dat 75 pe prima pagină, următoarele 100. Pentru A/B local folosește un server cu gzip (serve.mjs nu comprimă, iar three.js necomprimat dă scoruri false). cdp.mjs nu-și închide Chrome-ul: cu `process.exit` fără `b.close()`, următorul `launch` pe același port se leagă de Chrome-ul vechi, cu cache vechi. Schimb portul sau închid.
+- 2026-11-26: o țintă de 44 px fără să se miște nimic: `padding:14px 0; margin:-14px 0` (+ `position:relative` dacă un titlu de dedesubt o acoperă). Dovada: capturi PNG identice main/PR (prefers-reduced-motion, ?nogl) și aceleași dimensiuni. `min-height` pe rânduri lipite unul de altul schimbă compoziția: acolo decide Ioana.
+
 ## Fișiere de memorie
 - [Stack și găzduire](project_stack-hosting.md) — GitHub Pages (D-036–D-038), CNAME ignorat la Actions; fapte Netlify/Cloudflare/Vercel
 - [Generatorul paginii echipei](generator-echipa.md) — Mike îl deține; puncte fragile tăcute; 2026-11-17: panoul de control, maparea statusurilor
