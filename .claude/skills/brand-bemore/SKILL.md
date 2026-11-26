@@ -21,11 +21,12 @@ Sursa completă, citește-o când lucrezi efectiv la un material:
 7. **Slide-uri de curs (Alex, 2026-11-22):** knowledge pe fundal **Lumină** (lumina-cer, sticlă albă, colțuri rotunjite); **Noapte** (fundal închis) doar pentru **întrebări** și **mesaje cheie**. Nu propunem Noapte pentru knowledge: rupe coerența. Fără piersică pe slide-uri. Culori cu sens constant: lavandă = amenințare, albastru = oportunitate.
 
 ## Ce brand poartă un material
+- **Regula generală (Alex, 2026-11-26, D-098):** în majoritatea timpului lucrăm în imaginea **BEMORE Learning Studio** (acest brand). Când lucrăm pe **Wise Teams**, folosim culorile și stilul Wise.
 - Clientul vine prin **Innersis** → `innersis-ive`.
 - Livrăm **sub BEMORE** (inclusiv cursurile proprii ale lui Alex și site-ul lui) → acest brand, `brand: bemore`.
 - Cursurile **BEMORE Learning Studio** → tot acest brand (designul Sora), cu marca „BEMORE Learning Studio” (D-061). Vechea identitate LS și `bemore-ls-ive` nu se mai folosesc pentru ele.
 - **Ofertele comerciale**, dacă nu stabilim altfel → tot acest brand, cu marca „BEMORE Learning Studio” (D-073, Alex 2026-11-18). Șablonul: `team/ioana/documente/oferta-sablon-v1.html`.
-- **Wise Teams** → `wise-critical-path` pentru rapoarte; pentru slide-uri întrebi.
+- **Wise Teams** (articole, postări, workshop-uri, slide-uri, PDF-uri, oferte Wise) → manualul Wise Teams: `team/ioana/documente/brand-wise/manual-wise-v1.html` (culori pe capabilitate, wordmark „wise”, ton mai serios, fără emoji). Rapoartele „Drum critic” → `wise-critical-path`.
 - **LIFT** sau nu e clar → stop, întrebi Alex prin Andrei sau Tudor. Un material poartă un singur brand.
 
 ## Testul

@@ -39,3 +39,4 @@ Păstrează sub 150 de rânduri. Comprimă când crește. Fapte, nu povești.
 - 2026-11-16: Alex a redenumit camera poveștilor în „My Journey” (D-042), adresa /my-journey. Camerele sunt acum: Innovations, Live, My Journey, Knowledge Base, plus Latest Workshops ca drum direct.
 
 - 2026-11-16: Rolurile lui Alex (D-047): BEMORE owner, Wise Teams partener, Innersis Leadership Trainer, LIFT colaborator. „Fondator” nu se potrivește peste tot: de revăzut în intro când Alex dă formularea lui despre sine.
+- 2026-11-26: REGULĂ ALEX (D-098): în majoritatea timpului lucrăm în imaginea BEMORE Learning Studio (brand-bemore). Când lucrăm pe Wise Teams: culorile și stilul Wise (team/ioana/documente/brand-wise/manual-wise-v1.html). Un material, un singur brand.

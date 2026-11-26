@@ -74,3 +74,4 @@ Păstrează sub 150 de rânduri. Comprimă când crește. Fapte, nu povești.
 - 2026-11-25: REGULĂ ALEX pentru orice training: „să nu mă mai concentrez atât de mult pe informație și mai mult pe coaching și conversații autentice”. În flow: mai mult timp pentru coaching, perechi și debriefing decât pentru prezentare; tăiem din informație, nu din conversații. Vezi docs/procese/curs-nou.md, „Amintirea lui Alex”.
 - 2026-11-25: Mini-cursul online „Drumul Danei”: formatul ecranelor și Dana. [mini-curs-online.md](mini-curs-online.md)
 - 2026-11-25: Materialul participantului (sumar din deck-ul livrat, cu „Schema: slide N”), direcția nouă a lui Alex după mini-curs. [material-participant.md](material-participant.md)
+- 2026-11-26: REGULĂ ALEX (D-098): în majoritatea timpului lucrăm în imaginea BEMORE Learning Studio (brand-bemore). Când lucrăm pe Wise Teams: culorile și stilul Wise (team/ioana/documente/brand-wise/manual-wise-v1.html). Un material, un singur brand.

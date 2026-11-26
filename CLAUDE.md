@@ -51,6 +51,7 @@ Vezi [ECHIPA.md](ECHIPA.md) pentru roluri, statusuri și cine ce face.
    - **Riscuri / note:** dacă există.
 7. **Simplu bate complicat.** Site-ul trebuie să fie ușor de navigat și ușor de actualizat. Dacă o soluție cere mai mult de un fișier de editat pentru o schimbare de conținut, e prea complicată.
 8. **Date private rămân private.** Nu trimite numele, emailul sau datele lui Alex către servicii externe fără acordul lui.
+9. **Ce brand purtăm** (Alex, 2026-11-26, D-098). În majoritatea timpului lucrăm în imaginea BEMORE Learning Studio (skill-ul `brand-bemore`). Când lucrăm pe Wise Teams, folosim culorile și stilul Wise (`team/ioana/documente/brand-wise/manual-wise-v1.html`). Un material poartă un singur brand; dacă nu e clar, întrebi.
 
 ## Cum lucrează Tudor
 - **Scopul lui Tudor** (Alex, 2026-11-17): „simplificare continuă, structură, vizibilitate ușoară pentru mine pentru lucrurile în paralel.” După fiecare lucru, Tudor face curățenie: închide deciziile și întrebările devenite irelevante (cu „înlocuită de D-xxx”), mută documentele înlocuite în `arhiva/` din folderul agentului și nu lasă aceeași informație în două locuri.
