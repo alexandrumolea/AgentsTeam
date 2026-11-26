@@ -2,20 +2,21 @@
 
 > Draft Sofia, 2026-11-26. **Nepublicat. Așteaptă aprobarea lui Alex.**
 > v5: o singură variantă, directă. Alex despre v4: „tonul ar trebui să fie și direct și fără ocolișuri. metaforele sunt trase de păr în explicații. 10 ani cu echipe nu știu pe ce se bazează, este o minciună și pare lăudăros.” I-a plăcut pasajul care „aduce acceptare, aduce explicații simple” (nu e vina lor, nu e vina ta; orice echipă lucrează după un sistem, ales sau moștenit). Am construit v5 pe același mecanism, cu alte cuvinte: fără metafore, fără anecdote, fără afirmații pe care nu le putem dovedi.
+> v5.1 (2026-11-26): „autonom” detaliat, la cererea lui Alex („aș vrea să detaliem puțin mai mult decât autonom”). Rândul cu metodologia spune acum trei semne concrete, din descrierea etapei „Avansăm eficient” din metodologia Wise: deciziile nu mai urcă la lider, lucrurile grele se spun direct, liderul are din nou timp pentru strategie.
 > v4 (3 direcții): `arhiva/linkedin-workshop-wise-2026-11-25-v4.md`. v3: `arhiva/…-v3.md`. v2: `arhiva/…-v2.md`. v1: `arhiva/…-v1.md`.
 
 **Locuri de completat (nu le-am inventat):** [DATA], [ORA], [ONLINE/LOCUL], [CUM TE ÎNSCRII], [TAG ANDREEA].
 
 ---
 
-## Postarea (RO, ~110 cuvinte)
+## Postarea (RO, ~125 de cuvinte)
 
 Ai manageri buni sub tine, dar deciziile importante ajung tot la tine.
 
 Nu e o problemă de oameni. Nici a lor, nici a ta.
 Fiecare echipă funcționează după un sistem. Dacă nu l-a construit nimeni intenționat, s-a construit singur, în jurul liderului.
 
-Împreună cu Andreea [TAG ANDREEA], am dezvoltat la Wise Teams o metodologie despre cum ajunge o echipă să funcționeze autonom.
+Împreună cu Andreea [TAG ANDREEA], am dezvoltat la Wise Teams o metodologie pentru echipele în care deciziile se iau fără să urce la tine, lucrurile grele se spun în ședință, iar tu ai din nou timp pentru strategie.
 
 Facem un workshop cu 10 manageri de manageri care chiar vor asta pentru echipele lor.
 Noi îți spunem ce am înțeles până acum. Tu ne spui cum arată echipa ta azi. Așa vedem de ce au nevoie, de fapt, echipele în momentul ăsta.
@@ -23,6 +24,8 @@ Noi îți spunem ce am înțeles până acum. Tu ne spui cum arată echipa ta az
 Când: [DATA], [ORA]
 Unde: [ONLINE/LOCUL]
 Înscriere: [CUM TE ÎNSCRII]
+
+**Variantă pentru rândul cu metodologia:** „Împreună cu Andreea [TAG ANDREEA], am dezvoltat la Wise Teams o metodologie pentru echipele care decid singure, își spun direct lucrurile grele și îți lasă ție timp pentru strategie.” (Mai scurtă; pune echipa ca subiect, nu situația.)
 
 ---
 
