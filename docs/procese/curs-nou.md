@@ -179,6 +179,8 @@ Modulul „Toleranță și capacitate”, contractul și closing-urile au fost p
 
 Pasul 7c din tabel. Pornește imediat după livrare, în paralel cu lessons learned (7b). Pagina de descriere folosește același șablon pentru toate cursurile.
 
+**Ordinea și forma (D-094, D-097; primul model: Change Agility, 2026-11-26):** întâi materialul participantului (aprobat de Alex), apoi cursul online **din el**, fără text nou: aceleași idei, aceleași scheme din deck-ul lui Alex, câte una pe ecran. Interacțiunile sunt de reamintire, nu exerciții din sală: întrebarea vine înaintea ideii și a schemei care conține răspunsul (retrieval practice: Roediger și Karpicke, 2006, *Psychological Science* 17(3)), alegeri și note scurte care ajung în planul de la final. Fără personaje inventate. O pagină HTML simplă, care merge fără internet; ce scrie omul rămâne în browserul lui.
+
 ## Lessons learned după livrare (Alex, 2026-11-25)
 > „În procesul nostru de training, inclusiv pe site, aș vrea să avem, că facem un document cu lessons learned după prima livrare, și ne întoarcem și îmbunătățim flow-ul.”
 
