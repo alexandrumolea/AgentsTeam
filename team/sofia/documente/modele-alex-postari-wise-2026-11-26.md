@@ -1,6 +1,6 @@
 # Modele de postări Wise Teams, date de Alex (2026-11-26)
 
-> Alex: „Îți mai dau câteva exemple.” Ca să învățăm tonul și structura, nu ca să le copiem. Lecțiile scoase din ele sunt în skill-ul `copywriting` (Lecții, 2026-11-26). Corectură de la Alex: „încrederea rămâne în urmă”, nu „stă în urmă” (corectat mai jos).
+> Alex: „Îți mai dau câteva exemple.” Ca să învățăm tonul și structura, nu ca să le copiem. Lecțiile scoase din ele sunt în skill-ul `copywriting` (Lecții, 2026-11-26). Corecturi de la Alex (corectate mai jos): „încrederea rămâne în urmă”, nu „stă în urmă”; „Dacă doriți să participați”, nu „Dacă vreți să fiți în cameră”.
 
 ## Exemplul 1
 
@@ -25,7 +25,7 @@ Cum funcționează:
 📍 [locul / online]
 👥 10 locuri
 
-Dacă vreți să fiți în cameră, scrieți-mi un mesaj.
+Dacă doriți să participați, scrieți-mi un mesaj.
 
 #WiseTeams #leadership #echipeautonome
 
