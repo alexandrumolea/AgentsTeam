@@ -1,0 +1,464 @@
+<!doctype html>
+<html lang="ro">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Manualul Wise Teams</title>
+<meta name="description" content="Manualul de brand Wise Teams, v1 (draft de lucru): esența, wordmark-ul, culorile pe capabilitate, tipografia, elementele grafice, vocea și mock-up-uri.">
+<style>
+/* Manualul e chiar brandul Wise Teams: hârtie crem, cerneală, titluri bold, culoare doar cu sens.
+   Deliberat doar luminos (ca rapoartele Wise Teams). Valorile de culoare sunt aproximative, până vin cele oficiale. */
+:root{
+  --crem:#F7F4EE; --hartie:#FFFFFF; --nisip:#EDE8DF; --linie:#E4DDD2; --puncte:#B3A896;
+  --cerneala:#1C1B19; --grafit:#5E5A55;
+  --wise:#F7AE2E; --wise-text:#8F5500;
+  --flux:#1E9A9E; --flux-text:#16777A;
+  --incredere:#4B67CF; --incredere-text:#3A4FC6;
+  --livrare:#E2593C; --livrare-text:#B83A28;
+  --f:"Poppins","Avenir Next",Avenir,"Helvetica Neue",Arial,sans-serif;
+  color-scheme:light;
+}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%;scroll-padding-top:84px}
+body{margin:0;background:var(--crem);color:var(--cerneala);font-family:var(--f);font-size:17px;line-height:1.55;-webkit-font-smoothing:antialiased}
+img,svg{max-width:100%;height:auto;display:block}
+a{color:var(--incredere-text)}
+:focus-visible{outline:3px solid var(--incredere-text);outline-offset:3px;border-radius:6px}
+.wrap{max-width:1120px;margin:0 auto;padding:0 max(16px,env(safe-area-inset-left,0px)) 80px max(16px,env(safe-area-inset-right,0px))}
+
+/* navigare */
+.nav{position:sticky;top:0;z-index:5;background:rgb(247 244 238 / .94);border-bottom:1px solid var(--linie)}
+@supports ((-webkit-backdrop-filter:blur(1px)) or (backdrop-filter:blur(1px))){.nav{background:rgb(247 244 238 / .82);-webkit-backdrop-filter:blur(18px) saturate(140%);backdrop-filter:blur(18px) saturate(140%)}}
+@media (prefers-reduced-transparency:reduce){.nav{background:var(--crem);-webkit-backdrop-filter:none;backdrop-filter:none}}
+.nav .in{max-width:1120px;margin:0 auto;display:flex;align-items:center;gap:20px;padding:12px 16px;min-width:0}
+.nav .wm{flex:none;width:76px}
+.nav ul{list-style:none;margin:0 0 0 auto;padding:0;display:flex;gap:2px;overflow-x:auto;scrollbar-width:none;min-width:0}
+.nav ul::-webkit-scrollbar{display:none}
+.nav a{display:block;padding:10px 12px;border-radius:999px;font-size:16px;font-weight:500;color:var(--cerneala);text-decoration:none;white-space:nowrap}
+.nav a:hover{background:var(--nisip)}
+
+/* tipuri de text */
+.eb{font-size:13px;font-weight:600;letter-spacing:.2em;text-transform:uppercase;color:var(--grafit);margin:0}
+h1,h2,h3{margin:0;font-weight:700;letter-spacing:-.03em;line-height:1.05;text-wrap:balance}
+h1{font-size:clamp(44px,8vw,92px);letter-spacing:-.04em}
+h1 .usor{font-weight:200;display:block}
+h2{font-size:clamp(32px,5vw,52px);margin-top:10px}
+h3{font-size:24px;letter-spacing:-.015em;line-height:1.2}
+p{margin:0}
+.lead{font-size:clamp(19px,2.2vw,23px);line-height:1.45;color:var(--grafit);max-width:58ch}
+.mut{color:var(--grafit)}
+.mic{font-size:15px;color:var(--grafit)}
+.stack>*+*{margin-top:14px}
+
+/* blocuri */
+section.s{padding:72px 0 0}
+section.s>header{margin-bottom:28px;max-width:820px}
+section.s>header .lead{margin-top:14px}
+.card{background:var(--hartie);border-radius:24px;padding:28px}
+.grid{display:grid;gap:18px}
+.g2{grid-template-columns:repeat(auto-fit,minmax(min(100%,420px),1fr))}
+.g3{grid-template-columns:repeat(auto-fit,minmax(min(100%,300px),1fr))}
+.g4{grid-template-columns:repeat(auto-fit,minmax(min(100%,230px),1fr))}
+.chip{display:inline-block;font-size:13px;font-weight:600;padding:4px 12px;border-radius:999px;background:var(--cerneala);color:#fff;vertical-align:middle;letter-spacing:.02em}
+.chip.prop{background:transparent;color:var(--wise-text);box-shadow:inset 0 0 0 1.5px var(--wise-text)}
+.chip.alex{background:transparent;color:var(--flux-text);box-shadow:inset 0 0 0 1.5px var(--flux-text)}
+.chip.aprox{background:transparent;color:var(--grafit);box-shadow:inset 0 0 0 1.5px var(--grafit)}
+blockquote{margin:0;font-size:clamp(20px,2.4vw,26px);line-height:1.35;font-weight:500;letter-spacing:-.01em}
+blockquote+.sursa{margin-top:12px}
+.sursa{font-size:15px;color:var(--grafit)}
+.nota{border-left:4px solid var(--wise);padding:4px 0 4px 18px}
+
+/* hero */
+.hero{padding:56px 0 8px;display:grid;gap:36px}
+.hero .meta{display:flex;flex-wrap:wrap;gap:8px;margin-top:20px}
+.hero figure{margin:0;border-radius:24px;overflow:hidden;background:var(--crem)}
+
+/* culori */
+.sw{border-radius:20px;overflow:hidden;background:var(--hartie)}
+.sw .c{height:104px;display:flex;align-items:flex-end;padding:12px 16px;font-weight:700;font-size:15px}
+.sw .t{padding:14px 16px 16px}
+.sw .t b{display:block;font-size:17px}
+.sw code{font-family:ui-monospace,"SF Mono",Menlo,monospace;font-size:14px;color:var(--grafit)}
+.cap{border-radius:24px;background:var(--hartie);padding:24px;border-top:10px solid var(--k)}
+.cap .nume{font-size:30px;font-weight:700;letter-spacing:-.02em;color:var(--kt)}
+.cap .en{font-size:14px;font-weight:600;letter-spacing:.16em;text-transform:uppercase;color:var(--grafit)}
+
+/* tabele */
+.tbl{overflow-x:auto;border-radius:20px;background:var(--hartie)}
+table{border-collapse:collapse;width:100%;min-width:640px;font-size:16px}
+th,td{text-align:left;vertical-align:top;padding:14px 18px;border-bottom:1px solid var(--linie)}
+th{font-size:13px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:var(--grafit)}
+tr:last-child td{border-bottom:0}
+td .dot{display:inline-block;width:12px;height:12px;border-radius:50%;vertical-align:-1px;margin-right:8px}
+
+/* tipografie */
+.spec{display:grid;gap:4px;padding:22px 0;border-bottom:1px solid var(--linie)}
+.spec:last-child{border-bottom:0}
+.spec .r{font-size:13px;font-weight:600;letter-spacing:.16em;text-transform:uppercase;color:var(--grafit)}
+
+/* da / nu */
+.da,.nu{border-radius:20px;background:var(--hartie);padding:22px 24px}
+.da h3::before,.nu h3::before{content:"";display:inline-block;width:12px;height:12px;border-radius:50%;margin-right:10px;vertical-align:2px}
+.da h3::before{background:var(--flux)}
+.nu h3::before{background:var(--livrare)}
+.da ul,.nu ul{margin:12px 0 0;padding-left:20px}
+.da li+li,.nu li+li{margin-top:8px}
+.ex{font-weight:500}
+
+/* mock-up-uri */
+.mk{margin:0;background:var(--hartie);border-radius:24px;padding:14px}
+.mk img{border-radius:14px;width:100%;background:var(--crem)}
+.mk figcaption{padding:14px 6px 4px}
+.mk figcaption b{display:block;font-size:18px}
+.car{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+
+/* decizii */
+ol.dec{margin:0;padding:0;list-style:none;counter-reset:d;display:grid;gap:12px}
+ol.dec li{counter-increment:d;background:var(--hartie);border-radius:20px;padding:20px 22px 20px 72px;position:relative}
+ol.dec li::before{content:counter(d);position:absolute;left:20px;top:18px;width:36px;height:36px;border-radius:50%;box-shadow:inset 0 0 0 2.5px var(--cerneala);display:grid;place-items:center;font-weight:700}
+footer.sub{margin-top:72px;padding-top:20px;border-top:1px solid var(--linie);display:flex;flex-wrap:wrap;gap:8px 24px;justify-content:space-between;color:var(--grafit);font-size:15px}
+@media (max-width:640px){.card,.cap{padding:22px}.car{grid-template-columns:1fr}section.s{padding-top:56px}}
+</style>
+</head>
+<body>
+
+<nav class="nav" aria-label="Capitole">
+  <div class="in">
+    <a href="#sus" class="wm" aria-label="Sus"><img src="elemente/wordmark.svg" alt="wise" width="76" height="32"></a>
+    <ul>
+      <li><a href="#esenta">Esența</a></li>
+      <li><a href="#wordmark">Wordmark</a></li>
+      <li><a href="#culori">Culori</a></li>
+      <li><a href="#tipografie">Tipografie</a></li>
+      <li><a href="#elemente">Elemente</a></li>
+      <li><a href="#voce">Voce</a></li>
+      <li><a href="#diferente">Diferențe</a></li>
+      <li><a href="#mockups">Mock-up-uri</a></li>
+      <li><a href="#decizii">De decis</a></li>
+    </ul>
+  </div>
+</nav>
+
+<main class="wrap">
+
+<section class="hero" id="sus">
+  <div>
+    <p class="eb">Wise Teams · Manual de brand · v1</p>
+    <h1 style="margin-top:18px"><span class="usor">Manualul</span>Wise Teams</h1>
+    <p class="lead" style="margin-top:22px">Cum arată și cum sună Wise Teams: un singur loc cu regulile, ca rapoartele, articolele, postările și slide-urile să pară făcute de aceeași mână.</p>
+    <div class="meta"><span class="chip">Draft de lucru, 26.11.2026</span><span class="chip aprox">Culori aproximative</span><span class="chip prop">Propunerile sunt marcate</span></div>
+  </div>
+  <figure><img src="elemente/benzi.svg" alt="Patru benzi colorate, Flux, Încredere, Livrare și Anticipare, care se adună într-un singur punct: o echipă emergentă." width="900" height="420"></figure>
+  <p class="nota mic">Am pornit de la ce există deja: limbajul vizual din rapoartele „Drum critic”, wordmark-ul „wise” și textele lui Alex (articolul „The 4 Layers of How a Team Works”, postările de workshop). N-am inventat un logo nou. Ce e propunerea mea poartă eticheta <span class="chip prop">propunere</span>; ce sunt cuvintele lui Alex, <span class="chip alex">Alex</span>.</p>
+</section>
+
+<!-- 1. ESENȚA -->
+<section class="s" id="esenta">
+  <header>
+    <p class="eb">1 · Esența</p>
+    <h2>Ce e Wise Teams, pentru cine, de ce</h2>
+  </header>
+  <div class="grid g2">
+    <div class="card stack">
+      <p class="eb">Ce face <span class="chip alex">Alex</span></p>
+      <blockquote>„To bring the knowledge of how a team works into the team itself, helping people understand their dynamics, identify what needs attention and make progress at each stage of their journey.”</blockquote>
+      <p class="sursa">Articolul „The 4 Layers of How a Team Works”, finalul.</p>
+    </div>
+    <div class="card stack">
+      <p class="eb">Pentru cine <span class="chip alex">Alex</span></p>
+      <blockquote>„Manageri de manageri care își doresc echipe autonome, echipe în care, din interacțiunea dintre oameni, apare mai mult decât suma contribuțiilor.”</blockquote>
+      <p class="sursa">Postarea de workshop. Publicul mai larg: directori și antreprenori care vor echipe autonome.</p>
+    </div>
+    <div class="card stack">
+      <p class="eb">Convingerea <span class="chip alex">Alex</span></p>
+      <blockquote>„Improving a team doesn't start with fixing people. It starts with understanding the system they create together.”</blockquote>
+      <p class="sursa">Același articol.</p>
+    </div>
+    <div class="card stack">
+      <p class="eb">Fraza-semnătură <span class="chip prop">propunere</span></p>
+      <blockquote>„Results are what everyone sees. How a team works is what you build.”</blockquote>
+      <p class="sursa">E fraza lui Alex din articol. Propun s-o folosim ca semnătură constantă (bannerul LinkedIn, finalul rapoartelor). În română, doar după ce o formulează Alex.</p>
+    </div>
+  </div>
+  <div class="card" style="margin-top:18px">
+    <p class="eb">Ce oferă</p>
+    <div class="grid g4" style="margin-top:16px">
+      <div><h3>Drumul</h3><p class="mut" style="margin-top:6px">Metodologia: de la Container, prin patru etape, la o echipă emergentă.</p></div>
+      <div><h3>Chestionarul</h3><p class="mut" style="margin-top:6px">16 comportamente de echipă, pe patru capabilități.</p></div>
+      <div><h3>Drum critic</h3><p class="mut" style="margin-top:6px">Raportul pentru o echipă: unde e pe drum și primii pași.</p></div>
+      <div><h3>Workshop-uri</h3><p class="mut" style="margin-top:6px">Restrânse, ca schimb de perspective cu echipele.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- 2. WORDMARK -->
+<section class="s" id="wordmark">
+  <header>
+    <p class="eb">2 · Wordmark</p>
+    <h2>„wise”, cu cele trei noduri</h2>
+    <p class="lead">Semnul există deja: cuvântul „wise” în portocaliu, cu un mic graf de trei noduri legate. Graful e sămânța rețelei care crește pe drum (capitolul 5).</p>
+  </header>
+  <div class="grid g2">
+    <div class="card" style="display:grid;place-items:center;min-height:260px;background:var(--crem);box-shadow:inset 0 0 0 1px var(--linie)">
+      <img src="elemente/wordmark.svg" alt="Wordmark-ul wise: literele portocalii, graful de trei noduri în cerneală" width="360" height="154">
+    </div>
+    <div class="card stack">
+      <p><span class="chip aprox">Reconstruit</span></p>
+      <p>Semnul din acest manual e redesenat după rapoarte, cu Avenir Next în loc de Poppins. Până primim fișierul sursă (SVG), îl folosim doar în draft-uri, nu în materiale care pleacă.</p>
+      <h3 style="margin-top:22px">Cum se folosește</h3>
+      <ul style="margin:8px 0 0;padding-left:20px">
+        <li>Literele în portocaliul Wise, graful în cerneală. Pe crem sau pe alb.</li>
+        <li>Sus pe fiecare material: în dreapta pe copertă, în stânga pe paginile interioare (ca în rapoarte).</li>
+        <li>Spațiu liber în jur: cel puțin înălțimea literei „w”.</li>
+        <li>Mărime minimă: 24 px înălțime pe ecran, 10 mm pe hârtie <span class="chip prop">propunere</span>. Sub ea, nodurile se lipesc de „e”.</li>
+        <li>Nu îl recolorăm în culorile capabilităților, nu îl întindem, nu îi punem umbră sau contur, nu îl așezăm direct pe aura colorată.</li>
+      </ul>
+    </div>
+  </div>
+  <h3 style="margin-top:36px">Două ajustări <span class="chip prop">propunere</span></h3>
+  <p class="mut" style="margin-top:6px;max-width:70ch">Nu schimbă semnul. Acoperă două locuri unde azi nu avem o variantă. Decid Alex și Andreea.</p>
+  <div class="grid g2" style="margin-top:16px">
+    <div class="card stack">
+      <div style="background:var(--cerneala);border-radius:16px;display:grid;place-items:center;min-height:180px"><img src="elemente/propunere-wordmark-pe-inchis.svg" alt="Wordmark-ul pe fundal închis, cu graful în alb (propunere)" width="260" height="111"></div>
+      <h3>A · Pe fundal închis</h3>
+      <p class="mut">Literele rămân portocalii (contrast 9 : 1 pe cerneală), graful devine alb. Pentru slide-urile de întrebare și pentru video.</p>
+    </div>
+    <div class="card stack">
+      <div style="background:var(--nisip);border-radius:16px;display:grid;place-items:center;min-height:180px"><img src="elemente/propunere-monograma.svg" alt="Monograma: doar graful cu trei noduri, primul nod portocaliu (propunere)" width="140" height="140"></div>
+      <h3>B · Monograma</h3>
+      <p class="mut">Doar graful, cu primul nod în portocaliu. Pentru avatarul de Substack și LinkedIn și pentru favicon, unde „wise” devine ilizibil.</p>
+    </div>
+  </div>
+</section>
+
+<!-- 3. CULORI -->
+<section class="s" id="culori">
+  <header>
+    <p class="eb">3 · Culori <span class="chip aprox">aproximative</span></p>
+    <h2>Hârtie, cerneală și patru culori cu sens</h2>
+    <p class="lead">Valorile sunt citite din rapoartele Wise Teams, nu dintr-un fișier oficial. Le corectăm când primim paleta sursă. Fiecare culoare de capabilitate are două valori: una pentru forme, una (mai închisă) pentru text.</p>
+  </header>
+  <div class="grid g4">
+    <div class="sw"><div class="c" style="background:var(--crem);box-shadow:inset 0 0 0 1px var(--linie)">Crem</div><div class="t"><b>Fundalul</b><code>#F7F4EE</code></div></div>
+    <div class="sw"><div class="c" style="background:#fff;box-shadow:inset 0 0 0 1px var(--linie)">Hârtie</div><div class="t"><b>Cardurile</b><code>#FFFFFF</code></div></div>
+    <div class="sw"><div class="c" style="background:var(--nisip)">Nisip</div><div class="t"><b>Drumul, Containerul</b><code>#EDE8DF · linii #E4DDD2</code></div></div>
+    <div class="sw"><div class="c" style="background:var(--cerneala);color:#fff">Cerneală</div><div class="t"><b>Text, graful, chip-uri</b><code>#1C1B19 · 15,7 : 1</code></div></div>
+    <div class="sw"><div class="c" style="background:#fff;color:var(--grafit);box-shadow:inset 0 0 0 1px var(--linie)">Grafit</div><div class="t"><b>Text secundar</b><code>#5E5A55 · 6,2 : 1</code></div></div>
+    <div class="sw"><div class="c" style="background:var(--wise)">Portocaliu Wise</div><div class="t"><b>Wordmark, Anticipare</b><code>#F7AE2E · text #8F5500</code></div></div>
+  </div>
+  <p class="mic" style="margin-top:14px">Contrastul e calculat pe crem. Portocaliul Wise are doar 1,7 : 1 pe crem: e bun pentru semn și forme mari, niciodată pentru text sau ca singur purtător al unei informații.</p>
+</section>
+
+<!-- 4. CAPABILITĂȚI -->
+<section class="s" id="capabilitati">
+  <header>
+    <p class="eb">4 · Culorile pe capabilitate</p>
+    <h2>O capabilitate are o culoare, peste tot</h2>
+    <p class="lead">Culoarea nu decorează: spune despre ce capabilitate vorbim. Aceeași culoare pe drum, în hartă, în carduri, în postări.</p>
+  </header>
+  <div class="grid g4">
+    <div class="cap" style="--k:var(--flux);--kt:var(--flux-text)"><p class="en">Flow</p><p class="nume">Flux</p><p class="mut" style="margin-top:8px">Cum circulă munca, informația și deciziile.</p><p class="mic" style="margin-top:14px"><code>#1E9A9E</code> forme · <code>#16777A</code> text (4,8 : 1)</p></div>
+    <div class="cap" style="--k:var(--incredere);--kt:var(--incredere-text)"><p class="en">Trust</p><p class="nume">Încredere</p><p class="mut" style="margin-top:8px">Cât adevăr poate duce echipa.</p><p class="mic" style="margin-top:14px"><code>#4B67CF</code> forme · <code>#3A4FC6</code> text (6,1 : 1)</p></div>
+    <div class="cap" style="--k:var(--livrare);--kt:var(--livrare-text)"><p class="en">Delivery</p><p class="nume">Livrare</p><p class="mut" style="margin-top:8px">Aliniere la început, consecvență după.</p><p class="mic" style="margin-top:14px"><code>#E2593C</code> forme · <code>#B83A28</code> text (5,2 : 1)</p></div>
+    <div class="cap" style="--k:var(--wise);--kt:var(--wise-text)"><p class="en">Anticipation</p><p class="nume">Anticipare</p><p class="mut" style="margin-top:8px">Loc pentru ce urmează.</p><p class="mic" style="margin-top:14px"><code>#F7AE2E</code> forme · <code>#8F5500</code> text (5,5 : 1)</p></div>
+  </div>
+  <div class="tbl" style="margin-top:22px">
+    <table>
+      <thead><tr><th>Pe drum</th><th>Română</th><th>Engleză (Substack)</th><th>Culoarea</th></tr></thead>
+      <tbody>
+        <tr><td>Înainte de drum</td><td>Containerul</td><td>The Container</td><td><span class="dot" style="background:var(--nisip);box-shadow:inset 0 0 0 1.5px var(--cerneala)"></span>nisip și cerneală</td></tr>
+        <tr><td>1</td><td>Suntem aliniați</td><td>Getting aligned</td><td><span class="dot" style="background:var(--livrare)"></span>Livrare</td></tr>
+        <tr><td>2</td><td>Avansăm eficient</td><td>Moving efficiently</td><td><span class="dot" style="background:var(--flux)"></span>Flux <span class="dot" style="background:var(--incredere);margin-left:6px"></span>Încredere</td></tr>
+        <tr><td>3</td><td>Livrăm consecvent</td><td>Delivering consistently</td><td><span class="dot" style="background:var(--livrare)"></span>Livrare</td></tr>
+        <tr><td>4</td><td>Construim viitorul</td><td>Building the future</td><td><span class="dot" style="background:var(--wise)"></span>Anticipare</td></tr>
+        <tr><td>Destinația</td><td>O echipă emergentă</td><td>An emergent team</td><td>toate patru, legate între ele</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="grid g2" style="margin-top:18px">
+    <div class="da"><h3>Așa</h3><ul>
+      <li>Livrarea apare de două ori pe drum, cu aceeași culoare.</li>
+      <li>Ordinea drumului se arată în imagine (numere, drum), nu se anunță în text.</li>
+      <li>Textul colorat folosește doar valoarea „text”; formele mici portocalii au alături o etichetă în cerneală.</li>
+      <li>Alb pe culoare doar la text mare și bold; chip-urile cu text alb folosesc valoarea „text”.</li>
+    </ul></div>
+    <div class="nu"><h3>Nu așa</h3><ul>
+      <li>O culoare de capabilitate folosită „pentru că arată bine” pe un subiect care nu e al ei.</li>
+      <li>Al cincilea accent. Paleta are patru culori și atât.</li>
+      <li>Roșul Livrării ca semn de alarmă: e o capabilitate, nu o notă proastă.</li>
+    </ul></div>
+  </div>
+</section>
+
+<!-- 5. TIPOGRAFIE -->
+<section class="s" id="tipografie">
+  <header>
+    <p class="eb">5 · Tipografie</p>
+    <h2>Poppins, cu Avenir Next ca rezervă</h2>
+    <p class="lead">O singură familie, în greutăți foarte diferite. Bold dens pentru titluri, regular aerisit pentru text, subțire doar pe coperți.</p>
+  </header>
+  <div class="card">
+    <div class="spec"><span class="r">Copertă · subțire 200 + bold 700</span><p style="font-size:clamp(36px,6vw,64px);line-height:1.02;letter-spacing:-.04em"><span style="font-weight:200;display:block">Drumul</span><b>echipei.</b></p></div>
+    <div class="spec"><span class="r">Titlu de pagină · bold 700 · −3,5 %</span><p style="font-size:clamp(30px,4.6vw,48px);font-weight:700;letter-spacing:-.035em;line-height:1.05">Unde sunteți pe drum acum?</p></div>
+    <div class="spec"><span class="r">Lead · regular 400 · grafit</span><p class="lead">Trei pași care pornesc de la ce se vede deja în răspunsurile voastre.</p></div>
+    <div class="spec"><span class="r">Titlu de card · semibold 600 / bold 700</span><p style="font-size:24px;font-weight:600">Cât adevăr poate duce echipa</p></div>
+    <div class="spec"><span class="r">Text · regular 400 · 1,5</span><p style="max-width:62ch">Capacitatea de a trece prin diferențe fără să strice relațiile care fac colaborarea posibilă.</p></div>
+    <div class="spec"><span class="r">Etichetă · semibold 600 · majuscule · +20 %</span><p class="eb" style="font-size:14px">Ce observăm &nbsp;/&nbsp; Echipa exemplu</p></div>
+    <div class="spec"><span class="r">Chip</span><p><span class="chip" style="font-size:16px;padding:6px 16px">workshop</span> &nbsp; <span class="chip" style="font-size:16px;padding:6px 16px;background:transparent;color:var(--cerneala);box-shadow:inset 0 0 0 2px var(--cerneala)">întărim</span></p></div>
+  </div>
+  <div class="grid g2" style="margin-top:18px">
+    <div class="card stack"><h3>Rezerva</h3><p class="mut"><code>"Poppins", "Avenir Next", Avenir, "Helvetica Neue", Arial, sans-serif</code></p><p class="mut">Poppins e un font gratuit (licență OFL, Google Fonts). Nu e instalat pe calculatorul echipei, deci toate randările de aici sunt în Avenir Next, cea mai apropiată geometrie de pe Mac. Descărcarea lui o facem doar cu acordul lui Alex.</p></div>
+    <div class="card stack"><h3>Reguli</h3><ul style="margin:0;padding-left:20px"><li>Titlurile bold, niciodată subțiri (subțirele e doar pe primul rând de copertă).</li><li>Textul nu coboară sub 16 px pe ecran; etichetele pot avea 13 px.</li><li>Pe imagini de social, textul are cel puțin 46 px în sursa de 1456 px (pe telefon se vede la un sfert).</li><li>Fără italic decorativ, fără sublinieri.</li></ul></div>
+  </div>
+</section>
+
+<!-- 6. ELEMENTE -->
+<section class="s" id="elemente">
+  <header>
+    <p class="eb">6 · Elemente grafice</p>
+    <h2>Drumul, rețeaua, benzile, cardurile</h2>
+    <p class="lead">Patru elemente, toate venite din metodologie. Fiecare înseamnă ceva; niciunul nu e decor.</p>
+  </header>
+  <div class="card stack">
+    <h3>Drumul</h3>
+    <p class="mut">O bandă de nisip cu linie punctată, care șerpuiește de la Container la destinație. Fiecare etapă e o oprire: disc alb, inel de nisip, arc în culoarea capabilității, număr într-un cerc negru. Containerul e un cadru punctat cu oamenii încă nelegați.</p>
+    <img src="elemente/drum.svg" alt="Drumul: Containerul, patru opriri numerotate în culorile capabilităților și echipa emergentă la capăt" width="1200" height="330" style="margin-top:8px;border-radius:16px">
+  </div>
+  <div class="card stack" style="margin-top:18px">
+    <h3>Rețeaua care se leagă tot mai mult</h3>
+    <p class="mut">Pornește din graful wordmark-ului (trei noduri). Pe drum, cinci oameni se leagă tot mai mult; o legătură punctată e una care abia se formează. La destinație, toți sunt legați cu toți. E singurul fel în care arătăm progresul fără cifre.</p>
+    <img src="elemente/retea-evolutie.svg" alt="Șase rețele de la stânga la dreapta: semnul cu trei noduri, patru pentagoane tot mai legate și rețeaua completă a echipei emergente" width="1100" height="240" style="margin-top:8px;border-radius:16px">
+  </div>
+  <div class="grid g2" style="margin-top:18px">
+    <div class="card stack">
+      <h3>Benzile</h3>
+      <p class="mut">Cele patru capabilități care se adună într-un punct: o echipă emergentă. Doar pe coperți și bannere, una pe material. Ordinea de sus în jos: Flux, Încredere, Livrare, Anticipare.</p>
+      <img src="elemente/benzi.svg" alt="Patru benzi care se adună într-un punct" width="900" height="420" style="border-radius:16px">
+    </div>
+    <div class="card stack">
+      <h3>Cardurile și aura</h3>
+      <p class="mut">Conținutul stă pe carduri albe, plate, cu colțuri de 24–28 px, fără contur și fără umbră. Aura (petele moi în culorile capabilităților) apare doar pe coperți, în spatele benzilor sau al rețelei.</p>
+      <p class="mut">Sticla e un finisaj, nu fundația: un singur card de sticlă, doar peste aură, cu alb de cel puțin 86 %, ca textul să rămână AA în cel mai rău punct. Fără sticlă pe paginile de raport și pe slide-urile de conținut.</p>
+      <div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:6px"><span class="chip">workshop</span><span class="chip" style="background:transparent;color:var(--cerneala);box-shadow:inset 0 0 0 1.5px var(--cerneala)">dezvoltăm</span><span class="eb" style="align-self:center">Drum critic / pagina</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- 7. VOCE -->
+<section class="s" id="voce">
+  <header>
+    <p class="eb">7 · Voce și ton</p>
+    <h2>Serios, direct, cu nuanță</h2>
+    <p class="lead">Mai serios decât contul personal al lui Alex. Spunem mecanismul în cuvinte de zi cu zi, fără să acuzăm pe cineva și fără să ne lăudăm. Regulile complete sunt în skill-ul <code>copywriting</code>, lecțiile din 25–26.11.</p>
+  </header>
+  <div class="grid g3">
+    <div class="card stack"><p class="eb">Pe scurt</p><ul style="margin:0;padding-left:20px"><li>Fără emoji. Singura excepție văzută în modelele lui Alex: data, locul și locurile unui eveniment (de confirmat).</li><li>„Noi” = Alex și Andreea. Andreea apare cu numele întreg.</li><li>Substack în engleză; LinkedIn, rapoartele și workshop-urile în română.</li><li>Un capitol de articol începe cu un singur Key insight: mecanismul, nu rezumatul.</li><li>Invităm, nu insistăm.</li></ul></div>
+    <div class="da"><h3>Bune (din textele lui Alex)</h3><ul>
+      <li class="ex">„Ce se întâmplă, de fapt, în echipele de manageri?”</li>
+      <li class="ex">„Încrederea rămâne puțin în urmă.”</li>
+      <li class="ex">„Mai degrabă pe hol decât în ședință.”</li>
+      <li class="ex">„Răspunderea urcă, încet, înapoi la lider.”</li>
+      <li class="ex">„Agreement in a meeting doesn't necessarily mean alignment.”</li>
+      <li class="ex">„Nu venim cu răspunsuri prefabricate.”</li>
+      <li class="ex">„Dacă doriți să participați, scrieți-mi un mesaj.”</li>
+    </ul></div>
+    <div class="nu"><h3>De evitat (respinse de Alex)</h3><ul>
+      <li>Afirmații nedovedite despre noi: „zece ani cu echipe”.</li>
+      <li>Anecdote inventate: „am auzit fraza asta de la lideri foarte buni”.</li>
+      <li>Metafore lungite pe mai multe rânduri: „harta o avem, traficul de azi nu”.</li>
+      <li>Ordinea spusă în cuvinte: „each stage unlocks the next”.</li>
+      <li>Formule LinkedIn: „dacă te regăsești”, „suntem gata să împărtășim”.</li>
+      <li>Calcuri: „dacă vreți să fiți în cameră”.</li>
+      <li>Promisiuni de timp despre schimbare.</li>
+    </ul></div>
+  </div>
+  <p class="nota mic" style="margin-top:18px">Testul unui rând: aș spune asta cu voce tare, așa, unui director, la o cafea? Și: ar putea scrie rândul ăsta oricine altcineva? Dacă da, îl rescriem.</p>
+</section>
+
+<!-- 8. DIFERENȚE -->
+<section class="s" id="diferente">
+  <header>
+    <p class="eb">8 · Cum se deosebește</p>
+    <h2>Wise Teams, BEMORE și Alex</h2>
+    <p class="lead">Trei identități care nu se amestecă. Un material poartă un singur brand.</p>
+  </header>
+  <div class="tbl">
+    <table>
+      <thead><tr><th></th><th>Wise Teams</th><th>BEMORE (și site-ul lui Alex)</th><th>Contul personal al lui Alex</th></tr></thead>
+      <tbody>
+        <tr><td><b>Senzația</b></td><td>Hârtie și cerneală: un raport bine făcut</td><td>Lumină și sticlă peste gradient</td><td>Vocea lui, pe Substack-ul și LinkedIn-ul lui</td></tr>
+        <tr><td><b>Fundalul</b></td><td>Crem cald, carduri albe plate</td><td>Lumină, Ceață, gradientul Sora</td><td>Ce cere platforma</td></tr>
+        <tr><td><b>Litera</b></td><td>Poppins, titluri bold dense</td><td>Sora subțire (niciodată bold) + Inter Tight</td><td>–</td></tr>
+        <tr><td><b>Culoarea</b></td><td>Are sens: o culoare = o capabilitate</td><td>Atmosferă: gradientul cer, lavandă, piersică</td><td>–</td></tr>
+        <tr><td><b>Simbolul</b></td><td>Drumul și rețeaua de noduri</td><td>Obiectele-simbol, lentila</td><td>–</td></tr>
+        <tr><td><b>Sticla</b></td><td>Doar un card, doar pe copertă</td><td>Pe navigare și carduri, peste tot</td><td>–</td></tr>
+        <tr><td><b>Vocea</b></td><td>„Noi”, serios, fără emoji, nuanțat</td><td>Cald, permisiv, „atelier de învățare”</td><td>„Eu”, emoji ca marcaje, „Let's imagine this”</td></tr>
+        <tr><td><b>Semnătura</b></td><td>Wordmark-ul „wise”; Alex și Andreea cu numele</td><td>„BEMORE Learning Studio” / „Alex · Atelier de învățare”</td><td>Alexandru Molea</td></tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<!-- 9. MOCK-UP-URI -->
+<section class="s" id="mockups">
+  <header>
+    <p class="eb">9 · Mock-up-uri</p>
+    <h2>Brandul aplicat</h2>
+    <p class="lead">Șase materiale, cu textele din modelele lui Alex. Nicio dată reală: raportul e o pagină de exemplu, iar contactele sunt înlocuite cu [paranteze].</p>
+  </header>
+  <div class="grid g2">
+    <figure class="mk"><img src="mockups/substack-coperta.png" alt="Copertă Substack: The 4 Layers of How a Team Works, cu benzile care se adună în echipa emergentă" width="1456" height="816" loading="lazy">
+      <figcaption><b>1 · Copertă de articol Substack</b><span class="mic">1456 × 816. Titlul și subtitlul sunt ale lui Alex. Rândul subțire + rândul bold, ca pe coperta raportului.</span></figcaption></figure>
+    <figure class="mk"><img src="mockups/linkedin-workshop.png" alt="Imagine LinkedIn: Căutăm 10 manageri de manageri, pe un card de sticlă peste aură" width="1200" height="627" loading="lazy">
+      <figcaption><b>2 · Imagine LinkedIn pentru workshop</b><span class="mic">1200 × 627. Singurul loc cu sticlă: un card peste aură. Zece noduri, nu toate legate încă.</span></figcaption></figure>
+  </div>
+  <figure class="mk" style="margin-top:18px"><div class="car">
+      <img src="mockups/linkedin-carusel-1.png" alt="Carusel, cadrul 1: Ce se întâmplă, de fapt, în echipele de manageri?" width="1080" height="1350" loading="lazy">
+      <img src="mockups/linkedin-carusel-2.png" alt="Carusel, cadrul 2: încrederea rămâne puțin în urmă, cu punctul Încredere în urma celorlalte trei" width="1080" height="1350" loading="lazy">
+      <img src="mockups/linkedin-carusel-3.png" alt="Carusel, cadrul 3: workshopul în trei pași și invitația" width="1080" height="1350" loading="lazy"></div>
+    <figcaption><b>3 · Carusel LinkedIn, trei cadre</b><span class="mic">1080 × 1350. Textele sunt din prima postare-model a lui Alex. Tiparul observat poartă culoarea capabilității lui (aici Încredere).</span></figcaption></figure>
+  <figure class="mk" style="margin-top:18px"><img src="mockups/slide-workshop.png" alt="Slide de workshop: Unde sunteți pe drum acum? Drumul de la Container la o echipă emergentă" width="1920" height="1080" loading="lazy">
+    <figcaption><b>4 · Slide de workshop</b><span class="mic">1920 × 1080. Drumul întreg, cu rețeaua care se leagă de la o etapă la alta. Ordinea se vede, nu se spune.</span></figcaption></figure>
+  <div class="grid g2" style="margin-top:18px">
+    <figure class="mk"><img src="mockups/raport-pagina.png" alt="Pagină de raport Drum critic, echipa exemplu: cele patru capabilități în carduri" width="1240" height="1754" loading="lazy">
+      <figcaption><b>5 · Pagină de raport</b><span class="mic">A4 la 150 dpi. Pagină de exemplu, fără date. Definițiile sunt traduse de mine din articolul lui Alex <span class="chip prop">propunere</span>.</span></figcaption></figure>
+    <div class="grid" style="align-content:start">
+      <figure class="mk"><img src="mockups/linkedin-banner.png" alt="Banner LinkedIn: Results are what everyone sees. How a team works is what you build., cu benzile" width="2256" height="382" loading="lazy">
+        <figcaption><b>6a · Banner pentru pagina LinkedIn</b><span class="mic">1128 × 191 (randat la 2x). Fără wordmark: logo-ul paginii stă oricum în stânga jos.</span></figcaption></figure>
+      <figure class="mk"><img src="mockups/semnatura-email.png" alt="Semnătură de email: wordmark-ul, Alexandru Molea, Fondator, Wise Teams, contacte ca paranteze" width="1200" height="340" loading="lazy">
+        <figcaption><b>6b · Semnătură de email</b><span class="mic">600 × 170 (la 2x). Cele patru liniuțe sunt capabilitățile.</span></figcaption></figure>
+    </div>
+  </div>
+  <p class="mic" style="margin-top:14px">Sursa tuturor: <code>gen.mjs</code> din acest folder (culorile și textele într-un singur loc). <code>node gen.mjs</code> reface elementele și PNG-urile.</p>
+</section>
+
+<!-- 10. DE DECIS -->
+<section class="s" id="decizii">
+  <header>
+    <p class="eb">10 · De decis</p>
+    <h2>Ce hotărăsc Alex și Andreea</h2>
+  </header>
+  <ol class="dec">
+    <li><b>Numele public.</b> Wordmark-ul spune „wise”, rapoartele și Substack-ul spun „Wise Teams”, Alex îi spune și „The Wise”. Care e numele pe care îl scriem?</li>
+    <li><b>Culorile oficiale.</b> Aveți paleta sursă (hex) de la cine a făcut wordmark-ul și rapoartele? Până atunci, valorile de aici sunt aproximative.</li>
+    <li><b>Fontul.</b> Poppins rămâne fontul Wise Teams? Dacă da, îmi dați acordul să-l descarc (gratuit, licență OFL), ca randările să iasă exact.</li>
+    <li><b>Wordmark-ul în fișier sursă.</b> Un SVG sau PDF vectorial al semnului, ca să nu mai folosim reconstrucția.</li>
+    <li><b>Cele două ajustări propuse.</b> Varianta pe fundal închis și monograma pentru avatar: da, nu sau altfel.</li>
+    <li><b>Fraza-semnătură.</b> Folosim „Results are what everyone sees. How a team works is what you build.” ca semnătură constantă? Și cum o spuneți în română?</li>
+  </ol>
+  <div class="card stack" style="margin-top:18px">
+    <h3>Note</h3>
+    <ul style="margin:0;padding-left:20px" class="mut">
+      <li>Pagina Substack <code>wiseteams.substack.com</code> are încă tema implicită (accent portocaliu Substack) și descrierea „My personal Substack”. Când decideți, tema se poate trece pe crem și portocaliul Wise; schimbarea e publică, deci o face Alex.</li>
+      <li>În căutări, „Wise” singur duce la compania de plăți cu același nume. „Wise Teams” scris întreg, lângă semn, ajută să nu fim confundați.</li>
+    </ul>
+  </div>
+</section>
+
+<footer class="sub">
+  <span>Wise Teams &nbsp;/&nbsp; Manual de brand, v1 (draft) · Ioana, 26.11.2026</span>
+  <span>Surse: rapoartele Drum critic (doar limbajul vizual) · articolul și postările-model ale lui Alex · wiseteams.substack.com</span>
+</footer>
+</main>
+</body>
+</html>
