@@ -11,9 +11,9 @@ Vocea și tonul: skill-ul `vocea-alex`. Aici nu se repetă.
 ## 1. Cine e Alex și ce promite brandul lui
 
 **Paragraful (propunere, din cuvinte confirmate):**
-> Alex este Systemic Coach & Team Coach și Leadership Trainer la Innersis. A fondat și a condus BEMORE Learning Studio (2013–2025), unde a dezvoltat specialiști în Learning & Development, iar azi construiește unelte pentru oameni care vor să crească. Misiunea lui e „Învățarea ca sursă a binelui”: aduce la suprafață lucruri invizibile ca să micșoreze distanța dintre oameni, ca să facem mai mult împreună, cu mai puțin rău și mai puțin stres.
+> Alex este Systemic Coach & Team Coach și Leadership Trainer la Innersis. A fondat BEMORE Learning Studio în 2013, unde dezvoltă specialiști în Learning & Development, și Wise Teams în 2025. Construiește unelte pentru oameni și echipe care vor să crească. Misiunea lui e „Învățarea ca sursă a binelui”: aduce la suprafață lucruri invizibile ca să micșoreze distanța dintre oameni, ca să facem mai mult împreună, cu mai puțin rău și mai puțin stres.
 
-Surse: `content/despre.md` (rolul, parcursul), D-039 (misiunea v2), D-047 (rolurile), introducerea aprobată din `vocea-alex`.
+Surse: `content/despre.md` (rolul, parcursul: BEMORE LS din 2013 până în prezent, Wise Teams din 2025), D-039 (misiunea v2), D-064 (rolurile de azi, înlocuiește D-047 la Wise Teams și BEMORE LS), introducerea aprobată din `vocea-alex`.
 Fără ani de experiență și fără cifre până nu le dă Alex.
 
 **Ce promite brandul lui Alex (propunere):**
@@ -29,11 +29,11 @@ Pe scurt, pe site: **Rezultate. Colaborare. Umanitate.** (deja în Despre).
 | Site, LinkedIn, bio scurt | Systemic Coach & Team Coach |
 | Material Innersis | Alex [nume], Leadership Trainer, Innersis |
 | Material BEMORE | Alex [nume], BEMORE (owner, dacă trebuie spus rolul) |
-| Material Wise Teams | Alex [nume], partener Wise Teams |
+| Material Wise Teams | Alex [nume], fondator Wise Teams (Founder, în engleză) |
 | Material LIFT | cum cere LIFT; Alex e colaborator |
 | Curs propriu, Knowledge Base, Innovations | Alex, fără funcție, sau „Systemic Coach & Team Coach” |
 
-„Fondator” se spune doar despre ce a fondat: BEMORE Learning Studio (2013–2025) și organizația de tineret. Nu despre Innersis, Wise Teams sau LIFT (D-047).
+„Fondator” se spune doar despre ce a fondat: BEMORE Learning Studio (din 2013, rolul continuă), Wise Teams (din 2025) și organizația de tineret (2007–2012). Nu despre Innersis sau LIFT (D-064).
 
 ---
 
@@ -48,7 +48,7 @@ Pe scurt, pe site: **Rezultate. Colaborare. Umanitate.** (deja în Despre).
 | Brand | Rolul lui Alex | Ce brand poartă materialele | Cine decide brandul | Cum apare Alex |
 |---|---|---|---|---|
 | **Innersis** | Leadership Trainer | Innersis; slide-uri cu `innersis-ive` | Innersis (Alex respectă regulile lor) | trainer: nume și rol, fără brandul personal sau BEMORE |
-| **Wise Teams** | partener | Wise Teams; rapoartele „Drum critic” cu `wise-critical-path` | partenerii Wise Teams, împreună | partener, cum e stabilit în Wise Teams |
+| **Wise Teams** | fondator, din 2025 (D-064) | Wise Teams: manualul Wise (`team/ioana/documente/brand-wise/manual-wise-v1.html`, D-098); rapoartele „Drum critic” cu `wise-critical-path`; numele modelului: secțiunea 8 | Alex și Andreea, împreună | fondator; „noi” = Alex și Andreea |
 | **LIFT** | colaborator | LIFT, cu regulile lor | LIFT | colaborator, doar unde cere LIFT |
 
 ### Varianta (a): Sora e brandul personal al lui Alex, BEMORE primește alt branding
@@ -113,7 +113,7 @@ Pentru echipa Studio (Andrei, Daria, Matei, Irina) și pentru oricine face un ma
 - Persoana întâi, „eu” și „tu” (`vocea-alex`).
 
 **Pe materialele partenerilor (propunere):**
-- Numele și rolul exact din D-047, pe slide-ul trainerului sau în pagina de echipă a partenerului.
+- Numele și rolul exact din D-064, pe slide-ul trainerului sau în pagina de echipă a partenerului.
 - Poza doar unde partenerul are un format pentru traineri și doar din cele aprobate de Alex. Nu trimitem poze noi fără Alex.
 - Bio-ul pe care îl dă un partener se scrie din paragraful de la secțiunea 1, scurtat, și îl aprobă Alex înainte să plece.
 
@@ -131,7 +131,7 @@ Reguli pentru oricare variantă: în tab, pagina vine întâi („Coaching · Al
 
 **Niciodată (confirmat de regulile casei):**
 - poza sau numele lui Alex lângă un client, fără acordul lui Alex și al clientului;
-- „fondator” la Innersis, Wise Teams sau LIFT;
+- „fondator” la Innersis sau LIFT (la Wise Teams da, D-064);
 - citate, cifre sau testimoniale inventate lângă numele lui.
 
 ---
@@ -160,11 +160,34 @@ D-054: fontul și paleta Sora, stilul Liquid Glass, prima pagină „Sticlă col
 ## 7. Întrebări pentru Alex
 
 1. **Sora (D-054) e brandul tău personal sau noul branding BEMORE?** (a) Sora e al tău, iar BEMORE primește alt branding; (b) Sora e noul branding BEMORE, folosit și pe site-ul tău, ca owner. Recomand (b), cu semnătura ta pe site și logo-ul BEMORE doar pe materialele BEMORE. Decide și T-028 (tema BEMORE pentru 23 și 25).
-2. **Ce se întâmplă cu `bemore-ls-ive`** (vechea identitate BEMORE Learning Studio)? Despre spune „Founder · BEMORE Learning Studio · 2013–2025”, iar D-047 spune „BEMORE: owner”. O mai folosim pentru vreun client?
+2. ~~**Ce se întâmplă cu `bemore-ls-ive`**?~~ Închisă de D-098 (2026-11-26): în majoritatea timpului lucrăm în imaginea BEMORE Learning Studio. Despre spune acum „Founder · BEMORE Learning Studio · 2013 – prezent”.
 3. **Cursul I-018 (Change & Self Management with AI) e sub BEMORE sau sub numele tău?** D-055 spune BEMORE pentru 23 și 25. Se aplică și cursului online de pe site?
 4. **Logo-urile în Compania mea:** ai acordul Innersis, Wise Teams și LIFT să le arătăm? Până atunci, doar numele, scrise.
 5. **Intro-ul de pe site spune „coach, fondator și inventator”**, iar Despre spune „Systemic Coach & Team Coach”. Păstrăm amândouă (intro-ul e aprobat ca text) sau aliniem? Aștept formularea ta despre tine (deschisă din D-047).
-6. **Wise Teams și LIFT:** au un ghid de brand pe care să-l primim, ca echipa să nu improvizeze?
+6. **LIFT:** are un ghid de brand pe care să-l primim, ca echipa să nu improvizeze? (Wise Teams are de acum manualul Ioanei, v1 draft, D-098; deciziile rămase sunt în capitolul 10 al lui.)
+
+---
+
+## 8. Numele modelului Wise Teams (2026-11-26, T-049)
+
+**Propusă de echipă, Alex poate schimba.** Lista completă, cu motivul fiecărui nume: `team/maria/documente/wise-teams-nume-en-v1.md`.
+
+| Engleză (Substack) | Română (LinkedIn RO, rapoarte, workshop-uri) |
+|---|---|
+| Wise Teams | Wise Teams |
+| the 4 Layers of How a Team Works | cele 4 straturi ale felului în care lucrează o echipă |
+| the journey | drumul |
+| the Container | Containerul |
+| Delivery · Flow · Trust · Anticipation | Livrare · Flux · Încredere · Anticipare |
+| Getting aligned · Moving efficiently · Delivering consistently · Building the future | Suntem aliniați · Avansăm eficient · Livrăm consecvent · Construim viitorul |
+| an emergent team | o echipă emergentă |
+| capabilities | capabilități |
+| Strategic Focus Tool | Strategic Focus Tool |
+| 16 team behaviours | 16 comportamente de echipă |
+| the Shared Mirror | Oglinda comună |
+| the Critical Path report | raportul Drum critic |
+
+Reguli: o limbă pe text (fără traduceri în paranteză); majusculă doar la nume; un strat are un singur nume peste tot. Vizualul (culorile capabilităților, drumul) e în manualul Wise al Ioanei.
 
 ---
 
@@ -174,3 +197,4 @@ D-054: fontul și paleta Sora, stilul Liquid Glass, prima pagină „Sticlă col
 | 2026-11-17 | v1, pentru I-022. Închide T-025 (paleta BEMORE LS Ive nu a fost aleasă pentru site: D-054 a ales Sora). |
 | 2026-11-17 | Secțiunea 4: cinci variante de semnătură pentru site, după D-057 și D-058. |
 | 2026-11-17 | Secțiunile 2, 3 și 7 rescrise după D-055: două variante, (a) Sora e brandul lui Alex, (b) Sora e noul branding BEMORE. Întrebarea 1 pentru Alex. |
+| 2026-11-26 | T-047: Wise Teams = fondator, din 2025 (D-064), în secțiunile 1, 2 și 4; BEMORE LS din 2013 până în prezent, ca pe site. T-049: secțiunea 8, numele modelului Wise Teams în EN și RO. Rândul Wise din secțiunea 2 trimite la manualul Wise (D-098). |
