@@ -1,47 +1,23 @@
-# Postare LinkedIn: workshop Wise Teams pentru 10 manageri de manageri (v5)
+# Postare LinkedIn: workshop Wise Teams pentru manageri de manageri (v6, textul lui Alex)
 
-> Draft Sofia, 2026-11-26. **Nepublicat. Așteaptă aprobarea lui Alex.**
-> v5: o singură variantă, directă. Alex despre v4: „tonul ar trebui să fie și direct și fără ocolișuri. metaforele sunt trase de păr în explicații. 10 ani cu echipe nu știu pe ce se bazează, este o minciună și pare lăudăros.” I-a plăcut pasajul care „aduce acceptare, aduce explicații simple” (nu e vina lor, nu e vina ta; orice echipă lucrează după un sistem, ales sau moștenit). Am construit v5 pe același mecanism, cu alte cuvinte: fără metafore, fără anecdote, fără afirmații pe care nu le putem dovedi.
-> v5.1 (2026-11-26): „autonom” detaliat, la cererea lui Alex („aș vrea să detaliem puțin mai mult decât autonom”). Rândul cu metodologia spune acum trei semne concrete, din descrierea etapei „Avansăm eficient” din metodologia Wise: deciziile nu mai urcă la lider, lucrurile grele se spun direct, liderul are din nou timp pentru strategie.
-> v4 (3 direcții): `arhiva/linkedin-workshop-wise-2026-11-25-v4.md`. v3: `arhiva/…-v3.md`. v2: `arhiva/…-v2.md`. v1: `arhiva/…-v1.md`.
+> 2026-11-26: acesta e textul lui Alex („Avem și textul postării acum”). **Nepublicat.** Echipa nu-l rescrie; schimbări doar la cererea lui.
+> Alegeri deja făcute: română, cu tag-ul Andreei (se pune în LinkedIn la publicare).
+> v5 (draftul echipei): `arhiva/linkedin-workshop-wise-2026-11-25-v5.md`. Modelele de ton date de Alex: `../modele-alex-postari-wise-2026-11-26.md`.
 
-**Locuri de completat (nu le-am inventat):** [DATA], [ORA], [ONLINE/LOCUL], [CUM TE ÎNSCRII], [TAG ANDREEA].
+## Postarea (RO)
 
----
+O echipă devine cu adevărat performantă atunci când, din interacțiunea dintre oameni, apare mai mult decât suma contribuțiilor individuale: inteligență colectivă, coordonare, creativitate și încredere.
+Vrem să deschidem această conversație cu 10 manageri de manageri.
 
-## Postarea (RO, ~125 de cuvinte)
+Organizăm un workshop restrâns în care ne propunem să facem schimb de perspective:
 
-Ai manageri buni sub tine, dar deciziile importante ajung tot la tine.
+* Noi vom împărtăși din experiența și insight-urile noastre despre dinamica echipelor și capabilitățile care le ajută să evolueze.
+* Voi ne veți aduce mai aproape de realitatea organizațiilor voastre: provocări, blocaje și nevoi concrete.
+* Veți întâlni alți lideri care se confruntă cu provocări similare, veți descoperi perspective diferite și poate veți privi propriile situații într-o lumină nouă.
 
-Nu e o problemă de oameni. Nici a lor, nici a ta.
-Fiecare echipă funcționează după un sistem. Dacă nu l-a construit nimeni intenționat, s-a construit singur, în jurul liderului.
+Noi pregătim întrebările. Voi veniți cu experiența voastră. Împreună, explorăm ce au nevoie echipele de management pentru a evolua.
 
-Împreună cu Andreea [TAG ANDREEA], am dezvoltat la Wise Teams o metodologie pentru echipele care decid singure, își spun direct lucrurile grele și mai au timp să se ocupe și de strategie împreună.
-
-Facem un workshop cu 10 manageri de manageri care chiar vor asta pentru echipele lor.
-Noi îți spunem ce am înțeles până acum. Tu ne spui cum arată echipa ta azi. Așa vedem de ce au nevoie, de fapt, echipele în momentul ăsta.
-
-Când: [DATA], [ORA]
-Unde: [ONLINE/LOCUL]
-Înscriere: [CUM TE ÎNSCRII]
-
-
----
-
-## Ce am verificat
-- Fiecare rând trece două întrebări: „aș spune asta cu voce tare unui director, la o cafea?” și „ar putea scrie asta oricine?”.
-- Acceptare + mecanism simplu, ca în pasajul care i-a plăcut lui Alex, dar fără să-l copiez: „Nu e o problemă de oameni. Nici a lor, nici a ta.” și sistemul care „s-a construit singur, în jurul liderului” (e și teza articolului: rezultatele vin din felul în care oamenii lucrează împreună).
-- Fără metafore, fără scene, fără „zece ani”, fără „am auzit de la lideri”, fără adjective de exclusivitate. Exclusivitatea vine din cele 10 locuri și din cui i se adresează („manageri de manageri care chiar vor asta”).
-- Schimbul e spus direct: ce am înțeles noi ↔ cum arată echipa ta azi ↔ de ce au nevoie echipele acum.
-- „Tu” peste tot, consecvent. Fără emoji, fără promisiuni de timp, fără nume de clienți.
-
-## De decis de Alex
-- Textul, așa cum e, sau ce rând schimbi.
-- Data, ora, locul și cum se înscriu oamenii.
-
----
-
-## 3 întrebări pentru cei care se înscriu (neschimbate din v3)
-1. Ce echipe conduci și câți manageri ai sub tine?
-2. Ce ar arăta diferit dacă echipa ta ar fi mai autonomă?
-3. Ce trece astăzi prin tine și ți-ai dori să nu mai treacă?
+## Ce lipsește încă pentru publicare (de la Alex, cu Andreea)
+- data, ora, locul sau online;
+- cum se înscriu oamenii (în modelele lui Alex: „Dacă subiectul este relevant pentru tine, scrie-ne în privat.”);
+- tag-ul Andreei (Alex a ales să o eticheteze; în text nu apare încă).
