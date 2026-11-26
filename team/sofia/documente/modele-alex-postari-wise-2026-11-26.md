@@ -36,3 +36,17 @@ Căutăm 10 manageri de manageri.
 Oameni care își doresc cu adevărat echipe autonome, echipe care se coordonează bine, își spun direct lucrurile grele și duc deciziile până la capăt, fără ca totul să treacă prin lider.
 
 Împreună cu Andreea Cimpoesu organizăm un workshop în care vă împărtășim ce am învățat cartografiind echipe de conducere, iar voi ne spuneți cum arată echipele voastre. Din ambele perspective vrem să înțelegem nevoile reale pe care le au echipele în această perioadă.
+
+## Exemplul 3
+
+Vrem să deschidem această conversație cu 10 manageri de manageri.
+Organizăm un workshop restrâns în care ne propunem să facem schimb de perspective:
+
+* Noi vom împărtăși din experiența și insight-urile noastre despre dinamica echipelor și capabilitățile care le ajută să evolueze.
+* Voi ne veți aduce mai aproape de realitatea organizațiilor voastre: ce provocări întâmpinați, unde simțiți că lucrurile se blochează și ce nevoi observați în echipele pe care le conduceți.
+
+Ne dorim să înțelegem mai bine ce înseamnă astăzi să construiești echipe de management puternice și ce provocări merită să adresăm în continuare.
+Nu venim cu răspunsuri prefabricate. Venim cu experiență, întrebări și curiozitatea de a construi o perspectivă împreună.
+Căutăm 10 manageri de manageri pentru această conversație.
+Dacă subiectul este relevant pentru tine, scrie-ne în privat. Ne-ar plăcea să te avem alături.
+

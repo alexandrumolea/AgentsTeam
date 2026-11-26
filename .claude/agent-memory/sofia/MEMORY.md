@@ -36,3 +36,4 @@ Păstrează sub 150 de rânduri. Comprimă când crește. Fapte, nu povești.
 - Vezi `docs/intrebari-pentru-alex.md`.
 - 2026-11-25: REGULĂ ALEX: întâi articolul (până la aprobare), apoi fluxul LinkedIn din textul aprobat, ca draft separat. Nu mai pun adaptările LinkedIn în draftul de articol (skill copywriting, secțiunile 4–5).
 - 2026-11-26: Alex a dat 2 exemple de postări Wise care îi plac (team/sofia/documente/modele-alex-postari-wise-2026-11-26.md): bază reală (cartografiere pe 16 comportamente), tipare spuse cu nuanță, „autonom” prin comportamente, 3 pași, îndemn simplu. Le învăț, nu le copiez.
+- 2026-11-26: al treilea model de la Alex: workshopul ca o conversație și un schimb de perspective; „Nu venim cu răspunsuri prefabricate…”; o formulă caldă e în regulă când are conținut real în jur.
