@@ -1,167 +1,207 @@
-# Wise Teams, articolul 1: The 4 Layers of How a Team Works (v6)
+# Wise Teams, articolul 1: The 4 Layers of How a Team Works (v7, versiunea lui Alex)
 
-> Draft Sofia, 2026-11-25 (T-045). **Nepublicat. Așteaptă aprobarea lui Alex.**
-> v6 (Alex, 2026-11-25): „aș vrea la fiecare capitol să găsești un key insight. De asemenea, scoate te rog emoji-urile. Suntem mai serioși decât eram pe contul meu.” Fiecare capitol începe acum cu un rând **Key insight:**, o singură frază. Am scos toate emoji-urile (📌, 👉, 💬). Structura pe drum din v5 a rămas. ~850 de cuvinte.
-> v5 (textul aliniat la drumul din imaginea „A · Drumul”; ordinea se vede, nu se anunță): `arhiva/wise-teams-articol-1-2026-11-20-v5.md`.
-> v4.1 (Containerul pe insight-ul lui Alex, motivația Wise Teams, „we'd be happy to talk”, propoziția despre Anticipation după Delivery): `arhiva/wise-teams-articol-1-2026-11-20-v4.md`. v3: `arhiva/…-v3.md`. v2: `arhiva/…-v2.md`. v1, în română: `arhiva/…-v1-ro.md`.
-> LinkedIn: nu e în acest draft (Alex, 2026-11-25: întâi articolul, apoi un flux separat pentru LinkedIn).
-
-- **Ideea într-o frază:** rezultatele sunt doar locul unde se vede cum lucrează o echipă; drumul pornește din Container, trece prin Delivery, Flow, Trust și Anticipation și duce spre o echipă emergentă.
-- **Pentru cine:** lideri de echipă și manageri care vor să-și vadă echipa ca sistem, nu ca sumă de oameni.
-- **Presupunerea pe care o contrazicem:** „când rezultatele nu vin, e o problemă de oameni, iar soluția e mai multă presiune”.
-- **Cum continuă seria lui:** *The 3 Hidden Forces* (în introducere), *Your team needs two threads* (la Anticipation, o singură propoziție).
-- **Ordinea secțiunilor (v5):** the Container (de unde pornește) → Delivery (aliniere, apoi rezultate constante; o singură secțiune, ca să nu se repete) → Flow → Trust (pe imagine, împreună: „Moving efficiently”) → Anticipation → An emergent team (în final). Delivery stă primul pentru că acolo se uită toată lumea întâi și pentru că „It's the effect of a process” duce firesc spre Flow și Trust.
-
-## Titlu și subtitlu
-1. **The 4 Layers of How a Team Works**
-   *The path from where a team starts to what it can become*
-   (titlul ales de Alex; subtitlul e nou, pentru că „What sits underneath the results you see” descria stiva)
-2. Subtitlu alternativ: *What results are made of, and where a team can go from there*
-3. Subtitlu alternativ: *And why pushing harder on results rarely moves them* (neutru față de formă, rămas din v4)
-
-> **Pentru Alex, despre titlu:** „layers” spune stivă, iar imaginea și textul spun drum. În text am folosit cuvântul o singură dată, în invitația de la final. Dacă vrei ca titlul să se potrivească cu drumul, propunerile mele sunt **„The Path of How a Team Works”** sau **„How a Team Works: From the Container to an Emergent Team”**. Titlul apare și pe imaginea Ioanei, deci o schimbare se face în ambele locuri. Nu l-am schimbat.
-
-Subiect de email: „The 4 Layers of How a Team Works”
-Text de previzualizare: „Results are what everyone sees. Here is the path behind them.”
-
-> **De confirmat (T-049):** numele în engleză Delivery, Anticipation, Flow, Trust și „the Container” sunt traducerile mele, încă neaprobate. Imaginea le folosește la fel.
+> 2026-11-26: acesta e textul lui Alex, transcris din PDF-ul trimis de el (`../model-alex-articol-4-layers-2026-11-26.pdf`). Alex: „Da, a mea”, adică versiunea lui devine textul articolului. **Nepublicat.** Echipa nu-l rescrie; schimbări doar la cererea lui.
+> Adăugat de Tudor: imaginea aleasă de Alex („A · Drumul”), după introducere, și linkul spre articolul *The 3 Hidden Forces* de pe Substack-ul lui.
+> v6 (draftul echipei, cu un key insight pe capitol, fără emoji): `arhiva/wise-teams-articol-1-2026-11-20-v6.md`. Versiunile mai vechi sunt tot în `arhiva/`.
+> LinkedIn: flux separat, după aprobarea articolului (card în Trello).
 
 ---
 
-## Textul pentru Substack (EN, ~850 de cuvinte)
+## Textul pentru Substack (EN)
 
 # The 4 Layers of How a Team Works
-*The path from where a team starts to what it can become*
+*The path from where a team starts to what it can become.*
 
 When a team isn't getting the results it wants, where do we look first?
 
 At people.
-Who isn't committed. Who doesn't communicate. Who doesn't take ownership.
 
-I understand the reflex. People are what we see.
+Who isn't committed enough? Who doesn't communicate? Who doesn't take ownership?
 
-But in [the 3 hidden forces that shape high performing teams](https://alexandrumolea.substack.com/p/the-3-hidden-forces-that-shape-high) I wrote that every team results in a repeatable system. By design or by default.
+It's an understandable reflex. People are what we see.
 
-**Results don't come only from people. They come from how people work together.**
+But there's another place worth looking.
 
-So what does that system look like?
+In [The 3 Hidden Forces That Shape High-Performing Teams](https://alexandrumolea.substack.com/p/the-3-hidden-forces-that-shape-high), I explored how every team develops a repeatable system of working together — by design or by default.
 
-At Wise Teams, we see it as a path. It starts with the Container, moves through Delivery, Flow, Trust and Anticipation, and leads toward an emergent team: one that is more than the sum of its parts.
+Because results don't come only from what people do individually. They emerge from how people work together.
+
+So, if we want to understand a team's performance, we need to look beyond individual behaviours and examine the system connecting them.
+
+At Wise Teams, we see this as a journey. It starts with the Container, moves through four essential layers — Delivery, Flow, Trust and Anticipation — and leads towards something more: an emergent team, where the whole becomes greater than the sum of its parts.
 
 ![The 4 Layers of How a Team Works](../../../ioana/documente/schita-4-layers-v3/a-drumul.png)
 
-Let's walk it, from where it starts.
+Let's explore the journey.
 
-### The Container
+### Before the journey: The Container
 
-**Key insight:** When a team loses its why, work slides toward personal efficiency and personal goals.
+**Key insight: When people lose sight of what they're working towards together, they start focusing on their own goals instead.**
 
-Every team starts from the Container: why the team exists, who it exists for, what its people want to inspire in each other, and the roles and rules it works by.
+Every team needs a Container: a shared understanding of why it exists, who it exists for, what its members want to inspire in one another, and the roles and rules that guide their work.
 
-Teams often forget it. They lose the why, and with it the big picture.
+The Container gives a team its boundaries, direction and sense of belonging.
 
-What's left is doing the necessary minimum, as fast as possible.
+Yet teams can gradually lose sight of it.
 
-### Delivery
+People become increasingly focused on their own responsibilities, individual targets and immediate priorities. Everyone stays busy, but the bigger picture becomes less visible.
 
-**Key insight:** Delivery is not where results are made. It's where they show up.
+Work continues, but the sense of working towards something together starts to fade.
 
-Delivery shows up twice on the path: first as alignment, priorities understood the same way; later as results that come steadily. In between is how the team works. Delivery is the effect of that process.
+What's left is often the necessary minimum, done as efficiently as possible.
 
-Yet when results don't come, this is where most of the pressure goes.
-More follow-ups. More urgency. More "we just need to push harder."
+Before asking a team to perform better, it's worth asking: do we still know what we're here to build together?
 
-Why? Because pressure is the tool closest at hand. When you don't know where to work more concretely, you push where you can see.
+### 1. Delivery: Getting aligned
 
-And in the moment, it works. Pressure creates focus, and focus moves things.
+**Key insight: A team isn't aligned just because everyone agrees in the meeting. People can work hard in the same team and still pull in different directions.**
 
-But will is not an endless resource. It erodes.
+The first expression of Delivery is alignment.
 
-The pressure doesn't disappear either. It turns into what's called **allostatic load**: the wear and tear that stress leaves on body and mind when it lasts. Sooner or later, that load gets discharged somewhere: in tiredness, in tension between people, in quiet disengagement.
+Do people understand the priorities in the same way? Are expectations explicit? Do team members genuinely commit to the same direction?
 
-The feedback comes late. But it comes.
+Agreement in a meeting doesn't necessarily mean alignment.
 
-### Flow
+People can leave the same conversation with different interpretations of what matters, what success looks like and what they are expected to contribute.
 
-**Key insight:** A process nobody talks about anymore stops serving the team and starts blocking it.
+When this happens, individual effort can be high while collective progress remains limited.
 
-Here, the risk is to build processes and procedures that don't serve us.
+Alignment is not about everyone thinking alike. It's about making sure different perspectives, responsibilities and contributions connect to a shared direction.
 
-The mechanism underneath how we work should be as alive, and as regularly adapted, as everything else in a team.
+Without it, a team risks becoming a collection of individual efforts rather than a coordinated force.
 
-Often, though, processes ossify. And the conversations about them stop happening.
+### 2. Flow and Trust: Moving efficiently
 
-So instead of unblocking coordination, they block it.
+**Key insight: Work moves faster when coordination is clear and people can bring difficult things into the conversation.**
 
-Most teams don't design their coordination. They don't look at how well the ball is passed from one person to the next.
+This is where the quality of a team's internal dynamics becomes visible.
 
-Process is to a team what metacognition is to thinking: the way a team works on how it works.
+Two capabilities make a fundamental difference: Flow and Trust.
 
-In an organization, that means stepping onto the sidelines from time to time and asking: *what needs to improve, so things can move forward?*
+#### Flow: How work moves through the team
 
-### Trust
+Flow is about how information, decisions, tasks and responsibilities move from one person to another.
 
-**Key insight:** Lack of trust is a hidden culprit. It rarely shows up under its own name.
+It includes the processes, routines and coordination mechanisms that allow people to work together effectively.
 
-Without trust, it's hard to commit to what was agreed.
-Without trust, you delay going to the person who could unblock you.
-Without trust, silos form, and innovation and anticipation suffer.
-Without trust, decisions are hard to make.
-Without trust, you don't implement what someone else proposed. Or you conveniently postpone it, until everyone forgets.
-Without trust, conflicts start.
-Without trust, everyone pulls in a different direction.
+But processes can become outdated. Meetings can lose their purpose. Decisions can get stuck. Information can circulate without reaching the people who need it.
 
-And teams usually can't work on trust on their own. Different people, with different views, don't know how to align.
+A process that nobody questions anymore can stop serving the team and start blocking it.
 
-Not because they don't want to. Because aligning different views is hardest exactly where trust is missing.
+Most teams spend considerable time working within their processes, but very little time examining how well those processes actually work.
 
-### Anticipation
+Flow requires the ability to step back occasionally and ask:
 
-**Key insight:** Always putting out fires is rarely a speed problem. It's what happens when anticipation has no place in how a team works.
+What makes our work easier? What creates friction? Where do decisions get stuck? What needs to change so work can move forward?
 
-Once a team is doing well with its results, it can lift its head and think about the future.
+Process is to a team what metacognition is to thinking: the ability to examine and improve the way we work.
 
-Many teams never get there. They get stuck running the same solutions on problems that don't get solved.
+#### Trust: How much truth can the team handle?
 
-They live more with the feeling of being behind than with the feeling of experimenting, playing, and being in rhythm with the market.
+Trust is often treated as something abstract, something that develops naturally over time.
 
-Firefighters, by the way, train between fires. That's the [second thread a team needs](https://alexandrumolea.substack.com/p/your-team-needs-two-threads): not only performing, but innovating on how you perform.
+But its impact is very concrete.
 
-### Final thought
+Without trust, people hesitate to raise difficult issues, challenge assumptions or address disagreements directly.
 
-Results are what everyone sees.
-How a team works is what you build.
+Problems stay hidden longer than they should. Tensions become personal. Accountability becomes uncomfortable. Decisions get delayed or quietly undermined.
 
-And where the path leads isn't a perfect team. It's an emergent one: more than the sum of its parts.
+A team may appear to function well on the surface while important conversations happen elsewhere — in private exchanges, informal alliances or conversations that never reach the whole group.
 
-At Wise Teams, this is why we do what we do: to move the knowledge of how a team works into the team itself, and to help it get unblocked at every step, with the right professional for that particular challenge.
+Trust is not the absence of disagreement or conflict.
 
-Where on this path does your team feel strongest right now, and where is it asking for attention?
+It's the capacity to work through differences without damaging the relationships that make collaboration possible.
 
-If you'd like to look at the four layers together with your team, we'd be happy to talk.
+And this is often one of the hardest things for a team to develop by itself. Different people bring different perspectives, expectations and interpretations. Bringing them together requires more than good intentions.
+
+It requires deliberate work.
+
+**Flow helps work move. Trust makes it possible for people to move through the difficult parts of working together.**
+
+### 3. Delivery: Delivering consistently
+
+**Key insight: Delivery is not where results are made. It's where the quality of everything underneath becomes visible.**
+
+Once priorities are aligned and the team has developed better ways of working together, the next challenge is consistency.
+
+Are commitments translated into action? Is progress visible? Are results monitored? Does the team learn when things don't go as planned?
+
+When results fall short, many leaders instinctively increase pressure.
+
+More follow-ups. More urgency. More meetings. More reminders to take ownership.
+
+And sometimes this works, at least temporarily.
+
+Pressure can create focus and accelerate action. But it cannot replace the underlying conditions that make consistent performance possible.
+
+Over time, constant pressure consumes energy, increases tension and can lead to disengagement.
+
+The more sustainable alternative is to develop the team's ability to monitor its own progress, make commitments visible, address obstacles early and hold one another accountable.
+
+Consistent delivery is not simply about getting people to work harder.
+
+It's about creating a system in which the team can reliably turn intentions into results.
+
+### 4. Anticipation: Building the future
+
+**Key insight: Always putting out fires is rarely just a speed problem. It's often a sign that anticipation has no place in how a team works.**
+
+Once a team can deliver consistently, it has an opportunity to lift its head and look beyond immediate demands.
+
+But many teams never quite get there.
+
+They spend most of their energy responding to what is urgent, repeating familiar solutions and solving variations of the same problems.
+
+The future becomes something that happens to them rather than something they actively shape.
+
+Anticipation means developing the capacity to notice changes early, question existing assumptions, experiment with new approaches and prepare for what might come next.
+
+It also means creating space for innovation within the team's everyday work.
+
+Firefighters, after all, train between fires.
+
+Teams need the same discipline: not only performing today, but continuously improving how they will perform tomorrow.
+
+The ability to anticipate is not reserved for strategy departments or senior executives. It needs to become part of how the team itself operates.
+
+### Beyond the four layers: An emergent team
+
+The journey doesn't end with a perfectly aligned, efficient and consistently delivering team.
+
+That's not the destination.
+
+The destination is an emergent team.
+
+A team where the interaction between people creates something that none of them could produce alone: collective intelligence, stronger coordination, creativity, adaptability and trust.
+
+Where people don't simply contribute their individual expertise, but actively build on one another's thinking.
+
+Where the team can navigate complexity, address its own challenges and shape its future.
+
+This doesn't happen by accident.
+
+It emerges when the conditions for working together are deliberately developed.
+
+At Wise Teams, this is why we do what we do: to bring the knowledge of how a team works into the team itself, helping people understand their dynamics, identify what needs attention and make progress at each stage of their journey.
+
+Because improving a team doesn't start with fixing people.
+
+It starts with understanding the system they create together.
+
+**Results are what everyone sees. How a team works is what you build.**
+
+### A question to take back to your team:
+
+Where are you on this journey right now?
+
+Are you aligned around a shared direction? Moving efficiently through your work? Delivering consistently? Or making space to anticipate and shape the future?
+
+And what would make the biggest difference to the way you work together?
+
+At Wise Teams, we'd be happy to explore these questions with you.
 
 ---
 
-## Surse
-- Ideile de la fiecare capabilitate: feedbackul lui Alex din 2026-11-25 (brief-urile lui Tudor), păstrate.
-- Drumul (Container → Aligned → Moving efficiently → Delivering consistently → Building the future → An emergent team): imaginea aleasă de Alex, `team/ioana/documente/schita-4-layers-v3/a-drumul.png`.
-- Allostatic load (doar pentru verificare, nu în text): B. S. McEwen și E. Stellar, „Stress and the individual: mechanisms leading to disease”, *Archives of Internal Medicine*, 1993; B. S. McEwen, „Protective and damaging effects of stress mediators”, *New England Journal of Medicine*, 1998.
-- Metacogniția, doar pentru verificare: J. H. Flavell, „Metacognition and cognitive monitoring”, *American Psychologist*, 1979.
-- Articolele lui Alex la care trimite textul: [The 3 Hidden Forces that Shape High Performing Teams](https://alexandrumolea.substack.com/p/the-3-hidden-forces-that-shape-high) (2025-06-10), [Your team needs two threads](https://alexandrumolea.substack.com/p/your-team-needs-two-threads) (2025-07-28).
-- Vocea: `team/sofia/documente/substack-voce-2026-11-20.md`.
-
-## Ce am schimbat față de v5
-- Un **Key insight** pe capitol, pe primul rând, în același format peste tot. Patru sunt fraze care existau deja în text și au fost mutate sus (Container, Delivery, Flow, Trust); unul e nou, din ideea lui Alex (Anticipation: „din lipsa capacității de a integra anticiparea, obții efectul de stins mereu incendii”).
-- Ca să nu se repete: la Delivery, fraza din mijloc a devenit „Delivery is the effect of that process”; la Flow, metacogniția a ieșit din corp; la Trust, prima frază a intrat în lista „Without trust, …”; la Anticipation, a ieșit propoziția „you get a familiar effect: always putting out fires” (e acum în insight).
-- Fără emoji: subtitlurile au doar numele capitolului; frazele cu 👉 au devenit key insight (Container) sau text simplu (Delivery, Trust); întrebarea de la final a rămas, ca text simplu.
-- Propoziția de la Anticipation e cea scurtată de Tudor: „Once a team is doing well with its results, it can lift its head and think about the future.”
-
 ## De decis de Alex
-- Titlul („layers” vs. drum, vezi nota de mai sus) și subtitlul.
-- Invitația de la final mai spune „the four layers”. Dacă schimbi titlul, devine „look at this path together with your team”.
-
-## Ce am verificat
-- Fără nume de clienți și fără referire la raportul din care vine drumul; fără cifre inventate, fără promisiuni de timp, fără ton de vânzare.
-- Calea imaginii, de la acest fișier: `../../../ioana/documente/schita-4-layers-v3/a-drumul.png` (există).
-- Lungime: ~850 de cuvinte în textul pentru Substack (ținta: 800–850).
-- Fără emoji în tot textul pentru Substack (regula canalelor Wise Teams, 2026-11-25).
+- Linkul spre *Your team needs two threads* (pomenit în versiunile echipei la „Firefighters… train between fires”) nu e în textul lui; nu l-am adăugat.
+- Numele în engleză (T-049) sunt acum cele din textul lui.
