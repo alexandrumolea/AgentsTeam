@@ -20,6 +20,7 @@
 | Lansări (Atelier): textele și coerența | Maria | Sofia | `content/lansari/` (când există) | la fiecare lansare | lansarea apare în aceeași zi |
 | Social media | Sofia | Maria | `team/sofia/documente/` | săptămânal | calendarul e respectat |
 | Oportunități, speaking, strategia cărții | Victor | Maria | `team/victor/documente/` | lunar | oportunități calificate pe lună |
+| Oportunitățile (coloana Opportunities din Trello „Planning”): scor și prioritate (D-100) | Tudor | Ana | `docs/procese/oportunitati.md`; detaliile doar pe Trello și în evidența privată a Anei | la fiecare card nou și la ședința de dimineață; Alex confirmă D la review | fiecare card are scor și pas următor; coloana e ordonată după scor |
 | Oferte și relația comercială cu clienții | Ana | Tudor | `.claude/agent-memory-local/ana/` (privat), metoda în `.claude/skills/oferte/` | la fiecare cerere | timpul până la draft, oferte fără corecturi de fond |
 | Produse digitale de learning (simulări, ateliere interactive, tool-uri) | Luca | Andrei | `privat/produse/`, `team/luca/documente/` | la fiecare produs | Alex aprobă planul din prima sau a doua iterație |
 | Sănătate personală (mișcare, nutriție, energie, somn) | Vlad | Simona | doar privat: `.claude/agent-memory-local/vlad/`, `.claude/agent-memory-local/simona/`, Trello „Health” | săptămânal, în sesiunea separată | Alex spune că planul încape în săptămâna lui |

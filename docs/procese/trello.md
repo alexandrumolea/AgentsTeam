@@ -13,6 +13,8 @@ Alex vede în Trello, într-un singur loc, tot ce are echipa de făcut și tot c
 | **Done** | Ce s-a terminat. Tudor mută cardul când se termină. |
 
 Coloanele lui Alex (My Strategy, Opportunities, Design Needed, Gave Up Opportunities) și cardurile pe care le face el rămân ale lui. **Facem echipă** (Alex, 2026-11-25: „vreau să te uiți și peste cardurile mele, facem echipă”): la fiecare sincronizare, Tudor citește și cardurile lui Alex și:
+
+**Excepție: Opportunities e a lui Tudor** (Alex, 2026-11-26, D-100). Fiecare card are scorul în titlu (`64 · Nume`), blocul de scor la începutul descrierii și locul în coloană după scor. Regulile sunt în [oportunitati.md](oportunitati.md).
 - le leagă de ce știe echipa (oferte, clienți, cursuri), ca să nu existe două carduri pentru același lucru;
 - semnalează ce s-a blocat sau a rămas vechi (fără activitate de peste o lună, termen care se apropie);
 - propune cine din echipă poate prelua ceva (Ana, Victor, Learning Studio etc.).

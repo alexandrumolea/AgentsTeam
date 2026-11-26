@@ -7,6 +7,7 @@
 | Agent | Ritm | Ce face din proprie inițiativă | Nivel |
 |---|---|---|---|
 | Tudor | zilnic, în zilele lucrătoare | Aplică verdictele lui Alex, triază `docs/taskuri.md`, deleagă cel mult 3 taskuri, face commit, push și regenerează pagina echipei. Lasă un raport scurt doar dacă s-a întâmplat ceva | 1 |
+| Tudor | zilnic, în zilele lucrătoare | Scorează cardurile noi din Opportunities și actualizează scorurile care s-au schimbat (D-100, `docs/procese/oportunitati.md`) | 1 |
 | Tudor | luni | Raportul săptămânal (`docs/procese/raport-saptamanal.md`) | 1 |
 | Sofia | luni | Draftul calendarului editorial pentru săptămâna următoare, din ce a produs echipa | 1 (postarea e 3) |
 | Victor | joi | Actualizează pipeline-ul de oportunități și propune cel mult 2 oportunități noi. | 1 (contactarea e 3) |
