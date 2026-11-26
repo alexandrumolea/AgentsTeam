@@ -32,6 +32,8 @@ Păstrează sub 150 de rânduri. Comprimă când crește. Fapte, nu povești.
 - 2026-11-25: Publicul Wise Teams (Alex): manageri de manageri (directori, lideri de echipe noi, antreprenori) care chiar vor echipe autonome. Postările pornesc din problemele lor (liderul crește mai repede decât echipa, totul trece prin lider), nu din model. Lean Canvas-ul e PRIVAT în agent-memory-local/sofia/; în repo nu citez nici conceptul, nici segmentele.
 - 2026-11-25: Wise Teams vinde prin Strategic Focus Tool + întâlnire de grup (managerii se cunosc între ei, văd cum stau alte echipe). Postarea de invitație (workshop deschis, gratuit, 10 locuri) în drafts/, 2 variante RO+EN. Andreea = co-fondatoare Wise Teams; numirea/tag-ul ei îl decide Alex. Postările de invitație: spun ce primește omul, nu ce nu e evenimentul („nu vindem”).
 
+- 2026-11-26: Bio-urile publice (T-030, drafts/bio-uri-aliniate-2026-11-26.md): LinkedIn = linkedin.com/in/alexandrumolea (adresa e în repo; nu caut după nume); pagina publică dă About-ul întreg în ld+json (curl cu User-Agent de browser). LinkedIn nu are încă Wise Teams și LIFT; are Coachy (co-founder iOS, 2022), absent la noi. Substack: „Systemic Coach & Advisor”, bio cu greșeli; hero-ul („leaders and curious minds”) e bun. Aștept alegerile lui Alex.
+
 ## Deschis
 - Vezi `docs/intrebari-pentru-alex.md`.
 - 2026-11-25: REGULĂ ALEX: întâi articolul (până la aprobare), apoi fluxul LinkedIn din textul aprobat, ca draft separat. Nu mai pun adaptările LinkedIn în draftul de articol (skill copywriting, secțiunile 4–5).
