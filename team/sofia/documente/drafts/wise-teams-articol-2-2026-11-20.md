@@ -43,9 +43,9 @@ We talk about tasks, deadlines, clients. Almost never about how we work together
 
 In [The 3 Hidden Forces](https://alexandrumolea.substack.com/p/the-3-hidden-forces-that-shape-high) I called this the invisible layer: the dynamics that shape a team whether anyone looks at them or not.
 
-👉 **The Shared Mirror is how we make that layer visible.**
+**The Shared Mirror is how we make that layer visible.**
 
-### 📌 What the mirror is
+### What the mirror is
 
 Each person answers alone, on 16 team behaviours. Each behaviour sits between two statements. For example:
 
@@ -54,13 +54,13 @@ Each person answers alone, on 16 team behaviours. Each behaviour sits between tw
 
 Everyone marks where they think the team is today.
 
-The answers come together into one picture, across four categories: **Flow, Trust, Delivery, Anticipation.** You see the maturity level of each, and an energy map: where the team's effort goes, and where it's missing.
+The answers come together into one picture, across four capabilities: **Flow, Trust, Delivery, Anticipation.** You see the maturity level of each, and an energy map: where the team's effort goes, and where it's missing.
 
 And here is a choice we made on purpose: **the report doesn't propose next steps.**
 
 A picture made from people's answers is a starting point, not a verdict. To become true, it needs the people who gave it.
 
-### 📌 What happens in front of the mirror
+### What happens in front of the mirror
 
 When a team looks at its picture together, something simple shifts.
 The conversation is no longer about who is right.
@@ -76,9 +76,9 @@ That difference isn't a measurement error. **It is the information.** It tells u
 
 That's why the whole team answers. A picture from one person is a hypothesis, not a diagnosis.
 
-### 📌 Why the order matters
+### Why the order matters
 
-The four categories aren't placed at random. We work on them in the order we believe they are best built: **first Flow and Trust, then Delivery, then Anticipation.**
+The four capabilities aren't placed at random. We work on them in the order we believe they are best built: **first Flow and Trust, then Delivery, then Anticipation.**
 
 It feels counter-intuitive. When results don't come, the reflex is to work on results directly. Clearer goals. More follow-up. More pressure.
 
@@ -92,15 +92,15 @@ More follow-up won't help here. Progress is being tracked. Bad news just doesn't
 
 Or a team where everyone wants to deliver, but tasks sit for days between two people, because nobody knows who has the ball. That's Flow.
 
-👉 Push on Delivery over a blocked Flow and a fragile Trust, and you get more pressure and more cosmetic status reports. Unblock the flow and make room for the truth first, and Delivery has something to grow on.
+Push on Delivery over a blocked Flow and a fragile Trust, and you get more pressure and more cosmetic status reports. Unblock the flow and make room for the truth first, and Delivery has something to grow on.
 
 I touched on this link in [Why Smart Teams Get Stuck](https://alexandrumolea.substack.com/p/why-smart-teams-get-stuckand-how): where trust is weak, information doesn't flow, and even a team of very capable people slows down.
 
 It also has research behind it. In a study of 51 teams, published in 1999, [Amy Edmondson](https://web.mit.edu/curhan/www/docs/Articles/15341_Readings/Group_Performance/Edmondson%20Psychological%20safety.pdf) at Harvard showed that psychological safety, the shared sense that it's safe to take interpersonal risks in the team, goes together with how much a team learns. And learning is the bridge to performance. Google's [Project Aristotle](https://rework.withgoogle.com/intl/en/guides/understand-team-effectiveness) reached a close conclusion: of the five dynamics that set effective teams apart, psychological safety came first.
 
-The exact order of the four categories is our working hypothesis, not a law. But it helps us choose where the first change goes. We look at Flow and Trust first, and we move on only when both are solid.
+The exact order of the four capabilities is our working hypothesis, not a law. But it helps us choose where the first change goes. We look at Flow and Trust first, and we move on only when both are solid.
 
-### 📌 After the mirror
+### After the mirror
 
 From the picture, the team chooses a focus together: the place where one change can move the most.
 
@@ -125,7 +125,7 @@ That's where the conversation starts.
 A team can only change what it can see.
 And it sees best together.
 
-💬 When did your team last look at how it works, not just at what it delivers?
+When did your team last look at how it works, not just at what it delivers?
 
 And if you'd like to see the whole mirror for your team, let's hold it together.
 
@@ -148,13 +148,13 @@ Conversația se schimbă.
 Nu mai e despre cine are dreptate, ci despre ce vedem.
 
 Uneori oamenii văd aceeași echipă foarte diferit.
-👉 Diferența nu e o eroare. E chiar informația.
+Diferența nu e o eroare. E chiar informația.
 
 Și ordinea contează. Când rezultatele nu vin, reflexul e mai multă urmărire. Dar dacă veștile proaste nu ajung la timp pe masă, problema nu e la Livrare. E la Încredere.
 
 Am scris despre ce se întâmplă în fața oglinzii și de ce începem cu Flux și Încredere: [link]
 
-💬 O întrebare de încercat la următoarea ședință: „De la 1 la 5, cât de ușor spunem aici o veste proastă?” Fiecare pe hârtie, fără nume. Uitați-vă la diferențe, nu la medie.
+O întrebare de încercat la următoarea ședință: „De la 1 la 5, cât de ușor spunem aici o veste proastă?” Fiecare pe hârtie, fără nume. Uitați-vă la diferențe, nu la medie.
 
 ## Adaptare: postare LinkedIn (EN, ~190 de cuvinte)
 
@@ -171,13 +171,13 @@ The conversation shifts.
 It's no longer about who is right. It's about what we see.
 
 Sometimes people see the same team very differently.
-👉 That difference isn't an error. It is the information.
+That difference isn't an error. It is the information.
 
 And the order matters. When results don't come, the reflex is more follow-up. But if bad news doesn't reach the table in time, the problem isn't Delivery. It's Trust.
 
 I wrote about what happens in front of the mirror, and why we start with Flow and Trust: [link]
 
-💬 One question to try at your next meeting: "From 1 to 5, how easy is it to share bad news here?" Everyone on paper, no names. Look at the differences, not the average.
+One question to try at your next meeting: "From 1 to 5, how easy is it to share bad news here?" Everyone on paper, no names. Look at the differences, not the average.
 
 ---
 
@@ -191,6 +191,11 @@ I wrote about what happens in front of the mirror, and why we start with Flow an
 ## Ce am verificat
 - Fără nume de clienți, fără date din rapoarte, fără cifre inventate. Cifre: 16 comportamente, trei luni, două săptămâni (modelul), 51 de echipe și 1999 (Edmondson).
 - Exemplele („totul e verde până cu două zile înainte”, „cine are mingea”) sunt generice, scrise ca „Let's imagine this”. „Pass the ball” e chiar imaginea lui Alex din *Smart Teams*.
-- Ordinea categoriilor e spusă ca ipoteză de lucru, nu ca rezultat de cercetare.
+- Ordinea capabilităților e spusă ca ipoteză de lucru, nu ca rezultat de cercetare.
 - Afirmațiile scalei sunt traduse de mine din română; de verificat față de formularea din instrument, dacă există una în engleză.
-- De confirmat: „the Shared Mirror” ca nume englezesc pentru Oglinda comună; pragul pentru „solide” lăsat fără cifră; întrebarea „bad news” ca exercițiu public.
+- De confirmat: pragul pentru „solide” lăsat fără cifră; întrebarea „bad news” ca exercițiu public.
+
+## Ce s-a schimbat (2026-11-26, după T-049)
+- Numele din lista Mariei (`team/maria/documente/wise-teams-nume-en-v1.md`): „four categories” → „four capabilities” (de 3 ori în textul Substack). Restul numelor erau deja cele din listă (the Shared Mirror, Flow, Trust, Delivery, Anticipation, 16 team behaviours, maturity level, energy map; în română Oglinda comună, Flux, Încredere, Livrare), așa că „the Shared Mirror” nu mai e de confirmat.
+- Fără emoji, cum cere manualul Wise: am scos 📌 din subtitluri, 👉 și 💬 din textul Substack și din cele două postări LinkedIn.
+- Ideile, ordinea și formulările nu s-au schimbat.

@@ -205,3 +205,6 @@ At Wise Teams, we'd be happy to explore these questions with you.
 ## De decis de Alex
 - Linkul spre *Your team needs two threads* (pomenit în versiunile echipei la „Firefighters… train between fires”) nu e în textul lui; nu l-am adăugat.
 - Numele în engleză (T-049) sunt acum cele din textul lui.
+
+## Ce s-a schimbat (2026-11-26, după T-049)
+- Nimic în text. Lista de nume a Mariei (`team/maria/documente/wise-teams-nume-en-v1.md`) e făcută chiar din acest articol, iar textul nu are emoji.
