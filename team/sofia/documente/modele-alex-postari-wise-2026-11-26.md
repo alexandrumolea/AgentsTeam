@@ -1,6 +1,6 @@
 # Modele de postări Wise Teams, date de Alex (2026-11-26)
 
-> Alex: „Îți mai dau câteva exemple.” Ca să învățăm tonul și structura, nu ca să le copiem. Lecțiile scoase din ele sunt în skill-ul `copywriting` (Lecții, 2026-11-26).
+> Alex: „Îți mai dau câteva exemple.” Ca să învățăm tonul și structura, nu ca să le copiem. Lecțiile scoase din ele sunt în skill-ul `copywriting` (Lecții, 2026-11-26). Corectură de la Alex: „încrederea rămâne în urmă”, nu „stă în urmă” (corectat mai jos).
 
 ## Exemplul 1
 
@@ -8,7 +8,7 @@ Ce se întâmplă, de fapt, în echipele de manageri?
 
 În ultimele luni, împreună cu Andreea Cimpoesu, am cartografiat mai multe echipe de conducere pe 16 comportamente de echipă. Câteva lucruri ne-au surprins:
 
-→ În multe echipe, munca e bine organizată, iar încrederea stă puțin în urmă. Oamenii livrează, dar unele lucruri se spun mai greu între ei.
+→ În multe echipe, munca e bine organizată, iar încrederea rămâne puțin în urmă. Oamenii livrează, dar unele lucruri se spun mai greu între ei.
 → Ce nu funcționează ajunge adesea pe masă abia după ce a crescut, mai degrabă pe hol decât în ședință.
 → Când nu e mereu clar cine de ce se ocupă mai exact, răspunderea urcă, încet, înapoi la lider.
 
