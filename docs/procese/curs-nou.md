@@ -92,7 +92,7 @@ Panoul acestei etape e vederea **Harvest** din materialul trainerului (fostă �
 Fără ea nu se produce nimic.
 
 ### Etapa D · Producția
-- **Ce include:** slide-uri, scheme, curs online, note de trainer, banca de exerciții.
+- **Ce include:** slide-uri, scheme, note de trainer, banca de exerciții, plus **planșe și alte materiale** (D-099): planșe pentru sală (modelele și schemele cheie, mari, pe perete sau flipchart), worksheet-uri, carduri și fișe tipărite. Le face Matei, cu Ioana pe vizual, din piesele „da”; pot intra apoi și în materialul participantului.
 - **Pentru ce piese:** numai pentru cele cu verdict „da”.
 - Butonul „Trimite în agendă” face din firul roșu agenda ediției.
 - **Schița** (D-051): ziua dintr-o privire, pe o pagină. Arată blocurile, piesele din firul roșu, orele și checklist-ul cu obiectivele de bifat pe parcursul zilei. Se generează din agendă, stă în materialul trainerului (vederea Schița, și în modul Prezintă) și se poate tipări. Designul final îl face Alex cu Ioana după primele livrări (T-023).
@@ -113,7 +113,7 @@ flowchart LR
     G -- da --> D[D · Producția<br/>doar piesele „da”] --> L[Livrare flexibilă]
   end
   L --> T[Feedbackul trainerului] --> A
-  L --> CO[Curs online]
+  L --> MP[Materialul participantului]
   L --> FP[Feedback către participanți] --> V[Verificare centralizată, lunar]
   V --> A
 ```
@@ -144,9 +144,9 @@ Blocurile 1–3 au câte 90 de minute, blocul 4 are 120 (Alex, 2026-11-18). Pauz
 | 6 | **Livrare flexibilă** | ziua în sală; alternativele și Biblioteca permit schimbări | Alex. Mike pentru generator | – |
 | 7 | **Feedbackul trainerului** | `editii/<data>-trainer.md`, în 10 minute, în aceeași zi | Alex sau co-trainerul. Andrei preia | îl scrie |
 | 7b | **Lessons learned și flow-ul următor** (după prima livrare și după fiecare livrare până la stabilizare) | documentul de lessons learned (PDF) cu **concluziile din livrare**: ce a mers, ce n-a mers, de ce, ce schimbăm la ediția următoare, cât mai mult în cuvintele lui Alex. Ce vorbim între noi, în echipă, despre cum lucrăm rămâne intern, separat (Alex, 2026-11-25). Apoi Daria reface flow-ul (`flow/flow-vN.md`), Alex îl vede în aplicație, la Harvest, iar slide-urile noi se fac direct mock-up → slide (Irina verifică) | Elena (lessons learned). Daria (flow). Andrei verifică | dă lecțiile, aprobă flow-ul nou |
-| 7c | **Pe site și mini-cursul** (după ce cursul e livrat; D-093) | (a) o pagină de descriere în Latest Workshops, ca să-l poată cumpăra și alți clienți: pentru cine e, ce se schimbă după el, cum arată ziua, format și durată, fără nume de clienți; (b) un mini-curs din el (formatul îl propune Andrei). Ambele pornesc din flow-ul livrat și din lessons learned | Andrei (DRI). Maria (textul), Ioana (compoziția), Mike (site) | aprobă textul și pagina |
-| 8 | **Curs online** | exportul `<slug>-participanti.json`, fără note de trainer și fără nume; pe site prin PR | Matei. Mike pentru PR | aprobă PR-ul |
-| 9 | **Feedback către participanți** | draft: mulțumire, linkul cursului online, formular de 3 întrebări (ce iei cu tine, ce vrei să încerci, ce ai schimba). Răspunsurile în `feedback/<data>.md` | Daria | **trimite**, în 1–3 zile |
+| 7c | **Pe site** (după ce cursul e livrat; D-093) | o pagină de descriere în Latest Workshops, ca să-l poată cumpăra și alți clienți: pentru cine e, ce se schimbă după el, cum arată ziua, format și durată, fără nume de clienți. Pornește din flow-ul livrat și din lessons learned | Andrei (DRI). Maria (textul), Ioana (compoziția), Mike (site) | aprobă textul și pagina |
+| 8 | **Materialul participantului** (D-097, D-099) | un PDF scurt, în brandul cursului: ideile principale pe scurt, cu schemele din deck-ul livrat de Alex (scoase din deck, nu refăcute) și planșele cursului. Fără note de trainer, fără nume, fără text nou. Stă în `privat/cursuri/<curs>/material-participant/`. Modelul: Change Agility (2026-11-25) | Matei (Daria pe conținut, Ioana pe vizual) | aprobă materialul |
+| 9 | **Feedback către participanți** | draft: mulțumire, materialul participantului atașat, formular de 3 întrebări (ce iei cu tine, ce vrei să încerci, ce ai schimba). Răspunsurile în `feedback/<data>.md` | Daria | **trimite**, în 1–3 zile |
 | 9b | **Feedback către client** (Alex, 2026-11-25) | email scurt către client (organizatorul sau sponsorul) despre cum a fost interacțiunea cu oamenii: energia și implicarea grupului, temele care au ieșit, ce iau oamenii cu ei, una-două recomandări pentru pașii următori. Fără nume și fără ce au spus oamenii în încredere. Ciorna în folderul privat al Anei | Ana (relația cu clientul), cu Daria pe conținut | aprobă și **trimite**, în 3–5 zile |
 | 10 | **Verificare centralizată**, lunar | concluziile în `privat/concluzii-feedback.md`; ce e general merge în `team/elena/documente/lectii.md`; harta cursurilor se actualizează | Andrei, cu Elena | în raportul lunar |
 
@@ -174,12 +174,15 @@ Pe masă intră ca orice piesă, cu `sursa: comun`.
 ## Ce e deja făcut în Change Agility
 Modulul „Toleranță și capacitate”, contractul și closing-urile au fost produse înainte de regula din 2026-11-18. Rămân. La primul harvest intră și ele în `harvest.yml`, ca piese deja produse, și trec prin verdict și ordonare ca toate celelalte.
 
-## După livrare: pe site și mini-curs (Alex, 2026-11-25, D-093)
-> „Când am terminat și livrat un curs, îl punem și pe site ca descriere pentru a-l putea cumpăra și alți clienți și creăm și un mini curs din el.”
+## După livrare: pe site și materialul participantului (D-093, D-099)
+> „Când am terminat și livrat un curs, îl punem și pe site ca descriere pentru a-l putea cumpăra și alți clienți.” (Alex, 2026-11-25)
+> „Renunțăm, în procesul nostru, la a face un curs online, pentru că nu are sens dacă nu fac video-uri. […] Atunci rămâne doar să facem materialul participantului după ce livrăm cursul.” (Alex, 2026-11-26)
 
-Pasul 7c din tabel. Pornește imediat după livrare, în paralel cu lessons learned (7b). Pagina de descriere folosește același șablon pentru toate cursurile.
+Pașii 7c și 8 din tabel. Pornesc imediat după livrare, în paralel cu lessons learned (7b). Pagina de descriere folosește același șablon pentru toate cursurile.
 
-**Ordinea și forma (D-094, D-097; primul model: Change Agility, 2026-11-26):** întâi materialul participantului (aprobat de Alex), apoi cursul online **din el**, fără text nou: aceleași idei, aceleași scheme din deck-ul lui Alex, câte una pe ecran. Interacțiunile sunt de reamintire, nu exerciții din sală: întrebarea vine înaintea ideii și a schemei care conține răspunsul (retrieval practice: Roediger și Karpicke, 2006, *Psychological Science* 17(3)), alegeri și note scurte care ajung în planul de la final. Fără personaje inventate. O pagină HTML simplă, care merge fără internet; ce scrie omul rămâne în browserul lui.
+**Materialul participantului** e singura ieșire pentru participanți după curs. Forma (D-097; primul model: Change Agility, aprobat pe 2026-11-25): ideile principale, explicate pe scurt, cu schemele din deck-ul lui Alex și planșele cursului. Fără personaje inventate, fără exerciții din sală, fără text nou. Pleacă la client odată cu feedbackul către participanți (pasul 9).
+
+**Cursul online nu mai e în proces** (D-099). Revine doar dacă facem video-uri (I-030); până atunci, ideile I-020 și I-029 stau în așteptare.
 
 ## Lessons learned după livrare (Alex, 2026-11-25)
 > „În procesul nostru de training, inclusiv pe site, aș vrea să avem, că facem un document cu lessons learned după prima livrare, și ne întoarcem și îmbunătățim flow-ul.”
