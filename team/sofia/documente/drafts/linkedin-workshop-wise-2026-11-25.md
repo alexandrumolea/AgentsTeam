@@ -16,7 +16,7 @@ Ai manageri buni sub tine, dar deciziile importante ajung tot la tine.
 Nu e o problemă de oameni. Nici a lor, nici a ta.
 Fiecare echipă funcționează după un sistem. Dacă nu l-a construit nimeni intenționat, s-a construit singur, în jurul liderului.
 
-Împreună cu Andreea [TAG ANDREEA], am dezvoltat la Wise Teams o metodologie pentru echipele în care deciziile se iau fără să urce la tine, lucrurile grele se spun în ședință, iar tu ai din nou timp pentru strategie.
+Împreună cu Andreea [TAG ANDREEA], am dezvoltat la Wise Teams o metodologie pentru echipele care decid singure, își spun direct lucrurile grele și mai au timp să se ocupe și de strategie împreună.
 
 Facem un workshop cu 10 manageri de manageri care chiar vor asta pentru echipele lor.
 Noi îți spunem ce am înțeles până acum. Tu ne spui cum arată echipa ta azi. Așa vedem de ce au nevoie, de fapt, echipele în momentul ăsta.
@@ -25,7 +25,6 @@ Când: [DATA], [ORA]
 Unde: [ONLINE/LOCUL]
 Înscriere: [CUM TE ÎNSCRII]
 
-**Variantă pentru rândul cu metodologia:** „Împreună cu Andreea [TAG ANDREEA], am dezvoltat la Wise Teams o metodologie pentru echipele care decid singure, își spun direct lucrurile grele și îți lasă ție timp pentru strategie.” (Mai scurtă; pune echipa ca subiect, nu situația.)
 
 ---
 
