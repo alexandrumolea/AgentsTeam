@@ -8,11 +8,11 @@ import { writeFileSync, mkdtempSync, existsSync, statSync, rmSync } from 'node:f
 import { join, dirname, resolve } from 'node:path';
 import { tmpdir } from 'node:os';
 import { fileURLToPath, pathToFileURL } from 'node:url';
-import { loadTema } from '../../../../site/tema.mjs';
-import { launch } from '../../../../curs/teste/cdp.mjs';
+import { loadTema } from '../../../../../site/tema.mjs';
+import { launch } from '../../../../../curs/teste/cdp.mjs';
 
 const HERE = dirname(fileURLToPath(import.meta.url));
-const ROOT = resolve(HERE, '../../../..');
+const ROOT = resolve(HERE, '../../../../..');
 const tema = loadTema(ROOT);
 const F = p => pathToFileURL(join(ROOT, 'site/node_modules/@fontsource-variable', p)).href;
 const grain = join(ROOT, 'site/dist/assets/grain.png');

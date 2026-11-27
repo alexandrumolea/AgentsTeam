@@ -4,6 +4,49 @@
 > Linkul: https://alexandrumolea.com/workshops/change-agility/ (pagina: `content/workshops/change-agility.html`).
 > Toate frazele-ancoră sunt ale lui Alex: mesajul cheie aprobat, materialul participantului aprobat pe 25.11, pagina cursului cu corecturile lui și ce a spus el după livrarea din 23.11. Nu am inventat nicio scenă și nu am pus nicio cifră nouă.
 
+## v4 (2026-11-27): deschiderea despre context, „de ce acum”
+
+> Alex, despre deschiderea v3 („Anul acesta mi s-a cerut un workshop despre schimbare. L-am construit cu drag și a devenit preferatul meu.”): „Nu sunt de acord cu începutul postării. Aș spune doar ceva despre cum contextul actual a dus la a ne îndrepta atenția către acest curs.”
+> Ce s-a schimbat: deschiderea nu mai vorbește despre noi („mi s-a cerut”), ci despre ce trăiesc echipele acum și cum asta ne-a dus spre curs. Celebrarea (nou, cu drag, preferatul meu) rămâne, dar trece în paragraful al doilea. Restul e neschimbat: fraza despre incertitudine, rândul corectat de Alex, paragraful din C, îndemnul.
+> Contextul vine doar din texte aprobate de Alex: pagina cursului („se schimbă multe deodată: structura, rolurile, tehnologia sau felul de lucru”, „oamenii obosiți de schimbare, dar și cei care vor să profite de ea”, „când nu mai putem anticipa ce urmează”) și materialul participantului („Schimbarea nu mai apare trend cu trend”, „pauză, sens și control”, „Capacitatea noastră de a ne reinventa” de pe copertă). Nicio cifră, nicio scenă inventată.
+
+### Cinci începuturi
+
+1. **Anul acesta, schimbările n-au mai venit pe rând, ci deodată. Asta ne-a îndreptat atenția spre capacitatea noastră de a ne reinventa.** *(recomandat)*
+   De ce merge: spune contextul simplu, fără formulă („pe rând” / „deodată” e o observație, nu un clișeu despre „lumea în schimbare”), iar a doua propoziție e chiar subtitlul cursului, cuvintele lui Alex de pe copertă.
+2. **Anul acesta, multe echipe n-au mai putut anticipa ce urmează. Asta ne-a îndreptat atenția spre felul în care trăim cu necunoscutul.**
+   De ce merge: rândul de pe pagină („când nu mai putem anticipa ce urmează”) pregătește direct fraza despre incertitudine, care vine imediat după.
+3. **Anul acesta am întâlnit oameni obosiți de schimbare și oameni care voiau să profite de ea. De la ei a pornit un workshop nou.**
+   De ce merge: pune oamenii în față, nu teoria; cele două feluri de oameni sunt cele de pe pagină și se potrivesc cu cele două ținte ale cursului (faci față constructiv / capitalizezi).
+4. **Anul acesta, multe echipe au trecut prin schimbare după schimbare, fără pauză. Asta ne-a îndreptat atenția spre ce îi ajută pe oameni să nu se uzeze.**
+   De ce merge: vorbește direct managerilor și oamenilor de HR care văd oboseala; vine din „pauză, sens și control” și din uzură. Aduce însă o temă (presiunea) pe care restul postării nu o mai reia.
+5. **Anul acesta, în multe echipe s-au schimbat deodată rolurile, tehnologia și felul de lucru. Ne-am îndreptat atenția spre omul care trece prin toate astea.**
+   De ce merge: e cel mai concret. Dar repetă aproape cuvânt cu cuvânt paragraful din C („se schimbă multe deodată”, „omul care trece prin ea”); dacă Alex îl alege, scurtez prima frază din C.
+
+**De ce 1:** e singurul care leagă contextul de ideea centrală a cursului (capacitatea de a ne reinventa) fără să consume frazele care urmează. 2 e cel mai bun ca trecere spre incertitudine; e a doua mea alegere.
+
+### Postarea întreagă, cu începutul 1 (~150 de cuvinte)
+
+> Anul acesta, schimbările n-au mai venit pe rând, ci deodată. Asta ne-a îndreptat atenția spre capacitatea noastră de a ne reinventa.
+>
+> Așa s-a născut workshopul nou al anului. L-am construit cu drag și a devenit preferatul meu.
+>
+> Ideea de la care pornește: incertitudinea este un semnal că nu mai ai suficiente informații. Nu e un semn că ceva e în neregulă cu tine sau cu echipa ta.
+>
+> Nu trebuie să iubești necunoscutul. E destul să poți sta în el și să rămâi constructiv.
+>
+> Change Agility e un workshop pentru echipele în care se schimbă multe deodată. Nu e despre cum conduci o transformare. E despre omul care trece prin ea. Fiecare pleacă cu planul lui de reinventare: resursele lui, skill-ul pe care vrea să-l crească și primii pași.
+>
+> Îl aduc și în alte organizații, în format de 4 sau 6 ore. Dacă echipa ta trece acum printr-o astfel de perioadă, spune-mi prin ce treceți și vedem împreună dacă vi se potrivește.
+>
+> alexandrumolea.com/workshops/change-agility/
+
+**Firul, verificat cu voce tare:** contextul (deodată) → unde ne-a dus (reinventarea) → „Așa s-a născut” (celebrarea, legată de context prin „așa”) → ideea → ce câștigă omul → pentru cine și cu ce pleacă → îndemnul. Numele cursului apare o singură dată, în paragraful din C, ca să nu se repete în două paragrafe vecine.
+**De confirmat de Alex:** „ne-a îndreptat” (noi, ca în feedbackul lui) și „preferatul meu” (eu) stau în același text. Mi se pare firesc: atenția e a echipei, preferința e a lui. Dacă vrea totul la persoana întâi: „Asta mi-a îndreptat atenția…”.
+**Imaginea:** începutul 1 și orbita anului a Ioanei (B, noiembrie aprins) se sprijină: amândouă pornesc de la „anul acesta”. Fraza despre incertitudine nu mai deschide postarea, deci și varianta E (Noapte) poate merge fără să repete textul.
+
+---
+
 ## v3 (2026-11-27): deschiderea, strânsă
 
 > Alex, despre ordinea 1 din v2: „Primele 2 propoziții sunt cam dezlânate.” Deschiderea veche înșira trei lucruri, fiecare cu propoziția lui: nou, preferatul meu, cerere + drag. Mai jos sunt 4 deschideri cu același conținut, legate într-un singur fir. Restul postării rămâne ca în v2, ordinea 1.
