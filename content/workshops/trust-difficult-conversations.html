@@ -4,12 +4,12 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Trust &amp; Difficult Conversations · workshop despre încredere și conversații dificile</title>
-<meta name="description" content="Un workshop pentru lideri și echipe care lucrează împreună: cum pui pe masă ce e greu de spus, direct și fără judecată.">
+<meta name="description" content="Un workshop pentru lideri, echipe și departamente care lucrează împreună: cum pui pe masă ce e greu de spus, direct și fără judecată.">
 <style>
 /* Pagina Trust & Difficult Conversations în Latest Workshops (D-101, D-102). Pe site: alexandrumolea.com/workshops/trust-difficult-conversations/.
-   Șablonul: pagina Change Agility (content/workshops/change-agility.html, mock-up-ul Ioanei), cu patru opriri în drum.
-   Textul: Maria (team/maria/documente/pagini-cursuri-2026-11-27.md), subtitlul A, recomandat de ea și ales de Alex (D-102).
-   Butoanele: email (data-email, din secretul CONTACT_EMAIL) și WhatsApp (data-whatsapp, din CONTACT_WHATSAPP), ca la Change Agility. */
+   Șablonul: pagina Change Agility (content/workshops/change-agility.html, mock-up-ul Ioanei), cu drumul pe 3–4 opriri.
+   Textul: Maria (team/maria/documente/pagini-cursuri-2026-11-27-v3.md), subtitlul A, recomandat de ea și ales de Alex (D-102).
+   Butoanele: WhatsApp (plin, data-whatsapp, din CONTACT_WHATSAPP) și email (gol, data-email, din CONTACT_EMAIL), ca la Change Agility. */
 :root{--r:22px;--umbra-sticla:0 14px 34px -20px rgb(var(--umbra-rgb)/.40)}
 body{color:var(--text);font:400 16px/1.6 var(--font-text)}
 *{box-sizing:border-box}
@@ -113,12 +113,14 @@ section{padding-block:40px 4px;display:grid;gap:18px}
 .ceri .adresa{font:400 16px/1.5 var(--font-text);color:var(--muted);text-wrap:wrap}
 .ceri .adresa span{color:var(--text);font-weight:500;user-select:all;overflow-wrap:anywhere}
 
-/* patru opriri și titluri mai lungi decât la Change Agility */
+/* drumul (3–4 opriri) și titluri mai lungi decât la Change Agility */
 .zi{grid-template-columns:repeat(4,minmax(0,1fr))}
 .oprire:nth-child(3)::before{background:#fff;border-color:var(--piersica)}
 .oprire:nth-child(4)::before{background:var(--portocaliu);border-color:var(--punct-inel)}
 h1{font-size:clamp(38px,5.6vw,64px);line-height:1.02}
 .format>p{color:var(--muted)}
+.motto{font:300 19px/1.4 var(--font-titluri);color:var(--accent);border-left:3px solid var(--lavanda);padding-left:12px;max-width:44ch}
+.dupa{font:300 clamp(20px,2vw,24px)/1.35 var(--font-titluri);max-width:46ch;text-wrap:balance}
 
 @media (max-width:900px){
   .hero{grid-template-columns:1fr}
@@ -148,10 +150,11 @@ h1{font-size:clamp(38px,5.6vw,64px);line-height:1.02}
 
 <header class="hero">
   <div class="text sticla citit">
-    <p class="eyebrow"><span class="punct"></span>Workshop · 4 ore + follow-up</p>
+    <p class="eyebrow"><span class="punct"></span>Workshop · 4 ore, o zi sau 2 zile</p>
     <h1>Trust &amp; Difficult Conversations</h1>
     <p class="sub">Încrederea nu e totul sau nimic. Ai deja pe ce să construiești.</p>
     <p class="prom">Un workshop despre conversațiile pe care le tot amânăm: cum le deschizi direct și fără judecată, ca ele să construiască încredere, nu s-o consume.</p>
+    <p class="motto">Conectare înainte de colaborare. Încredere înainte de aliniere.</p>
     <div class="actiuni">
       <a class="btn plin" href="#ceri">Hai să vorbim</a>
       <a class="btn gol" href="#ziua">Cum arată drumul</a>
@@ -176,17 +179,18 @@ h1{font-size:clamp(38px,5.6vw,64px);line-height:1.02}
     <div class="box sticla citit">
       <h2 id="t-cine">Pentru cine e</h2>
       <p>Pentru lideri care au de spus lucruri grele: o performanță sub așteptări, o promisiune neținută, o tensiune cu un coleg de același nivel.</p>
-      <p>Pentru departamente care depind unele de altele și se lovesc mereu în aceleași locuri: resurse, priorități, cine decide.</p>
-      <p class="nu">Nu e un curs de tehnici de negociere. E despre ce se întâmplă între oameni când ceva important rămâne nespus.</p>
+      <p>Pentru echipe și departamente care depind unele de altele și se lovesc mereu în aceleași locuri: resurse, priorități, cine decide.</p>
+      <p class="nu">Nu e despre cum câștigi o discuție. E despre ce se întâmplă între oameni când ceva important rămâne nespus.</p>
     </div>
     <div class="box sticla citit">
       <h2>Ce se schimbă după workshop</h2>
       <ul class="schimbari">
         <li><span>Oamenii văd că încrederea nu e totul sau nimic: ai încredere într-un om pentru unele lucruri și nu pentru altele. Așa pot vorbi exact despre ce s-a rupt.</span></li>
-        <li><span>Înțeleg că judecata se simte în conversație, chiar dacă nu o spui cu voce tare. Lucrează întâi la ce cred despre celălalt, apoi la cuvinte.</span></li>
-        <li><span>Pornesc o conversație grea de la locul în care vor să ajungă împreună, nu de la ce n-a mers.</span></li>
-        <li><span>Nu mai așteaptă ca o singură discuție să rezolve tot. Lasă loc pentru răspunsul celuilalt și revin.</span></li>
-        <li class="cheie"><span><strong>Lucrează pe o conversație reală, pe care o amână de mult</strong>, și pleacă cu ea pregătită: ce vor să spună, cum o deschid și unde vor să ajungă.</span></li>
+        <li><span>Observă când o diferență nediscutată, de ritm, de nevoie de detaliu sau de ce înseamnă „gata”, ajunge să fie citită ca defect de caracter. O pot spune ca diferență și o pot discuta.</span></li>
+        <li><span>Știu că pe ei înșiși se judecă după intenții, iar pe ceilalți după comportamente. Și că ceilalți fac, probabil, la fel cu ei.</span></li>
+        <li><span>Pornesc o conversație grea de la locul în care vor să ajungă împreună, nu de la ce n-a mers, și lasă loc pentru răspunsul celuilalt.</span></li>
+        <li><span>Când s-a stricat ceva, repară relația fără să se desființeze: nu doar scuza, ci ce au învățat și ce schimbă.</span></li>
+        <li class="cheie"><span><strong>Lucrează pe o conversație reală, pe care o tot amână</strong>, și pleacă cu ea pregătită: ce vor să spună, cum o deschid și unde vor să ajungă.</span></li>
       </ul>
     </div>
   </div>
@@ -202,19 +206,19 @@ h1{font-size:clamp(38px,5.6vw,64px);line-height:1.02}
     </li>
     <li class="oprire sticla citit">
       <span class="nr">02</span>
-      <h3>Ce crezi despre celălalt</h3>
-      <p>Etichetele puse în timp și felul în care ne fac să vedem doar ce le confirmă. Auzi mereu perspectiva cuiva, nu realitatea.</p>
+      <h3>Diferențele dintre noi</h3>
+      <p>Ce se întâmplă cu o diferență pe care nu o discutăm. Diferența e materie primă. Ce iese din ea depinde de noi.</p>
     </li>
     <li class="oprire sticla citit">
       <span class="nr">03</span>
       <h3>Conversația pe care o amâni</h3>
-      <p>O pregătești pornind de la ce vrei să se întâmple, o spui direct și lași loc pentru ce are celălalt de spus.</p>
+      <p>Tensiunea nu este problema. Ce facem cu ea este. O pregătești pornind de la ce vrei să se întâmple, o spui direct și lași loc pentru ce are celălalt de spus.</p>
       <span class="in-plan">Conversația ta, pregătită</span>
     </li>
     <li class="oprire sticla citit">
       <span class="nr">04</span>
-      <h3>Follow-up</h3>
-      <p>Ne revedem în grup: ce ai încercat, ce a mers, ce mai completăm.</p>
+      <h3>Când s-a stricat ceva</h3>
+      <p>Cum repari o relație de lucru: ce ai învățat și ce schimbi, spus simplu.</p>
     </li>
   </ol>
 </section>
@@ -224,10 +228,11 @@ h1{font-size:clamp(38px,5.6vw,64px);line-height:1.02}
     <div class="format sticla citit">
       <h2 id="t-format">Format și durată</h2>
       <ul>
-        <li><span><strong>4 ore:</strong> workshopul, pe situațiile reale ale oamenilor din sală.</span></li>
-        <li><span><strong>2 ore și jumătate de follow-up:</strong> în grup, după ce oamenii au avut timp să încerce.</span></li>
+        <li><span><strong>4 ore:</strong> încrederea, pe bucăți, și conversația pe care o amâni. Lucrăm pe situațiile reale ale oamenilor din sală. Într-un program pentru lideri, poate fi urmat de o sesiune de group coaching, după ce oamenii au avut timp să încerce.</span></li>
+        <li><span><strong>O zi:</strong> în plus, diferențele dintre oameni, instrumentele pentru conversațiile grele și o după-amiază în care le exersați împreună, pe o situație de echipă. Potrivită pentru echipe și departamente care lucrează împreună.</span></li>
+        <li><span><strong>2 zile:</strong> în plus, ce se întâmplă în noi când o conversație devine grea și cum alegem răspunsul în locul reacției, mai mult timp de practică pe conversațiile voastre și cum ajuți doi colegi în tensiune să vorbească între ei.</span></li>
       </ul>
-      <p>Pentru lideri sau pentru oameni din departamente care lucrează împreună. Grup mic, față în față.</p>
+      <p>Grup mic, față în față.</p>
     </div>
     <div class="ceri sticla" id="ceri">
       <h2>Hai să vorbim</h2>

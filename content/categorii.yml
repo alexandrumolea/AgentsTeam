@@ -92,7 +92,7 @@ categorii:
         # imagine_linkedin: previzualizari/change-agility.png
       - titlu: "Trust & Difficult Conversations"
         fraza: "Conversațiile pe care le tot amânăm, spuse direct și fără judecată."
-        tip: "Workshop · 4 ore + follow-up"
+        tip: "Workshop · 4 ore, o zi sau 2 zile"
         simbol: workshop
         slug: trust-difficult-conversations
         pagina: content/workshops/trust-difficult-conversations.html
@@ -100,7 +100,7 @@ categorii:
         imagine_linkedin: previzualizari/trust-difficult-conversations.png
       - titlu: "Listening & Leading"
         fraza: "Conduci oamenii prin felul în care vorbești cu ei."
-        tip: "Workshop · 4 ore sau program"
+        tip: "Workshop · 4 ore, o zi sau 2 zile"
         simbol: workshop
         slug: listening-leading
         pagina: content/workshops/listening-leading.html

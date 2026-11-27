@@ -7,9 +7,9 @@
 <meta name="description" content="Un workshop de jumătate de zi, cu evaluarea CliftonStrengths®: fiecare își vede punctele forte și înțelege de unde vorbesc colegii.">
 <style>
 /* Pagina Teamship în Latest Workshops (D-101, D-102). Pe site: alexandrumolea.com/workshops/teamship-strengths/.
-   Șablonul: pagina Change Agility (content/workshops/change-agility.html, mock-up-ul Ioanei), cu patru opriri în drum.
-   Textul: Maria (team/maria/documente/pagini-cursuri-2026-11-27-v2.md), subtitlul A, recomandat de ea și ales de Alex (D-102).
-   Butoanele: email (data-email, din secretul CONTACT_EMAIL) și WhatsApp (data-whatsapp, din CONTACT_WHATSAPP), ca la Change Agility.
+   Șablonul: pagina Change Agility (content/workshops/change-agility.html, mock-up-ul Ioanei), cu drumul pe 3–4 opriri.
+   Textul: Maria (team/maria/documente/pagini-cursuri-2026-11-27-v3.md), subtitlul A, recomandat de ea și ales de Alex (D-102).
+   Butoanele: WhatsApp (plin, data-whatsapp, din CONTACT_WHATSAPP) și email (gol, data-email, din CONTACT_EMAIL), ca la Change Agility.
    Nota de marcă Gallup (CliftonStrengths®) stă la final, sub cardul „Hai să vorbim”. */
 :root{--r:22px;--umbra-sticla:0 14px 34px -20px rgb(var(--umbra-rgb)/.40)}
 body{color:var(--text);font:400 16px/1.6 var(--font-text)}
@@ -114,12 +114,14 @@ section{padding-block:40px 4px;display:grid;gap:18px}
 .ceri .adresa{font:400 16px/1.5 var(--font-text);color:var(--muted);text-wrap:wrap}
 .ceri .adresa span{color:var(--text);font-weight:500;user-select:all;overflow-wrap:anywhere}
 
-/* patru opriri și titluri mai lungi decât la Change Agility */
+/* drumul (3–4 opriri) și titluri mai lungi decât la Change Agility */
 .zi{grid-template-columns:repeat(4,minmax(0,1fr))}
 .oprire:nth-child(3)::before{background:#fff;border-color:var(--piersica)}
 .oprire:nth-child(4)::before{background:var(--portocaliu);border-color:var(--punct-inel)}
 h1{font-size:clamp(38px,5.6vw,64px);line-height:1.02}
 .format>p{color:var(--muted)}
+.motto{font:300 19px/1.4 var(--font-titluri);color:var(--accent);border-left:3px solid var(--lavanda);padding-left:12px;max-width:44ch}
+.dupa{font:300 clamp(20px,2vw,24px)/1.35 var(--font-titluri);max-width:46ch;text-wrap:balance}
 
 @media (max-width:900px){
   .hero{grid-template-columns:1fr}
@@ -179,7 +181,7 @@ h1{font-size:clamp(34px,4.4vw,52px);line-height:1.06}
   <div class="doua">
     <div class="box sticla citit">
       <h2 id="t-cine">Pentru cine e</h2>
-      <p>Pentru echipele care lucrează zilnic împreună și se tot ciocnesc în aceleași locuri: unul cere mai multe detalii, altul vrea să treacă repede la fapte, iar al treilea pune o întrebare la care nu se aștepta nimeni.</p>
+      <p>Pentru echipele care lucrează zilnic împreună și se tot ciocnesc în aceleași locuri: unul cere mai multe detalii, altul vrea să treacă repede la fapte, iar pentru al treilea „gata” înseamnă altceva.</p>
       <p>Pentru echipele noi sau pentru cele în care au venit oameni noi.</p>
       <p>Pentru liderii care vor să-și cunoască oamenii dincolo de rolul lor.</p>
       <p class="nu">Nu e o evaluare a performanței. Raportul vorbește doar despre ce face bine fiecare.</p>
@@ -190,7 +192,7 @@ h1{font-size:clamp(34px,4.4vw,52px);line-height:1.06}
         <li><span>Fiecare își vede punctele forte numite și recunoaște unde le folosește deja în munca lui.</span></li>
         <li><span>Oamenii observă când o calitate de-a lor, folosită prea mult, îi încurcă pe cei din jur.</span></li>
         <li><span>Nu mai așteaptă ca ceilalți să aibă aceleași plusuri ca ei. Văd ce aduce fiecare și unde se completează.</span></li>
-        <li><span>Înainte să judece felul în care vorbește un coleg, se întreabă din ce punct de vedere vorbește.</span></li>
+        <li><span>Observă că au încredere mai repede în colegii care le seamănă și se întreabă ce au presupus despre ceilalți doar pentru că sunt diferiți.</span></li>
         <li class="cheie"><span><strong>Pleacă cu un pas ales pentru o relație de lucru</strong>, pornind de la punctele forte ale amândurora.</span></li>
       </ul>
     </div>
@@ -214,7 +216,7 @@ h1{font-size:clamp(34px,4.4vw,52px);line-height:1.06}
     <li class="oprire sticla citit">
       <span class="nr">03</span>
       <h3>Colegii, prin alți ochi</h3>
-      <p>Vezi în ce fel sunt ceilalți diferiți de tine: unde vă completați și unde vă ciocniți.</p>
+      <p>Vezi în ce fel sunt ceilalți diferiți de tine: în ritm, în nevoia de detaliu, în ce înseamnă pentru fiecare un lucru bine făcut. Și unde vă completați.</p>
       <span class="in-plan">Punctele forte ale colegului</span>
     </li>
     <li class="oprire sticla citit">
@@ -224,6 +226,7 @@ h1{font-size:clamp(34px,4.4vw,52px);line-height:1.06}
       <span class="in-plan">Pasul pe care îl alegi</span>
     </li>
   </ol>
+  <p class="dupa">Construim pe ce e deja puternic.</p>
 </section>
 
 <section aria-labelledby="t-format">
