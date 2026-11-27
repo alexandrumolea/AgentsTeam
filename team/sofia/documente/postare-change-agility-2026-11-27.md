@@ -4,6 +4,26 @@
 > Linkul: https://alexandrumolea.com/workshops/change-agility/ (pagina: `content/workshops/change-agility.html`).
 > Toate frazele-ancoră sunt ale lui Alex: mesajul cheie aprobat, materialul participantului aprobat pe 25.11, pagina cursului cu corecturile lui și ce a spus el după livrarea din 23.11. Nu am inventat nicio scenă și nu am pus nicio cifră nouă.
 
+## v5 FINALĂ (2026-11-27): scrisă de Alex
+
+> Alex a rescris singur textul v4: „Am modificat textul final al postării, învață și din asta te rog”. **Asta e forma care se publică.** Lecțiile sunt în skill-ul copywriting (2026-11-27, „Versiunea finală a lui Alex”). Imaginea: carousel PDF (E1 · Biletul + cele două convingeri, câte una pe pagină), făcut de Ioana.
+> Singura atingere a echipei: virgula din „Incertitudinea, nu este” e semnalată lui Alex. Pe carousel apare fără virgulă; în text rămâne cum decide el.
+
+> În ultima perioadă, schimbările n-au mai venit pe rând, ci toate deodată.
+>
+> Asta i-a făcut pe mai mulți clienți să se întrebe cum se pot reinventa, cum pot gestiona incertitudinea într-un mod constructiv și cum pot să-și susțină oamenii din organizație în acest proces.
+>
+> Change Agility este un workshop pentru echipele în care se schimbă multe lucruri deodată.
+> Nu este despre cum conduci o transformare.
+>
+> Este despre omul care trece prin ea.
+>
+> Fiecare pleacă cu un plan de reinventare: resursele lui, skill-ul pe care vrea să-l crească și primii pași.
+>
+> Incertitudinea, nu este intrinsec pozitivă sau negativă. Este un semnal că nu mai ai suficiente informații.
+>
+> Nu trebuie să iubești necunoscutul. Este suficient să poți sta în el și să faci următorul pas constructiv.
+
 ## v4 (2026-11-27): deschiderea despre context, „de ce acum”
 
 > **Imaginea aleasă (Alex, 2026-11-27): E1 · Biletul** (`team/ioana/documente/postare-change-agility-2026-v2/e1-biletul.png`): „Change Agility” ca nume de zbor, de la Cunoscut spre Necunoscut. Dicționarul (C) rămâne pentru altă postare.
