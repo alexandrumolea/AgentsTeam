@@ -6,6 +6,8 @@
 
 ## v4 (2026-11-27): deschiderea despre context, „de ce acum”
 
+> **Imaginea aleasă (Alex, 2026-11-27): E1 · Biletul** (`team/ioana/documente/postare-change-agility-2026-v2/e1-biletul.png`): „Change Agility” ca nume de zbor, de la Cunoscut spre Necunoscut. Dicționarul (C) rămâne pentru altă postare.
+
 > Alex, despre deschiderea v3 („Anul acesta mi s-a cerut un workshop despre schimbare. L-am construit cu drag și a devenit preferatul meu.”): „Nu sunt de acord cu începutul postării. Aș spune doar ceva despre cum contextul actual a dus la a ne îndrepta atenția către acest curs.”
 > Ce s-a schimbat: deschiderea nu mai vorbește despre noi („mi s-a cerut”), ci despre ce trăiesc echipele acum și cum asta ne-a dus spre curs. Celebrarea (nou, cu drag, preferatul meu) rămâne, dar trece în paragraful al doilea. Restul e neschimbat: fraza despre incertitudine, rândul corectat de Alex, paragraful din C, îndemnul.
 > Contextul vine doar din texte aprobate de Alex: pagina cursului („se schimbă multe deodată: structura, rolurile, tehnologia sau felul de lucru”, „oamenii obosiți de schimbare, dar și cei care vor să profite de ea”, „când nu mai putem anticipa ce urmează”) și materialul participantului („Schimbarea nu mai apare trend cu trend”, „pauză, sens și control”, „Capacitatea noastră de a ne reinventa” de pe copertă). Nicio cifră, nicio scenă inventată.
