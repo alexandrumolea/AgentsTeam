@@ -32,6 +32,9 @@ Păstrează sub 150 de rânduri. Comprimă când crește. Fapte, nu povești.
 - 2026-11-27: CliftonStrengths pe site (Gallup Product Terms, 17.10.2025): ® la prima mențiune, nota de marcă + non-endorsement, „nu sunt reprezentant autorizat Gallup”; marca nu intră în titlu, adresă, nume de firmă sau conturi; fără numele temelor; „Gallup-Certified” doar dacă Alex confirmă. Gallup nu apare în postări.
 - 2026-11-27: confidențialitatea: site-ul n-are stocare, cookies sau resurse externe (CSP `default-src 'self'`); GitHub Pages loghează IP-ul. Agenții citesc Gmail-ul lui Alex: pagina trebuie s-o spună (decizia lui Alex).
 
+- 2026-11-27: D-103: deck-urile lui Alex din iCloud INNERSIS/Social Intelligence și INNERSIS/Collaboration sunt sursă (celelalte foldere nu). Citesc direct textul din pptx (zip + XML), nu doar rezumatul lui Andrei; numele clienților din fișiere nu intră în repo. Deck-urile au promisiuni de timp („scrie data”, „de luni”): nu le preiau. v3 al paginilor: team/maria/documente/pagini-cursuri-2026-11-27-v3.md.
+- 2026-11-27: Alex vrea formatele 4 ore / o zi / 2 zile pentru Trust și Listening și e deschis la alte titluri. Recomand nume în EN, formula Concept – beneficiu; la Trust, un nume care îl desparte de cursul Innersis.
+
 ## Proiecte
 - [Inspirație și invenții](project_inspiratie.md) — obiectivul 2; constructorul cu unealta, 3 piloni; Atelier = tot site-ul
 - 2026-11-17: [Arhitectura de brand](project_arhitectura_brand.md) — I-022: un brand pe material; Sora = noul BEMORE (D-057); semnătura site-ului
