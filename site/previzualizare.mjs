@@ -1,11 +1,11 @@
 // Imaginea de previzualizare a unei pagini de curs (og:image, 1200×630), în stilul variantei A a Ioanei (T-057,
 // team/ioana/documente/og-change-agility/gen.mjs): în stânga titlul și subtitlul, în dreapta „Pleci acasă cu” din pagină.
-// Textul se ia din pagina cursului (content/workshops/<slug>.html), deci o singură sursă: schimbi subtitlul în pagină,
+// Textul se ia din pagina elementului (câmpul `pagina` din content/categorii.yml), deci o singură sursă: schimbi subtitlul în pagină,
 // rulezi din nou comanda și imaginea e la zi. Mărimile literelor se potrivesc singure, ca titlurile lungi să încapă.
 //
 // Rulare, din site/ (după un `npm run build`, pentru granulația fundalului; randare doar în Chrome headless, fără ferestre):
 //   node previzualizare.mjs <slug>                 ex.: node previzualizare.mjs listening-leading
-//   node previzualizare.mjs <slug> --sub "Alt text pentru imagine"   (opțional: alt subtitlu doar în imagine)
+//   node previzualizare.mjs <slug> --sub "Alt subtitlu"  --titlu "Alt titlu"   (opțional, doar în imagine; ex. un titlu prea lung)
 // Ieșire: site/static/previzualizari/<slug>.png. Apoi, în content/categorii.yml, la element: imagine_linkedin: previzualizari/<slug>.png
 import { readFileSync, writeFileSync, mkdtempSync, mkdirSync, existsSync, statSync, rmSync } from 'node:fs';
 import { join, dirname, resolve } from 'node:path';
@@ -18,9 +18,12 @@ const ROOT = resolve(HERE, '..');
 const [slug, ...rest] = process.argv.slice(2);
 const fail = m => { console.error('Eroare: ' + m); process.exit(1); };
 if (!/^[a-z0-9]+(-[a-z0-9]+)*$/.test(slug || '')) fail('scrie slug-ul paginii, ex.: node previzualizare.mjs change-agility');
-const iSub = rest.indexOf('--sub'), subAlt = iSub >= 0 ? rest[iSub + 1] : '';
-const sursa = join(ROOT, 'content/workshops', `${slug}.html`);
-if (!existsSync(sursa)) fail(`nu găsesc content/workshops/${slug}.html`);
+const opt = k => { const i = rest.indexOf(k); return i >= 0 ? String(rest[i + 1] || '').replace(/&/g, '&amp;').replace(/</g, '&lt;') : ''; };
+const { parse } = await import('yaml');
+const el = (parse(readFileSync(join(ROOT, 'content/categorii.yml'), 'utf8')).categorii || []).flatMap(c => c.elemente || []).find(e => e.slug === slug && e.pagina);
+if (!el) fail(`în content/categorii.yml nu există un element cu slug: ${slug} și pagina`);
+const sursa = join(ROOT, el.pagina);
+if (!existsSync(sursa)) fail(`nu găsesc ${el.pagina}`);
 const { launch } = await import(pathToFileURL(join(ROOT, 'curs/teste/cdp.mjs')).href);
 
 // textele din pagină: h1, .sub, iar din <aside class="plan">: titlul (.cap b) și cele trei rânduri (.rand b)
@@ -29,12 +32,13 @@ const text = s => s.replace(/<[^>]+>/g, '').replace(/\s+/g, ' ').trim();
 const unul = re => { const m = html.match(re); return m ? text(m[1]) : ''; };
 const aside = (html.match(/<aside\b[^>]*class="[^"]*\bplan\b[^"]*"[^>]*>([\s\S]*?)<\/aside>/) || [])[1] || '';
 const T = {
-  titlu: unul(/<h1[^>]*>([\s\S]*?)<\/h1>/),
-  sub: subAlt ? subAlt.replace(/&/g, '&amp;').replace(/</g, '&lt;') : unul(/<p class="sub">([\s\S]*?)<\/p>/),
+  titlu: opt('--titlu') || unul(/<h1[^>]*>([\s\S]*?)<\/h1>/),
+  sub: opt('--sub') || unul(/<p class="sub">([\s\S]*?)<\/p>/),
+  linii: /class="linii"/.test(aside),   // rândurile cu linii de scris (un plan); fără ele, doar rândurile
   cap: text((aside.match(/<div class="cap">[\s\S]*?<b>([\s\S]*?)<\/b>/) || [])[1] || ''),
   plan: [...aside.matchAll(/<div class="rand[^"]*">[\s\S]*?<b>([\s\S]*?)<\/b>/g)].map(m => text(m[1])),
 };
-if (!T.titlu || !T.sub || !T.cap || T.plan.length !== 3) fail(`în ${slug}.html lipsește ceva din: <h1>, <p class="sub">, <aside class="plan"> cu .cap b și trei .rand b.`);
+if (!T.titlu || !T.sub || !T.cap || T.plan.length !== 3) fail(`în ${el.pagina} lipsește ceva din: <h1>, <p class="sub">, <aside class="plan"> cu .cap b și trei .rand b.`);
 
 const tema = loadTema(ROOT);
 const F = p => pathToFileURL(join(HERE, 'node_modules/@fontsource-variable', p)).href;
@@ -70,7 +74,7 @@ body::after{content:"";position:absolute;inset:0;background:${existsSync(grain) 
 const doc = `<!doctype html><html lang="ro"><head><meta charset="utf-8"><style>${css}</style></head><body>
 <div class="sticla st"><p class="marca"><b>BEMORE</b><span>Learning Studio</span></p><h1>${T.titlu}</h1><p class="sub">${T.sub}</p></div>
 <div class="sticla plan"><span class="punct"></span><p class="cap">${T.cap}</p>
-${T.plan.map((r, i) => `<div class="rand"><span class="n">${i + 1}</span><b>${r}</b><div class="l"><i class="scris" style="width:${[100, 62, 40][i]}%"></i></div></div>`).join('\n')}
+${T.plan.map((r, i) => `<div class="rand"><span class="n">${i + 1}</span><b>${r}</b>${T.linii ? `<div class="l"><i class="scris" style="width:${[100, 62, 40][i]}%"></i></div>` : ''}</div>`).join('\n')}
 </div></body></html>`;
 
 // potrivirea: micșorăm titlul, apoi subtitlul, până încap în card; la fel titlul și rândurile din dreapta
@@ -79,7 +83,7 @@ const potriveste = `(async()=>{await document.fonts.ready;
   const lat=el=>[...el.querySelectorAll('*')].some(x=>x.scrollWidth>x.clientWidth+1);
   const plin=el=>el.scrollHeight>el.clientHeight+1;
   let a=120,b=46;
-  while((plin(st)||h1.scrollWidth>h1.clientWidth+1)&&a>64){a-=4;h1.style.fontSize=a+'px';}
+  while((plin(st)||h1.scrollWidth>h1.clientWidth+1)&&a>56){a-=4;h1.style.fontSize=a+'px';}
   while(plin(st)&&b>32){b-=2;sub.style.fontSize=b+'px';}
   const pl=document.querySelector('.plan'),cap=pl.querySelector('.cap'),rb=[...pl.querySelectorAll('.rand b')];
   let c=36,r=32;

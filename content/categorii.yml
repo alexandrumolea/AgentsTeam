@@ -106,6 +106,14 @@ categorii:
         pagina: content/workshops/listening-leading.html
         cadru: false
         imagine_linkedin: previzualizari/listening-leading.png
+      - titlu: "Teamship – Knowing Your Strengths"
+        fraza: "Fiecare își vede punctele forte și înțelege de unde vorbesc colegii."
+        tip: "Workshop · 3,5 ore · cu CliftonStrengths®"
+        simbol: workshop
+        slug: teamship-strengths
+        pagina: content/workshops/teamship-strengths.html
+        cadru: false
+        imagine_linkedin: previzualizari/teamship-strengths.png
 
   - cheie: inventii
     vizibil: true
@@ -122,7 +130,16 @@ categorii:
     # `pagina`: un fișier .html din repo, publicat la innovations/<slug>/ cu antetul și subsolul site-ului.
     #   Sursa e una singură: ce schimbi în fișier apare pe site la următorul build. (Sau `link: https://…` spre altă adresă.)
     #   <title> din fișier e titlul din tab-ul browserului, <meta name="description"> descrierea; `titlu` de aici e cel din listă.
+    # Alignment (D-102): un serviciu nou, de aceea stă în Innovations, primul în listă. Simbolul `atelier` e provizoriu, până propune Ioana unul.
     elemente:
+      - titlu: "Alignment"
+        fraza: "Un serviciu nou: conversația facilitată pe relația dintre doi sau mai mulți oameni care lucrează împreună."
+        tip: "Serviciu nou"
+        simbol: atelier
+        slug: alignment
+        pagina: content/innovations/alignment.html
+        cadru: false
+        imagine_linkedin: previzualizari/alignment.png
       - titlu: "Procesul de training design cu AI"
         fraza: "Cum construim un training cu o echipă de agenți AI și oameni: viziune, Laborator, harvest, firul roșu."
         tip: "Proces"

@@ -167,6 +167,25 @@ const BUSINESS = existsSync(join(ROOT, 'content/business')) ? readdirSync(join(R
   return { slug: f.replace(/\.md$/, ''), nume: data.nume, ordine: data.ordine || 99, nevoie: data.nevoie || '', rol: data.rol || '', link: data.link || '', pod: data.pod || '', nevoi: data.nevoi || [] };
 }).sort((a, b) => a.ordine - b.ordine) : [];
 
+// Paginile simple din content/pagini/<slug>.md (ex. confidentialitate.md), fiecare la /<slug>/, cu textul în Markdown.
+// `subsol: "text"` pune linkul în subsolul paginilor; `in_contact: "text"` pune un link mic în panoul Contact (și pe prima pagină).
+// `completari`: valorile care se schimbă (operatorul, termenul de păstrare...), scrise o singură dată în antet și folosite în text ca {{nume}}.
+// O pagină în care a rămas „[DE CONFIRMAT” nu se publică (nici linkurile spre ea), decât într-o previzualizare: PREVIZUALIZARE=1.
+const PREVIZ = process.env.PREVIZUALIZARE === '1';
+const PAGINI_SIMPLE = existsSync(join(ROOT, 'content/pagini')) ? readdirSync(join(ROOT, 'content/pagini')).filter(f => f.endsWith('.md')).sort().map(f => {
+  const F = `content/pagini/${f}`, slug = f.replace(/\.md$/, '');
+  if (!/^[a-z0-9]+(-[a-z0-9]+)*$/.test(slug)) fail(`${F}: numele fișierului devine adresa paginii: doar litere mici, cifre și cratimă.`);
+  const { data, body } = mdFile(F);
+  if (!data.titlu) fail(`${F}: lipsește câmpul „titlu”.`);
+  const comp = data.completari || {};
+  const text = body.replace(/\{\{\s*([a-z_]+)\s*\}\}/g, (_, k) => { if (!Object.hasOwn(comp, k)) fail(`${F}: {{${k}}} nu are valoare în „completari”.`); return String(comp[k]); });
+  if (/\[DE CONFIRMAT/i.test(text)){
+    if (!PREVIZ){ warn(`${F}: mai are „[DE CONFIRMAT”, deci nu se publică (nici linkurile spre ea). Previzualizare: PREVIZUALIZARE=1.`); return null; }
+    warn(`${F}: mai are „[DE CONFIRMAT”; apare doar pentru că e o previzualizare (PREVIZUALIZARE=1).`);
+  }
+  return { slug, titlu: String(data.titlu), descriere: String(data.descriere || ''), subsol: String(data.subsol || ''), inContact: String(data.in_contact || ''), html: marked.parse(text) };
+}).filter(Boolean) : [];
+
 const rezervare = String(site.rezervare || '').trim();
 if (rezervare && !/^https:\/\//.test(rezervare)) fail('content/site.yml: „rezervare” trebuie să fie un link https://.');
 // „Desfă inovația” ține de Innovations: fără Innovations vizibil, centrul scenei rămâne liber.
@@ -414,6 +433,7 @@ const contactPanel = () => CONTACT ? `<div class="contact glass-read" id="contac
   ${CONTACT.text ? `<p class="c-lead">${esc(CONTACT.text)}</p>` : ''}
   ${rezervare ? `<a class="btn bk" href="${esc(rezervare)}" rel="noopener">${esc(CONTACT.rezervare)} <span aria-hidden="true">→</span></a>` : ''}
   <div class="grps">${CONTACT.grupuri.map(g => `<div class="grp">${g.titlu ? `<p class="cap">${esc(g.titlu)}</p>` : ''}<ul class="ico-row">${g.canale.map(c => `<li><a class="ico" href="${esc(c.link)}" aria-label="${esc(c.nume)}" rel="${c.profil ? 'me noopener' : 'noopener'}">${svgIcon(c.canal)}<span class="tip" aria-hidden="true">${esc(c.scurt)}</span></a></li>`).join('')}</ul></div>`).join('')}</div>
+  ${PAGINI_SIMPLE.filter(p => p.inContact).map(p => `<p class="c-nota"><a href="${u(p.slug + '/')}">${esc(p.inContact)}</a></p>`).join('')}
 </div>` : '';
 // butoanele de pe Coaching (pagina și panoul de pe prima pagină): rezervarea, dacă are link, apoi contactul
 const coachingCta = () => rezervare
@@ -514,8 +534,10 @@ function topNav(current){
 // semnătura din colț: forma lungă, iar pe telefon forma scurtă (content/site.yml → intro.marca, intro.marca_scurta)
 const brandText = () => { const lung = site.intro?.marca || site.titlu, scurt = site.intro?.marca_scurta || '';
   return scurt && scurt !== lung ? `<span class="m-long">${esc(lung)}</span><span class="m-short">${esc(scurt)}</span>` : esc(lung); };
-// subsolul a fost scos la cererea lui Alex (2026-11-25): fără textul despre repo, data actualizării și continut.json
-const footer = () => '';
+// subsolul mare a fost scos la cererea lui Alex (2026-11-25): fără textul despre repo, data actualizării și continut.json.
+// A rămas doar un rând de linkuri mici, spre paginile simple cu `subsol` (ex. Confidențialitate, D-102).
+const footer = () => { const l = PAGINI_SIMPLE.filter(p => p.subsol);
+  return l.length ? `<footer class="subsol"><nav aria-label="Subsol">${l.map(p => `<a href="${u(p.slug + '/')}">${esc(p.subsol)}</a>`).join('')}</nav></footer>` : ''; };
 
 function page({ cheie, title, description, path, bodyHtml, mainClass = 'wrap glass-read', bodyClass = '', scripts = '', extraHead = '', og }){
   return `${head({ title, description, path, extra: extraHead, og })}
@@ -857,6 +879,7 @@ for (const c of CATS) write(`${c.url}/index.html`, categoryPage(c));
 const PAGINI = CATS.flatMap(c => (c.elemente || []).filter(e => e.pagina).map(e => [c, e]));
 for (const [c, e] of PAGINI){ write(`${e.url}index.html`, elementPage(c, e)); write(`assets/pagini/${e.slug}.css`, e.css); }
 write('live/echipa/index.html', teamPage());
+for (const p of PAGINI_SIMPLE) write(`${p.slug}/index.html`, page({ title: p.titlu, description: p.descriere, path: `${p.slug}/`, bodyHtml: `<h1>${esc(p.titlu)}</h1>\n<div class="prose">${p.html}</div>` }));
 const visibleUrl = to => CATS.some(c => c.url === to) ? u(to + '/') : u();
 for (const c of HIDDEN) if (!CATS.some(v => v.url === c.url)) write(`${c.url}/index.html`, redirect(u()));
 for (const [from, to] of Object.entries(REDIRECTS)) if (!CATS.some(c => c.url === from) && !HIDDEN.some(c => c.url === from)) write(`${from}/index.html`, redirect(visibleUrl(to)));
@@ -864,7 +887,7 @@ write('404.html', page({ title: 'Pagina nu există', path: '404.html', bodyHtml:
 write('.nojekyll', '');
 if (domeniu) write('CNAME', domeniu + '\n');
 write('robots.txt', `User-agent: *\nAllow: /\n${SITE_URL ? `Sitemap: ${abs('sitemap.xml')}\n` : ''}`);
-if (SITE_URL) write('sitemap.xml', `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${['', ...CATS.map(c => c.url + '/'), ...PAGINI.map(([, e]) => e.url), 'live/echipa/'].map(p => `  <url><loc>${esc(abs(p))}</loc></url>`).join('\n')}\n</urlset>\n`);
+if (SITE_URL) write('sitemap.xml', `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${['', ...CATS.map(c => c.url + '/'), ...PAGINI.map(([, e]) => e.url), ...PAGINI_SIMPLE.map(p => p.slug + '/'), 'live/echipa/'].map(p => `  <url><loc>${esc(abs(p))}</loc></url>`).join('\n')}\n</urlset>\n`);
 
 // API: același conținut pentru site și pentru o viitoare aplicație (D-030)
 if (C.live) write('api/live.json', JSON.stringify(liveJson, null, 2) + '\n'); // Live ascuns: fără jurnal public
