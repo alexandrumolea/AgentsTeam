@@ -1,5 +1,8 @@
 # Pagina despre conversațiile dificile · v4
 
+> **Titlul ales de Alex (2026-11-27, D-104): Trust & Courage – Speak Up, Be Heard, Elevate the Relationship.** Adresa: /workshops/trust-courage/. Tabelul de titluri de mai jos rămâne ca istoric.
+
+
 Adăugat: 2026-11-27. Autor: Maria, la cererea lui Tudor. Status: **draft pentru Alex, nepublicat.**
 Ce conține: doar pagina care acum se numește „Trust & Difficult Conversations”, rescrisă pornind de la **nevoile reale spuse de Alex** pe 2026-11-27. Celelalte trei pagini rămân în `pagini-cursuri-2026-11-27-v3.md`.
 Din v3 rămân: cele trei formate (4 ore, o zi, 2 zile) și butonul de contact. Se schimbă: titlul, primul ecran, „Pentru cine e”, „Ce se schimbă după workshop” și drumul, care e acum **structura lui Alex: cele patru capacități (Courage, Clarity, Connection, Change)**, cu textul lui neschimbat.
