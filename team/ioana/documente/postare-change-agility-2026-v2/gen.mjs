@@ -427,26 +427,42 @@ const vremeCss = `
 .jos{display:flex;align-items:center;gap:16px;color:${C.muted}}
 `;
 // D1 · Anul. „Change Agility” e titlul mare al aplicației (ca „Vremea” din lista de orașe), „Echipa ta” e locul.
-// Lunile au fiecare un fenomen: o schimbare. Jos, fraza lui despre presiune.
+// Lunile au fiecare un fenomen: o schimbare. Jos, fraza lui despre presiune lângă cele două indicatoare din D,
+// Presiune: Ridicată și Vizibilitate: Redusă (Alex: „lipsesc lucrurile care îmi plăceau”).
 const D1 = (w, h) => `<style>${baza(w, h)}${vremeCss}
 .sus{position:absolute;left:64px;right:64px;top:70px;color:${C.navy}}
 .sus .ca{--fs:120px}
 .sus .loc{margin-top:22px;display:flex;justify-content:space-between;align-items:baseline;font:500 46px/1 "Inter Tight",sans-serif}
 .sus .loc span:last-child{font:200 64px/1 Sora,sans-serif;letter-spacing:-.03em}
 .sus .stare{margin-top:12px;font:500 34px/1.1 "Inter Tight",sans-serif;color:${C.muted}}
-.luni{top:376px;padding:28px 34px 30px}
-.grila{display:grid;grid-template-columns:1fr 1fr;gap:18px 30px;margin-top:22px}
+.luni{top:356px;padding:28px 34px 30px}
+.grila{display:grid;grid-template-columns:1fr 1fr;gap:16px 30px;margin-top:22px}
 .grila>div{display:grid;grid-template-columns:60px 1fr;column-gap:18px;align-items:center}
 .grila svg{grid-row:1/3}
 .grila .l{font:600 22px/1 "Inter Tight",sans-serif;letter-spacing:.2em;text-transform:uppercase;color:${C.muted}}
 .grila .s{margin-top:6px;font:500 38px/1.05 "Inter Tight",sans-serif;color:${C.navy};white-space:nowrap}
-.mesaj{top:1002px;padding:34px 40px 32px}
-.mesaj .jos{margin-top:22px}
+.jos3{position:absolute;left:56px;right:56px;top:982px;height:${h - 982 - 56}px;display:grid;grid-template-columns:1fr 330px;gap:20px}
+.jos3 .sticla{position:static}
+.mesaj{padding:32px 40px 28px;display:flex;flex-direction:column;justify-content:space-between;min-height:0}
+.mesaj .fraza{font-size:47px}
+.ind{display:grid;grid-template-rows:1fr 1fr;gap:14px;min-height:0}
+.ind .sticla{padding:18px 26px 14px;border-radius:30px}
+.ind .et{font-size:22px}
+.ind .v{margin-top:8px;font:300 46px/1 Sora,sans-serif;letter-spacing:-.02em;color:${C.navy}}
+.ind svg{display:block;margin-top:10px}
 </style>
 <div class="sus"><h1 class="ca">Change Agility</h1>
 <p class="loc"><span>Echipa ta</span><span>2026</span></p><p class="stare">Schimbări din toate direcțiile</p></div>
 <div class="sticla luni"><p class="et cap">Fenomene pe 12 luni</p><div class="grila">${SCH.luni.map(([l, s, k]) => `<div>${svgI(k)}<p class="l">${l}</p><p class="s">${ai(s)}</p></div>`).join('')}</div></div>
-<div class="sticla mesaj"><p class="fraza">Mai multă presiune<br>nu aduce adaptare.<br>Aduce uzură.</p><div class="jos"><span class="punct"></span><span class="marca">BEMORE Learning Studio</span></div></div>`;
+<div class="jos3">
+<div class="sticla mesaj"><p class="fraza">Mai multă presiune<br>nu aduce adaptare.<br>Aduce uzură.</p><div class="jos"><span class="punct"></span><span class="marca">BEMORE Learning Studio</span></div></div>
+<div class="ind">
+<div class="sticla"><p class="et">Presiune</p><p class="v">Ridicată</p>
+<svg width="230" height="30" viewBox="0 0 230 30" aria-hidden="true"><rect x="0" y="10" width="230" height="10" rx="5" fill="rgb(15 27 67 / .12)"/><rect x="0" y="10" width="200" height="10" rx="5" fill="#2B44B8"/><circle cx="200" cy="15" r="13" fill="#fff" stroke="#0F1B43" stroke-width="3"/></svg></div>
+<div class="sticla"><p class="et">Vizibilitate</p><p class="v">Redusă</p>
+<svg width="230" height="30" viewBox="0 0 230 30" aria-hidden="true"><path d="M4 5h222M24 15h182M4 25h222" stroke="#0F1B43" stroke-width="3.5" stroke-linecap="round" opacity=".5"/></svg></div>
+</div>
+</div>`;
 
 // D2 · Azi la birou. Ecranul principal al aplicației: locul, ziua, starea; apoi prognoza pe ore, în care fiecare oră
 // aduce altă schimbare. Jos, numele cursului mare, pe două rânduri. Fără frază: ziua spune destul.
@@ -524,7 +540,9 @@ const VERIF_VREME = `(()=>{if(!document.querySelector('.sticla')||document.query
   for(let i=0;i<R.length;i++)for(let j=i+1;j<R.length;j++){const [a,ra]=R[i],[c,rc]=R[j];if(a.contains(c)||c.contains(a))continue;
     if(ra.left<rc.right-1&&rc.left<ra.right-1&&ra.top<rc.bottom-1&&rc.top<ra.bottom-1)out.push('suprapus: '+a.textContent.trim().slice(0,16)+' / '+c.textContent.trim().slice(0,16));}
   const s=[...document.querySelectorAll('.sticla')].map(e=>e.getBoundingClientRect());
-  for(let i=0;i<s.length;i++)for(let j=i+1;j<s.length;j++)if(s[i].bottom>s[j].top&&s[j].bottom>s[i].top)out.push('sticle suprapuse');
+  for(const q of s)if(q.left<40||q.top<40||q.right>innerWidth-40||q.bottom>innerHeight-40)out.push('sticlă la margine');
+  for(const e of document.querySelectorAll('.sticla'))if(e.scrollHeight>e.clientHeight+1)out.push('sticlă prea plină: '+e.textContent.trim().slice(0,20));
+  for(let i=0;i<s.length;i++)for(let j=i+1;j<s.length;j++)if(s[i].bottom>s[j].top&&s[j].bottom>s[i].top&&s[i].right>s[j].left&&s[j].right>s[i].left)out.push('sticle suprapuse');
   for(const f of document.querySelectorAll('.front,.echipa')){const q=f.getBoundingClientRect();for(const t of s)if(q.bottom>t.top&&q.top<t.bottom&&q.right>t.left&&q.left<t.right)out.push('front peste sticlă: '+f.textContent);}
   return out;})()`;
 
