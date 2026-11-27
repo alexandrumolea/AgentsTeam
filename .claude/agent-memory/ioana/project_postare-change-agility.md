@@ -1,0 +1,12 @@
+---
+name: postare-change-agility
+description: Imaginea postării LinkedIn Change Agility și og-ul paginii: rundele 1–3, alegerile lui Alex, lecțiile de feed
+metadata:
+  type: project
+---
+
+Adăugat: 2026-11-27 (mutat din MEMORY.md; intrările își păstrează datele)
+
+- 2026-11-27: Imaginea og a paginii Change Agility (T-057, og-change-agility/gen.mjs: culorile din site/tema.mjs, fonturile din site/node_modules/@fontsource-variable, randare cdp.mjs): A · Planul (recomandat) / B · Resursele, comparatie.html. LECȚIE: og:image e UNA pe pagină și servește toate postările care duc acolo, deci arată cursul, nu o postare. În feed pe telefon imaginea are ~320 px (×0,27): titlu ≥ 120 px, fraza ≥ 46 px în sursa de 1200. Chrome headless ia dark mode-ul sistemului: Emulation.setEmulatedMedia light pentru capturi.
+
+- 2026-11-27: Imaginea postării Change Agility. Runda 1 (arhiva/postare-change-agility-2026/) respinsă toată: „Nu-mi place niciun mock-up”. Runda 2 (postare-change-agility-2026-v2/, gen.mjs, comparatie.html): A Aleea (poza lui) / B Peretele / C Dicționarul (folio 2026) / D Prognoza (app meteo) / E Biletul / F Afișul de film. ALEX a ales E („conceptul de la Cunoscut la Necunoscut, de boarding pass. Scrie cam mic Change Agility.”) și vrea vremea refăcută cu schimbări reale în loc de vreme. C · Dicționarul îl PĂSTREAZĂ pentru altă postare (nu-l schimba). Runda 3 în același folder: E1 (numele ca zbor, sus) / E2 (numele domină, ruta orizontală; recomandat), D1 anul pe 12 luni / D2 azi la birou pe ore / D3 alerta cu fronturi pe radar (recomandat); aștept alegerea. LECȚII runda 3: numele cursului pe imaginea de postare ≥ 120 px în sursă (~42 px în feed la 375); în Inter Tight „AI” se citește „Al” și fontul nu are cv08: desenez serife pe I (helper ai() în gen.mjs); verificarea suprapunerilor în HTML cu cutia literelor (canvas measureText: fontBoundingBoxAscent + actualBoundingBox), nu cu Range (dă suprapuneri false la line-height strâns). LECȚII runda 2: (1) când propun variante, schimb MEDIUL și conceptul, nu motivul de pe aceeași sticlă tipografică (runda 1 era o singură familie); (2) fraza de pe imagine nu repetă începutul postării; (3) în cdp.mjs pagina se deschide la 1280×800: JS de layout (elementFromPoint) rulează DUPĂ setDeviceMetricsOverride; (4) un drum desenat ca offset al unei Bézier cu lățime mare face cusp-uri: curba centrului blândă; (5) fără QR fals pe imagini (oamenii scanează): cod de bare decorativ.

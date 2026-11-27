@@ -309,9 +309,251 @@ ${dr.mg.map(d => `<path d="${d}" fill="none" stroke="url(#mg)" stroke-width="3.5
 <p class="r3">4 sau 6 ore · în organizații · 2026</p>
 </div>`;
 
+// E1 și E2 · Biletul, după alegerea lui Alex (2026-11-27): „îmi place conceptul de la Cunoscut la Necunoscut,
+// de boarding pass. Scrie cam mic Change Agility.” Același bilet, aceleași câmpuri; se schimbă doar ierarhia.
+// Pe telefon imaginea are ~375 px (×0,35): numele cursului ≥ 130 px în sursă ca să iasă ≥ 45 px în feed.
+// Valorile biletului: un singur loc. TY = linia de rupere (cotorul începe sub ea).
+const BL = { w: 860, h: 1190, rot: -4, pad: 64 };
+const biletCss = TY => `
+.umbra{position:absolute;left:${(1080 - BL.w) / 2}px;top:${(1350 - BL.h) / 2}px;width:${BL.w}px;height:${BL.h}px;transform:rotate(${BL.rot}deg);filter:drop-shadow(0 46px 50px rgb(15 27 67/.38))}
+.bilet{position:absolute;inset:0;background:#fff;border-radius:40px;padding:56px ${BL.pad}px 0;
+  -webkit-mask:radial-gradient(circle 30px at 0 ${TY}px,#0000 29px,#000 30px) 0 0/51% 100% no-repeat,radial-gradient(circle 30px at 100% ${TY}px,#0000 29px,#000 30px) 100% 0/51% 100% no-repeat;
+  mask:radial-gradient(circle 30px at 0 ${TY}px,#0000 29px,#000 30px) 0 0/51% 100% no-repeat,radial-gradient(circle 30px at 100% ${TY}px,#0000 29px,#000 30px) 100% 0/51% 100% no-repeat}
+.bilet .et{font-size:24px;color:${C.muted}}
+.bilet .cap{display:flex;justify-content:space-between;align-items:center}
+.bilet .cap .marca{color:${C.navy};display:flex;align-items:center;gap:14px}
+.rupt{position:absolute;left:44px;right:44px;top:${TY - 2}px;border-top:4px dashed rgb(15 27 67/.2)}
+.cotor{position:absolute;left:${BL.pad}px;right:${BL.pad}px;top:${TY + 34}px;bottom:44px}
+.v{margin-top:12px;font:500 44px/1.1 "Inter Tight",sans-serif;color:${C.navy};white-space:nowrap}
+.nume{font:300 var(--fs)/1 Sora,sans-serif;letter-spacing:-.04em;color:${C.navy}}
+.nume span{display:block;white-space:nowrap}
+`;
+// E1 · numele cursului e „zborul”, sus pe bilet, imediat sub antet. Ruta rămâne verticală, mai mică;
+// pasagerul, anul și bagajul trec pe cotor, ca pe un bilet adevărat.
+const E1 = (w, h, TY = 866) => `<style>${baza(w, h)}${biletCss(TY)}
+.zbor{margin-top:52px}
+.zbor .rand{display:flex;justify-content:space-between}
+.zbor .nume{--fs:158px;margin-top:18px}
+.ruta{margin-top:46px;padding-top:38px;border-top:2px solid rgb(20 22 31/.12);display:grid;grid-template-columns:44px 1fr;column-gap:28px}
+.ruta .linie{grid-row:1/4;position:relative}
+.ruta .linie::before{content:"";position:absolute;left:20px;top:22px;bottom:22px;border-left:4px dotted rgb(15 27 67/.4)}
+.ruta .linie i{position:absolute;left:8px;width:28px;height:28px;border-radius:50%;border:4px solid ${C.navy};background:#fff}
+.ruta .linie i.a{top:6px}.ruta .linie i.b{bottom:6px;background:${C.navy}}
+.ruta .linie .punct{position:absolute;left:11px;top:calc(50% - 11px)}
+.ruta .loc{margin-top:8px;font:250 76px/1 Sora,sans-serif;letter-spacing:-.03em;color:${C.navy}}
+.ruta .gol{height:30px}
+.cotor{display:grid;grid-template-columns:1fr 290px;grid-template-rows:auto 1fr;gap:28px 32px}
+.cotor .cod{grid-column:2;grid-row:2;align-self:end}
+</style>
+<div class="umbra"><div class="bilet">
+<div class="cap"><span class="marca"><span class="punct"></span>BEMORE Learning Studio</span><span class="et">Bilet de îmbarcare</span></div>
+<div class="zbor"><div class="rand"><p class="et">Zbor</p><p class="et">Workshop</p></div><h1 class="nume"><span>Change</span><span>Agility</span></h1></div>
+<div class="ruta">
+<div class="linie"><i class="a"></i><span class="punct"></span><i class="b"></i></div>
+<div><p class="et">De la</p><p class="loc">Cunoscut</p></div>
+<div class="gol"></div>
+<div><p class="et">Spre</p><p class="loc">Necunoscut</p></div>
+</div>
+<div class="rupt"></div>
+<div class="cotor">
+<div><p class="et">Pasager</p><p class="v">Echipa ta</p></div>
+<div><p class="et">Anul</p><p class="v">2026</p></div>
+<div><p class="et">Bagaj</p><p class="v">Resursele tale</p></div>
+<div class="cod">${bare(290, 104)}</div>
+</div>
+</div></div>`;
+
+// E2 · numele cursului e elementul dominant al biletului; ruta stă sub el, pe orizontală, ca cursa de pe un
+// boarding pass: Cunoscut în stânga, Necunoscut în dreapta, punctul portocaliu pe drum, la jumătate.
+const E2 = (w, h, TY = 936) => `<style>${baza(w, h)}${biletCss(TY)}
+.titlu{margin-top:50px}
+.titlu .nume{--fs:178px;margin-top:14px}
+.ruta{margin-top:44px}
+.ruta .ets,.ruta .loc{display:flex;justify-content:space-between;align-items:baseline}
+.ruta .drum{position:relative;height:28px;margin:16px 0 18px}
+.ruta .drum::before{content:"";position:absolute;left:22px;right:22px;top:12px;border-top:4px dotted rgb(15 27 67/.4)}
+.ruta .drum i{position:absolute;top:0;width:28px;height:28px;border-radius:50%;border:4px solid ${C.navy};background:#fff}
+.ruta .drum i.a{left:0}.ruta .drum i.b{right:0;background:${C.navy}}
+.ruta .drum .punct{position:absolute;left:calc(50% - 11px);top:3px}
+.ruta .loc p{font:300 62px/1 Sora,sans-serif;letter-spacing:-.03em;color:${C.navy}}
+.campuri{margin-top:38px;padding-top:30px;border-top:2px solid rgb(20 22 31/.12);display:grid;grid-template-columns:auto auto 1fr;gap:44px}
+.campuri .v{font-size:42px}
+.cotor{display:flex;align-items:center}
+</style>
+<div class="umbra"><div class="bilet">
+<div class="cap"><span class="marca"><span class="punct"></span>BEMORE Learning Studio</span><span class="et">Bilet de îmbarcare</span></div>
+<div class="titlu"><p class="et">Workshop</p><h1 class="nume"><span>Change</span><span>Agility</span></h1></div>
+<div class="ruta">
+<div class="ets"><p class="et">De la</p><p class="et">Spre</p></div>
+<div class="drum"><i class="a"></i><span class="punct"></span><i class="b"></i></div>
+<div class="loc"><p>Cunoscut</p><p>Necunoscut</p></div>
+</div>
+<div class="campuri">
+<div><p class="et">Pasager</p><p class="v">Echipa ta</p></div>
+<div><p class="et">Anul</p><p class="v">2026</p></div>
+<div><p class="et">Bagaj</p><p class="v">Resursele tale</p></div>
+</div>
+<div class="rupt"></div>
+<div class="cotor">${bare(BL.w - 2 * BL.pad, 120)}</div>
+</div></div>`;
+
+// D1–D3 · Vremea, după Alex (2026-11-27): „Îmi place și treaba cu vremea. Doar că prognoza nu e foarte relevantă,
+// ar putea fi exemple de schimbări.” Aceeași aplicație de vreme pentru „Echipa ta”, dar fenomenele sunt schimbări
+// prin care trec echipele. Trei forme: anul pe luni, ziua pe ore, alerta cu fronturi. „Change Agility” se citește
+// clar în toate (≥ 118 px în sursă, ~41 px în feed). Schimbările: o singură listă, ca să le poată corecta oricine.
+const SCH = {
+  luni: [['Ian', 'Reorganizare', 'fulger'], ['Feb', 'Rol nou', 'vant'], ['Mar', 'AI în lucru', 'vant'], ['Apr', 'Buget tăiat', 'ploaie'],
+    ['Mai', 'Echipă nouă', 'soare'], ['Iun', 'Fuziune de procese', 'ceata'], ['Iul', 'KPI noi', 'nor'], ['Aug', 'Un manager nou', 'fulger'],
+    ['Sep', 'Tool nou', 'vant'], ['Oct', 'Strategie nouă', 'ceata'], ['Nov', 'Lucru hibrid', 'nor'], ['Dec', 'Obiective noi', 'ploaie']],
+  ore: [['09:00', 'Se anunță reorganizarea', 'fulger'], ['10:30', 'Ai un rol nou', 'vant'], ['12:00', 'AI intră în lucru', 'ceata'],
+    ['14:00', 'Bugetul e tăiat', 'ploaie'], ['15:30', 'Vin colegi noi', 'soare'], ['17:00', 'KPI noi pentru mâine', 'nor']],
+  fronturi: ['Reorganizare', 'AI în lucru', 'Buget tăiat', 'Rol nou', 'Echipă nouă', 'KPI noi'],
+};
+ico.alerta = '<path d="M32 7 59 55H5z" fill="#F28C3B" stroke="#C96A1E" stroke-width="3" stroke-linejoin="round"/><path d="M32 24v15" stroke="#0F1B43" stroke-width="5" stroke-linecap="round"/><circle cx="32" cy="47" r="3.2" fill="#0F1B43"/>';
+const svgI = (k, s = 60) => `<svg width="${s}" height="${s}" viewBox="0 0 64 64" aria-hidden="true">${ico[k]}</svg>`;
+// În Inter Tight, „AI” se citește „Al” (I și l au aceeași formă, iar fontul nu are varianta cu serife).
+// I-ul din AI primește două serife desenate: liniile cap-height (0,727 em) și baseline, cu line-height 1.
+const ai = s => s.replace(/\bAI\b/g, 'A<span class="i">I</span>');
+const vremeCss = `
+.i{display:inline-block;position:relative;line-height:1}
+.i::before,.i::after{content:"";position:absolute;left:50%;width:.32em;margin-left:-.16em;height:.074em;background:currentColor;border-radius:.01em}
+.i::before{top:.137em}.i::after{top:.79em}
+.sticla{position:absolute;left:56px;right:56px;background:rgb(255 255 255/.82);-webkit-backdrop-filter:blur(26px);backdrop-filter:blur(26px);
+  border:1.5px solid rgb(255 255 255/.75);border-radius:40px;box-shadow:inset 0 1.5px 0 #fff,0 30px 60px -36px rgb(15 27 67/.5)}
+.sticla .et{font-size:24px;color:${C.muted}}
+.sticla .cap{padding-bottom:18px;border-bottom:1.5px solid rgb(20 22 31/.14)}
+.ca{font:300 var(--fs)/1 Sora,sans-serif;letter-spacing:-.04em;color:${C.navy};white-space:nowrap}
+.fraza{font:300 50px/1.14 Sora,sans-serif;letter-spacing:-.015em;color:${C.navy}}
+.jos{display:flex;align-items:center;gap:16px;color:${C.muted}}
+`;
+// D1 · Anul. „Change Agility” e titlul mare al aplicației (ca „Vremea” din lista de orașe), „Echipa ta” e locul.
+// Lunile au fiecare un fenomen: o schimbare. Jos, fraza lui despre presiune.
+const D1 = (w, h) => `<style>${baza(w, h)}${vremeCss}
+.sus{position:absolute;left:64px;right:64px;top:70px;color:${C.navy}}
+.sus .ca{--fs:120px}
+.sus .loc{margin-top:22px;display:flex;justify-content:space-between;align-items:baseline;font:500 46px/1 "Inter Tight",sans-serif}
+.sus .loc span:last-child{font:200 64px/1 Sora,sans-serif;letter-spacing:-.03em}
+.sus .stare{margin-top:12px;font:500 34px/1.1 "Inter Tight",sans-serif;color:${C.muted}}
+.luni{top:376px;padding:28px 34px 30px}
+.grila{display:grid;grid-template-columns:1fr 1fr;gap:18px 30px;margin-top:22px}
+.grila>div{display:grid;grid-template-columns:60px 1fr;column-gap:18px;align-items:center}
+.grila svg{grid-row:1/3}
+.grila .l{font:600 22px/1 "Inter Tight",sans-serif;letter-spacing:.2em;text-transform:uppercase;color:${C.muted}}
+.grila .s{margin-top:6px;font:500 38px/1.05 "Inter Tight",sans-serif;color:${C.navy};white-space:nowrap}
+.mesaj{top:1002px;padding:34px 40px 32px}
+.mesaj .jos{margin-top:22px}
+</style>
+<div class="sus"><h1 class="ca">Change Agility</h1>
+<p class="loc"><span>Echipa ta</span><span>2026</span></p><p class="stare">Schimbări din toate direcțiile</p></div>
+<div class="sticla luni"><p class="et cap">Fenomene pe 12 luni</p><div class="grila">${SCH.luni.map(([l, s, k]) => `<div>${svgI(k)}<p class="l">${l}</p><p class="s">${ai(s)}</p></div>`).join('')}</div></div>
+<div class="sticla mesaj"><p class="fraza">Mai multă presiune<br>nu aduce adaptare.<br>Aduce uzură.</p><div class="jos"><span class="punct"></span><span class="marca">BEMORE Learning Studio</span></div></div>`;
+
+// D2 · Azi la birou. Ecranul principal al aplicației: locul, ziua, starea; apoi prognoza pe ore, în care fiecare oră
+// aduce altă schimbare. Jos, numele cursului mare, pe două rânduri. Fără frază: ziua spune destul.
+const D2 = (w, h) => `<style>${baza(w, h)}${vremeCss}
+.sus{position:absolute;left:56px;right:56px;top:62px;text-align:center;color:${C.navy}}
+.sus .loc{font:500 52px/1 "Inter Tight",sans-serif}
+.sus .zi{margin-top:10px;font:200 78px/1 Sora,sans-serif;letter-spacing:-.03em}
+.sus .stare{margin-top:14px;font:500 36px/1.1 "Inter Tight",sans-serif;color:${C.muted}}
+.ore{top:296px;padding:26px 36px 14px}
+.ore .r{display:grid;grid-template-columns:112px 62px 1fr;column-gap:22px;align-items:center;padding:8px 0;border-bottom:1.5px solid rgb(20 22 31/.08)}
+.ore .r:last-child{border-bottom:0}
+.ore .h{font:600 32px/1 "Inter Tight",sans-serif;color:${C.muted};font-variant-numeric:tabular-nums}
+.ore .s{font:500 42px/1.05 "Inter Tight",sans-serif;color:${C.navy};white-space:nowrap}
+.curs{bottom:56px;padding:32px 40px 30px}
+.curs .ca{--fs:120px;margin-top:14px}
+.curs .ca span{display:block}
+.curs .jos{margin-top:24px}
+</style>
+<div class="sus"><p class="loc">Echipa ta</p><p class="zi">Azi la birou</p><p class="stare">Schimbări din oră în oră</p></div>
+<div class="sticla ore"><p class="et cap">Prognoza pe ore</p>${SCH.ore.map(([o, s, k]) => `<div class="r"><p class="h">${o}</p>${svgI(k, 62)}<p class="s">${ai(s)}</p></div>`).join('')}</div>
+<div class="sticla curs"><p class="et">Workshop</p><h1 class="ca"><span>Change</span><span>Agility</span></h1><div class="jos"><span class="punct"></span><span class="marca">BEMORE Learning Studio</span></div></div>`;
+
+// D3 · Alerta. Ecranul de alertă meteo: radarul cu fronturile care vin deodată, din toate direcțiile, spre punctul
+// portocaliu (echipa ta). Triunghiurile frontului arată direcția: spre echipă. Jos, cursul și fraza despre presiune.
+const radar = (cx, cy) => {
+  const ang = [-90, -30, 30, 90, 150, 210];
+  let fr = '', et = '';
+  ang.forEach((a, i) => {
+    const r = a * Math.PI / 180, ux = Math.cos(r), uy = Math.sin(r), nx = -uy, ny = ux;
+    const p = d => [cx + ux * d, cy + uy * d];
+    const [x1, y1] = p(252), [x2, y2] = p(96);
+    fr += `<path d="M${x1.toFixed(1)} ${y1.toFixed(1)}L${x2.toFixed(1)} ${y2.toFixed(1)}" stroke="#2B44B8" stroke-width="5" stroke-linecap="round"/>`;
+    for (let d = 236; d > 130; d -= 40) { // triunghiuri pe o parte a frontului, cu vârful spre centru
+      const [bx, by] = p(d), [tx, ty] = p(d - 26), [sx, sy] = p(d - 13);
+      fr += `<path d="M${bx.toFixed(1)} ${by.toFixed(1)}L${tx.toFixed(1)} ${ty.toFixed(1)}L${(sx + nx * 20).toFixed(1)} ${(sy + ny * 20).toFixed(1)}Z" fill="#2B44B8"/>`;
+    }
+    const [lx, ly] = p(300);
+    et += `<p class="front" style="left:${lx.toFixed(0)}px;top:${ly.toFixed(0)}px">${ai(SCH.fronturi[i])}</p>`;
+  });
+  return { fr, et };
+};
+const D3 = (w, h, cx = 540, cy = 606, rd = radar(540, 606)) => `<style>${baza(w, h)}${vremeCss}
+.alerta{top:60px;padding:26px 34px 28px;display:grid;grid-template-columns:64px 1fr;column-gap:22px;align-items:center}
+.alerta .t{font:600 42px/1.1 "Inter Tight",sans-serif;color:${C.navy}}
+.alerta .et{margin-bottom:10px}
+svg.radar{position:absolute;left:0;top:0}
+.front{position:absolute;transform:translate(-50%,-50%);padding:12px 22px;border-radius:999px;background:rgb(255 255 255/.92);
+  border:1.5px solid rgb(255 255 255/.8);box-shadow:0 14px 30px -18px rgb(15 27 67/.55);font:500 38px/1 "Inter Tight",sans-serif;color:${C.navy};white-space:nowrap}
+.echipa{position:absolute;left:${cx}px;top:${cy}px;transform:translate(-50%,-50%);font:600 30px/1.05 "Inter Tight",sans-serif;color:${C.navy};text-align:center;white-space:nowrap}
+.curs{top:970px;padding:32px 40px 30px}
+.curs .ca{--fs:118px}
+.curs .fraza{margin-top:18px;font-size:44px}
+.curs .jos{margin-top:22px}
+</style>
+<div class="sticla alerta">${svgI('alerta', 64)}<div><p class="et">Alertă · Echipa ta · 2026</p><p class="t">Fronturi din toate direcțiile</p></div></div>
+<svg class="radar" width="${w}" height="${h}" viewBox="0 0 ${w} ${h}" aria-hidden="true">
+${[90, 170, 250].map(r => `<circle cx="${cx}" cy="${cy}" r="${r}" fill="${r === 250 ? 'rgb(255 255 255/.28)' : 'none'}" stroke="rgb(15 27 67/.16)" stroke-width="2" stroke-dasharray="${r === 250 ? '0' : '6 10'}"/>`).join('')}
+${rd.fr}
+<circle cx="${cx}" cy="${cy}" r="76" fill="#fff" stroke="#F28C3B" stroke-width="8"/><circle cx="${cx}" cy="${cy}" r="80.5" fill="none" stroke="#C96A1E" stroke-width="1.5"/>
+</svg>${rd.et}
+<p class="echipa">Echipa<br>ta</p>
+<div class="sticla curs"><h1 class="ca">Change Agility</h1><p class="fraza">Mai multă presiune nu aduce adaptare.<br>Aduce uzură.</p><div class="jos"><span class="punct"></span><span class="marca">BEMORE Learning Studio</span></div></div>`;
+
+// Verificarea ecranelor de vreme: nicio pereche de texte nu se suprapune, iar textul nu trece peste marginea sticlei.
+const VERIF_VREME = `(()=>{if(!document.querySelector('.sticla')||document.querySelector('.umbra'))return [];const out=[];
+  const cx=document.createElement('canvas').getContext('2d');
+  const box=el=>{const r=document.createRange();r.selectNodeContents(el);const q=[...r.getClientRects()];if(!q.length)return null;
+    const cs=getComputedStyle(el);cx.font=cs.fontWeight+' '+cs.fontSize+' '+cs.fontFamily;const m=cx.measureText(el.textContent.trim()||'x');
+    let L=1e9,T=1e9,R=-1e9,B=-1e9;for(const k of q){const b=k.top+m.fontBoundingBoxAscent;L=Math.min(L,k.left);R=Math.max(R,k.right);T=Math.min(T,b-m.actualBoundingBoxAscent);B=Math.max(B,b+m.actualBoundingBoxDescent);}
+    return {left:L,right:R,top:T,bottom:B};};
+  const els=[...document.querySelectorAll('p,h1 span,h1:not(:has(span)),.marca')].filter(e=>!e.querySelector('p'));
+  const R=els.map(e=>[e,box(e)]).filter(([,r])=>r);
+  for(const [e,r] of R){const s=e.closest('.sticla');if(!s)continue;const q=s.getBoundingClientRect();
+    if(r.left<q.left+20||r.right>q.right-20||r.top<q.top+12||r.bottom>q.bottom-12)out.push('sticlă: '+e.textContent.trim().slice(0,24));}
+  for(let i=0;i<R.length;i++)for(let j=i+1;j<R.length;j++){const [a,ra]=R[i],[c,rc]=R[j];if(a.contains(c)||c.contains(a))continue;
+    if(ra.left<rc.right-1&&rc.left<ra.right-1&&ra.top<rc.bottom-1&&rc.top<ra.bottom-1)out.push('suprapus: '+a.textContent.trim().slice(0,16)+' / '+c.textContent.trim().slice(0,16));}
+  const s=[...document.querySelectorAll('.sticla')].map(e=>e.getBoundingClientRect());
+  for(let i=0;i<s.length;i++)for(let j=i+1;j<s.length;j++)if(s[i].bottom>s[j].top&&s[j].bottom>s[i].top)out.push('sticle suprapuse');
+  for(const f of document.querySelectorAll('.front,.echipa')){const q=f.getBoundingClientRect();for(const t of s)if(q.bottom>t.top&&q.top<t.bottom&&q.right>t.left&&q.left<t.right)out.push('front peste sticlă: '+f.textContent);}
+  return out;})()`;
+
+// Verificarea biletului, cu rotația scoasă (coordonatele biletului): textul stă în bilet, deasupra liniei
+// de rupere sau sub ea (nu peste), și nicio pereche de texte nu se suprapune.
+const VERIF_BILET = `(()=>{const u=document.querySelector('.umbra');if(!u||!document.querySelector('.cotor'))return [];const out=[];
+  const t0=u.style.transform;u.style.transform='none';const b=document.querySelector('.bilet').getBoundingClientRect();
+  const TY=document.querySelector('.rupt').getBoundingClientRect().top;
+  const els=[...document.querySelectorAll('.bilet p,.bilet .marca,.bilet .nume span,.bilet svg')];
+  // cutia literelor, nu a fontului: linia de bază din fontBoundingBoxAscent, apoi actualBoundingBox (canvas)
+  const cx=document.createElement('canvas').getContext('2d');
+  const box=el=>{if(el.tagName==='svg')return el.getBoundingClientRect();const r=document.createRange();r.selectNodeContents(el);const q=r.getClientRects();
+    const cs=getComputedStyle(el);cx.font=cs.fontWeight+' '+cs.fontSize+' '+cs.fontFamily;let L=1e9,T=1e9,Rr=-1e9,B=-1e9;
+    const m=cx.measureText(el.textContent.trim()||'x');
+    for(const k of q){const base=k.top+m.fontBoundingBoxAscent;L=Math.min(L,k.left);Rr=Math.max(Rr,k.right);T=Math.min(T,base-m.actualBoundingBoxAscent);B=Math.max(B,base+m.actualBoundingBoxDescent);}
+    return {left:L,right:Rr,top:T,bottom:B,width:Rr-L};};
+  const R=els.map(el=>[el,box(el)]).filter(([,r])=>r.width);
+  for(const [el,r] of R){const n=(el.textContent||'svg').trim().slice(0,24);
+    if(r.left<b.left+40||r.right>b.right-40)out.push('lateral: '+n);
+    const jos=!!el.closest('.cotor');if(jos?r.top<TY+16:r.bottom>TY-16)out.push('rupere: '+n);}
+  for(let i=0;i<R.length;i++)for(let j=i+1;j<R.length;j++){const [a,ra]=R[i],[c,rc]=R[j];if(a.contains(c)||c.contains(a))continue;
+    if(ra.left<rc.right-1&&rc.left<ra.right-1&&ra.top<rc.bottom-1&&rc.top<ra.bottom-1)out.push('suprapus: '+(a.textContent||'svg').trim().slice(0,16)+' / '+(c.textContent||'svg').trim().slice(0,16));}
+  u.style.transform=t0;return out;})()`;
+
 const LISTA = [
   ['a-aleea', A], ['b-peretele', B], ['c-dictionarul', C_], ['d-prognoza', D], ['e-biletul', E], ['f-afisul', F_],
-];
+  ['e1-biletul', E1], ['e2-biletul', E2], ['d1-vremea', D1], ['d2-vremea', D2], ['d3-vremea', D3],
+].filter(([n]) => process.argv.length < 3 || process.argv.slice(2).includes(n));
+// Doar unele imagini:  node …/gen.mjs e1-biletul e2-biletul
 const W = 1080, H = 1350;
 const tmp = mkdtempSync(join(tmpdir(), 'post-ca2-'));
 const br = await launch({ port: 9363 });
@@ -331,6 +573,7 @@ try {
         if(r.left<40||r.top<40||r.right>${W - 40}||r.bottom>${H - 40})out.push('margine: '+el.textContent.trim().slice(0,30));
         if(el.scrollWidth>el.clientWidth+1)out.push('tăiat: '+el.textContent.trim().slice(0,30));}
       return out;})()`);
+    v.push(...await br.evaluate(p, VERIF_BILET), ...await br.evaluate(p, VERIF_VREME));
     await br.screenshot(p, join(HERE, `${nume}.png`));
     const cuv = await br.evaluate(p, 'document.body.dataset.cuvinte||""');
     console.log(nume.padEnd(15), v.length ? v : 'OK', cuv ? `(bilețele: ${cuv})` : '', Math.round(statSync(join(HERE, `${nume}.png`)).size / 1024) + ' KB');
