@@ -87,9 +87,7 @@ categorii:
         slug: change-agility
         pagina: content/workshops/change-agility.html
         cadru: false
-        # imaginea de previzualizare (varianta A a Ioanei, T-057) se face după ce Alex alege subtitlul nou:
-        # cd site && node previzualizare.mjs change-agility, apoi scoți # de pe rândul de mai jos.
-        # imagine_linkedin: previzualizari/change-agility.png
+        imagine_linkedin: previzualizari/change-agility.png
       - titlu: "Trust & Courage"
         fraza: "Să spui ce ai de spus, să fii ascultat și să se schimbe ceva în relație."
         tip: "Workshop · 4 ore, o zi sau 2 zile"
