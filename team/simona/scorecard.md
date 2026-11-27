@@ -7,4 +7,4 @@ Utilitate: 1 = inutil, 3 = ok, 5 = exact ce trebuia. Feedback Alex: completat c�
 |---|---|---|---|---|---|
 | 2026-11-25 | Onboarding în echipă | Definiție, profil, memorie și regula de confidențialitate create | – | – | – |
 | 2026-11-25 | Prima conversație cu Alex | Prezentarea și întrebările de pornire | – | – | – |
-| 2026-11-27 | Plan de mese pe o săptămână, din calendar, cu lista de cumpărături | Propunere trimisă lui Alex (detaliile doar local) | – | – | – |
+| 2026-11-27 | Plan de mese pe o săptămână, din calendar, cu lista de cumpărături | v1 respinsă (ingrediente, nu rețete); v2 refăcută ca rețete | – | – | Lecție: rețete cu nume și gust, nu ingrediente puse alături |
