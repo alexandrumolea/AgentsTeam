@@ -35,6 +35,8 @@ Păstrează sub 150 de rânduri. Comprimă când crește. Fapte, nu povești.
 - 2026-11-27: D-103: deck-urile lui Alex din iCloud INNERSIS/Social Intelligence și INNERSIS/Collaboration sunt sursă (celelalte foldere nu). Citesc direct textul din pptx (zip + XML), nu doar rezumatul lui Andrei; numele clienților din fișiere nu intră în repo. Deck-urile au promisiuni de timp („scrie data”, „de luni”): nu le preiau. v3 al paginilor: team/maria/documente/pagini-cursuri-2026-11-27-v3.md.
 - 2026-11-27: Alex vrea formatele 4 ore / o zi / 2 zile pentru Trust și Listening și e deschis la alte titluri. Recomand nume în EN, formula Concept – beneficiu; la Trust, un nume care îl desparte de cursul Innersis.
 
+- 2026-11-27: LECȚIE (Alex): o pagină de curs pornește de la NEVOIA REALĂ spusă de Alex, în cuvintele oamenilor („vorbesc, dar se înțeleg separat”, „de teamă că strică relația”, „să spună lucrurilor pe nume”), nu de la conceptul cursului. „From Tension to Progress” = respins, „prea conceptual”. Când Alex dă o structură (ex. cele 4 C: Courage, Clarity, Connection, Change), o așez exact, nu o rescriu; ea devine drumul și coloana pentru „Ce se schimbă” și formate. Rezultatele lui (A Curajul, B Impactul, C Relația, D Schimbarea) = „Ce se schimbă”, exact; titlul se testează pe intersecția lor (acoperă toate patru?). „Keep the relationship” se citește ca garanție → „Care for” sau verbe („Move Things Forward”). v4: team/maria/documente/pagina-difficult-conversations-v4.md.
+
 ## Proiecte
 - [Inspirație și invenții](project_inspiratie.md) — obiectivul 2; constructorul cu unealta, 3 piloni; Atelier = tot site-ul
 - 2026-11-17: [Arhitectura de brand](project_arhitectura_brand.md) — I-022: un brand pe material; Sora = noul BEMORE (D-057); semnătura site-ului

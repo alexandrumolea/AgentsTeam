@@ -63,6 +63,9 @@ Păstrează sub 150 de rânduri. Comprimă când crește. Fapte, nu povești.
 
 - 2026-11-27: verificarea „gata pentru LinkedIn”: crawler pe href/src (nu pe content= din meta, dă 404 false), meta-urile din HTML-ul servit, `openssl x509 -text` pentru SAN-ul certificatului, `gh api repos/…/pages` pentru starea domeniului, Lighthouse cu `npx -y lighthouse@12.8.2` + CHROME_PATH (headless). Fundalul `.bg` e fixed: în capturile full-page (captureBeyondViewport) pare tăiat, nu e bug. Când arborele comun e plin de fișierele colegilor, lucrez într-un `git worktree` în scratchpad, cu `node_modules` legat simbolic, și doar căi absolute (un `cd` eșuat în lanț lasă comenzile în alt folder).
 
+- 2026-11-27: paginile de curs (D-101/D-102): Tudor a schimbat brief-ul de 3 ori în aceeași sarcină (imaginea CA pusă pe pauză, partea 2, butoanele inversate). Când 4–5 pagini au același șablon, le generez dintr-un script cu date în scratchpad (nu în repo): o schimbare pe toate devine un regex. PREFERINȚĂ ALEX: pe paginile de curs WhatsApp e butonul plin, emailul cel gol (secundar).
+- 2026-11-27: `<title>`/descrierea cu `&amp;` dintr-o pagină din repo se escapau de două ori (pagina-html.mjs le decodează acum). În emulare mobilă, un cuvânt lung dintr-un h1 lărgește tot viewport-ul fără ca vreun dreptunghi să iasă: caut `scrollWidth > clientWidth` pe fiecare element. `sips --cropOffset` pe PNG-uri mari a tăiat din alt loc: capturi de primul ecran direct prin CDP. Pagini cu „[DE CONFIRMAT” nu se publică decât cu PREVIZUALIZARE=1.
+
 ## Fișiere de memorie
 - [Stack și găzduire](project_stack-hosting.md) — GitHub Pages (D-036–D-038), CNAME ignorat la Actions; fapte Netlify/Cloudflare/Vercel
 - [Generatorul paginii echipei](generator-echipa.md) — Mike îl deține; puncte fragile tăcute; 2026-11-17: panoul de control, maparea statusurilor

@@ -4,6 +4,33 @@
 > Linkul: https://alexandrumolea.com/workshops/change-agility/ (pagina: `content/workshops/change-agility.html`).
 > Toate frazele-ancoră sunt ale lui Alex: mesajul cheie aprobat, materialul participantului aprobat pe 25.11, pagina cursului cu corecturile lui și ce a spus el după livrarea din 23.11. Nu am inventat nicio scenă și nu am pus nicio cifră nouă.
 
+## v3 (2026-11-27): deschiderea, strânsă
+
+> Alex, despre ordinea 1 din v2: „Primele 2 propoziții sunt cam dezlânate.” Deschiderea veche înșira trei lucruri, fiecare cu propoziția lui: nou, preferatul meu, cerere + drag. Mai jos sunt 4 deschideri cu același conținut, legate într-un singur fir. Restul postării rămâne ca în v2, ordinea 1.
+
+1. **Anul acesta mi s-a cerut un workshop despre schimbare. L-am construit cu drag și a devenit preferatul meu.** *(recomandată)*
+2. **Cel mai drag workshop al anului s-a născut dintr-o cerere.**
+3. **Preferatul meu de anul acesta e un workshop nou, născut dintr-o cerere la care am răspuns cu drag.**
+4. **O cerere de anul acesta, la care am răspuns cu drag, a devenit workshopul meu preferat.**
+
+**De ce 1:** e un lanț firesc, spus cum l-ar spune Alex la o cafea: cererea, apoi ce a făcut el, apoi rezultatul. Fiecare propoziție o continuă pe cea dinainte. „Despre schimbare” anunță subiectul, așa că fraza despre incertitudine vine firesc după ea. Varianta 2 e cea mai scurtă, dar nu spune despre ce e workshopul. Variantele 3 și 4 sunt corecte, dar pun prea multe informații într-o singură propoziție.
+
+### Postarea întreagă, cu deschiderea 1
+
+> Anul acesta mi s-a cerut un workshop despre schimbare. L-am construit cu drag și a devenit preferatul meu.
+>
+> Ideea de la care pornește: incertitudinea este un semnal că nu mai ai suficiente informații. Nu e un semn că ceva e în neregulă cu tine sau cu echipa ta.
+>
+> Nu trebuie să iubești necunoscutul. E destul să poți sta în el și să rămâi constructiv.
+>
+> Change Agility e un workshop pentru echipele în care se schimbă multe deodată. Nu e despre cum conduci o transformare. E despre omul care trece prin ea. Fiecare pleacă cu planul lui de reinventare: resursele lui, skill-ul pe care vrea să-l crească și primii pași.
+>
+> Îl aduc și în alte organizații, în format de 4 sau 6 ore. Dacă echipa ta trece acum printr-o astfel de perioadă, spune-mi prin ce treceți și vedem împreună dacă vi se potrivește.
+>
+> alexandrumolea.com/workshops/change-agility/
+
+---
+
 ## v2 (2026-11-27, după feedbackul lui Alex): varianta A, poziționată ca celebrare
 
 > Alex: „Varianta A, care este mai bună.” A corectat rândul despre necunoscut („…și să rămâi constructiv”), a cerut poziționarea „workshopul nou al anului, născut din nevoile reale de anul acesta, la care am răspuns cu drag” și a ales paragraful din C. Cele două texte de mai jos au același conținut. Diferă doar ordinea: Alex alege ordinea.
