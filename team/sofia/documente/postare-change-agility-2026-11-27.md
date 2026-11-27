@@ -4,6 +4,52 @@
 > Linkul: https://alexandrumolea.com/workshops/change-agility/ (pagina: `content/workshops/change-agility.html`).
 > Toate frazele-ancoră sunt ale lui Alex: mesajul cheie aprobat, materialul participantului aprobat pe 25.11, pagina cursului cu corecturile lui și ce a spus el după livrarea din 23.11. Nu am inventat nicio scenă și nu am pus nicio cifră nouă.
 
+## v2 (2026-11-27, după feedbackul lui Alex): varianta A, poziționată ca celebrare
+
+> Alex: „Varianta A, care este mai bună.” A corectat rândul despre necunoscut („…și să rămâi constructiv”), a cerut poziționarea „workshopul nou al anului, născut din nevoile reale de anul acesta, la care am răspuns cu drag” și a ales paragraful din C. Cele două texte de mai jos au același conținut. Diferă doar ordinea: Alex alege ordinea.
+> Fără client și fără detalii despre cine a cerut workshopul: textul spune doar „o cerere de anul acesta”.
+
+### v2 · Ordinea 1: deschide cu celebrarea (recomandată, ~140 de cuvinte)
+
+> Workshopul nou al anului a devenit și preferatul meu.
+>
+> S-a născut dintr-o cerere de anul acesta, din nevoile reale pe care le au echipele acum. Am răspuns cu drag.
+>
+> Ideea de la care pornește: incertitudinea este un semnal că nu mai ai suficiente informații. Nu e un semn că ceva e în neregulă cu tine sau cu echipa ta.
+>
+> Nu trebuie să iubești necunoscutul. E destul să poți sta în el și să rămâi constructiv.
+>
+> Change Agility e un workshop pentru echipele în care se schimbă multe deodată. Nu e despre cum conduci o transformare. E despre omul care trece prin ea. Fiecare pleacă cu planul lui de reinventare: resursele lui, skill-ul pe care vrea să-l crească și primii pași.
+>
+> Îl aduc și în alte organizații, în format de 4 sau 6 ore. Dacă echipa ta trece acum printr-o astfel de perioadă, spune-mi prin ce treceți și vedem împreună dacă vi se potrivește.
+>
+> alexandrumolea.com/workshops/change-agility/
+
+### v2 · Ordinea 2: deschide cu fraza despre incertitudine (~140 de cuvinte)
+
+> Incertitudinea este un semnal că nu mai ai suficiente informații.
+>
+> Nu e un semn că ceva e în neregulă cu tine sau cu echipa ta.
+>
+> Nu trebuie să iubești necunoscutul. E destul să poți sta în el și să rămâi constructiv.
+>
+> De la ideea asta pornește workshopul nou al anului, care a devenit și preferatul meu. S-a născut dintr-o cerere de anul acesta, din nevoile reale pe care le au echipele acum, și i-am răspuns cu drag.
+>
+> Change Agility e un workshop pentru echipele în care se schimbă multe deodată. Nu e despre cum conduci o transformare. E despre omul care trece prin ea. Fiecare pleacă cu planul lui de reinventare: resursele lui, skill-ul pe care vrea să-l crească și primii pași.
+>
+> Îl aduc și în alte organizații, în format de 4 sau 6 ore. Dacă echipa ta trece acum printr-o astfel de perioadă, spune-mi prin ce treceți și vedem împreună dacă vi se potrivește.
+>
+> alexandrumolea.com/workshops/change-agility/
+
+**De ce recomand ordinea 1:** pe LinkedIn se văd primele două rânduri înainte de „vezi mai mult”. „Workshopul nou al anului a devenit și preferatul meu” spune din prima că e o celebrare și că e ceva nou, iar fraza despre incertitudine rămâne miezul textului. Ordinea 2 deschide mai puternic ca idee, dar celebrarea apare abia la al patrulea paragraf.
+**Ce am scos din A:** paragraful despre anxietate și curiozitate. Cu celebrarea, textul ar fi devenit prea lung.
+**De confirmat:** „preferatul meu” e interpretarea mea pentru „a fost workshop-ul preferat de anul acesta”. Dacă Alex s-a gândit la preferatul participanților sau al clienților, rândul se schimbă în „…workshopul preferat de anul acesta”. Atunci însă devine o afirmație despre alții, pe care ar trebui s-o poată susține.
+**Imaginea (dacă o vrea, o face Ioana):** ca la A, adică fraza despre incertitudine, ca citat mare, pe Noapte, cu „Change Agility” mic dedesubt. Pentru tonul de celebrare poate apărea și un rând mic sus, „Nou anul acesta”.
+
+---
+
+# v1 (2026-11-27): cele trei variante inițiale
+
 ## Ideea într-o frază și pentru cine
 Change Agility e un workshop pentru echipele în care se schimbă multe deodată: fiecare om își vede resursele și pleacă cu planul lui de reinventare. Postarea e pentru cei care pot aduce workshopul într-o organizație: manageri, oameni de HR și L&D, fondatori.
 
