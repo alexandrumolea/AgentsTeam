@@ -726,7 +726,7 @@ function elementPage(c, e){
   return page({ cheie: c.cheie, title: e.titluTab || e.titlu, description: e.descriere || `${e.titlu}: ${e.fraza}`, path: e.url, og: e.og,
     mainClass: e.cadru === false ? 'proces' : 'proces glass-read',
     extraHead: `<link rel="stylesheet" href="${u(`assets/pagini/${e.slug}.css`)}?v=${createHash('sha256').update(e.css).digest('hex').slice(0, 10)}">`,
-    bodyHtml: contactButtons(whatsappLinks(e.html, e.pagina), e.pagina) });
+    bodyHtml: contactButtons(emailLinks(whatsappLinks(e.html, e.pagina), e.pagina), e.pagina) });
 }
 
 // Butonul de contact dintr-o pagină din repo: <button … popovertarget="contact" data-contact="pe_coaching">…</button>.
@@ -745,13 +745,37 @@ function contactButtons(html, where){
 // Butonul WhatsApp dintr-o pagină din repo: <a href="#whatsapp" data-whatsapp="mesajul pregătit">…</a>.
 // Numărul vine doar din secretul CONTACT_WHATSAPP (același ca în capsula Contact) și nu se scrie în niciun fișier din repo.
 // Fără secret (de exemplu un build local), butonul nu apare, cu un avertisment.
+const decAttr = s => s.replace(/&quot;/g, '"').replace(/&#39;/g, "'").replace(/&lt;/g, '<').replace(/&gt;/g, '>').replace(/&amp;/g, '&');
 function whatsappLinks(html, where){
   const nr = String(process.env[CANALE.whatsapp.mediu] || '').trim();
-  const dec = s => s.replace(/&quot;/g, '"').replace(/&#39;/g, "'").replace(/&lt;/g, '<').replace(/&gt;/g, '>').replace(/&amp;/g, '&');
+  const dec = decAttr;
   return html.replace(/<a\b([^>]*?)\sdata-whatsapp\s*=\s*"([^"]*)"([^>]*)>([\s\S]*?)<\/a>/gi, (_, a, msg, b, inner) => {
     if (!nr){ warn(`${where}: butonul WhatsApp („${inner.replace(/<[^>]+>/g, '').trim()}”) lipsește, pentru că secretul ${CANALE.whatsapp.mediu} nu e setat.`); return ''; }
     const attrs = `${a}${b}`.replace(/\shref\s*=\s*"[^"]*"/i, '');
     return `<a${attrs} href="${esc(`${CANALE.whatsapp.link(nr)}?text=${encodeURIComponent(dec(msg).trim())}`)}">${inner}</a>`;
+  });
+}
+
+// Butonul de email dintr-o pagină din repo (T-058, varianta A a Ioanei, team/ioana/documente/buton-email-curs-v1.md):
+//   <a href="#email" data-email="primul rând al mesajului" data-subiect="subiectul">Trimite-mi un email</a>
+//   <p data-email-adresa>Sau scrie direct la</p>   → build-ul adaugă adresa ca text, într-un <span>, la finalul rândului.
+// Adresa vine doar din secretul CONTACT_EMAIL (ca în capsula Contact) și nu se scrie în niciun fișier din repo.
+// Fără secret (de exemplu un build local), butonul și rândul cu adresa nu apar, cu un avertisment.
+function emailLinks(html, where){
+  const v = String(process.env[CANALE.email.mediu] || '').trim();
+  const mail = v ? CANALE.email.link(v) : '';   // validează adresa (oprește build-ul fără s-o afișeze)
+  html = html.replace(/<a\b([^>]*?)\sdata-email\s*=\s*"([^"]*)"([^>]*)>([\s\S]*?)<\/a>/gi, (_, a, body, b, inner) => {
+    if (!mail){ warn(`${where}: butonul de email („${inner.replace(/<[^>]+>/g, '').trim()}”) lipsește, pentru că secretul ${CANALE.email.mediu} nu e setat.`); return ''; }
+    let attrs = `${a}${b}`, subiect = '';
+    attrs = attrs.replace(/\sdata-subiect\s*=\s*"([^"]*)"/i, (_, s) => { subiect = decAttr(s).trim(); return ''; }).replace(/\shref\s*=\s*"[^"]*"/i, '');
+    if (!subiect) fail(`${where}: butonul de email are nevoie de data-subiect="…" (subiectul emailului).`);
+    // encodeURIComponent: spațiile devin %20, nu „+” (unele programe de email arată „+” ca atare)
+    const q = `subject=${encodeURIComponent(subiect)}${decAttr(body).trim() ? `&body=${encodeURIComponent(decAttr(body).trim())}` : ''}`;
+    return `<a${attrs} href="${esc(`${mail}?${q}`)}">${inner}</a>`;
+  });
+  return html.replace(/<(p|div|span)\b([^>]*?)\sdata-email-adresa(?:\s*=\s*"[^"]*")?([^>]*)>([\s\S]*?)<\/\1>/gi, (_, tag, a, b, inner) => {
+    if (!mail) return '';
+    return `<${tag}${a}${b}>${inner.trim()} <span>${esc(v)}</span></${tag}>`;
   });
 }
 

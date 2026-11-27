@@ -78,6 +78,7 @@ categorii:
     # change-agility.html, îi schimbi textul și adaugi aici un rând. `cadru: false`: pagina își aduce singură sticla.
     # Opțional, `imagine_linkedin: previzualizari/<slug>.png`: imaginea din previzualizarea linkului (LinkedIn, WhatsApp),
     # un fișier de 1200×630 pus în site/static/previzualizari/. Fără ea se folosește og.png, imaginea generală a site-ului.
+    # Imaginea se face dintr-o comandă, din textele paginii: cd site && node previzualizare.mjs <slug>
     elemente:
       - titlu: "Change Agility"
         fraza: "Un workshop în care fiecare pleacă cu planul lui de reinventare."
@@ -86,6 +87,25 @@ categorii:
         slug: change-agility
         pagina: content/workshops/change-agility.html
         cadru: false
+        # imaginea de previzualizare (varianta A a Ioanei, T-057) se face după ce Alex alege subtitlul nou:
+        # cd site && node previzualizare.mjs change-agility, apoi scoți # de pe rândul de mai jos.
+        # imagine_linkedin: previzualizari/change-agility.png
+      - titlu: "Trust & Difficult Conversations"
+        fraza: "Conversațiile pe care le tot amânăm, spuse direct și fără judecată."
+        tip: "Workshop · 4 ore + follow-up"
+        simbol: workshop
+        slug: trust-difficult-conversations
+        pagina: content/workshops/trust-difficult-conversations.html
+        cadru: false
+        imagine_linkedin: previzualizari/trust-difficult-conversations.png
+      - titlu: "Listening & Leading"
+        fraza: "Conduci oamenii prin felul în care vorbești cu ei."
+        tip: "Workshop · 4 ore sau program"
+        simbol: workshop
+        slug: listening-leading
+        pagina: content/workshops/listening-leading.html
+        cadru: false
+        imagine_linkedin: previzualizari/listening-leading.png
 
   - cheie: inventii
     vizibil: true

@@ -52,8 +52,10 @@ export function citestePagina(raw, { scope, where }){
   if (/<script\b/i.test(raw)) err('are <script>. Pe site, paginile din repo nu rulează cod.');
   const styles = [...raw.matchAll(/<style[^>]*>([\s\S]*?)<\/style>/gi)].map(m => m[1]).join('\n');
   if (/@import\b/i.test(styles)) err('stilul are @import. Fonturile vin de pe site.');
-  const titlu = (raw.match(/<title>([\s\S]*?)<\/title>/i) || [])[1]?.trim() || '';
-  const descriere = (raw.match(/<meta\s+name\s*=\s*["']description["']\s+content\s*=\s*"([^"]*)"/i) || [])[1]?.trim() || '';
+  // <title> și descrierea sunt text HTML (ex. „Trust &amp; …”): le decodăm aici, iar build-ul le escapează o singură dată
+  const dec = t => t.replace(/&quot;/g, '"').replace(/&#39;/g, "'").replace(/&lt;/g, '<').replace(/&gt;/g, '>').replace(/&amp;/g, '&');
+  const titlu = dec((raw.match(/<title>([\s\S]*?)<\/title>/i) || [])[1]?.trim() || '');
+  const descriere = dec((raw.match(/<meta\s+name\s*=\s*["']description["']\s+content\s*=\s*"([^"]*)"/i) || [])[1]?.trim() || '');
   let html = raw.replace(/<style[^>]*>[\s\S]*?<\/style>/gi, '')
     .replace(/<title>[\s\S]*?<\/title>/gi, '')
     .replace(/<(meta|link)\b[^>]*>/gi, '')
