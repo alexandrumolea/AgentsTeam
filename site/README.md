@@ -30,9 +30,23 @@ Build-ul se oprește dacă pagina are `<script>` (chiar și scris într-un comen
 `<title>` din fișier devine titlul din tab-ul browserului, iar `<meta name="description">` descrierea paginii; `titlu` din `categorii.yml` rămâne textul din listă. `cadru: false` (în `categorii.yml`) scoate cardul de sticlă al site-ului din jurul paginii, pentru paginile care își aduc singure sticla.
 Butonul WhatsApp: `<a href="#whatsapp" data-whatsapp="mesajul pregătit">…</a>`. Build-ul pune linkul `https://wa.me/<număr>?text=<mesaj>` din secretul `CONTACT_WHATSAPP`, același ca în capsula Contact; numărul nu se scrie în repo. Fără secret (build local), butonul lipsește, cu un avertisment.
 
+Butonul de email (T-058, varianta A a Ioanei): `<a href="#email" data-email="primul rând al mesajului" data-subiect="subiectul">Trimite-mi un email</a>`, plus rândul `<p class="adresa" data-email-adresa>Sau scrie direct la</p>`, la care build-ul adaugă adresa ca text. Linkul devine `mailto:<adresă>?subject=…&body=…` (spațiile ca `%20`), din secretul `CONTACT_EMAIL`, același ca în capsula Contact; adresa nu se scrie în repo. Fără secret, butonul și rândul lipsesc, cu un avertisment. Pe paginile de curs, WhatsApp e butonul plin (principal), iar emailul butonul gol, secundar (Alex, 2026-11-27).
+
 ## Cum pui un workshop în Latest Workshops
 
-Șablonul e pagina Change Agility (`content/workshops/change-agility.html`, mock-up-ul Ioanei, T-052). Pentru un workshop nou: copiezi fișierul în `content/workshops/<slug>.html`, schimbi textul, rândurile planului și numele cursului din mesajul WhatsApp, apoi adaugi un rând în `content/categorii.yml` → `speaking` → `elemente` (`titlu`, `fraza`, `slug`, `pagina`, `cadru: false`). Pagina apare la `workshops/<slug>/`.
+Șablonul e pagina Change Agility (`content/workshops/change-agility.html`, mock-up-ul Ioanei, T-052). Pentru un workshop nou: copiezi fișierul în `content/workshops/<slug>.html`, schimbi textul, rândurile planului și numele cursului din butoanele de email (`data-email`, `data-subiect`) și WhatsApp, apoi adaugi un rând în `content/categorii.yml` → `speaking` → `elemente` (`titlu`, `fraza`, `slug`, `pagina`, `cadru: false`). Pagina apare la `workshops/<slug>/`. Pentru previzualizarea linkului pe LinkedIn, pune o imagine de 1200×630 (PNG sau JPEG, sub 5 MB) în `site/static/previzualizari/<slug>.png` și adaugă la element `imagine_linkedin: previzualizari/<slug>.png` (opțional `imagine_linkedin_alt`). Build-ul verifică fișierul și dimensiunea; fără câmp, pagina folosește `og.png`.
+Imaginea se face dintr-o comandă, din textele paginii (titlul, subtitlul și „Pleci acasă cu”), în stilul variantei A a Ioanei: `cd site && npm run build && node previzualizare.mjs <slug>` (opțional `--titlu "…"` sau `--sub "…"`, doar pentru imagine, când titlul e prea lung). Schimbi subtitlul în pagină, rulezi din nou comanda, iar imaginea e la zi. Randarea e în Chrome headless, fără ferestre.
+
+Un serviciu nou în Innovations (ex. Alignment, D-102) folosește același șablon, cu fișierul în `content/innovations/<slug>.html` și rândul în `categorii.yml` → `inventii` → `elemente`.
+
+## Paginile din subsol (ex. Confidențialitate)
+
+Un fișier Markdown în `content/pagini/<slug>.md` devine pagina `/<slug>/`. În antet: `titlu`, `descriere`, `subsol: "textul linkului din subsol"` și, opțional, `in_contact: "text"` (un link mic în panoul Contact, care apare și pe prima pagină, unde nu e subsol). Ce trebuie completat stă într-un singur loc, `completari`, iar textul le folosește ca `{{nume}}`.
+O pagină în care a rămas `[DE CONFIRMAT` nu se publică (nici linkurile spre ea), cu un avertisment. Ca s-o vezi totuși local: `PREVIZUALIZARE=1 npm run build`.
+
+## Previzualizarea pentru Alex, înainte de publicare
+
+`cd site && PREVIZUALIZARE=1 CONTACT_EMAIL=nume@example.com CONTACT_WHATSAPP=40700000000 npm run build && npm run serve` → http://localhost:4321/. Valorile de contact sunt de exemplu (butoanele apar, dar nu duc la Alex); cele reale vin doar din secretele GitHub, la publicare.
 
 ## Pagina Despre
 

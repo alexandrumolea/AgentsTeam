@@ -37,6 +37,20 @@ function mdFile(p){
   try { return { data: parseYaml(m[1]) || {}, body: m[2].trim() }; } catch (e) { fail(`${p}: antet YAML invalid (${e.message})`); }
 }
 
+// Lățimea și înălțimea unei imagini PNG sau JPEG, citite din antet (fără dependențe). null dacă nu e PNG/JPEG.
+function marimeImagine(buf){
+  if (buf.length > 24 && buf.readUInt32BE(0) === 0x89504e47) return { w: buf.readUInt32BE(16), h: buf.readUInt32BE(20) };
+  if (buf[0] === 0xff && buf[1] === 0xd8){
+    for (let i = 2; i + 9 < buf.length;){
+      if (buf[i] !== 0xff){ i++; continue; }
+      const m = buf[i + 1], len = buf.readUInt16BE(i + 2);
+      if (m >= 0xc0 && m <= 0xcf && ![0xc4, 0xc8, 0xcc].includes(m)) return { w: buf.readUInt16BE(i + 7), h: buf.readUInt16BE(i + 5) };
+      i += 2 + len;
+    }
+  }
+  return null;
+}
+
 const site = yamlFile('content/site.yml');
 const cat = yamlFile('content/categorii.yml');
 const nevoi = (yamlFile('content/nevoi.yml').nevoi || []);
@@ -127,6 +141,19 @@ for (const c of CATS){
         : `main.proces{width:min(1060px,calc(100% - 2 * var(--gut)));margin:28px auto 0;overflow:hidden}\n`) + e.css;
       e.url = `${c.url}/${e.slug}/`;
     }
+    // `imagine_linkedin`: imaginea din previzualizarea linkului (LinkedIn, WhatsApp, Slack), un fișier din site/static/.
+    // Fără ea, pagina folosește og.png, imaginea generală a site-ului.
+    if (e.imagine_linkedin !== undefined){
+      if (!e.pagina) fail(`${w}: „imagine_linkedin” are sens doar pentru un element cu „pagina”.`);
+      const f = String(e.imagine_linkedin).replace(/^\/+/, '');
+      if (!/^[a-z0-9][a-z0-9/_-]*\.(png|jpe?g)$/.test(f) || f.includes('..')) fail(`${w}: „imagine_linkedin” e un fișier .png sau .jpg din site/static/ (litere mici, cifre, cratimă), ex.: previzualizari/${e.slug}.png.`);
+      if (!existsSync(join(HERE, 'static', f))) fail(`${w}: nu găsesc site/static/${f} („imagine_linkedin”).`);
+      const buf = readFileSync(join(HERE, 'static', f)), m = marimeImagine(buf);
+      if (!m) fail(`${w}: site/static/${f} nu e o imagine PNG sau JPEG validă.`);
+      if (buf.length > 5 * 1024 * 1024) fail(`${w}: site/static/${f} are peste 5 MB; LinkedIn n-o afișează.`);
+      if (m.w < 1200 || Math.abs(m.w / m.h - 1.91) > 0.05) warn(`${w}: site/static/${f} are ${m.w}×${m.h}; LinkedIn o afișează mare doar la cel puțin 1200×627 (raport 1,91:1).`);
+      e.og = { src: f, w: m.w, h: m.h, alt: e.imagine_linkedin_alt ? String(e.imagine_linkedin_alt) : `${e.titlu}: ${e.fraza}` };
+    }
     return e;
   });
 }
@@ -139,6 +166,25 @@ const BUSINESS = existsSync(join(ROOT, 'content/business')) ? readdirSync(join(R
   if (data.link && !/^https:\/\//.test(data.link)) fail(`content/business/${f}: „link” trebuie să înceapă cu https://.`);
   return { slug: f.replace(/\.md$/, ''), nume: data.nume, ordine: data.ordine || 99, nevoie: data.nevoie || '', rol: data.rol || '', link: data.link || '', pod: data.pod || '', nevoi: data.nevoi || [] };
 }).sort((a, b) => a.ordine - b.ordine) : [];
+
+// Paginile simple din content/pagini/<slug>.md (ex. confidentialitate.md), fiecare la /<slug>/, cu textul în Markdown.
+// `subsol: "text"` pune linkul în subsolul paginilor; `in_contact: "text"` pune un link mic în panoul Contact (și pe prima pagină).
+// `completari`: valorile care se schimbă (operatorul, termenul de păstrare...), scrise o singură dată în antet și folosite în text ca {{nume}}.
+// O pagină în care a rămas „[DE CONFIRMAT” nu se publică (nici linkurile spre ea), decât într-o previzualizare: PREVIZUALIZARE=1.
+const PREVIZ = process.env.PREVIZUALIZARE === '1';
+const PAGINI_SIMPLE = existsSync(join(ROOT, 'content/pagini')) ? readdirSync(join(ROOT, 'content/pagini')).filter(f => f.endsWith('.md')).sort().map(f => {
+  const F = `content/pagini/${f}`, slug = f.replace(/\.md$/, '');
+  if (!/^[a-z0-9]+(-[a-z0-9]+)*$/.test(slug)) fail(`${F}: numele fișierului devine adresa paginii: doar litere mici, cifre și cratimă.`);
+  const { data, body } = mdFile(F);
+  if (!data.titlu) fail(`${F}: lipsește câmpul „titlu”.`);
+  const comp = data.completari || {};
+  const text = body.replace(/\{\{\s*([a-z_]+)\s*\}\}/g, (_, k) => { if (!Object.hasOwn(comp, k)) fail(`${F}: {{${k}}} nu are valoare în „completari”.`); return String(comp[k]); });
+  if (/\[DE CONFIRMAT/i.test(text)){
+    if (!PREVIZ){ warn(`${F}: mai are „[DE CONFIRMAT”, deci nu se publică (nici linkurile spre ea). Previzualizare: PREVIZUALIZARE=1.`); return null; }
+    warn(`${F}: mai are „[DE CONFIRMAT”; apare doar pentru că e o previzualizare (PREVIZUALIZARE=1).`);
+  }
+  return { slug, titlu: String(data.titlu), descriere: String(data.descriere || ''), subsol: String(data.subsol || ''), inContact: String(data.in_contact || ''), html: marked.parse(text) };
+}).filter(Boolean) : [];
 
 const rezervare = String(site.rezervare || '').trim();
 if (rezervare && !/^https:\/\//.test(rezervare)) fail('content/site.yml: „rezervare” trebuie să fie un link https://.');
@@ -387,6 +433,7 @@ const contactPanel = () => CONTACT ? `<div class="contact glass-read" id="contac
   ${CONTACT.text ? `<p class="c-lead">${esc(CONTACT.text)}</p>` : ''}
   ${rezervare ? `<a class="btn bk" href="${esc(rezervare)}" rel="noopener">${esc(CONTACT.rezervare)} <span aria-hidden="true">→</span></a>` : ''}
   <div class="grps">${CONTACT.grupuri.map(g => `<div class="grp">${g.titlu ? `<p class="cap">${esc(g.titlu)}</p>` : ''}<ul class="ico-row">${g.canale.map(c => `<li><a class="ico" href="${esc(c.link)}" aria-label="${esc(c.nume)}" rel="${c.profil ? 'me noopener' : 'noopener'}">${svgIcon(c.canal)}<span class="tip" aria-hidden="true">${esc(c.scurt)}</span></a></li>`).join('')}</ul></div>`).join('')}</div>
+  ${PAGINI_SIMPLE.filter(p => p.inContact).map(p => `<p class="c-nota"><a href="${u(p.slug + '/')}">${esc(p.inContact)}</a></p>`).join('')}
 </div>` : '';
 // butoanele de pe Coaching (pagina și panoul de pe prima pagină): rezervarea, dacă are link, apoi contactul
 const coachingCta = () => rezervare
@@ -434,7 +481,8 @@ const CSS_HASHLESS = 'assets/site.css';
 let cssV = '';
 // Politica de securitate: doar resurse de pe site; import map-ul inline e permis prin hash.
 const csp = scriptHash => `default-src 'self'; script-src 'self'${[].concat(scriptHash || []).map(h => ` '${h}'`).join('')}; style-src 'self'; img-src 'self' data:; font-src 'self'; connect-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'`;
-function head({ title, description, path, extra = '', scriptHash = '' }){
+const OG_GENERAL = { src: 'og.png', w: 1200, h: 630, alt: 'Atelierul lui Alex: obiecte de sticlă colorată pe orbită, pe un fundal luminos.' };
+function head({ title, description, path, extra = '', scriptHash = '', og = OG_GENERAL }){
   const t = title ? `${title} · ${site.titlu_scurt || site.titlu}` : site.titlu; // pagina întâi, ca să se vadă în tab-urile înguste
   const canon = SITE_URL ? `<link rel="canonical" href="${esc(abs(path))}">` : '';
   return `<!doctype html>
@@ -453,10 +501,10 @@ ${canon}
 <meta property="og:title" content="${esc(t)}">
 <meta property="og:description" content="${esc(description || site.descriere)}">
 ${SITE_URL ? `<meta property="og:url" content="${esc(abs(path))}">` : ''}
-<meta property="og:image" content="${esc(abs('og.png'))}">
-<meta property="og:image:width" content="1200">
-<meta property="og:image:height" content="630">
-<meta property="og:image:alt" content="Atelierul lui Alex: obiecte de sticlă colorată pe orbită, pe un fundal luminos.">
+<meta property="og:image" content="${esc(abs(og.src))}">
+<meta property="og:image:width" content="${og.w}">
+<meta property="og:image:height" content="${og.h}">
+<meta property="og:image:alt" content="${esc(og.alt)}">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="theme-color" content="${TEMA.get('bg')}">
 <meta name="color-scheme" content="light">
@@ -486,11 +534,13 @@ function topNav(current){
 // semnătura din colț: forma lungă, iar pe telefon forma scurtă (content/site.yml → intro.marca, intro.marca_scurta)
 const brandText = () => { const lung = site.intro?.marca || site.titlu, scurt = site.intro?.marca_scurta || '';
   return scurt && scurt !== lung ? `<span class="m-long">${esc(lung)}</span><span class="m-short">${esc(scurt)}</span>` : esc(lung); };
-// subsolul a fost scos la cererea lui Alex (2026-11-25): fără textul despre repo, data actualizării și continut.json
-const footer = () => '';
+// subsolul mare a fost scos la cererea lui Alex (2026-11-25): fără textul despre repo, data actualizării și continut.json.
+// A rămas doar un rând de linkuri mici, spre paginile simple cu `subsol` (ex. Confidențialitate, D-102).
+const footer = () => { const l = PAGINI_SIMPLE.filter(p => p.subsol);
+  return l.length ? `<footer class="subsol"><nav aria-label="Subsol">${l.map(p => `<a href="${u(p.slug + '/')}">${esc(p.subsol)}</a>`).join('')}</nav></footer>` : ''; };
 
-function page({ cheie, title, description, path, bodyHtml, mainClass = 'wrap glass-read', bodyClass = '', scripts = '', extraHead = '' }){
-  return `${head({ title, description, path, extra: extraHead })}
+function page({ cheie, title, description, path, bodyHtml, mainClass = 'wrap glass-read', bodyClass = '', scripts = '', extraHead = '', og }){
+  return `${head({ title, description, path, extra: extraHead, og })}
 <body class="page${bodyClass ? ' ' + bodyClass : ''}">
 <div class="bg" aria-hidden="true"></div>
 ${topNav(cheie)}
@@ -695,10 +745,10 @@ function desprePage(c){
 // Pagina unui element cu `pagina`: antetul și subsolul site-ului, iar între ele pagina din repo, cu designul ei.
 // Stilul ei e în assets/pagini/<slug>.css, închis sub .proces (vezi site/pagina-html.mjs).
 function elementPage(c, e){
-  return page({ cheie: c.cheie, title: e.titluTab || e.titlu, description: e.descriere || `${e.titlu}: ${e.fraza}`, path: e.url,
+  return page({ cheie: c.cheie, title: e.titluTab || e.titlu, description: e.descriere || `${e.titlu}: ${e.fraza}`, path: e.url, og: e.og,
     mainClass: e.cadru === false ? 'proces' : 'proces glass-read',
     extraHead: `<link rel="stylesheet" href="${u(`assets/pagini/${e.slug}.css`)}?v=${createHash('sha256').update(e.css).digest('hex').slice(0, 10)}">`,
-    bodyHtml: contactButtons(whatsappLinks(e.html, e.pagina), e.pagina) });
+    bodyHtml: contactButtons(emailLinks(whatsappLinks(e.html, e.pagina), e.pagina), e.pagina) });
 }
 
 // Butonul de contact dintr-o pagină din repo: <button … popovertarget="contact" data-contact="pe_coaching">…</button>.
@@ -717,13 +767,37 @@ function contactButtons(html, where){
 // Butonul WhatsApp dintr-o pagină din repo: <a href="#whatsapp" data-whatsapp="mesajul pregătit">…</a>.
 // Numărul vine doar din secretul CONTACT_WHATSAPP (același ca în capsula Contact) și nu se scrie în niciun fișier din repo.
 // Fără secret (de exemplu un build local), butonul nu apare, cu un avertisment.
+const decAttr = s => s.replace(/&quot;/g, '"').replace(/&#39;/g, "'").replace(/&lt;/g, '<').replace(/&gt;/g, '>').replace(/&amp;/g, '&');
 function whatsappLinks(html, where){
   const nr = String(process.env[CANALE.whatsapp.mediu] || '').trim();
-  const dec = s => s.replace(/&quot;/g, '"').replace(/&#39;/g, "'").replace(/&lt;/g, '<').replace(/&gt;/g, '>').replace(/&amp;/g, '&');
+  const dec = decAttr;
   return html.replace(/<a\b([^>]*?)\sdata-whatsapp\s*=\s*"([^"]*)"([^>]*)>([\s\S]*?)<\/a>/gi, (_, a, msg, b, inner) => {
     if (!nr){ warn(`${where}: butonul WhatsApp („${inner.replace(/<[^>]+>/g, '').trim()}”) lipsește, pentru că secretul ${CANALE.whatsapp.mediu} nu e setat.`); return ''; }
     const attrs = `${a}${b}`.replace(/\shref\s*=\s*"[^"]*"/i, '');
     return `<a${attrs} href="${esc(`${CANALE.whatsapp.link(nr)}?text=${encodeURIComponent(dec(msg).trim())}`)}">${inner}</a>`;
+  });
+}
+
+// Butonul de email dintr-o pagină din repo (T-058, varianta A a Ioanei, team/ioana/documente/buton-email-curs-v1.md):
+//   <a href="#email" data-email="primul rând al mesajului" data-subiect="subiectul">Trimite-mi un email</a>
+//   <p data-email-adresa>Sau scrie direct la</p>   → build-ul adaugă adresa ca text, într-un <span>, la finalul rândului.
+// Adresa vine doar din secretul CONTACT_EMAIL (ca în capsula Contact) și nu se scrie în niciun fișier din repo.
+// Fără secret (de exemplu un build local), butonul și rândul cu adresa nu apar, cu un avertisment.
+function emailLinks(html, where){
+  const v = String(process.env[CANALE.email.mediu] || '').trim();
+  const mail = v ? CANALE.email.link(v) : '';   // validează adresa (oprește build-ul fără s-o afișeze)
+  html = html.replace(/<a\b([^>]*?)\sdata-email\s*=\s*"([^"]*)"([^>]*)>([\s\S]*?)<\/a>/gi, (_, a, body, b, inner) => {
+    if (!mail){ warn(`${where}: butonul de email („${inner.replace(/<[^>]+>/g, '').trim()}”) lipsește, pentru că secretul ${CANALE.email.mediu} nu e setat.`); return ''; }
+    let attrs = `${a}${b}`, subiect = '';
+    attrs = attrs.replace(/\sdata-subiect\s*=\s*"([^"]*)"/i, (_, s) => { subiect = decAttr(s).trim(); return ''; }).replace(/\shref\s*=\s*"[^"]*"/i, '');
+    if (!subiect) fail(`${where}: butonul de email are nevoie de data-subiect="…" (subiectul emailului).`);
+    // encodeURIComponent: spațiile devin %20, nu „+” (unele programe de email arată „+” ca atare)
+    const q = `subject=${encodeURIComponent(subiect)}${decAttr(body).trim() ? `&body=${encodeURIComponent(decAttr(body).trim())}` : ''}`;
+    return `<a${attrs} href="${esc(`${mail}?${q}`)}">${inner}</a>`;
+  });
+  return html.replace(/<(p|div|span)\b([^>]*?)\sdata-email-adresa(?:\s*=\s*"[^"]*")?([^>]*)>([\s\S]*?)<\/\1>/gi, (_, tag, a, b, inner) => {
+    if (!mail) return '';
+    return `<${tag}${a}${b}>${inner.trim()} <span>${esc(v)}</span></${tag}>`;
   });
 }
 
@@ -805,6 +879,7 @@ for (const c of CATS) write(`${c.url}/index.html`, categoryPage(c));
 const PAGINI = CATS.flatMap(c => (c.elemente || []).filter(e => e.pagina).map(e => [c, e]));
 for (const [c, e] of PAGINI){ write(`${e.url}index.html`, elementPage(c, e)); write(`assets/pagini/${e.slug}.css`, e.css); }
 write('live/echipa/index.html', teamPage());
+for (const p of PAGINI_SIMPLE) write(`${p.slug}/index.html`, page({ title: p.titlu, description: p.descriere, path: `${p.slug}/`, bodyHtml: `<h1>${esc(p.titlu)}</h1>\n<div class="prose">${p.html}</div>` }));
 const visibleUrl = to => CATS.some(c => c.url === to) ? u(to + '/') : u();
 for (const c of HIDDEN) if (!CATS.some(v => v.url === c.url)) write(`${c.url}/index.html`, redirect(u()));
 for (const [from, to] of Object.entries(REDIRECTS)) if (!CATS.some(c => c.url === from) && !HIDDEN.some(c => c.url === from)) write(`${from}/index.html`, redirect(visibleUrl(to)));
@@ -812,7 +887,7 @@ write('404.html', page({ title: 'Pagina nu există', path: '404.html', bodyHtml:
 write('.nojekyll', '');
 if (domeniu) write('CNAME', domeniu + '\n');
 write('robots.txt', `User-agent: *\nAllow: /\n${SITE_URL ? `Sitemap: ${abs('sitemap.xml')}\n` : ''}`);
-if (SITE_URL) write('sitemap.xml', `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${['', ...CATS.map(c => c.url + '/'), ...PAGINI.map(([, e]) => e.url), 'live/echipa/'].map(p => `  <url><loc>${esc(abs(p))}</loc></url>`).join('\n')}\n</urlset>\n`);
+if (SITE_URL) write('sitemap.xml', `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${['', ...CATS.map(c => c.url + '/'), ...PAGINI.map(([, e]) => e.url), ...PAGINI_SIMPLE.map(p => p.slug + '/'), 'live/echipa/'].map(p => `  <url><loc>${esc(abs(p))}</loc></url>`).join('\n')}\n</urlset>\n`);
 
 // API: același conținut pentru site și pentru o viitoare aplicație (D-030)
 if (C.live) write('api/live.json', JSON.stringify(liveJson, null, 2) + '\n'); // Live ascuns: fără jurnal public

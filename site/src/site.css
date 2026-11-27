@@ -350,7 +350,7 @@ body.page > .top{position:sticky;z-index:5}
 @media (max-width:1240px){.top:not(.few) .nav-wide{display:none}.top:not(.few) .nav-menu{display:block}}
 @media (max-width:760px){.top.few .nav-wide{display:none}.top.few .nav-menu{display:block}}
 .wrap{width:min(880px,calc(100% - 2 * var(--gut)));margin:28px auto 0;padding:64px 72px 72px}
-.wrap h1{margin:0 0 16px;font:200 clamp(36px,4.7vw,68px)/1.04 var(--display);letter-spacing:-.03em;text-wrap:balance}
+.wrap h1{margin:0 0 16px;font:200 clamp(36px,4.7vw,68px)/1.04 var(--display);letter-spacing:-.03em;text-wrap:balance;hyphens:auto;overflow-wrap:break-word}
 .wrap h2{clear:both;margin:48px 0 14px;font:200 clamp(26px,2.6vw,34px)/1.15 var(--display);letter-spacing:-.015em}
 .wrap h3.day{margin:26px 0 4px;font:500 13px/1.3 var(--sans);letter-spacing:.16em;text-transform:uppercase;color:var(--muted)}
 .wrap .kicker{margin:0 0 30px;color:var(--muted);font-size:20px;line-height:1.5;max-width:46ch}
@@ -372,17 +372,17 @@ body.page > .top{position:sticky;z-index:5}
 .team li span:not(.badge){grid-column:2;color:var(--muted);font-size:16px}
 .team li a{grid-column:3;grid-row:1/3;align-self:center;font-size:16px}
 .team .badge{grid-row:1/3;align-self:center;padding:5px 10px;border-radius:999px;box-shadow:inset 0 0 0 1px rgb(var(--accent-rgb) / .45);color:var(--accent);font:500 12px/1.2 var(--sans);letter-spacing:.1em;text-transform:uppercase}
-.foot{width:min(880px,calc(100% - 2 * var(--gut)));margin:20px auto 40px;padding:24px 32px;color:var(--muted);font-size:16px}
-.foot p{margin:0 0 6px}
-.foot p:last-child{margin:0}
-.foot a{color:var(--accent);text-underline-offset:4px}
+/* subsolul: doar un rând de linkuri mici (ex. Confidențialitate), fără card; jos e loc pentru capsula Contact */
+.subsol{width:min(880px,calc(100% - 2 * var(--gut)));margin:24px auto 88px;text-align:center;font-size:14px}
+.subsol nav{display:flex;justify-content:center;flex-wrap:wrap;gap:0 18px}
+.subsol a{display:inline-block;padding:13px 6px;color:var(--text);text-decoration:underline;text-decoration-color:rgb(var(--text-rgb) / .35);text-underline-offset:4px}
+.subsol a:hover{text-decoration-color:currentColor}
 @media (max-width:760px){
   .top{top:10px;padding:6px 6px 6px 18px}
   .top .brand{letter-spacing:.12em}
   .wrap{margin-top:16px;padding:32px 22px 40px}
   .wrap .kicker{font-size:18px}
   .prose{font-size:17px}
-  .foot{padding:20px 22px}
   .team li{grid-template-columns:1fr auto}
   .team .badge{grid-row:auto;grid-column:1;justify-self:start}
   .team li span:not(.badge){grid-column:1}
@@ -398,10 +398,9 @@ body.page > .top{position:sticky;z-index:5}
    Mostra: team/ioana/documente/despre-compozitie-v2.html (varianta A, deschisă cu ?solo=a), aprobată de Alex pe 2026-11-18.
    Patru blocuri pe același câmp de lumină (.bg), cu același spațiu între ele: 16 px pe ecran lat, 12 px pe telefon.
    Unghiurile, culorile și etichetele punctelor le scrie build-ul la finalul fișierului (site/orbita.mjs). */
-.despre,.despre ~ .foot{--gap:16px}
+.despre{--gap:16px}
 .despre{font-size:18px}
 .despre .w{width:min(1200px,calc(100% - 2 * var(--gut)));margin:var(--gap) auto 0}
-.despre ~ .foot{width:min(1200px,calc(100% - 2 * var(--gut)));margin:var(--gap) auto 40px;padding:20px 32px}
 .despre h1{margin:2px 0 14px;font:200 68px/1.04 var(--display);letter-spacing:-.03em;text-wrap:balance}
 .despre h2{margin:0 0 6px;font:200 36px/1.15 var(--display);letter-spacing:-.015em;text-wrap:balance}
 .despre h2.eyebrow{margin:0 0 10px;font:500 13px/1.35 var(--sans);letter-spacing:.16em;text-transform:uppercase;color:var(--accent)}
@@ -540,9 +539,8 @@ body.page > .top{position:sticky;z-index:5}
   .despre .roles{columns:2;column-gap:36px}
 }
 @media (max-width:760px){
-  .despre,.despre ~ .foot{--gap:12px}
+  .despre{--gap:12px}
   .despre{font-size:17px}
-  .despre ~ .foot{margin-bottom:24px;padding:18px 22px}
   .despre h1{font-size:40px;margin-bottom:12px}
   .despre h2{font-size:28px}
   .despre .lede{font-size:18px;max-width:42ch}
@@ -609,6 +607,8 @@ body:has(.contact:popover-open) .capsula{opacity:0;pointer-events:none}
 .contact .x{flex:none;width:44px;height:44px;margin:-4px -8px 0 0;border-radius:50%;border:0;background:var(--sticla);box-shadow:inset 0 0 0 1px rgb(var(--text-rgb) / .2);font-size:16px;cursor:pointer}
 .contact .bk{width:100%;justify-content:center;margin:0 0 16px}
 .contact .grps{display:flex;flex-wrap:wrap;gap:12px 22px;padding-top:14px;border-top:1px solid var(--line)}
+.contact .c-nota{margin:12px 0 0;font-size:14px}
+.contact .c-nota a{display:inline-block;padding:12px 0;margin:-12px 0;color:var(--muted);text-underline-offset:4px}
 .contact .grp .cap{margin:0 0 10px}
 .contact .ico-row{display:flex;gap:8px;list-style:none;margin:0;padding:0}
 /* iconița-link: 56 px (52 pe telefon), numele accesibil în aria-label, numele scurt deasupra la hover sau Tab */
