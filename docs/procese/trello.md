@@ -38,3 +38,5 @@ Tudor nu șterge și nu arhivează cardurile lui Alex. După fiecare sincronizar
 
 ## După o livrare: toate cardurile pe aceeași temă (Alex, 2026-11-25)
 După ce ceva pleacă sau e gata, Tudor caută pe board toate cardurile pe aceeași temă (după client sau subiect), nu doar cardul lui. Le mută pe Done, cu descrierea la zi. Ce rămâne de făcut (de exemplu un follow-up) devine card separat, cu termen. Când unește două carduri, descrierea cardului rămas spune starea de acum.
+
+**Board-urile Wise** („WISE”, „Wise Pipeline”, „WISE TEAM”, „Workshop The WISE”) le citim doar ca sursă de informație. Nu scriem, nu mutăm și nu comentăm nimic pe ele; tot ce face echipa pentru Wise stă pe „Planning” (Alex, 2026-11-27: „Te rog să te informezi doar din board-ul Wise, dar nu-l vom folosi să scriem lucruri în el în continuare.”).
