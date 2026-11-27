@@ -25,3 +25,8 @@ Păstrează sub 150 de rânduri. Comprimă când crește. Fapte, nu povești.
 - 2026-11-26: REGULĂ ALEX (D-098): în majoritatea timpului lucrăm în imaginea BEMORE Learning Studio (brand-bemore). Când lucrăm pe Wise Teams: culorile și stilul Wise (team/ioana/documente/brand-wise/manual-wise-v1.html). Un material, un singur brand.
 
 - 2026-11-26: D-099 (Alex): renunțăm la cursul online în procesul de curs („nu are sens dacă nu fac video-uri”). După livrare facem doar materialul participantului (PDF, schemele din deck); în Producție intră planșe pentru sală și alte materiale tipărite (Matei, Ioana pe vizual). D-094 e înlocuită.
+
+## Portofoliul de cursuri (harta)
+- 2026-11-27: Catalogul lui Alex există deja: Google Slides „Workshop Descriptions” (mai 2026), cu familiile Leadership / Wellbeing / Self-Leadership / Echipe și legenda „program vedetă” vs „program inovator” (= harta noastră). Pornesc de la el la orice inventar sau revizie a hărții, apoi verific livrările în calendar.
+- 2026-11-27: Inventarul pentru Latest Workshops: public în team/andrei/documente/inventar-cursuri-2026-11-27.md, complet (clienți, livrări, materiale) în .claude/agent-memory-local/andrei/. Propuse pentru pagini: Constructive Mind, CliftonStrengths, Engagement Mechanics, Performance Conversations; colaborarea, Ownership, Self-Disruptive Teams și programul pentru lideri așteaptă răspunsul lui Alex.
+- 2026-11-27: Ce NU intră pe site ca produs: cursurile Innersis, LIFT și programele clienților livrate de Alex ca trainer (nu sunt ale lui de vândut); Wise Teams (SFT) stă în brandul Wise.
