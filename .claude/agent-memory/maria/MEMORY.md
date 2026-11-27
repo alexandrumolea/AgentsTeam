@@ -26,6 +26,8 @@ Păstrează sub 150 de rânduri. Comprimă când crește. Fapte, nu povești.
 
 - 2026-11-25: pagini făcute din materialele lui Alex în engleză (ex. prima sesiune de coaching): adaptez, nu traduc; ordinea pe drumul omului, „your coach” → „eu”, scot viteza și „doar N sesiuni” (regula fără promisiuni de timp) și notez fiecare schimbare, cu varianta fidelă. Draft: team/maria/documente/pagina-prima-sesiune-v1.md.
 
+- 2026-11-27: pagini de curs din D-101 (Trust & Difficult Conversations, Listening & Leading, miezul Alignment): team/maria/documente/pagini-cursuri-2026-11-27.md. Cele mai bune fraze originale vin din transcripturile Wispr ale sesiunilor de group coaching (căutare: „aliniere”, „ascultare”, „feedback”); summary-ul Wispr e lossy, verific fraza în transcript înainte s-o atribui lui Alex. Numele „Trust & Difficult Conversations” seamănă cu un curs Innersis: de semnalat de fiecare dată.
+
 ## Proiecte
 - [Inspirație și invenții](project_inspiratie.md) — obiectivul 2; constructorul cu unealta, 3 piloni; Atelier = tot site-ul
 - 2026-11-17: [Arhitectura de brand](project_arhitectura_brand.md) — I-022: un brand pe material; Sora = noul BEMORE (D-057); semnătura site-ului
