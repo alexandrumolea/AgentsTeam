@@ -36,6 +36,8 @@ Păstrează sub 150 de rânduri. Comprimă când crește. Fapte, nu povești.
 
 - 2026-11-27: Postarea Change Agility (team/sofia/documente/postare-change-agility-2026-11-27.md, 3 variante RO, B recomandată). Metoda care a mers: fiecare rând-ancoră vine dintr-un text deja aprobat de Alex (material participant, pagina cursului, debrieful din privat/cursuri/change-agility/lessons-learnt.md), cu „de unde vin rândurile” sub fiecare variantă. Nu descriu mecanica exercițiilor în public; The Positive Unknown nu e încă livrat, nu-l anunț. Aștept alegerea lui Alex.
 
+- 2026-11-27: Hormozi pentru titluri de vânzare (team/sofia/documente/hormozi-titluri-2026-11-27.md, cu metoda în 7 pași pentru orice pagină de curs). Sursele primare sunt checklist-urile PDF de pe acquisition.com/files/ (pricing-value, offer-creation, product-naming, unbeatable-guarantee), care se citesc cu WebFetch + Read pe fișierul salvat; podscripts.co nu se deschide; $100M Leads doar din notițe secundare. Traducerea: dovada = istoria omului (nu testimoniale), time delay = punct de plecare + progres vizibil (nu viteză), fără garanții, fără interval, fără urgență. Subtitlul vorbește cu cel care decide, promisiunea cu omul; ≤60 de caractere. Change Agility: 6 variante, recomandată V1 „Ați trecut deja prin schimbări. Pornim de la ce a mers.” Aștept alegerea lui Alex (T-059, Maria aplică).
+
 ## Deschis
 - Vezi `docs/intrebari-pentru-alex.md`.
 - 2026-11-25: REGULĂ ALEX: întâi articolul (până la aprobare), apoi fluxul LinkedIn din textul aprobat, ca draft separat. Nu mai pun adaptările LinkedIn în draftul de articol (skill copywriting, secțiunile 4–5).
