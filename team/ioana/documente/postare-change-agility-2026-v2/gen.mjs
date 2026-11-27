@@ -526,6 +526,56 @@ ${rd.fr}
 <p class="echipa">Echipa<br>ta</p>
 <div class="sticla curs"><h1 class="ca">Change Agility</h1><p class="fraza">Mai multă presiune nu aduce adaptare.<br>Aduce uzură.</p><div class="jos"><span class="punct"></span><span class="marca">BEMORE Learning Studio</span></div></div>`;
 
+// Caruselul LinkedIn (Alex, 2026-11-27): „Biletul + Aceste 2 mesaje pe câte o pagină, pune-le într-un PDF.”
+// Pagina 1 = E1, neschimbat. Paginile 2–3 = versoul aceluiași bilet: același cer, aceeași formă, aceeași rotație și
+// aceleași crestături, dar pe Noapte (mesajele cheie, ca în deck). La glisare pare același bilet întors.
+// Pe cotor, drumul de pe bilet: punctul portocaliu e pe drum pe p2 și a ajuns în Necunoscut pe p3 (stai în el).
+// Frazele lui Alex, exact (postarea rescrisă de el, 2026-11-27). A doua propoziție e evidențiată, nu schimbată.
+const MESAJ = {
+  incertitudine: ['Incertitudinea nu este intrinsec pozitivă sau negativă.', 'Este un semnal că nu mai ai suficiente informații.'],
+  necunoscutul: ['Nu trebuie să iubești necunoscutul.', 'Este suficient să poți sta în el și să faci următorul pas constructiv.'],
+};
+// Culorile Noapte de pe verso: contrastul pe #0F1B43 e calculat (alb 16,7:1; cer 9,3:1; eticheta 8,3:1; linkul 11,2:1).
+const N = { text: '#FFFFFF', accent: '#80CAF1', et: '#A9B6D9', link: '#BED6F3', linie: 'rgb(190 214 243/.5)' };
+const verso = (w, h, cheie, ajuns, TY = 866) => `<style>${baza(w, h)}${biletCss(TY)}
+.bilet{background:${C.navy}}
+.bilet .et{color:${N.et}}
+.bilet .cap .marca{color:${N.link}}
+.rupt{border-top-color:rgb(190 214 243/.28)}
+.mesaj{position:absolute;left:${BL.pad}px;right:${BL.pad}px;top:150px;height:${TY - 150 - 64}px;display:flex;align-items:center}
+.mesaj p{font:300 74px/1.13 Sora,sans-serif;letter-spacing:-.03em;color:${N.text};text-wrap:balance}
+.mesaj em{font-style:normal;color:${N.accent};display:block;margin-top:.42em}
+.cotor{display:flex;flex-direction:column;justify-content:center;gap:30px}
+.ruta .ets{display:flex;justify-content:space-between}
+.ruta .ets .tu{color:${N.text}}
+.ruta .drum{position:relative;height:32px;margin-top:18px}
+.ruta .drum::before{content:"";position:absolute;left:24px;right:24px;top:14px;border-top:4px dotted ${N.linie}}
+.ruta .drum i{position:absolute;top:2px;width:28px;height:28px;border-radius:50%;border:4px solid ${N.link};background:${C.navy}}
+.ruta .drum i.a{left:0}.ruta .drum i.b{right:0;background:${ajuns ? C.navy : N.link}}
+.ruta .drum .punct{position:absolute;top:5px;${ajuns ? 'right:3px' : 'left:calc(50% - 11px)'}}
+.link{display:flex;flex-direction:column;gap:14px}
+.link .n{font:300 38px/1 Sora,sans-serif;letter-spacing:-.02em;color:${N.text};white-space:nowrap}
+.link .u{font:500 27px/1 "Inter Tight",sans-serif;color:${N.link};white-space:nowrap}
+</style>
+<div class="umbra"><div class="bilet">
+<div class="cap"><span class="marca"><span class="punct"></span>BEMORE Learning Studio</span></div>
+<div class="mesaj"><p>${MESAJ[cheie][0]} <em>${MESAJ[cheie][1]}</em></p></div>
+<div class="rupt"></div>
+<div class="cotor">
+<div class="ruta"><div class="ets"><p class="et">Cunoscut</p><p class="et${ajuns ? ' tu' : ''}">Necunoscut</p></div>
+<div class="drum"><i class="a"></i><i class="b"></i><span class="punct"></span></div></div>
+${ajuns ? '<div class="link"><p class="n">Change Agility</p><p class="u">alexandrumolea.com/workshops/change-agility/</p></div>' : ''}
+</div>
+</div></div>`;
+const P2 = (w, h) => verso(w, h, 'incertitudine', false);
+const P3 = (w, h) => verso(w, h, 'necunoscutul', true);
+// Verificarea caruselului: textul de pe pagină e exact fraza lui Alex (fără cuvinte schimbate sau pierdute),
+// iar ș și ț sunt cu virgulă (U+0219, U+021B), nu cu sedilă.
+const VERIF_MESAJ = `(()=>{const p=document.querySelector('.mesaj p');if(!p)return [];const out=[];
+  const t=p.textContent.replace(/\\s+/g,' ').trim(),ok=${JSON.stringify(Object.values(MESAJ).map(m => m.join(' ')))};
+  if(!ok.includes(t))out.push('text diferit: '+t);if(/[\\u015E\\u015F\\u0162\\u0163]/.test(document.body.textContent))out.push('sedilă');
+  if(p.getBoundingClientRect().height>p.parentElement.getBoundingClientRect().height)out.push('mesajul nu încape');return out;})()`;
+
 // Verificarea ecranelor de vreme: nicio pereche de texte nu se suprapune, iar textul nu trece peste marginea sticlei.
 const VERIF_VREME = `(()=>{if(!document.querySelector('.sticla')||document.querySelector('.umbra'))return [];const out=[];
   const cx=document.createElement('canvas').getContext('2d');
@@ -570,19 +620,25 @@ const VERIF_BILET = `(()=>{const u=document.querySelector('.umbra');if(!u||!docu
 const LISTA = [
   ['a-aleea', A], ['b-peretele', B], ['c-dictionarul', C_], ['d-prognoza', D], ['e-biletul', E], ['f-afisul', F_],
   ['e1-biletul', E1], ['e2-biletul', E2], ['d1-vremea', D1], ['d2-vremea', D2], ['d3-vremea', D3],
+  ['carusel-p2-incertitudine', P2], ['carusel-p3-necunoscutul', P3],
 ].filter(([n]) => process.argv.length < 3 || process.argv.slice(2).includes(n));
 // Doar unele imagini:  node …/gen.mjs e1-biletul e2-biletul
+// Doar caruselul (cele 2 PNG-uri + PDF-ul):  node …/gen.mjs carusel-p2-incertitudine carusel-p3-necunoscutul
 const W = 1080, H = 1350;
 const tmp = mkdtempSync(join(tmpdir(), 'post-ca2-'));
 const br = await launch({ port: 9363 });
+const deschide = async (nume, fn) => {
+  const f = join(tmp, `${nume}.html`);
+  writeFileSync(f, `<!doctype html><html lang="ro"><head><meta charset="utf-8"></head><body class="grain">${fn(W, H)}</body></html>`);
+  const p = await br.open(pathToFileURL(f).href);
+  await br.send('Emulation.setEmulatedMedia', { features: [{ name: 'prefers-color-scheme', value: 'light' }] }, p.sessionId);
+  await br.send('Emulation.setDeviceMetricsOverride', { width: W, height: H, deviceScaleFactor: 1, mobile: false }, p.sessionId);
+  await br.evaluate(p, 'document.fonts.ready.then(()=>new Promise(r=>setTimeout(r,500)))');
+  return p;
+};
 try {
   for (const [nume, fn] of LISTA) {
-    const f = join(tmp, `${nume}.html`);
-    writeFileSync(f, `<!doctype html><html lang="ro"><head><meta charset="utf-8"></head><body class="grain">${fn(W, H)}</body></html>`);
-    const p = await br.open(pathToFileURL(f).href);
-    await br.send('Emulation.setEmulatedMedia', { features: [{ name: 'prefers-color-scheme', value: 'light' }] }, p.sessionId);
-    await br.send('Emulation.setDeviceMetricsOverride', { width: W, height: H, deviceScaleFactor: 1, mobile: false }, p.sessionId);
-    await br.evaluate(p, 'document.fonts.ready.then(()=>new Promise(r=>setTimeout(r,500)))');
+    const p = await deschide(nume, fn);
     await br.evaluate(p, 'window.scrie ? (window.scrie(), 1) : 0'); // după ce fereastra are mărimea imaginii
     // verificări: fonturile, textul ieșit din imagine (marginea de 40 px), textul tăiat pe orizontală
     const v = await br.evaluate(p, `(()=>{const out=[];
@@ -591,9 +647,26 @@ try {
         if(r.left<40||r.top<40||r.right>${W - 40}||r.bottom>${H - 40})out.push('margine: '+el.textContent.trim().slice(0,30));
         if(el.scrollWidth>el.clientWidth+1)out.push('tăiat: '+el.textContent.trim().slice(0,30));}
       return out;})()`);
-    v.push(...await br.evaluate(p, VERIF_BILET), ...await br.evaluate(p, VERIF_VREME));
+    v.push(...await br.evaluate(p, VERIF_BILET), ...await br.evaluate(p, VERIF_VREME), ...await br.evaluate(p, VERIF_MESAJ));
     await br.screenshot(p, join(HERE, `${nume}.png`));
     const cuv = await br.evaluate(p, 'document.body.dataset.cuvinte||""');
     console.log(nume.padEnd(15), v.length ? v : 'OK', cuv ? `(bilețele: ${cuv})` : '', Math.round(statSync(join(HERE, `${nume}.png`)).size / 1024) + ' KB');
+  }
+  // PDF-ul caruselului: exact PNG-urile de 1080×1350 (pagina 1 e chiar e1-biletul.png), câte unul pe foaie.
+  // Am încercat randarea la 2x: Chrome headless lasă plăci nedesenate pe bilet (mască + umbră), deci rămânem la 1x,
+  // care e și rezoluția cerută de LinkedIn pentru carusel. Chrome rotunjește înălțimea foii la 0,01 inch
+  // (14,07 în loc de 14,0625): imaginea umple foaia cu 100vh + object-fit, ca să nu rămână o linie albă.
+  if (LISTA.some(([n]) => n.startsWith('carusel-'))) {
+    const pagini = ['e1-biletul', 'carusel-p2-incertitudine', 'carusel-p3-necunoscutul'].map(n => join(HERE, `${n}.png`));
+    const f = join(tmp, 'carusel.html');
+    writeFileSync(f, `<!doctype html><html><head><meta charset="utf-8"><style>@page{margin:0}*{margin:0;padding:0}
+      img{display:block;width:100vw;height:100vh;object-fit:cover;break-after:page}img:last-child{break-after:auto}</style></head>
+      <body>${pagini.map(s => `<img src="${pathToFileURL(s).href}" alt="">`).join('')}</body></html>`);
+    const p = await br.open(pathToFileURL(f).href);
+    await br.evaluate(p, 'Promise.all([...document.images].map(i=>i.decode()))');
+    const { data } = await br.send('Page.printToPDF', { paperWidth: W / 96, paperHeight: H / 96, printBackground: true, marginTop: 0, marginBottom: 0, marginLeft: 0, marginRight: 0 }, p.sessionId);
+    const out = join(HERE, 'carusel-change-agility.pdf');
+    writeFileSync(out, Buffer.from(data, 'base64'));
+    console.log('carusel PDF'.padEnd(15), pagini.length + ' pagini', (statSync(out).size / 1048576).toFixed(1) + ' MB');
   }
 } finally { br.close(); rmSync(tmp, { recursive: true, force: true }); }
