@@ -11,3 +11,5 @@ Păstrează sub 150 de rânduri. Fapte, nu povești.
 - 2026-11-25: Limbaj permisiv și suportiv, fără promisiuni de timp despre rezultate (vocea-alex). Ce ține de un medic, spunem clar.
 - 2026-11-25: Lui Alex îi dăm o singură propunere comună (mișcare + mese), nu două liste separate.
 - 2026-11-27: Planul de mese se face pe calendarul săptămânii: în zilele pline, mâncarea e deja gătită; cina se încălzește sau se asamblează. Lista de cumpărături vine cu planul. Detaliile stau doar local.
+- 2026-11-27: Diversitate cerută de Alex (ex.: micul dejun nu poate fi același în fiecare zi). Planurile au rotație, nu repetiție zilnică; constant rămâne doar obiceiul (ora, fibrele), nu farfuria.
+- 2026-11-27: Planul de mese al săptămânii stă pe Trello „Planning”, coloana Nutrition (un card pe săptămână, checklist Cumpărături). Restul datelor de sănătate rămân pe „Health”.
