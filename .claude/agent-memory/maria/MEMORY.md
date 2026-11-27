@@ -28,6 +28,10 @@ Păstrează sub 150 de rânduri. Comprimă când crește. Fapte, nu povești.
 
 - 2026-11-27: pagini de curs din D-101 (Trust & Difficult Conversations, Listening & Leading, miezul Alignment): team/maria/documente/pagini-cursuri-2026-11-27.md. Cele mai bune fraze originale vin din transcripturile Wispr ale sesiunilor de group coaching (căutare: „aliniere”, „ascultare”, „feedback”); summary-ul Wispr e lossy, verific fraza în transcript înainte s-o atribui lui Alex. Numele „Trust & Difficult Conversations” seamănă cu un curs Innersis: de semnalat de fiecare dată.
 
+- 2026-11-27: D-102: Alignment = serviciu nou în Innovations (Alex: „nu este întâlnit pe piață”). Noutatea o arăt prin persoana întâi („Nu l-am întâlnit pe piață așa”) și comparații cu training / coaching individual / mediere (profesie reglementată) / team building, nu prin „singurul” sau „unic”. Texte: team/maria/documente/pagini-cursuri-2026-11-27-v2.md.
+- 2026-11-27: CliftonStrengths pe site (Gallup Product Terms, 17.10.2025): ® la prima mențiune, nota de marcă + non-endorsement, „nu sunt reprezentant autorizat Gallup”; marca nu intră în titlu, adresă, nume de firmă sau conturi; fără numele temelor; „Gallup-Certified” doar dacă Alex confirmă. Gallup nu apare în postări.
+- 2026-11-27: confidențialitatea: site-ul n-are stocare, cookies sau resurse externe (CSP `default-src 'self'`); GitHub Pages loghează IP-ul. Agenții citesc Gmail-ul lui Alex: pagina trebuie s-o spună (decizia lui Alex).
+
 ## Proiecte
 - [Inspirație și invenții](project_inspiratie.md) — obiectivul 2; constructorul cu unealta, 3 piloni; Atelier = tot site-ul
 - 2026-11-17: [Arhitectura de brand](project_arhitectura_brand.md) — I-022: un brand pe material; Sora = noul BEMORE (D-057); semnătura site-ului
