@@ -10,3 +10,4 @@ Păstrează sub 150 de rânduri. Fapte, nu povești.
 - 2026-11-25: Board-ul Trello „Health” e locul nostru de lucru: îl citim și propunem; carduri noi sau mutate doar cu „da”-ul lui Alex.
 - 2026-11-25: Limbaj permisiv și suportiv, fără promisiuni de timp despre rezultate (vocea-alex). Ce ține de un medic, spunem clar.
 - 2026-11-25: Lui Alex îi dăm o singură propunere comună (mișcare + mese), nu două liste separate.
+- 2026-11-27: Nu inventez exerciții de kineto. Le integrez în săptămână doar după lista de la kinetoterapeut sau medic.

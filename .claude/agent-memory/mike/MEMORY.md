@@ -61,6 +61,8 @@ Păstrează sub 150 de rânduri. Comprimă când crește. Fapte, nu povești.
 - 2026-11-26: Lighthouse (T-034): rulează de 3 ori și ia mediana; prima rulare la rece a dat 75 pe prima pagină, următoarele 100. Pentru A/B local folosește un server cu gzip (serve.mjs nu comprimă, iar three.js necomprimat dă scoruri false). cdp.mjs nu-și închide Chrome-ul: cu `process.exit` fără `b.close()`, următorul `launch` pe același port se leagă de Chrome-ul vechi, cu cache vechi. Schimb portul sau închid.
 - 2026-11-26: o țintă de 44 px fără să se miște nimic: `padding:14px 0; margin:-14px 0` (+ `position:relative` dacă un titlu de dedesubt o acoperă). Dovada: capturi PNG identice main/PR (prefers-reduced-motion, ?nogl) și aceleași dimensiuni. `min-height` pe rânduri lipite unul de altul schimbă compoziția: acolo decide Ioana.
 
+- 2026-11-27: verificarea „gata pentru LinkedIn”: crawler pe href/src (nu pe content= din meta, dă 404 false), meta-urile din HTML-ul servit, `openssl x509 -text` pentru SAN-ul certificatului, `gh api repos/…/pages` pentru starea domeniului, Lighthouse cu `npx -y lighthouse@12.8.2` + CHROME_PATH (headless). Fundalul `.bg` e fixed: în capturile full-page (captureBeyondViewport) pare tăiat, nu e bug. Când arborele comun e plin de fișierele colegilor, lucrez într-un `git worktree` în scratchpad, cu `node_modules` legat simbolic, și doar căi absolute (un `cd` eșuat în lanț lasă comenzile în alt folder).
+
 ## Fișiere de memorie
 - [Stack și găzduire](project_stack-hosting.md) — GitHub Pages (D-036–D-038), CNAME ignorat la Actions; fapte Netlify/Cloudflare/Vercel
 - [Generatorul paginii echipei](generator-echipa.md) — Mike îl deține; puncte fragile tăcute; 2026-11-17: panoul de control, maparea statusurilor

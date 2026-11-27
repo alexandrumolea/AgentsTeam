@@ -7,3 +7,4 @@ Utilitate: 1 = inutil, 3 = ok, 5 = exact ce trebuia. Feedback Alex: completat c�
 |---|---|---|---|---|---|
 | 2026-11-25 | Onboarding în echipă | Definiție, profil, memorie și regula de confidențialitate create | – | – | – |
 | 2026-11-25 | Prima conversație cu Alex | Prezentarea și întrebările de pornire | – | – | – |
+| 2026-11-27 | Întrebări despre mișcare și kineto | Propunere de pas următor trimisă lui Alex (detaliile doar local) | – | – | – |

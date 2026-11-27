@@ -34,6 +34,8 @@ Păstrează sub 150 de rânduri. Comprimă când crește. Fapte, nu povești.
 
 - 2026-11-26: Bio-urile publice (T-030, drafts/bio-uri-aliniate-2026-11-26.md): LinkedIn = linkedin.com/in/alexandrumolea (adresa e în repo; nu caut după nume); pagina publică dă About-ul întreg în ld+json (curl cu User-Agent de browser). LinkedIn nu are încă Wise Teams și LIFT; are Coachy (co-founder iOS, 2022), absent la noi. Substack: „Systemic Coach & Advisor”, bio cu greșeli; hero-ul („leaders and curious minds”) e bun. Aștept alegerile lui Alex.
 
+- 2026-11-27: Postarea Change Agility (team/sofia/documente/postare-change-agility-2026-11-27.md, 3 variante RO, B recomandată). Metoda care a mers: fiecare rând-ancoră vine dintr-un text deja aprobat de Alex (material participant, pagina cursului, debrieful din privat/cursuri/change-agility/lessons-learnt.md), cu „de unde vin rândurile” sub fiecare variantă. Nu descriu mecanica exercițiilor în public; The Positive Unknown nu e încă livrat, nu-l anunț. Aștept alegerea lui Alex.
+
 ## Deschis
 - Vezi `docs/intrebari-pentru-alex.md`.
 - 2026-11-25: REGULĂ ALEX: întâi articolul (până la aprobare), apoi fluxul LinkedIn din textul aprobat, ca draft separat. Nu mai pun adaptările LinkedIn în draftul de articol (skill copywriting, secțiunile 4–5).
