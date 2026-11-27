@@ -76,6 +76,8 @@ categorii:
     # Workshopurile livrate (D-093, pasul 7c din docs/procese/curs-nou.md), fiecare cu pagina lui la workshops/<slug>/.
     # Pagina e un fișier din content/workshops/ (șablonul paginii de curs al Ioanei). Un workshop nou: copiezi
     # change-agility.html, îi schimbi textul și adaugi aici un rând. `cadru: false`: pagina își aduce singură sticla.
+    # Opțional, `imagine_linkedin: previzualizari/<slug>.png`: imaginea din previzualizarea linkului (LinkedIn, WhatsApp),
+    # un fișier de 1200×630 pus în site/static/previzualizari/. Fără ea se folosește og.png, imaginea generală a site-ului.
     elemente:
       - titlu: "Change Agility"
         fraza: "Un workshop în care fiecare pleacă cu planul lui de reinventare."

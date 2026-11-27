@@ -37,6 +37,20 @@ function mdFile(p){
   try { return { data: parseYaml(m[1]) || {}, body: m[2].trim() }; } catch (e) { fail(`${p}: antet YAML invalid (${e.message})`); }
 }
 
+// Lățimea și înălțimea unei imagini PNG sau JPEG, citite din antet (fără dependențe). null dacă nu e PNG/JPEG.
+function marimeImagine(buf){
+  if (buf.length > 24 && buf.readUInt32BE(0) === 0x89504e47) return { w: buf.readUInt32BE(16), h: buf.readUInt32BE(20) };
+  if (buf[0] === 0xff && buf[1] === 0xd8){
+    for (let i = 2; i + 9 < buf.length;){
+      if (buf[i] !== 0xff){ i++; continue; }
+      const m = buf[i + 1], len = buf.readUInt16BE(i + 2);
+      if (m >= 0xc0 && m <= 0xcf && ![0xc4, 0xc8, 0xcc].includes(m)) return { w: buf.readUInt16BE(i + 7), h: buf.readUInt16BE(i + 5) };
+      i += 2 + len;
+    }
+  }
+  return null;
+}
+
 const site = yamlFile('content/site.yml');
 const cat = yamlFile('content/categorii.yml');
 const nevoi = (yamlFile('content/nevoi.yml').nevoi || []);
@@ -126,6 +140,19 @@ for (const c of CATS){
         ? `main.proces{width:min(1080px,calc(100% - 2 * var(--gut)));margin:20px auto 0}\n`
         : `main.proces{width:min(1060px,calc(100% - 2 * var(--gut)));margin:28px auto 0;overflow:hidden}\n`) + e.css;
       e.url = `${c.url}/${e.slug}/`;
+    }
+    // `imagine_linkedin`: imaginea din previzualizarea linkului (LinkedIn, WhatsApp, Slack), un fișier din site/static/.
+    // Fără ea, pagina folosește og.png, imaginea generală a site-ului.
+    if (e.imagine_linkedin !== undefined){
+      if (!e.pagina) fail(`${w}: „imagine_linkedin” are sens doar pentru un element cu „pagina”.`);
+      const f = String(e.imagine_linkedin).replace(/^\/+/, '');
+      if (!/^[a-z0-9][a-z0-9/_-]*\.(png|jpe?g)$/.test(f) || f.includes('..')) fail(`${w}: „imagine_linkedin” e un fișier .png sau .jpg din site/static/ (litere mici, cifre, cratimă), ex.: previzualizari/${e.slug}.png.`);
+      if (!existsSync(join(HERE, 'static', f))) fail(`${w}: nu găsesc site/static/${f} („imagine_linkedin”).`);
+      const buf = readFileSync(join(HERE, 'static', f)), m = marimeImagine(buf);
+      if (!m) fail(`${w}: site/static/${f} nu e o imagine PNG sau JPEG validă.`);
+      if (buf.length > 5 * 1024 * 1024) fail(`${w}: site/static/${f} are peste 5 MB; LinkedIn n-o afișează.`);
+      if (m.w < 1200 || Math.abs(m.w / m.h - 1.91) > 0.05) warn(`${w}: site/static/${f} are ${m.w}×${m.h}; LinkedIn o afișează mare doar la cel puțin 1200×627 (raport 1,91:1).`);
+      e.og = { src: f, w: m.w, h: m.h, alt: e.imagine_linkedin_alt ? String(e.imagine_linkedin_alt) : `${e.titlu}: ${e.fraza}` };
     }
     return e;
   });
@@ -434,7 +461,8 @@ const CSS_HASHLESS = 'assets/site.css';
 let cssV = '';
 // Politica de securitate: doar resurse de pe site; import map-ul inline e permis prin hash.
 const csp = scriptHash => `default-src 'self'; script-src 'self'${[].concat(scriptHash || []).map(h => ` '${h}'`).join('')}; style-src 'self'; img-src 'self' data:; font-src 'self'; connect-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'`;
-function head({ title, description, path, extra = '', scriptHash = '' }){
+const OG_GENERAL = { src: 'og.png', w: 1200, h: 630, alt: 'Atelierul lui Alex: obiecte de sticlă colorată pe orbită, pe un fundal luminos.' };
+function head({ title, description, path, extra = '', scriptHash = '', og = OG_GENERAL }){
   const t = title ? `${title} · ${site.titlu_scurt || site.titlu}` : site.titlu; // pagina întâi, ca să se vadă în tab-urile înguste
   const canon = SITE_URL ? `<link rel="canonical" href="${esc(abs(path))}">` : '';
   return `<!doctype html>
@@ -453,10 +481,10 @@ ${canon}
 <meta property="og:title" content="${esc(t)}">
 <meta property="og:description" content="${esc(description || site.descriere)}">
 ${SITE_URL ? `<meta property="og:url" content="${esc(abs(path))}">` : ''}
-<meta property="og:image" content="${esc(abs('og.png'))}">
-<meta property="og:image:width" content="1200">
-<meta property="og:image:height" content="630">
-<meta property="og:image:alt" content="Atelierul lui Alex: obiecte de sticlă colorată pe orbită, pe un fundal luminos.">
+<meta property="og:image" content="${esc(abs(og.src))}">
+<meta property="og:image:width" content="${og.w}">
+<meta property="og:image:height" content="${og.h}">
+<meta property="og:image:alt" content="${esc(og.alt)}">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="theme-color" content="${TEMA.get('bg')}">
 <meta name="color-scheme" content="light">
@@ -489,8 +517,8 @@ const brandText = () => { const lung = site.intro?.marca || site.titlu, scurt = 
 // subsolul a fost scos la cererea lui Alex (2026-11-25): fără textul despre repo, data actualizării și continut.json
 const footer = () => '';
 
-function page({ cheie, title, description, path, bodyHtml, mainClass = 'wrap glass-read', bodyClass = '', scripts = '', extraHead = '' }){
-  return `${head({ title, description, path, extra: extraHead })}
+function page({ cheie, title, description, path, bodyHtml, mainClass = 'wrap glass-read', bodyClass = '', scripts = '', extraHead = '', og }){
+  return `${head({ title, description, path, extra: extraHead, og })}
 <body class="page${bodyClass ? ' ' + bodyClass : ''}">
 <div class="bg" aria-hidden="true"></div>
 ${topNav(cheie)}
@@ -695,7 +723,7 @@ function desprePage(c){
 // Pagina unui element cu `pagina`: antetul și subsolul site-ului, iar între ele pagina din repo, cu designul ei.
 // Stilul ei e în assets/pagini/<slug>.css, închis sub .proces (vezi site/pagina-html.mjs).
 function elementPage(c, e){
-  return page({ cheie: c.cheie, title: e.titluTab || e.titlu, description: e.descriere || `${e.titlu}: ${e.fraza}`, path: e.url,
+  return page({ cheie: c.cheie, title: e.titluTab || e.titlu, description: e.descriere || `${e.titlu}: ${e.fraza}`, path: e.url, og: e.og,
     mainClass: e.cadru === false ? 'proces' : 'proces glass-read',
     extraHead: `<link rel="stylesheet" href="${u(`assets/pagini/${e.slug}.css`)}?v=${createHash('sha256').update(e.css).digest('hex').slice(0, 10)}">`,
     bodyHtml: contactButtons(whatsappLinks(e.html, e.pagina), e.pagina) });

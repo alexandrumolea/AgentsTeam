@@ -32,7 +32,7 @@ Butonul WhatsApp: `<a href="#whatsapp" data-whatsapp="mesajul pregătit">…</a>
 
 ## Cum pui un workshop în Latest Workshops
 
-Șablonul e pagina Change Agility (`content/workshops/change-agility.html`, mock-up-ul Ioanei, T-052). Pentru un workshop nou: copiezi fișierul în `content/workshops/<slug>.html`, schimbi textul, rândurile planului și numele cursului din mesajul WhatsApp, apoi adaugi un rând în `content/categorii.yml` → `speaking` → `elemente` (`titlu`, `fraza`, `slug`, `pagina`, `cadru: false`). Pagina apare la `workshops/<slug>/`.
+Șablonul e pagina Change Agility (`content/workshops/change-agility.html`, mock-up-ul Ioanei, T-052). Pentru un workshop nou: copiezi fișierul în `content/workshops/<slug>.html`, schimbi textul, rândurile planului și numele cursului din mesajul WhatsApp, apoi adaugi un rând în `content/categorii.yml` → `speaking` → `elemente` (`titlu`, `fraza`, `slug`, `pagina`, `cadru: false`). Pagina apare la `workshops/<slug>/`. Pentru previzualizarea linkului pe LinkedIn, pune o imagine de 1200×630 (PNG sau JPEG, sub 5 MB) în `site/static/previzualizari/<slug>.png` și adaugă la element `imagine_linkedin: previzualizari/<slug>.png` (opțional `imagine_linkedin_alt`). Build-ul verifică fișierul și dimensiunea; fără câmp, pagina folosește `og.png`.
 
 ## Pagina Despre
 
