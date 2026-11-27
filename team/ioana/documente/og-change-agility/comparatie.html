@@ -1,0 +1,85 @@
+<!doctype html>
+<html lang="ro">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Previzualizare Change Agility</title>
+<style>
+/* T-057 · Ioana · 2026-11-27. Compară cele două imagini de previzualizare (og:image) pentru
+   alexandrumolea.com/workshops/change-agility/, la mărimea reală și cum se văd în feed pe telefon.
+   Imaginile se refac cu gen.mjs (alături). Pagina doar le arată. */
+:root{--bg:#F3EEF6;--card:#FFFFFF;--text:#14161F;--muted:#474A58;--accent:#2B44B8;--line:rgb(20 22 31/.14);--feed:#F4F2EE}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#14161F;--card:#1F2230;--text:#F2F1F7;--muted:#B9BBC8;--accent:#9DB0FF;--line:rgb(255 255 255/.14);--feed:#0F1117}}
+:root[data-theme="dark"]{--bg:#14161F;--card:#1F2230;--text:#F2F1F7;--muted:#B9BBC8;--accent:#9DB0FF;--line:rgb(255 255 255/.14);--feed:#0F1117}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--text);font:400 16px/1.55 "Inter Tight",system-ui,-apple-system,"Segoe UI",sans-serif}
+main{max-width:1240px;margin:0 auto;padding:40px 16px 64px;display:grid;gap:40px}
+h1{font:300 clamp(30px,4vw,44px)/1.1 Sora,"Avenir Next",system-ui,sans-serif;margin:0;letter-spacing:-.02em}
+h2{font:400 26px/1.2 Sora,"Avenir Next",system-ui,sans-serif;margin:0}
+p{margin:0}
+.lead{color:var(--muted);max-width:70ch;margin-top:10px}
+.var{background:var(--card);border:1px solid var(--line);border-radius:24px;padding:24px;display:grid;gap:20px}
+.cap{display:flex;flex-wrap:wrap;gap:8px 16px;align-items:baseline}
+.eticheta{font:600 12px/1 "Inter Tight",system-ui,sans-serif;letter-spacing:.14em;text-transform:uppercase;color:var(--accent)}
+.rand{display:grid;grid-template-columns:minmax(0,1fr) 343px;gap:24px;align-items:start}
+.mare img{width:100%;height:auto;display:block;border-radius:12px;border:1px solid var(--line)}
+.mare p{font-size:14px;color:var(--muted);margin-top:8px}
+/* feed: aproximarea unei postări cu link pe LinkedIn, pe un telefon de 375 px */
+.feed{background:var(--feed);border-radius:20px;padding:12px;display:grid;gap:8px}
+.feed .eticheta{color:var(--muted)}
+.post{background:#fff;color:#191919;border-radius:10px;overflow:hidden;font-family:-apple-system,system-ui,sans-serif}
+.post .txt{padding:10px 12px;font-size:14px;line-height:1.4}
+.post img{width:100%;display:block}
+.post .link{padding:8px 12px 10px;background:#EEF3F8}
+.post .link b{display:block;font-size:14px;font-weight:600;line-height:1.3}
+.post .link span{font-size:12px;color:#5E5E5E}
+.de-ce{display:grid;gap:6px;padding-left:18px;margin:0}
+.de-ce li{max-width:72ch}
+.acum{display:grid;grid-template-columns:200px 1fr;gap:16px;align-items:center}
+.acum img{width:100%;border-radius:8px;border:1px solid var(--line)}
+@media (max-width:820px){.rand{grid-template-columns:1fr}.feed{max-width:343px}.acum{grid-template-columns:1fr}.acum img{max-width:320px}}
+</style>
+</head>
+<body>
+<main>
+<header>
+  <p class="eticheta">T-057 · imaginea de previzualizare</p>
+  <h1>Change Agility: ce apare când cineva postează linkul</h1>
+  <p class="lead">Două variante, 1200 × 630, în brandul BEMORE (Lumină, ca pagina). O singură imagine servește toate postările care duc la pagină (A, B și C ale Sofiei), pentru că LinkedIn o ia din pagină, nu din postare. De aceea arată cursul, nu o postare anume. Textul de pe imagini e doar din fraze aprobate de Alex (primul ecran al paginii).</p>
+</header>
+
+<section class="var" aria-labelledby="ta">
+  <div class="cap"><span class="eticheta">Recomandată</span><h2 id="ta">A · Planul</h2></div>
+  <div class="rand">
+    <div class="mare"><img src="a-planul.png" width="1200" height="630" alt="Change Agility. Ai mai multe resurse decât crezi. Alături, planul de reinventare cu trei rânduri: resursele tale, skill-ul pe care vrei să-l crești, primii tăi pași."><p>a-planul.png · 1200 × 630 · PNG</p></div>
+    <div class="feed"><span class="eticheta">În feed, pe telefon</span>
+      <div class="post"><p class="txt">Ce te-a ajutat să treci cu bine printr-o schimbare? …</p><img src="a-planul.png" alt=""><div class="link"><b>Change Agility · workshop despre schimbare și reinventare</b><span>alexandrumolea.com</span></div></div>
+    </div>
+  </div>
+  <ul class="de-ce">
+    <li>E primul ecran al paginii, mărit: cine dă click ajunge exact în ce a văzut. Planul de reinventare e obiectul paginii și finalul postării B.</li>
+    <li>La mărimea din feed titlul se citește ușor; rândurile planului se citesc la limită, dar forma lui (trei pași, scriși pe jumătate) se recunoaște.</li>
+  </ul>
+</section>
+
+<section class="var" aria-labelledby="tb">
+  <div class="cap"><span class="eticheta">Alternativa</span><h2 id="tb">B · Resursele</h2></div>
+  <div class="rand">
+    <div class="mare"><img src="b-resursele.png" width="1200" height="630" alt="Change Agility. Ai trecut deja prin schimbări. Ai mai multe resurse decât crezi."><p>b-resursele.png · 1200 × 630 · PNG</p></div>
+    <div class="feed"><span class="eticheta">În feed, pe telefon</span>
+      <div class="post"><p class="txt">Ce te-a ajutat să treci cu bine printr-o schimbare? …</p><img src="b-resursele.png" alt=""><div class="link"><b>Change Agility · workshop despre schimbare și reinventare</b><span>alexandrumolea.com</span></div></div>
+    </div>
+  </div>
+  <ul class="de-ce">
+    <li>Doar titlul și fraza întreagă de pe pagină, mari. Cea mai lizibilă pe telefon.</li>
+    <li>Planul rămâne doar ca semn sus: trei pași, primii doi scriși. Mai puțin „pagina”, mai mult „afiș”.</li>
+  </ul>
+</section>
+
+<section class="var" aria-labelledby="tc">
+  <h2 id="tc">Acum</h2>
+  <div class="acum"><img src="../../../../site/static/og.png" alt="Imaginea generală a site-ului: Construiesc unelte pentru oameni care vor să crească."><p>Fără imagine proprie, linkul arată imaginea generală a site-ului. După ce Mike leagă imaginea aleasă (<code>imagine_linkedin</code>), o verificăm în LinkedIn Post Inspector înainte de postare: LinkedIn ține previzualizarea în cache cam 7 zile.</p></div>
+</section>
+</main>
+</body>
+</html>

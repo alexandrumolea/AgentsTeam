@@ -1,0 +1,98 @@
+<!doctype html>
+<html lang="ro">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Butonul de email</title>
+<style>
+/* Mock-up mic: butonul de email pe paginile de curs (propunere, Ioana, 2026-11-27).
+   Descrierea și specificația pentru Mike: buton-email-curs-v1.md (alături).
+   Doar cardul „Hai să vorbim” de la finalul paginii, în trei stări: acum, A (recomandat), B.
+   Culorile sunt cele din content/tema.yml; adresa de email e un loc gol, nu o adresă reală. */
+:root{--text:#14161F;--muted:#474A58;--accent:#2B44B8;--line:rgb(20 22 31/.14);--glass-read:rgb(255 255 255/.93);--glass-edge:rgb(255 255 255/.6);--cer:#4FA3F0;--cer-deschis:#8FD3F7;--lavanda:#B7A6EA;--piersica:#F7B79A;--portocaliu:#F28C3B;--bg:#F3EEF6}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) body{--page:#14161F;--page-text:#F2F1F7;--page-muted:#B9BBC8}}
+:root[data-theme="dark"] body{--page:#14161F;--page-text:#F2F1F7;--page-muted:#B9BBC8}
+*{box-sizing:border-box}
+body{margin:0;color:var(--page-text,var(--text));font:400 16px/1.6 "Inter Tight",system-ui,-apple-system,"Segoe UI",sans-serif;
+  background:var(--page,radial-gradient(60% 70% at 4% 6%,rgb(79 163 240/.9),rgb(79 163 240/0) 70%),radial-gradient(55% 60% at 32% 80%,rgb(183 166 234),rgb(183 166 234/0) 70%),radial-gradient(50% 60% at 86% 56%,rgb(247 183 154),rgb(247 183 154/0) 70%),radial-gradient(48% 58% at 100% 100%,rgb(242 140 59),rgb(242 140 59/0) 70%),var(--bg))}
+main{max-width:1200px;margin:0 auto;padding:40px 16px 64px;display:grid;gap:28px}
+h1{font:300 clamp(28px,3.6vw,40px)/1.15 Sora,"Avenir Next",system-ui,sans-serif;margin:0;letter-spacing:-.02em}
+.lead{color:var(--page-muted,var(--muted));max-width:70ch;margin:8px 0 0}
+.grila{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:20px;align-items:start}
+.col{display:grid;gap:10px}
+.eticheta{font:600 12px/1.2 "Inter Tight",system-ui,sans-serif;letter-spacing:.14em;text-transform:uppercase;color:var(--page-muted,var(--muted))}
+.eticheta b{color:var(--page-text,var(--text))}
+.nota,header{background:var(--page,rgb(255 255 255/.88));border-radius:14px;padding:12px 16px;margin:0}
+.nota{font-size:15px;color:var(--page-muted,var(--muted))}
+.col>.eticheta{background:var(--page,rgb(255 255 255/.88));border-radius:8px;padding:6px 10px;justify-self:start;margin:0}
+
+/* cardul de pe pagină (.ceri din content/workshops/change-agility.html) */
+.ceri{color:var(--text);padding:28px 28px 26px;display:grid;gap:18px;border-radius:22px;border:1px solid var(--glass-edge);
+  background:linear-gradient(135deg,rgb(143 211 247/.55),rgb(183 166 234/.55)),var(--glass-read);box-shadow:inset 0 1px 0 rgb(255 255 255/.8),0 14px 34px -20px rgb(43 68 184/.4)}
+.ceri h2{font:300 32px/1.15 Sora,"Avenir Next",system-ui,sans-serif;margin:0}
+.ceri p{font:300 23px/1.3 Sora,"Avenir Next",system-ui,sans-serif;margin:0;text-wrap:balance}
+.actiuni{display:flex;flex-wrap:wrap;gap:10px}
+.btn{display:inline-flex;align-items:center;gap:10px;min-height:48px;padding:0 22px;border-radius:999px;font:500 16px/1 "Inter Tight",system-ui,sans-serif;text-decoration:none;white-space:nowrap}
+.btn.plin{background:var(--text);color:#fff}
+.btn.plin::after{content:"→";font-size:18px}
+.btn.gol{color:var(--text);background:rgb(255 255 255/.7);border:1px solid var(--line)}
+.btn svg{width:20px;height:20px;flex:none;fill:none;stroke:currentColor;stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round}
+.adresa{font:400 16px/1.5 "Inter Tight",system-ui,sans-serif !important;color:var(--muted)}
+.adresa span{color:var(--text);font-weight:500;user-select:all}
+.adresa .loc{background:rgb(43 68 184/.08);border-radius:6px;padding:0 6px}
+.ico-row{display:flex;gap:8px}
+.ico-row i{width:44px;height:44px;border-radius:50%;background:#fff;border:1px solid var(--line);display:grid;place-items:center;font-style:normal;font-size:13px;color:var(--muted)}
+.panou{border-radius:18px;background:#fff;border:1px solid var(--line);padding:16px;display:grid;gap:10px;color:var(--text)}
+.panou b{font:300 22px/1.2 Sora,system-ui,sans-serif}
+.sageata{background:rgb(255 255 255/.88);border-radius:8px;padding:4px 10px;font-size:14px;color:var(--muted);text-align:center}
+@media (max-width:980px){.grila{grid-template-columns:1fr}.col{max-width:420px}}
+@media (max-width:420px){.ceri{padding:20px}.btn{white-space:normal;line-height:1.2;padding:10px 20px}}
+</style>
+</head>
+<body>
+<main>
+<header>
+  <p class="eticheta">Propunere · paginile de curs</p>
+  <h1>Un buton de email lângă WhatsApp</h1>
+  <p class="lead">Cine vine de pe LinkedIn ca să aducă un workshop în organizație (HR, L&amp;D, un manager) scrie de obicei din emailul de serviciu. Azi singurul drum e WhatsApp. Specificația e în <code>buton-email-curs-v1.md</code>.</p>
+</header>
+
+<div class="grila">
+  <section class="col" aria-label="Acum">
+    <p class="eticheta"><b>Acum</b> · un singur drum</p>
+    <div class="ceri">
+      <h2>Hai să vorbim</h2>
+      <p>Spune-mi prin ce trece echipa ta acum și vedem împreună dacă workshopul vi se potrivește.</p>
+      <div class="actiuni"><a class="btn plin" href="#">Scrie-mi pe WhatsApp</a></div>
+    </div>
+  </section>
+
+  <section class="col" aria-label="Varianta A">
+    <p class="eticheta"><b>A · Două drumuri</b> · recomandat</p>
+    <div class="ceri">
+      <h2>Hai să vorbim</h2>
+      <p>Spune-mi prin ce trece echipa ta acum și vedem împreună dacă workshopul vi se potrivește.</p>
+      <div class="actiuni">
+        <a class="btn plin" href="#">Trimite-mi un email</a>
+        <a class="btn gol" href="#"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3.6a8.4 8.4 0 0 0-7.2 12.7L3.6 20.4l4.2-1.1A8.4 8.4 0 1 0 12 3.6z"/></svg>WhatsApp</a>
+      </div>
+      <p class="adresa">Sau scrie direct la <span class="loc">[adresa din CONTACT_EMAIL]</span></p>
+    </div>
+    <p class="nota">Emailul vine deja cu subiectul „Workshop Change Agility” și cu primul rând scris. Adresa vizibilă ajută când pe calculator nu e setat niciun program de email (mailto nu deschide nimic); se poate selecta dintr-un clic.</p>
+  </section>
+
+  <section class="col" aria-label="Varianta B">
+    <p class="eticheta"><b>B · Panoul Contact</b> · fără cod nou</p>
+    <div class="ceri">
+      <h2>Hai să vorbim</h2>
+      <p>Spune-mi prin ce trece echipa ta acum și vedem împreună dacă workshopul vi se potrivește.</p>
+      <div class="actiuni"><a class="btn plin" href="#">Scrie-mi</a></div>
+    </div>
+    <p class="sageata" aria-hidden="true">↓ se deschide panoul Contact, același de pe tot site-ul</p>
+    <div class="panou"><b>Hai să vorbim</b><span class="eticheta">Scrie-mi</span><div class="ico-row"><i>WA</i><i>@</i></div><span class="eticheta">Urmărește-mă aici</span><div class="ico-row"><i>in</i><i>IG</i><i>S</i></div></div>
+    <p class="nota">Merge azi (<code>data-contact</code>). Dar e un clic în plus, canalele sunt doar iconițe, iar mesajul nu vine pregătit cu numele cursului.</p>
+  </section>
+</div>
+</main>
+</body>
+</html>
