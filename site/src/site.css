@@ -45,7 +45,8 @@ body.warm .bg i{opacity:1}
 }
 
 /* piese comune */
-.brand{display:inline-flex;align-items:center;gap:10px;font:400 16px/1 var(--display);letter-spacing:.14em;text-transform:uppercase;color:var(--text);text-decoration:none}
+/* T-041: marca are o țintă de 44 px (16 px text + 2 × 14 px); marginea negativă păstrează locul ocupat, deci nimic nu se mută; position:relative o ține deasupra titlului de dedesubt */
+.brand{position:relative;display:inline-flex;align-items:center;gap:10px;padding:14px 0;margin:-14px 0;font:400 16px/1 var(--display);letter-spacing:.14em;text-transform:uppercase;color:var(--text);text-decoration:none}
 .m-short{display:none}
 @media (max-width:760px){.m-long{display:none}.m-short{display:inline}}
 .dot{display:inline-block;flex:none;width:8px;height:8px;border-radius:50%;background:var(--punct);box-shadow:0 0 0 1px var(--punct-inel)}
